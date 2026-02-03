@@ -1,0 +1,28 @@
+  @media (max-width: 768px) {
+    #navbar {
+      flex-direction: column;
+      height: auto;
+      padding: 1rem;
+    }
+    .nav-links {
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .hero-cta a {
+      width: 100%;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .hero-scroll-hint {
+      display: none;
+    }
+  }
