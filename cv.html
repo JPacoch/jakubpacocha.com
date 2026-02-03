@@ -10,6 +10,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/mobile_nav.css">
+    <style>
+        html.lenis, html.lenis body {
+            height: auto;
+        }
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+        .lenis.lenis-scrolling iframe {
+            pointer-events: none;
+        }
+        main {
+            transform-origin: center top;
+            will-change: transform;
+        }
+    </style>
 </head>
 <body>
 
@@ -228,7 +249,62 @@
         <div class="foot-right">Bydgoszcz, Poland</div>
     </footer>
 
+    <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
     <script>
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        const main = document.querySelector('main');
+        const heroContent = document.querySelector('.hero-content');
+        const heroGrid = document.querySelector('.hero-grid');
+        const orbs = document.querySelectorAll('.orb');
+
+        lenis.on('scroll', ({ scroll, limit, velocity }) => {
+            // Velocity Skew
+            if (main) {
+                const skew = Math.min(Math.max(velocity * 0.1, -2), 2);
+                main.style.transform = `skewY(${skew}deg)`;
+            }
+
+            // Hero Parallax
+            if (heroContent) {
+                heroContent.style.transform = `translateY(${scroll * 0.3}px)`;
+                heroContent.style.opacity = 1 - (scroll / 700);
+            }
+            if (heroGrid) {
+                heroGrid.style.transform = `translateY(${scroll * 0.5}px)`;
+            }
+
+            // Orb Parallax
+            orbs.forEach((orb, i) => {
+                orb.style.marginTop = `${scroll * (0.1 + i * 0.05)}px`;
+            });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                lenis.scrollTo(href);
+            });
+        });
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) entry.target.classList.add('visible');
