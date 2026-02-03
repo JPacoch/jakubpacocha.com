@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CV | Jakub Pacocha</title>
+    <title>Jakub Pacocha | CV </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/mobile_nav.css">
 </head>
 <body>
 
+<!-- NAV -->
     <nav id="navbar">
-        <div class="nav-logo">JP <span>/</span> CV</div>
+        <div class="nav-logo"><span>JP</span> / jakub pacocha</div>
         <div class="nav-links">
             <a href="index.html">Main Page</a>
             <a href="#experience">Experience</a>
@@ -24,7 +26,7 @@
     </nav>
 
     <main>
-        <section class="hero" style="min-height: 80vh;">
+        <section class="hero" style="min-height: 100vh;">
             <div class="hero-grid"></div>
             <div class="orb orb-1"></div>
             <div class="orb orb-2"></div>
@@ -42,49 +44,66 @@
                 <div class="hero-cta">
                     <a href="mailto:pacochp@gmail.com" class="btn-primary">Mail Me</a>
                     <a href="#" class="btn-secondary">Download PDF</a>
-                    <a href="index.html" class="btn-secondary" style="color:#d4ff3f"><- Main Page</a>
+                    <a href="index.html" class="btn-secondary" style="color: #c8f070;"><- Main Page</a>
                 </div>
+            </div>
+            <div class="hero-scroll-hint">
+                <div class="line"></div>
+                <span>Scroll</span>
             </div>
         </section>
 
-        <section class="reveal">
+        <!-- EXP -->
+        <section id="experience" class="reveal">
+            <div class="section-label" style="text-align: center; margin: auto; justify-content: center; align-items: center;">Experience</div>
             <div style="max-width: 800px; margin: 0 auto;" class="reveal">
-                <h2 style="font-family: serif; font-size: 2.5rem; margin-bottom: 3rem;">
-                Professional <span style="color: #d4ff3f; font-style: italic;">Timeline</span>
-                </h2>
-
+                <h2 class="section-title">Professional <em>Trajectory</em></span></h2>
                 <div style="border-left: 1px solid #333; padding-left: 2rem; position: relative;" class="reveal">
-                
-                <div style="margin-bottom: 3rem; position: relative;" class="reveal">
+                <div style="margin-bottom: 3rem; margin-top: 3rem; position: relative;" class="reveal">
                     <div style="position: absolute; left: -2.35rem; top: 0.5rem; width: 10px; height: 10px; background: #d4ff3f; border-radius: 50%; box-shadow: 0 0 10px #d4ff3f;"></div>
                     <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <div>
-                        <h3 style="font-size: 1.25rem; margin: 0; font-weight: 600;">iQor Poland</h3>
-                        <p style="color: #888; margin: 0.25rem 0;">Data Scientist / AI Engineer</p>
+                    <div class="project-info">
+                        <h3>AI Engineer <span style="color: #c8f070;">/</span> Data Scientist — <span style="color: #c8f070;">iQor</span></h3>
+                        <p style="color: #888; margin: 0.25rem 0;">Architecting production-grade RAG systems and optimizing vector search performance. Leading the transition to agentic workflows.</p>
+                        <div class="project-meta">
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">AWS</span>
+                            <span class="project-tag">LLMOps</span>
+                        </div>
                     </div>
-                    <span style="background: rgba(212, 255, 63, 0.1); color: #d4ff3f; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; border: 1px solid #d4ff3f;">Present</span>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 3rem; position: relative;" class="reveal">
-                    <div style="position: absolute; left: -2.35rem; top: 0.5rem; width: 10px; height: 10px; background: #333; border-radius: 50%;"></div>
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <div>
-                        <h3 style="font-size: 1.25rem; margin: 0; font-weight: 600;">O-I Poland</h3>
-                        <p style="color: #888; margin: 0.25rem 0;">Data Scientist</p>
-                    </div>
-                    <span style="border: 1px solid #333; color: #888; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">2022 — 2025</span>
+                    <span style="background: rgba(212, 255, 63, 0.1); color: #d4ff3f; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; border: 1px solid #d4ff3f;">2023 — Present</span>
                     </div>
                 </div>
 
                 <div style="margin-bottom: 3rem; position: relative;" class="reveal">
                     <div style="position: absolute; left: -2.35rem; top: 0.5rem; width: 10px; height: 10px; background: #333; border-radius: 50%;"></div>
                     <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <div>
-                        <h3 style="font-size: 1.25rem; margin: 0; font-weight: 600;">Hexagon</h3>
-                        <p style="color: #888; margin: 0.25rem 0;">Spatial Data Analyst</p>
+                    <div class="project-info">
+                        <h3>Data Scientist — <span style="color: #c8f070;">O-I Poland</span></h3>
+                        <p style="color: #888; margin: 0.25rem 0;">Developed and maintained machine learning pipelines for internal clients on large, tabular sales and cost datasets.</p>
+                        <div class="project-meta">
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">Azure</span>
+                            <span class="project-tag">MLOps</span>
+                        </div>
                     </div>
-                    <span style="border: 1px solid #333; color: #888; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">2019 — 2022</span>
+                    <span style="border: 1px solid #333; color: #888; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">2021 — 2023</span>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 3rem; position: relative;" class="reveal">
+                    <div style="position: absolute; left: -2.35rem; top: 0.5rem; width: 10px; height: 10px; background: #333; border-radius: 50%;"></div>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div class="project-info">
+                        <h3>Spatial Data Analyst — <span style="color: #c8f070;">Heksagon Research</span></h3>
+                        <p style="color: #888; margin: 0.25rem 0;">Analyzed and prepared datasets and visualizations for private, civic and municipal clients.</p>
+                        <div class="project-meta">
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">GIS</span>
+                            <span class="project-tag">SQL</span>
+                        </div>
+                    </div>
+                    <span style="border: 1px solid #333; color: #888; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">2021 — 2022</span>
                     </div>
                 </div>
 
@@ -92,46 +111,59 @@
             </div>
         </section>
 
-
-        <!-- <section id="experience" class="reveal">
+        <!-- EXP2 -->
+        <!-- <section id="education" class="reveal">
             <div class="section-label">Experience</div>
             <h2 class="section-title">Professional <em>Trajectory</em></h2>
             
             <div class="projects-list">
                 <div class="project-item">
-                    <span class="project-num">Present</span>
+                    <span class="project-num">2023/Present</span>
                     <div class="project-info">
-                        <h3>Senior AI Engineer — [Company Name]</h3>
+                        <h3>AI Engineer / Data Scientist — [iQor Poland]</h3>
                         <p>Architecting production-grade RAG systems and optimizing vector search performance. Leading the transition to agentic workflows.</p>
                         <div class="project-meta">
                             <span class="project-tag">Python</span>
-                            <span class="project-tag">PyTorch</span>
+                            <span class="project-tag">AWS</span>
                             <span class="project-tag">LLMOps</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="project-item">
-                    <span class="project-num">2022</span>
+                    <span class="project-num">2021/23</span>
                     <div class="project-info">
-                        <h3>Software Engineer — [Previous Company]</h3>
-                        <p>Developed scalable microservices and high-fidelity user interfaces. Focused on performance bottlenecks and real-time data streaming.</p>
+                        <h3>Data Scientist — [O-I Poland]</h3>
+                        <p>Developed and maintained machine learning pipelines for internal clients on large, tabular sales and cost datasets.</p>
                         <div class="project-meta">
-                            <span class="project-tag">TypeScript</span>
-                            <span class="project-tag">Go</span>
-                            <span class="project-tag">Kubernetes</span>
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">Azure</span>
+                            <span class="project-tag">MLOps</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-item">
+                    <span class="project-num">2021/22</span>
+                    <div class="project-info">
+                        <h3>Spatial Data Analyst — [Heksagon Research]</h3>
+                        <p>Analyzed and prepared datasets and visualizations for private, civic and municipal clients.</p>
+                        <div class="project-meta">
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">GIS</span>
+                            <span class="project-tag">SQL</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section> -->
 
-        <section id="skills" class="reveal">
+        <!-- SKILLS -->
+        <section id="skills" class="reveal" style="text-align: center; margin: auto; justify-content: center; align-items: center;">
             <div class="reveal">
                 <div class="section-label">Capabilities</div>
-                <h2 class="section-title">Tools &amp; <em>expertise</em></h2>
+                <h2 class="section-title" style="text-align: center; margin: auto; justify-content: center; align-items: center;">Tools &amp; <em>expertise</em></h2>
             </div>
-            <div class="skills-grid">
+            <div class="skills-grid" style="text-align: center; margin: auto; justify-content: center; margin-top: 3rem;">
                 <div class="skill-card reveal">
                 <div class="skill-icon">🖥️</div>
                 <h3>Generative AI & RAG</h3>
@@ -175,6 +207,7 @@
             </div>
         </section>
 
+        <!-- CONTACT -->
         <section id="contact">
             <div class="orb orb-3"></div>
             <div class="contact-inner reveal">
