@@ -24,21 +24,12 @@ function initLenis() {
 
   requestAnimationFrame(raf);
 
-  // Connect Lenis to ScrollTrigger if needed in future
-  // lenis.on('scroll', ScrollTrigger.update);
-  // gsap.ticker.add((time) => {
-  //   lenis.raf(time * 1000);
-  // });
-  // gsap.ticker.lagSmoothing(0);
 }
 
 function initScrollEffects() {
   const nav = document.getElementById('navbar');
   if (!nav) return;
 
-  // Clean up previous listeners if any (simple check)
-  // For proper cleanup we might need to store references, but for now re-adding on page load is okay 
-  // if we ensure we don't have memory leaks. barba container replace handles most DOM elements.
 
   lenis.on('scroll', ({ scroll, limit, velocity }) => {
     nav.classList.toggle('scrolled', scroll > 40);
@@ -67,9 +58,6 @@ function initScrollEffects() {
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', e => {
       const href = link.getAttribute('href');
-      // If we are on a different page (e.g. CV) and click a hash link that might be for home, 
-      // standard behavior might fail if target isn't present.
-      // Current footer links are handled by standard navigation.
       const target = document.querySelector(href);
       if (target) {
         e.preventDefault();
@@ -146,10 +134,8 @@ function initTypewriter() {
       timeoutId = setTimeout(type, typeSpeed);
     }
 
-    // Clear previous timeout if any (though this function is re-called on page load)
     type();
 
-    // We might need to store timeoutId if we wanted to stop it on page leave
   }
 }
 
