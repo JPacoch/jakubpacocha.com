@@ -5,6 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jakub Pacocha | CV </title>
+    <script>
+        if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -45,6 +50,15 @@
 </head>
 
 <body>
+    <!-- PRELOADER -->
+    <div class="preloader">
+        <div class="preloader-text">
+            <div class="text-wrap">
+                <span>Loading</span>
+            </div>
+        </div>
+        <div class="preloader-overlay"></div>
+    </div>
     <div data-barba="wrapper">
         <div data-barba="container" data-barba-namespace="cv">
 
@@ -57,6 +71,26 @@
                     <a href="#skills">Skills</a>
                     <a href="#education">Education</a>
                     <a href="#contact">Contact</a>
+                    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+                        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
                 </div>
             </nav>
 
@@ -69,7 +103,7 @@
                     <div class="hero-content">
                         <div class="hero-badge">
                             <div class="dot"></div>
-                            <span>Curriculum Vitae 2026</span>
+                            <span>Available for freelance & AI consulting</span>
                         </div>
                         <h1>Jakub <em>Pacocha</em></h1>
                         <p class="hero-sub">
@@ -79,7 +113,7 @@
                         <div class="hero-cta">
                             <a href="mailto:pacochp@gmail.com" class="btn-primary">Mail Me</a>
                             <a href="#" class="btn-secondary">Download PDF</a>
-                            <a href="index.html" class="btn-secondary" style="color: #c8f070;"><- Main Page</a>
+                            <a href="index.html" class="btn-secondary accent-text"><- Main Page</a>
                         </div>
                     </div>
                     <div class="hero-scroll-hint">
@@ -101,12 +135,12 @@
                             class="reveal">
                             <div style="margin-bottom: 3rem; margin-top: 3rem; position: relative;" class="reveal">
                                 <div
-                                    style="position: absolute; left: -2.35rem; top: 0.5rem; width: 10px; height: 10px; background: #d4ff3f; border-radius: 50%; box-shadow: 0 0 10px #d4ff3f;">
+                                    style="position: absolute; left: -2.35rem; top: 0.5rem; width: 10px; height: 10px; background: --accent; border-radius: 50%; box-shadow: 0 0 10px --accent;">
                                 </div>
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                     <div class="project-info">
-                                        <h3>AI Engineer <span style="color: #c8f070;">/</span> Data Scientist — <span
-                                                style="color: #c8f070;">iQor</span></h3>
+                                        <h3>AI Engineer <span class="accent-text">/</span> Data Scientist — <span
+                                                class="accent-text">iQor</span></h3>
                                         <p style="color: #888; margin: 0.25rem 0;">Architecting production-grade RAG
                                             systems and
                                             optimizing vector search performance. Leading the transition to agentic
@@ -118,8 +152,7 @@
                                             <span class="project-tag">LLMOps</span>
                                         </div>
                                     </div>
-                                    <span
-                                        style="background: rgba(212, 255, 63, 0.1); color: #d4ff3f; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; border: 1px solid #d4ff3f;">2023
+                                    <span class="accent-pill">2023
                                         — Present</span>
                                 </div>
                             </div>
@@ -130,7 +163,7 @@
                                 </div>
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                     <div class="project-info">
-                                        <h3>Data Scientist — <span style="color: #c8f070;">O-I Poland</span></h3>
+                                        <h3>Data Scientist — <span class="accent-text">O-I Poland</span></h3>
                                         <p style="color: #888; margin: 0.25rem 0;">Developed and maintained machine
                                             learning
                                             pipelines for internal clients on large, tabular sales and cost datasets.
@@ -153,7 +186,7 @@
                                 </div>
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                     <div class="project-info">
-                                        <h3>Spatial Data Analyst — <span style="color: #c8f070;">Heksagon
+                                        <h3>Spatial Data Analyst — <span class="accent-text">Heksagon
                                                 Research</span></h3>
                                         <p style="color: #888; margin: 0.25rem 0;">Analyzed and prepared datasets and
                                             visualizations for private, civic and municipal clients.</p>

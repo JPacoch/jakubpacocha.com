@@ -1,8 +1,6 @@
 
-// Global variables
 let lenis;
 
-// Initialization Functions
 function initLenis() {
   if (lenis) lenis.destroy();
 
@@ -139,7 +137,99 @@ function initTypewriter() {
   }
 }
 
-// Preloader Animation
+function initThemeToggle() {
+  let animating = false;
+
+  document.addEventListener('click', (e) => {
+    const toggleBtn = e.target.closest('.theme-toggle');
+    if (!toggleBtn || animating) return;
+    animating = true;
+
+    const rect = toggleBtn.getBoundingClientRect();
+    const originX = rect.left + rect.width / 2;
+    const originY = rect.top + rect.height / 2;
+
+    const root = document.documentElement;
+    const isLight = root.getAttribute('data-theme') === 'light';
+    const newTheme = isLight ? 'dark' : 'light';
+    const nextBg = isLight ? [10, 10, 12] : [245, 245, 247];
+
+    const maxR = Math.hypot(
+      Math.max(originX, window.innerWidth - originX),
+      Math.max(originY, window.innerHeight - originY)
+    );
+
+    const canvas = document.createElement('canvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    canvas.style.cssText = `
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 99998; pointer-events: none;
+    `;
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+
+    const DURATION = 700; // ms
+    const FEATHER = 0.18;
+    let themeFlipped = false;
+    let start = null;
+
+    function ease(t) {
+      // cubic easeout
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function tick(ts) {
+      if (!start) start = ts;
+      const raw = Math.min((ts - start) / DURATION, 1);
+      const t = ease(raw);
+      const r = t * maxR;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const featherPx = FEATHER * maxR;
+      const inner = Math.max(0, r - featherPx);
+      const grad = ctx.createRadialGradient(originX, originY, inner, originX, originY, r);
+      const [R, G, B] = nextBg;
+      grad.addColorStop(0, `rgba(${R},${G},${B},1)`);
+      grad.addColorStop(1, `rgba(${R},${G},${B},0)`);
+
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(originX, originY, r, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (!themeFlipped && raw >= 0.55) {
+        themeFlipped = true;
+        if (newTheme === 'light') root.setAttribute('data-theme', 'light');
+        else root.removeAttribute('data-theme');
+        localStorage.setItem('theme', newTheme);
+      }
+
+      if (raw < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        let opacity = 1;
+        const FADE = 300;
+        let fadeStart = null;
+
+        function fadeTick(ts2) {
+          if (!fadeStart) fadeStart = ts2;
+          opacity = 1 - Math.min((ts2 - fadeStart) / FADE, 1);
+          canvas.style.opacity = opacity;
+          if (opacity > 0) requestAnimationFrame(fadeTick);
+          else { canvas.remove(); animating = false; }
+        }
+        requestAnimationFrame(fadeTick);
+      }
+    }
+
+    requestAnimationFrame(tick);
+  });
+}
+
+
 function runPreloader() {
   const tl = gsap.timeline();
 
@@ -269,4 +359,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollEffects();
   initObservers();
   initTypewriter();
+  initThemeToggle();
 });
