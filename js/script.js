@@ -142,14 +142,53 @@ function initThemeToggle() {
     const toggleBtn = e.target.closest('.theme-toggle');
     if (!toggleBtn) return;
 
+    const rect = toggleBtn.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+
     const root = document.documentElement;
-    if (root.getAttribute('data-theme') === 'light') {
-      root.removeAttribute('data-theme');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      root.setAttribute('data-theme', 'light');
-      localStorage.setItem('theme', 'light');
-    }
+    const isLight = root.getAttribute('data-theme') === 'light';
+    const newTheme = isLight ? 'dark' : 'light';
+    const nextBg = isLight ? '#0a0a0c' : '#f5f5f7';
+    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+
+    const circle = document.createElement('div');
+    circle.style.cssText = `
+      position: fixed;
+      top: ${y}px;
+      left: ${x}px;
+      width: 0px;
+      height: 0px;
+      background: ${nextBg};
+      border-radius: 50%;
+      z-index: 99998;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+    `;
+    document.body.appendChild(circle);
+
+    gsap.to(circle, {
+      width: radius * 2,
+      height: radius * 2,
+      duration: 0.6,
+      ease: "power2.inOut",
+      onComplete: () => {
+        if (newTheme === 'light') {
+          root.setAttribute('data-theme', 'light');
+        } else {
+          root.removeAttribute('data-theme');
+        }
+        localStorage.setItem('theme', newTheme);
+
+        gsap.to(circle, {
+          opacity: 0,
+          duration: 0.4,
+          ease: "power1.inOut",
+          onComplete: () => circle.remove()
+        });
+      }
+    });
+
   });
 }
 
