@@ -139,6 +139,22 @@ function initTypewriter() {
   }
 }
 
+function initThemeToggle() {
+  document.addEventListener('click', (e) => {
+    const toggleBtn = e.target.closest('.theme-toggle');
+    if (!toggleBtn) return;
+
+    const root = document.documentElement;
+    if (root.getAttribute('data-theme') === 'light') {
+      root.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      root.setAttribute('data-theme', 'light');
+      localStorage.setItem('theme', 'light');
+    }
+  });
+}
+
 // Preloader Animation
 function runPreloader() {
   const tl = gsap.timeline();
@@ -269,4 +285,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollEffects();
   initObservers();
   initTypewriter();
+  initThemeToggle();
 });
