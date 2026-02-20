@@ -1,8 +1,6 @@
 
-// Global variables
 let lenis;
 
-// Initialization Functions
 function initLenis() {
   if (lenis) lenis.destroy();
 
@@ -155,7 +153,7 @@ function initThemeToggle() {
   });
 }
 
-// Preloader Animation
+
 function runPreloader() {
   const tl = gsap.timeline();
 

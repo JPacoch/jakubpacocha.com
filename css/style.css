@@ -10,6 +10,11 @@
   --red: #ff6b6b;
   --border: rgba(255, 255, 255, .06);
   --radius: 14px;
+  --box-shadow: 0 12px 40px rgba(30, 114, 34, 0.7);
+  --skiltag-background: rgba(200, 240, 112, .08);
+  --skilltag-border: 1px solid rgba(200, 240, 112, .15);
+  --statcard-border: rgba(200, 240, 112, .3);
+  --cat-accent: #c8f070;
 }
 
 [data-theme="light"] {
@@ -19,9 +24,14 @@
   --bg-alt: #eaeaec;
   --text: #1d1d1f;
   --text-dim: #6e6e73;
-  --accent: #4a7010;
-  --accent-dim: rgba(74, 112, 16, 0.15);
+  --accent: #0034e0;
+  --accent-dim: rgba(126, 125, 138, 0.15);
   --border: rgba(0, 0, 0, 0.08);
+  --box-shadow: 0 12px 40px rgba(30, 36, 114, 0.7);
+  --skiltag-background: rgba(167, 112, 240, 0.08);
+  --skilltag-border: 1px solid rgba(112, 121, 240, 0.15);
+  --statcard-border: rgba(26, 61, 255, 0.856);
+  --cat-accent: #9aa9ff;
 }
 
 .accent-text {
@@ -48,7 +58,7 @@
 
 [data-theme="light"] .btn-primary {
   color: #000;
-  background: #b5de5a;
+  background: #9aa9ff;
 }
 
 [data-theme="light"] .orb {
@@ -544,7 +554,7 @@ section {
 }
 
 .stat-card:hover {
-  border-color: rgba(200, 240, 112, .3);
+  border-color: var(--statcard-border);
 }
 
 .stat-num {
@@ -727,7 +737,7 @@ section {
 .skill-card:hover {
   transform: translateY(-12px);
   border-color: rgba(200, 240, 112, .25);
-  box-shadow: 0 12px 40px rgba(30, 114, 34, 0.7)
+  box-shadow: var(--box-shadow)
 }
 
 .skill-card:hover::before {
@@ -760,8 +770,8 @@ section {
 }
 
 .skill-tag {
-  background: rgba(200, 240, 112, .08);
-  border: 1px solid rgba(200, 240, 112, .15);
+  background: var(--skiltag-background);
+  border: 1px solid var(--skilltag-border);
   color: var(--accent);
   font-size: 11px;
   padding: 4px 10px;
@@ -910,7 +920,7 @@ section {
   z-index: 1;
   font-size: 11px;
   font-family: 'JetBrains Mono', monospace;
-  color: var(--accent);
+  color: var(--cat-accent);
   letter-spacing: 1px;
   text-transform: uppercase;
   background: var(--accent-dim);
