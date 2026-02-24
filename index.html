@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jakub Pacocha | Developer & Writer</title>
+  <title>Jakub Pacocha | dev & writing</title>
   <script>
     if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: light)').matches)) {
       document.documentElement.setAttribute('data-theme', 'light');
@@ -72,8 +72,22 @@
           <a href="#writing">Writing</a>
           <a href="#contact">Contact</a>
           <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
-            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
           </button>
         </div>
       </nav>
@@ -275,21 +289,24 @@
             <h2 class="section-title">Recent <em>essays</em></h2>
           </div>
           <div class="writing-grid">
-            <div class="write-card reveal">
+            <a href="https://fromthecabinet.com/text.html?slug=sartrean-trap" class="write-card reveal"
+              style="text-decoration: none; color: inherit; cursor: pointer;">
               <div class="write-card-img">
                 <div class="write-card-img-bg img-2"></div>
                 <span class="cat">Metaphysics</span>
               </div>
               <div class="write-card-body">
-                <h3>On Atheism</h3>
-                <p>On true agnosticism and how atheism seems to be a faith of its own.</p>
+                <h3>The Sartrean Trap</h3>
+                <p>When the method becomes a prison - on how Sartre misused phenomenology. 'And if phenomenology refuses
+                  to step outside of itself, then isn't it becoming the very thing it was meant to battle?'</p>
                 <div class="write-card-footer">
                   <span class="write-date">Feb 2026</span>
                   <span class="write-read">10 min read</span>
                 </div>
               </div>
-            </div>
-            <div class="write-card reveal">
+            </a>
+            <a href="https://fromthecabinet.com/text.html?slug=christocentric-determinism" class="write-card reveal"
+              style="text-decoration: none; color: inherit; cursor: pointer;">
               <div class="write-card-img">
                 <div class="write-card-img-bg img-3"></div>
                 <span class="cat">Theology</span>
@@ -304,7 +321,7 @@
                   <span class="write-read">9 min read</span>
                 </div>
               </div>
-            </div>
+            </a>
           </div>
         </section>
 
