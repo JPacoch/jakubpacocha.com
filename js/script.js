@@ -339,6 +339,7 @@ barba.init({
         initScrollEffects();
         initObservers();
         initTypewriter();
+        if (window.initHeroParticles) window.initHeroParticles();
       }
     },
     {

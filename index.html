@@ -46,6 +46,14 @@
       will-change: transform;
     }
   </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
 </head>
 
 <body>
@@ -95,6 +103,7 @@
       <main>
         <!-- HERO -->
         <section class="hero">
+          <canvas id="hero-particles"></canvas>
           <div class="orb orb-1"></div>
           <div class="orb orb-2"></div>
           <div class="orb orb-3"></div>
@@ -361,6 +370,7 @@
     </div> <!-- end barba container -->
   </div> <!-- end barba wrapper -->
   <script src="js/script.js"></script>
+  <script type="module" src="js/particles.js"></script>
 </body>
 
 </html>
