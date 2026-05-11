@@ -288,6 +288,17 @@
     const Projects = () => {
       const projectsData = [
         {
+          title: "WideAwake",
+          desc: "A Windows utility that prevents sleep and keeps your status 'Green' using Kernel pings.",
+          url: "https://wideawake.jakubpacocha.com/",
+          tags: ["C#", "Utility"],
+          colors: {
+            bg: "#000080",
+            text: "#00FF00",
+            accent: "#FF00FF"
+          }
+        },
+        {
           title: "From the Cabinet",
           desc: "A philosophical blog exploring ideas, theology and sociology.",
           url: "https://fromthecabinet.com/",
@@ -321,8 +332,10 @@
         <section id="projects" className="px-6 md:px-12 lg:px-24 py-32 bg-white relative">
           <div className="max-w-[1400px] mx-auto relative z-10">
             <div className="mb-16">
-              <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">My Projects</div>
-              <h2 className="font-serif text-5xl md:text-7xl text-dark leading-tight">Selected <em className="text-electric italic font-light">works</em></h2>
+              <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">My works</div>
+              <h2 className="font-serif text-5xl md:text-7xl text-dark leading-tight">
+                Selected <em className="text-electric italic font-light">projects</em>
+              </h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -337,22 +350,37 @@
                     '--hover-bg': proj.colors.bg,
                     '--hover-text': proj.colors.text,
                     '--hover-accent': proj.colors.accent,
+                    fontFamily: proj.title === 'WideAwake' ? '"Comic Sans MS", "Comic Sans", cursive' : 'inherit'
                   }}
                 >
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" style={{ backgroundColor: 'var(--hover-bg)' }}></div>
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"
+                    style={{ backgroundColor: 'var(--hover-bg)' }}
+                  ></div>
 
                   <div className="flex justify-between items-start mb-12">
-                    <h3 className="font-serif text-3xl md:text-4xl transition-colors duration-500 group-hover:[color:var(--hover-text)] text-dark">{proj.title}</h3>
+                    <h3
+                      className={`text-3xl md:text-4xl transition-colors duration-500 group-hover:[color:var(--hover-text)] text-dark 
+  ${proj.title === 'WideAwake'
+                          ? 'font-sans group-hover:font-["Comic_Sans_MS",_cursive]'
+                          : 'font-serif'}`}
+                    >
+                      {proj.title}
+                    </h3>
                     <ArrowUpRight className="transition-colors duration-500 group-hover:[color:var(--hover-accent)] text-dark/30 w-6 h-6" />
                   </div>
 
-                  <p className="font-sans text-lg md:text-xl transition-colors duration-500 group-hover:[color:var(--hover-text)] text-dark/60 max-w-md mb-12 group-hover:opacity-80">
+                  <p className={`text-lg md:text-xl transition-colors duration-500 group-hover:[color:var(--hover-text)] text-dark/60 max-w-md mb-12 group-hover:opacity-80 
+  ${proj.title === 'WideAwake' ? 'font-sans group-hover:font-["Comic_Sans_MS",_cursive]' : 'font-sans'}`}>
                     {proj.desc}
                   </p>
 
                   <div className="mt-auto flex flex-wrap gap-2">
                     {proj.tags.map(tag => (
-                      <span key={tag} className="px-4 py-1.5 border border-dark/10 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-500 group-hover:border-transparent group-hover:[background-color:var(--hover-accent)] group-hover:[color:var(--hover-bg)] text-dark/60">
+                      <span
+                        key={tag}
+                        className="px-4 py-1.5 border border-dark/10 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-500 group-hover:border-transparent group-hover:[background-color:var(--hover-accent)] group-hover:[color:var(--hover-bg)] text-dark/60"
+                      >
                         {tag}
                       </span>
                     ))}
