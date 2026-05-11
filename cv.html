@@ -1,354 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jakub Pacocha | CV </title>
-    <script>
-        if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-            document.documentElement.setAttribute('data-theme', 'light');
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jakub Pacocha | CV</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            electric: '#0055FF',
+            dark: '#111827',
+            offwhite: '#F9FAFB',
+          },
+          fontFamily: {
+            serif: ['Playfair Display', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+          }
         }
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/mobile_nav.css">
-    <script defer src="https://cloud.umami.is/script.js"
-        data-website-id="f00d8bcf-c6bc-4fae-97b8-b572df1419d8"></script>
-    <style>
-        html.lenis,
-        html.lenis body {
-            height: auto;
-        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 
-        .lenis.lenis-smooth {
-            scroll-behavior: auto !important;
-        }
-
-        .lenis.lenis-smooth [data-lenis-prevent] {
-            overscroll-behavior: contain;
-        }
-
-        .lenis.lenis-stopped {
-            overflow: hidden;
-        }
-
-        .lenis.lenis-scrolling iframe {
-            pointer-events: none;
-        }
-
-        main {
-            transform-origin: center top;
-            will-change: transform;
-        }
-    </style>
+  <style>
+    body, html { margin: 0; padding: 0; background-color: #0055FF; overflow-x: hidden; scroll-behavior: smooth; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0055FF; }
+    ::-webkit-scrollbar-thumb { background: #ffffff; border-radius: 4px; }
+  </style>
 </head>
-
 <body>
-    <!-- PRELOADER -->
-    <div class="preloader">
-        <div class="preloader-text">
-            <div class="text-wrap">
-                <span>Loading</span>
+  <div id="root"></div>
+  <script type="text/babel" data-type="module">
+    const { useState, useEffect, useLayoutEffect, useRef } = React;
+    const { motion } = window.Motion;
+
+    // --- ICONS ---
+    const ArrowRight = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>;
+    const ArrowUpRight = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>;
+    const MenuIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>;
+    const MailIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>;
+    const LinkedinIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>;
+    const TwitterIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5 5.96 15.6 7 12c-1.2.3-2.4.2-3.6-.1C2.5 10.6 4 9 4 9c-1.1-.3-2-.9-2.5-1.9 1-.3 2.1-.3 3.1-.1C2.3 5 4 2 4 2c1.6 2 4 4 7.4 4.5 0-1.1.5-2.2 1.5-2.9 1.4-1.1 3.5-.8 4.6.5 1.1-.2 2.1-.7 3-1.2-.4 1.1-1.1 2-2 2.7 1-.1 1.9-.4 2.8-.8Z"/></svg>;
+    const GithubIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>;
+
+    // --- COMPONENTS ---
+    const Nav = () => (
+      <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 px-2 py-2 pr-6 bg-white/70 backdrop-blur-xl border border-dark/5 rounded-full flex items-center gap-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+        <div className="flex items-center gap-3 pl-4">
+          <span className="w-2.5 h-2.5 bg-electric rounded-full"></span>
+          <span className="font-bold tracking-tight text-dark">JP</span>
+        </div>
+        <div className="hidden md:flex gap-6 text-sm font-semibold text-dark/60">
+          <a href="index.html" className="hover:text-electric transition-colors">Main Page</a>
+          <a href="#experience" className="hover:text-electric transition-colors">Experience</a>
+          <a href="#skills" className="hover:text-electric transition-colors">Skills</a>
+          <a href="#education" className="hover:text-electric transition-colors">Education</a>
+          <a href="#contact" className="hover:text-electric transition-colors">Contact</a>
+        </div>
+        <button className="md:hidden p-2 rounded-full bg-offwhite hover:bg-gray-200 transition-colors ml-4">
+          <MenuIcon />
+        </button>
+      </nav>
+    );
+
+    const Hero = () => (
+      <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 pt-32 pb-20 max-w-[1400px] mx-auto relative">
+        <div className="absolute top-1/4 right-10 w-[500px] h-[500px] bg-electric/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="max-w-4xl relative z-10">
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
+            className="font-serif text-[4rem] sm:text-[5.5rem] md:text-[7rem] lg:text-[8.5rem] leading-[0.95] tracking-[-0.03em] text-dark mb-8"
+          >
+            Jakub <em className="text-electric italic pr-4 font-light">Pacocha</em>
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: [0.34, 1.56, 0.64, 1] }}
+            className="font-sans text-xl md:text-2xl text-dark/60 max-w-2xl leading-relaxed mb-12 font-light"
+          >
+            Full-stack AI Engineer specializing in RAG architectures and scalable ML infrastructure. Based in Bydgoszcz, Poland.
+          </motion.p>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
+            className="flex flex-wrap items-center gap-4"
+          >
+            <a href="mailto:pacochp@gmail.com" className="px-8 py-4 bg-electric text-white rounded-full font-semibold hover:bg-electric/90 transition-all flex items-center gap-2 shadow-lg shadow-electric/20 hover:shadow-xl hover:shadow-electric/30">
+              Mail Me <ArrowRight />
+            </a>
+            <a href="#" className="px-8 py-4 bg-white border border-dark/10 text-dark rounded-full font-semibold hover:bg-offwhite transition-colors">Download PDF</a>
+            <a href="index.html" className="px-8 py-4 bg-white border border-dark/10 text-electric rounded-full font-semibold hover:bg-offwhite transition-colors">&lt;- Main Page</a>
+          </motion.div>
+        </div>
+      </section>
+    );
+
+    const Experience = () => {
+      const expData = [
+        { role: "AI Engineer / Data Scientist", company: "iQor", desc: "Architecting production-grade RAG systems and optimizing vector search performance. Leading the transition to agentic workflows.", tags: ["Python", "AWS", "LLMOps"], year: "2023 — Present" },
+        { role: "Data Scientist", company: "O-I Poland", desc: "Developed and maintained machine learning pipelines for internal clients on large, tabular sales and cost datasets.", tags: ["Python", "Azure", "MLOps"], year: "2021 — 2023" },
+        { role: "Spatial Data Analyst", company: "Heksagon Research", desc: "Analyzed and prepared datasets and visualizations for private, civic and municipal clients.", tags: ["Python", "GIS", "SQL"], year: "2021 — 2022" }
+      ];
+
+      return (
+        <section id="experience" className="px-6 md:px-12 lg:px-24 py-32 bg-white">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="mb-20">
+              <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">Experience</div>
+              <h2 className="font-serif text-5xl md:text-7xl text-dark leading-tight">Professional <em className="text-electric italic font-light">Trajectory</em></h2>
             </div>
-        </div>
-        <div class="preloader-overlay"></div>
-    </div>
-    <div data-barba="wrapper">
-        <div data-barba="container" data-barba-namespace="cv">
-
-            <!-- NAV -->
-            <nav id="navbar">
-                <div class="nav-logo"><span>JP</span> / jakub pacocha</div>
-                <div class="nav-links">
-                    <a href="index.html">Main Page</a>
-                    <a href="#experience">Experience</a>
-                    <a href="#skills">Skills</a>
-                    <a href="#education">Education</a>
-                    <a href="#contact">Contact</a>
-                    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
-                        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="5"></circle>
-                            <line x1="12" y1="1" x2="12" y2="3"></line>
-                            <line x1="12" y1="21" x2="12" y2="23"></line>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                            <line x1="1" y1="12" x2="3" y2="12"></line>
-                            <line x1="21" y1="12" x2="23" y2="12"></line>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                        </svg>
-                        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                        </svg>
-                    </button>
+            
+            <div className="flex flex-col border-t border-dark/10">
+              {expData.map((exp, i) => (
+                <div key={i} className="py-12 border-b border-dark/10 flex flex-col lg:flex-row items-start gap-8 lg:gap-16 group hover:bg-offwhite transition-colors duration-500 px-6 -mx-6 rounded-2xl">
+                  <div className="lg:w-1/4 pt-2">
+                    <span className={`text-sm font-semibold tracking-widest uppercase ${i === 0 ? 'text-electric' : 'text-dark/50'}`}>{exp.year}</span>
+                  </div>
+                  <div className="lg:w-3/4">
+                    <h3 className="text-3xl md:text-4xl font-serif font-bold text-dark mb-3">
+                      {exp.role}
+                    </h3>
+                    <div className="text-xl font-medium text-electric mb-6">{exp.company}</div>
+                    <p className="text-xl text-dark/60 leading-relaxed max-w-3xl mb-8 font-light">{exp.desc}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {exp.tags.map(tag => (
+                        <span key={tag} className="px-4 py-1.5 bg-white border border-dark/10 text-dark/70 text-sm font-semibold rounded-full shadow-sm">{tag}</span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-            </nav>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    };
 
-            <main>
-                <section class="hero" style="min-height: 100vh;">
-                    <div class="hero-grid"></div>
-                    <div class="orb orb-1"></div>
-                    <div class="orb orb-2"></div>
+    const Skills = () => {
+      const skillsData = [
+        { icon: "🖥️", title: "Generative AI & RAG", desc: "Utilizing LLMs and ML techniques for data analysis, serving AI-based apps and services.", tags: ["Python", "Vector stores", "Prompt Engineering"] },
+        { icon: "⚙️", title: "Full-Stack AI Infra", desc: "Productization of AI and ML workflows via containerization and cloud orchestration.", tags: ["Docker", "FastAPI", "Flask"] },
+        { icon: "☁️", title: "Cloud & DevOps", desc: "Deploying and maintaining infrastructure, containerization & monitoring on cloud.", tags: ["AWS", "Azure", "GitHub Actions"] },
+        { icon: "🗺️", title: "Spatial & Civic Tech", desc: "Leveraging GIS and Computer Vision backgrounds for municipal and social impact.", tags: ["GIS", "Computer Vision", "Spatial Data"] }
+      ];
 
-                    <div class="hero-content">
-                        <div class="hero-badge">
-                            <div class="dot"></div>
-                            <span>Available for freelance & AI consulting</span>
-                        </div>
-                        <h1>Jakub <em>Pacocha</em></h1>
-                        <p class="hero-sub">
-                            Full-stack AI Engineer specializing in RAG architectures and scalable ML infrastructure.
-                            Based in Bydgoszcz, Poland.
-                        </p>
-                        <div class="hero-cta">
-                            <a href="mailto:pacochp@gmail.com" class="btn-primary">Mail Me</a>
-                            <a href="#" class="btn-secondary">Download PDF</a>
-                            <a href="index.html" class="btn-secondary accent-text"><- Main Page</a>
-                        </div>
+      return (
+        <section id="skills" className="px-6 md:px-12 lg:px-24 py-32 bg-offwhite relative">
+          <div className="max-w-[1400px] mx-auto relative z-10">
+            <div className="mb-16">
+              <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">Capabilities</div>
+              <h2 className="font-serif text-5xl md:text-7xl text-dark leading-tight">Tools &amp; <em className="text-electric italic font-light">expertise</em></h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {skillsData.map((skill, i) => (
+                <motion.div key={i} whileHover={{ y: -8, scale: 1.01 }} transition={{ type: "spring", stiffness: 300, damping: 20 }} className="group bg-white hover:bg-electric transition-colors duration-500 rounded-[2rem] p-10 md:p-12 shadow-[0_8px_30px_rgba(0,0,0,0.02)] border border-dark/5 flex flex-col cursor-crosshair">
+                  <div className="w-16 h-16 bg-offwhite rounded-2xl flex items-center justify-center text-3xl mb-8 group-hover:bg-white/20 transition-colors duration-500 shadow-sm">{skill.icon}</div>
+                  <h3 className="text-3xl font-serif font-bold text-dark group-hover:text-white transition-colors mb-4">{skill.title}</h3>
+                  <p className="text-lg text-dark/60 group-hover:text-white/80 transition-colors mb-10 leading-relaxed">{skill.desc}</p>
+                  <div className="flex flex-wrap gap-2 mt-auto">
+                    {skill.tags.map(tag => (
+                      <span key={tag} className="px-4 py-2 bg-offwhite group-hover:bg-white/20 group-hover:text-white text-dark/80 text-sm font-semibold rounded-full transition-colors">{tag}</span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const Education = () => {
+      const eduData = [
+        { title: "Master's Geoinformatics", place: "Adam Mickiewicz University in Poznań", desc: "My master's thesis focused on computer vision in geomorphology and other earth sciences.", tags: ["GIS", "CNN", "Computer Vision"], year: "2022 - 2023" },
+        { title: "Engineering in Geoinformation", place: "Eötvös Loránd University", desc: "Erasmus+ programme.", tags: ["Python", "GIS"], year: "2019 - 2020" },
+        { title: "Engineering in Geoinformation", place: "Adam Mickiewicz University in Poznań", desc: "Engineering thesis focused on creating a python based spatial tool for transport analysis.", tags: ["Python", "GIS", "Network analysis"], year: "2018 - 2022" }
+      ];
+
+      return (
+        <section id="education" className="px-6 md:px-12 lg:px-24 pt-32 pb-32 bg-white">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="mb-16">
+              <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">Education</div>
+              <h2 className="font-serif text-5xl md:text-7xl text-dark leading-tight">My <em className="text-electric italic font-light">Education</em></h2>
+            </div>
+            <div className="flex flex-col border-t border-dark/10">
+              {eduData.map((edu, i) => (
+                <div key={i} className="py-10 border-b border-dark/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 group hover:px-6 hover:bg-electric transition-all duration-300">
+                  <div className="flex flex-col md:w-2/3">
+                    <span className="text-sm font-semibold tracking-widest uppercase mb-4 text-electric group-hover:text-white/70 transition-colors duration-300">{edu.year}</span>
+                    <h3 className="text-3xl md:text-4xl font-serif font-bold text-dark mb-2 group-hover:text-white transition-colors duration-300">{edu.title}</h3>
+                    <div className="text-xl font-medium text-dark/50 mb-4 group-hover:text-white/70 transition-colors duration-300">{edu.place}</div>
+                    <p className="text-lg text-dark/60 leading-relaxed mb-6 group-hover:text-white/80 transition-colors duration-300">{edu.desc}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {edu.tags.map(tag => <span key={tag} className="px-3 py-1 bg-white border border-dark/10 text-dark/70 text-xs font-semibold rounded-full shadow-sm group-hover:border-transparent transition-colors duration-300">{tag}</span>)}
                     </div>
-                    <div class="hero-scroll-hint">
-                        <div class="scroll-icon">
-                            <div class="scroll-dot"></div>
-                        </div>
-                        <span class="scroll-text">( scroll )</span>
-                    </div>
-                </section>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      );
+    };
 
-                <!-- EXP -->
-                <section id="experience" class="reveal">
-                    <div class="section-label"
-                        style="text-align: center; margin: auto; justify-content: center; align-items: center;">
-                        Experience</div>
-                    <div style="max-width: 800px; margin: 0 auto;" class="reveal">
-                        <h2 class="section-title">Professional <em>Trajectory</em></span></h2>
-                        <div style="border-left: 1px solid #333; padding-left: 2rem; position: relative;"
-                            class="reveal">
-                            <div style="margin-bottom: 3rem; margin-top: 3rem; position: relative;" class="reveal">
-                                <div
-                                    style="position: absolute; left: -2.35rem; top: 0.5rem; width: 10px; height: 10px; background: --accent; border-radius: 50%; box-shadow: 0 0 10px --accent;">
-                                </div>
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                                    <div class="project-info">
-                                        <h3>AI Engineer <span class="accent-text">/</span> Data Scientist — <span
-                                                class="accent-text">iQor</span></h3>
-                                        <p style="color: #888; margin: 0.25rem 0;">Architecting production-grade RAG
-                                            systems and
-                                            optimizing vector search performance. Leading the transition to agentic
-                                            workflows.
-                                        </p>
-                                        <div class="project-meta">
-                                            <span class="project-tag">Python</span>
-                                            <span class="project-tag">AWS</span>
-                                            <span class="project-tag">LLMOps</span>
-                                        </div>
-                                    </div>
-                                    <span class="accent-pill">2023
-                                        — Present</span>
-                                </div>
-                            </div>
+    const App = () => {
+      useLayoutEffect(() => {
+        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        
+        gsap.registerPlugin(ScrollTrigger);
+        
+        const initScrollTrigger = () => {
+          ScrollTrigger.create({
+            trigger: "#footer-spacer",
+            start: "top bottom",
+            end: "bottom bottom",
+            scrub: true,
+            animation: gsap.timeline()
+              .to("#main-content", { 
+                scale: 0.96, 
+                borderBottomLeftRadius: "48px", 
+                borderBottomRightRadius: "48px", 
+                ease: "none" 
+              })
+              .fromTo("#footer-container-inner", { y: "15%" }, { y: "0%", ease: "none" }, 0)
+          });
+        };
 
-                            <div style="margin-bottom: 3rem; position: relative;" class="reveal">
-                                <div
-                                    style="position: absolute; left: -2.35rem; top: 0.5rem; width: 10px; height: 10px; background: #333; border-radius: 50%;">
-                                </div>
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                                    <div class="project-info">
-                                        <h3>Data Scientist — <span class="accent-text">O-I Poland</span></h3>
-                                        <p style="color: #888; margin: 0.25rem 0;">Developed and maintained machine
-                                            learning
-                                            pipelines for internal clients on large, tabular sales and cost datasets.
-                                        </p>
-                                        <div class="project-meta">
-                                            <span class="project-tag">Python</span>
-                                            <span class="project-tag">Azure</span>
-                                            <span class="project-tag">MLOps</span>
-                                        </div>
-                                    </div>
-                                    <span
-                                        style="border: 1px solid #333; color: #888; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">2021
-                                        — 2023</span>
-                                </div>
-                            </div>
+        // Initialize after a tiny delay to ensure layout is computed
+        setTimeout(() => {
+          initScrollTrigger();
+          ScrollTrigger.refresh();
+        }, 100);
 
-                            <div style="margin-bottom: 3rem; position: relative;" class="reveal">
-                                <div
-                                    style="position: absolute; left: -2.35rem; top: 0.5rem; width: 10px; height: 10px; background: #333; border-radius: 50%;">
-                                </div>
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                                    <div class="project-info">
-                                        <h3>Spatial Data Analyst — <span class="accent-text">Heksagon
-                                                Research</span></h3>
-                                        <p style="color: #888; margin: 0.25rem 0;">Analyzed and prepared datasets and
-                                            visualizations for private, civic and municipal clients.</p>
-                                        <div class="project-meta">
-                                            <span class="project-tag">Python</span>
-                                            <span class="project-tag">GIS</span>
-                                            <span class="project-tag">SQL</span>
-                                        </div>
-                                    </div>
-                                    <span
-                                        style="border: 1px solid #333; color: #888; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">2021
-                                        — 2022</span>
-                                </div>
-                            </div>
+        const resizeObserver = new ResizeObserver(() => ScrollTrigger.refresh());
+        resizeObserver.observe(document.body);
 
-                        </div>
-                    </div>
-                </section>
+        return () => {
+          lenis.destroy();
+          ScrollTrigger.getAll().forEach(t => t.kill());
+          resizeObserver.disconnect();
+        };
+      }, []);
 
-                <!-- SKILLS -->
-                <section id="skills" class="reveal"
-                    style="text-align: center; margin: auto; justify-content: center; align-items: center;">
-                    <div class="reveal">
-                        <div class="section-label">Capabilities</div>
-                        <h2 class="section-title"
-                            style="text-align: center; margin: auto; justify-content: center; align-items: center;">
-                            Tools &amp;
-                            <em>expertise</em>
-                        </h2>
-                    </div>
-                    <div class="skills-grid"
-                        style="text-align: center; margin: auto; justify-content: center; margin-top: 3rem;">
-                        <div class="skill-card reveal">
-                            <div class="skill-icon">🖥️</div>
-                            <h3>Generative AI & RAG</h3>
-                            <p>Utilizing LLMs and ML techniques for data analysis, serving AI-based apps and services.
-                            </p>
-                            <div class="skill-tags">
-                                <span class="skill-tag">Python</span>
-                                <span class="skill-tag">Vector stores</span>
-                                <span class="skill-tag">Prompt Engineering</span>
-                            </div>
-                        </div>
-                        <div class="skill-card reveal">
-                            <div class="skill-icon">⚙️</div>
-                            <h3>Full-Stack AI Infra</h3>
-                            <p>Productization of AI and ML workflows via containerization and cloud orchestration.</p>
-                            <div class="skill-tags">
-                                <span class="skill-tag">Docker</span>
-                                <span class="skill-tag">FastAPI</span>
-                                <span class="skill-tag">Flask</span>
-                            </div>
-                        </div>
-                        <div class="skill-card reveal">
-                            <div class="skill-icon">☁️</div>
-                            <h3>Cloud & DevOps</h3>
-                            <p>Deploying and maintaining infrastructure, containerization & monitoring on cloud.</p>
-                            <div class="skill-tags">
-                                <span class="skill-tag">AWS</span>
-                                <span class="skill-tag">Azure</span>
-                                <span class="skill-tag">GitHub Actions</span>
-                            </div>
-                        </div>
-                        <div class="skill-card reveal">
-                            <div class="skill-icon">🗺️</div>
-                            <h3>Spatial & Civic Tech</h3>
-                            <p>Leveraging GIS and Computer Vision backgrounds for municipal and social impact.</p>
-                            <div class="skill-tags">
-                                <span class="skill-tag">GIS</span>
-                                <span class="skill-tag">Computer Vision</span>
-                                <span class="skill-tag">Spatial Data</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+      return (
+        <div className="bg-electric min-h-screen font-sans text-dark selection:bg-electric selection:text-white">
+          <Nav />
+          
+          <main id="main-content" className="bg-white w-full relative z-10 shadow-[0_20px_60px_rgba(0,0,0,0.1)] origin-[50%_100%] overflow-hidden" style={{ willChange: "transform, border-radius" }}>
+            <Hero />
+            <Experience />
+            <Skills />
+            <Education />
+          </main>
 
-                <!-- Edu -->
-                <section id="education" class="reveal">
-                    <div class="section-label"
-                        style="text-align: center; margin: auto; justify-content: center; align-items: center;">
-                        Education</div>
-                    <div style="max-width: 800px; margin: 0 auto;" class="reveal">
-                        <h2 class="section-title" style="text-align: center; margin-bottom: 3rem;">My <em>Education</em>
-                        </h2>
+          <div id="footer-spacer" className="h-[75vh] md:h-[70vh] w-full pointer-events-none"></div>
 
-                        <div class="projects-list" style="margin: 0 auto;">
-                            <div class="project-item reveal">
-                                <span class="project-num">2022 - 2023</span>
-                                <div class="project-info">
-                                    <h3>Master's Geoinformatics — [Adam Mickiewicz University in Poznań]</h3>
-                                    <p>My master's thesis focused on computer vision in geomorphology and other earth
-                                        sciences.
-                                    </p>
-                                    <div class="project-meta">
-                                        <span class="project-tag">GIS</span>
-                                        <span class="project-tag">CNN</span>
-                                        <span class="project-tag">Computer Vision</span>
-                                    </div>
-                                </div>
-                            </div>
+          <footer id="footer-container" className="fixed bottom-0 left-0 w-full h-[75vh] md:h-[70vh] z-0 flex flex-col justify-end bg-electric text-white overflow-hidden">
+            <div id="footer-container-inner" className="w-full h-full px-6 md:px-12 lg:px-24 py-16 flex flex-col justify-between">
+              <div className="max-w-[1400px] w-full mx-auto flex flex-col h-full justify-between">
+                <div className="pt-8">
+                  <div id="contact" className="text-white/60 font-semibold uppercase tracking-widest text-sm mb-4">Contact</div>
+                  <h2 className="font-serif text-5xl md:text-7xl leading-tight mb-8">Open for <br/> <em className="italic font-light">Collaboration</em>.</h2>
+                  <p className="text-xl text-white/80 mb-12">Want to say hello? Hit me up:</p>
+                  
+                  <div className="flex flex-wrap gap-4">
+                    <a href="mailto:pacochp@gmail.com" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                      <MailIcon /> Email
+                    </a>
+                    <a href="https://www.linkedin.com/in/jakubpacocha/" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                      <LinkedinIcon /> LinkedIn
+                    </a>
+                    <a href="https://x.com/JakubPacocha" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                      <TwitterIcon /> Twitter / X
+                    </a>
+                    <a href="https://github.com/JPacoch" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                      <GithubIcon /> GitHub
+                    </a>
+                  </div>
+                </div>
 
-                            <div class="project-item reveal">
-                                <span class="project-num">2019 - 2020</span>
-                                <div class="project-info">
-                                    <h3>Engineering in Geoinformation - [Eötvös Loránd University]</h3>
-                                    <p>Erasmus+ programme.</p>
-                                    <div class="project-meta">
-                                        <span class="project-tag">Python</span>
-                                        <span class="project-tag">GIS</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="project-item reveal">
-                                <span class="project-num">2018 - 2022</span>
-                                <div class="project-info">
-                                    <h3>Engineering in Geoinformation — [Adam Mickiewicz University in Poznań]</h3>
-                                    <p>Engineering thesis focused on creating a python based spatial tool for transport
-                                        analysis.</p>
-                                    <div class="project-meta">
-                                        <span class="project-tag">Python</span>
-                                        <span class="project-tag">GIS</span>
-                                        <span class="project-tag">Network analysis </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- CONTACT -->
-                <section id="contact">
-                    <div class="orb orb-3"></div>
-                    <div class="contact-inner reveal">
-                        <div class="section-label">Connect</div>
-                        <h2 class="section-title">Open for <em>Collaboration</em>.</h2>
-                        <div class="contact-links">
-                            <a href="mailto:pacochp@gmail.com" class="contact-btn"><span class="cb-icon"><i
-                                        class="fa-solid fa-envelope"></i> Email</span></a>
-                            <a href="https://www.linkedin.com/in/jakubpacocha/" class="contact-btn"><span
-                                    class="cb-icon"><i class="fa-brands fa-linkedin"></i> LinkedIn</span></a>
-                            <a href="https://x.com/JakubPacocha" class="contact-btn"><span class="cb-icon"><i
-                                        class="fa-brands fa-twitter"></i> Twitter / X</span></a>
-                            <a href="https://github.com/JPacoch" class="contact-btn"><span class="cb-icon"><i
-                                        class="fa-brands fa-github"></i> GitHub</span></a>
-                        </div>
-                    </div>
-                </section>
-            </main>
-
-            <footer>
-                <div class="foot-left">© 2026 <span>Jakub Pacocha</span> All rights reserved.</div>
-                <div class="foot-right">Bydgoszcz, Poland</div>
-            </footer>
-
-            <script src="https://unpkg.com/@barba/core"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-            <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
-            <script src="js/script.js"></script>
-
+                <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-white/50 text-sm mt-12">
+                  <div>© 2026 <span className="font-semibold text-white">Jakub Pacocha</span> All rights reserved.</div>
+                  <div>Bydgoszcz, Poland</div>
+                </div>
+              </div>
+            </div>
+          </footer>
         </div>
-    </div>
-</body>
+      );
+    }
 
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
 </html>

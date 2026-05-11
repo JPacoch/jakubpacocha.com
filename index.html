@@ -5,388 +5,331 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jakub Pacocha | dev & writing</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    if (localStorage.getItem('theme') === 'light' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-      document.documentElement.setAttribute('data-theme', 'light');
-    }
-  </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/mobile_nav.css">
-  <script defer src="https://cloud.umami.is/script.js" data-website-id="f00d8bcf-c6bc-4fae-97b8-b572df1419d8"></script>
-  <style>
-    html.lenis,
-    html.lenis body {
-      height: auto;
-    }
-
-    .lenis.lenis-smooth {
-      scroll-behavior: auto !important;
-    }
-
-    .lenis.lenis-smooth [data-lenis-prevent] {
-      overscroll-behavior: contain;
-    }
-
-    .lenis.lenis-stopped {
-      overflow: hidden;
-    }
-
-    .lenis.lenis-scrolling iframe {
-      pointer-events: none;
-    }
-
-    main {
-      transform-origin: center top;
-      will-change: transform;
-    }
-  </style>
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            electric: '#0055FF',
+            dark: '#111827',
+            offwhite: '#F9FAFB',
+          },
+          fontFamily: {
+            serif: ['Playfair Display', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
       }
     }
   </script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      background-color: #0055FF;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0055FF;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #ffffff;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 
 <body>
-  <!-- PRELOADER -->
-  <div class="preloader">
-    <div class="preloader-text">
-      <div class="text-wrap">
-        <span>Loading</span>
-      </div>
-    </div>
-    <div class="preloader-overlay"></div>
-  </div>
+  <div id="root"></div>
+  <script type="text/babel" data-type="module">
+    const { useState, useEffect, useLayoutEffect, useRef } = React;
+    const { motion } = window.Motion;
 
-  <div data-barba="wrapper">
-    <div data-barba="container" data-barba-namespace="home">
+    // --- ICONS ---
+    const ArrowRight = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>;
+    const ArrowUpRight = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17L17 7" /><path d="M7 7h10v10" /></svg>;
+    const MenuIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></svg>;
+    const MailIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>;
+    const LinkedinIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect width="4" height="12" x="2" y="9" /><circle cx="4" cy="4" r="2" /></svg>;
+    const TwitterIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5 5.96 15.6 7 12c-1.2.3-2.4.2-3.6-.1C2.5 10.6 4 9 4 9c-1.1-.3-2-.9-2.5-1.9 1-.3 2.1-.3 3.1-.1C2.3 5 4 2 4 2c1.6 2 4 4 7.4 4.5 0-1.1.5-2.2 1.5-2.9 1.4-1.1 3.5-.8 4.6.5 1.1-.2 2.1-.7 3-1.2-.4 1.1-1.1 2-2 2.7 1-.1 1.9-.4 2.8-.8Z" /></svg>;
+    const GithubIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" /></svg>;
 
-      <!-- NAV -->
-      <nav id="navbar">
-        <div class="nav-logo"><span>JP</span> / jakub pacocha</div>
-        <div class="nav-links">
-          <a href="#about">About</a>
-          <a href="#skills">Skills</a>
-          <a href="#projects">Projects</a>
-          <a href="#writing">Writing</a>
-          <a href="#contact">Contact</a>
-          <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
-            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="5"></circle>
-              <line x1="12" y1="1" x2="12" y2="3"></line>
-              <line x1="12" y1="21" x2="12" y2="23"></line>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-              <line x1="1" y1="12" x2="3" y2="12"></line>
-              <line x1="21" y1="12" x2="23" y2="12"></line>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-            <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-            </svg>
-          </button>
+    // --- COMPONENTS ---
+    const Nav = () => (
+      <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 px-2 py-2 pr-6 bg-white/70 backdrop-blur-xl border border-dark/5 rounded-full flex items-center gap-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+        <div className="flex items-center gap-3 pl-4">
+          <span className="w-2.5 h-2.5 bg-electric rounded-full"></span>
+          <span className="font-bold tracking-tight text-dark">JP</span>
         </div>
+        <div className="hidden md:flex gap-6 text-sm font-semibold text-dark/60">
+          <a href="#about" className="hover:text-electric transition-colors">About</a>
+          <a href="#skills" className="hover:text-electric transition-colors">Skills</a>
+          <a href="#writing" className="hover:text-electric transition-colors">Writing</a>
+          <a href="#contact" className="hover:text-electric transition-colors">Contact</a>
+        </div>
+        <button className="md:hidden p-2 rounded-full bg-offwhite hover:bg-gray-200 transition-colors ml-4">
+          <MenuIcon />
+        </button>
       </nav>
+    );
 
-      <main>
-        <!-- HERO -->
-        <section class="hero">
-          <canvas id="hero-particles"></canvas>
-          <div class="orb orb-1"></div>
-          <div class="orb orb-2"></div>
-          <div class="orb orb-3"></div>
-          <div class="hero-grid"></div>
-
-          <div class="hero-content">
-            <!-- <div class="hero-badge">
-              <div class="dot"></div>
-              <span>Available for freelance & AI consulting</span>
-            </div> -->
-            <h1>I build things<br>for <em><span id="typewriter">digital world</span></em><br>&amp; write about them.
-            </h1>
-            <p class="hero-sub">Full-stack AI engineer and hobbyist writer specializing in RAG architectures and
-              scalable ML
-              infrastructure. Based in Bydgoszcz, Poland.</p>
-            <div class="hero-cta">
-              <a href="#projects" class="btn-primary">View My Work →</a>
-              <a href="#contact" class="btn-secondary">Get In Touch</a>
-              <a href="cv.html" class="btn-secondary">My CV</a>
-            </div>
-          </div>
-
-          <div class="hero-scroll-hint">
-            <div class="scroll-icon">
-              <div class="scroll-dot"></div>
-            </div>
-            <span class="scroll-text">( scroll )</span>
-          </div>
-        </section>
-
-        <!-- ABOUT -->
-        <section id="about">
-          <div class="reveal">
-            <div class="section-label">About Me</div>
-            <h2 class="section-title">The person behind<br>the <em>code & prose</em></h2>
-          </div>
-
-          <div class="about-grid">
-            <div class="about-text reveal">
-              <p>I'm a <strong>full-stack AI engineer</strong> with over 5 years of hands-on experience building ML and
-                AI-based solutions. When I'm not writing code, I'm writing essays — exploring the intersection of
-                philosophy,
-                theology and sociology.</p>
-              <p><strong>Every data tells a story</strong>. I build the digital layers that make sense of that data. As
-                a
-                Full-Stack AI Engineer, I don't just build models; I build the infrastructure—Dockerized, hosted, and
-                ready
-                for production.</p>
-              <p>Beyond the IDE, <strong>I’m deeply invested in my local community</strong>. Whether it’s collaborating
-                with
-                NGOs or navigating municipal structures to improve urban life, I believe technology should serve the
-                public
-                good.</p>
-              <div class="about-stats">
-                <div class="stat-card">
-                  <div class="stat-num">5<span>+</span></div>
-                  <div class="stat-label">Years of Experience</div>
-                </div>
-                <div class="stat-card">
-                  <div class="stat-num">3<span>+</span></div>
-                  <div class="stat-label">Years with AI</div>
-                </div>
-                <div class="stat-card">
-                  <div class="stat-num">5<span>k</span></div>
-                  <div class="stat-label">Words Published</div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </section>
-
-        <!-- SKILLS -->
-        <section id="skills">
-          <div class="reveal">
-            <div class="section-label">Capabilities</div>
-            <h2 class="section-title">Tools &amp; <em>expertise</em></h2>
-          </div>
-          <div class="skills-grid">
-            <div class="skill-card reveal">
-              <div class="skill-icon">🖥️</div>
-              <h3>Generative AI & RAG</h3>
-              <p>Utilizing LLMs and ML techniques for data analysis, serving AI-based apps and services.</p>
-              <div class="skill-tags">
-                <span class="skill-tag">Python</span>
-                <span class="skill-tag">Vector stores</span>
-                <span class="skill-tag">Prompt Engineering</span>
-              </div>
-            </div>
-            <div class="skill-card reveal">
-              <div class="skill-icon">⚙️</div>
-              <h3>Full-Stack AI Infra</h3>
-              <p>Productization of AI and ML workflows via containerization and cloud orchestration.</p>
-              <div class="skill-tags">
-                <span class="skill-tag">Docker</span>
-                <span class="skill-tag">FastAPI</span>
-                <span class="skill-tag">Flask</span>
-              </div>
-            </div>
-            <div class="skill-card reveal">
-              <div class="skill-icon">☁️</div>
-              <h3>Cloud & DevOps</h3>
-              <p>Deploying and maintaining infrastructure, containerization & monitoring on cloud.</p>
-              <div class="skill-tags">
-                <span class="skill-tag">AWS</span>
-                <span class="skill-tag">Azure</span>
-                <span class="skill-tag">GitHub Actions</span>
-              </div>
-            </div>
-            <div class="skill-card reveal">
-              <div class="skill-icon">🗺️</div>
-              <h3>Spatial & Civic Tech</h3>
-              <p>Leveraging GIS and Computer Vision backgrounds for municipal and social impact.</p>
-              <div class="skill-tags">
-                <span class="skill-tag">GIS</span>
-                <span class="skill-tag">Computer Vision</span>
-                <span class="skill-tag">Spatial Data</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- PROJECTS -->
-        <!-- <section id="projects">
-  <div class="reveal">
-    <div class="section-label">Selected Work</div>
-    <h2 class="section-title">Things I've <em>built</em></h2>
-  </div>
-  <div class="projects-list">
-    <div class="project-item reveal">
-      <div class="project-num">01</div>
-      <div class="project-info">
-        <h3>Vesper — Real-time Analytics Platform</h3>
-        <p>A full-stack SaaS dashboard providing live data visualization for e-commerce teams. Handles 10M+ events/day with sub-second latency.</p>
-        <div class="project-meta">
-          <span class="project-tag">React</span>
-          <span class="project-tag">WebSockets</span>
-          <span class="project-tag">Node.js</span>
-          <span class="project-tag">PostgreSQL</span>
-        </div>
-      </div>
-      <div class="project-arrow">↗</div>
-    </div>
-    <div class="project-item reveal">
-      <div class="project-num">02</div>
-      <div class="project-info">
-        <h3>Cipher CLI — Developer Secrets Manager</h3>
-        <p>A command-line tool for teams to manage, rotate, and share secrets securely with zero-knowledge encryption and audit logging.</p>
-        <div class="project-meta">
-          <span class="project-tag">Python</span>
-          <span class="project-tag">NaCl</span>
-          <span class="project-tag">SQLite</span>
-          <span class="project-tag">Open Source</span>
-        </div>
-      </div>
-      <div class="project-arrow">↗</div>
-    </div>
-    <div class="project-item reveal">
-      <div class="project-num">03</div>
-      <div class="project-info">
-        <h3>Bloom — AI-Powered Writing Assistant</h3>
-        <p>An editor that helps technical writers maintain consistent tone across documentation using contextual style guides and auto-suggestions.</p>
-        <div class="project-meta">
-          <span class="project-tag">Next.js</span>
-          <span class="project-tag">OpenAI API</span>
-          <span class="project-tag">MongoDB</span>
-        </div>
-      </div>
-      <div class="project-arrow">↗</div>
-    </div>
-    <div class="project-item reveal">
-      <div class="project-num">04</div>
-      <div class="project-info">
-        <h3>Mosaic — Component Design System</h3>
-        <p>A themeable React component library powering 3 production apps. Includes Storybook integration and automated visual regression testing.</p>
-        <div class="project-meta">
-          <span class="project-tag">React</span>
-          <span class="project-tag">Storybook</span>
-          <span class="project-tag">Jest</span>
-          <span class="project-tag">TypeScript</span>
-        </div>
-      </div>
-      <div class="project-arrow">↗</div>
-    </div>
-  </div>
-</section> -->
-
-        <!-- WRITING -->
-        <section id="writing">
-          <div class="reveal">
-            <div class="section-label">Writing</div>
-            <h2 class="section-title">Recent <em>essays</em></h2>
-          </div>
-          <div class="writing-grid">
-            <a href="https://fromthecabinet.com/text.html?slug=the-wall-and-nausea" class="write-card reveal"
-              style="text-decoration: none; color: inherit; cursor: pointer;">
-              <div class="write-card-img">
-                <div class="write-card-img-bg img-2"></div>
-                <span class="cat">Existentialism</span>
-              </div>
-              <div class="write-card-body">
-                <h3>The Wall and Nausea</h3>
-                <p>Being truly conscious means existing in a painful superposition between a social system and the
-                  honest, dull silence of the 'In-Itself' and reality.</p>
-                <div class="write-card-footer">
-                  <span class="write-date">Apr 2026</span>
-                  <span class="write-read">3 min read</span>
-                </div>
-              </div>
+    const Hero = () => (
+      <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 pt-32 pb-20 max-w-[1400px] mx-auto relative">
+        <div className="absolute top-1/4 right-10 w-[500px] h-[500px] bg-electric/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="max-w-4xl relative z-10">
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
+            className="font-serif text-[4rem] sm:text-[5.5rem] md:text-[7rem] lg:text-[8.5rem] leading-[0.95] tracking-[-0.03em] text-dark mb-8"
+          >
+            I build things <br /> for <em className="text-electric italic pr-4 font-light">digital world</em> <br /> & write about them.
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: [0.34, 1.56, 0.64, 1] }}
+            className="font-sans text-xl md:text-2xl text-dark/60 max-w-2xl leading-relaxed mb-12 font-light"
+          >
+            Full-stack AI engineer and hobbyist writer specializing in RAG architectures and scalable ML infrastructure. Based in Bydgoszcz, Poland.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
+            className="flex flex-wrap items-center gap-4"
+          >
+            <a href="#projects" className="px-8 py-4 bg-electric text-white rounded-full font-semibold hover:bg-electric/90 transition-all flex items-center gap-2 shadow-lg shadow-electric/20 hover:shadow-xl hover:shadow-electric/30">
+              View My Work <ArrowRight />
             </a>
-            <a href="https://fromthecabinet.com/text.html?slug=sartrean-trap" class="write-card reveal"
-              style="text-decoration: none; color: inherit; cursor: pointer;">
-              <div class="write-card-img">
-                <div class="write-card-img-bg img-2"></div>
-                <span class="cat">Metaphysics</span>
-              </div>
-              <div class="write-card-body">
-                <h3>The Sartrean Trap</h3>
-                <p>When the method becomes a prison - on how Sartre misused phenomenology. 'And if phenomenology refuses
-                  to step outside of itself, then isn't it becoming the very thing it was meant to battle?'</p>
-                <div class="write-card-footer">
-                  <span class="write-date">Feb 2026</span>
-                  <span class="write-read">10 min read</span>
-                </div>
-              </div>
-            </a>
-            <a href="https://fromthecabinet.com/text.html?slug=christocentric-determinism" class="write-card reveal"
-              style="text-decoration: none; color: inherit; cursor: pointer;">
-              <div class="write-card-img">
-                <div class="write-card-img-bg img-3"></div>
-                <span class="cat">Theology</span>
-              </div>
-              <div class="write-card-body">
-                <h3>Christocentric Determinism</h3>
-                <p>On bridging the theological tension between arminianism and calvinism. Creating a doctrine that might
-                  be
-                  both true to the gospel and intellectually satisfying.</p>
-                <div class="write-card-footer">
-                  <span class="write-date">Jan 2026</span>
-                  <span class="write-read">9 min read</span>
-                </div>
-              </div>
-            </a>
-          </div>
-        </section>
+            <a href="#contact" className="px-8 py-4 bg-white border border-dark/10 text-dark rounded-full font-semibold hover:bg-offwhite transition-colors">Get In Touch</a>
+            <a href="cv.html" className="px-8 py-4 bg-white border border-dark/10 text-dark rounded-full font-semibold hover:bg-offwhite transition-colors">My CV</a>
+          </motion.div>
+        </div>
+      </section>
+    );
 
-
-        <!-- CONTACT -->
-        <section id="contact">
-          <div class="orb"
-            style="width:500px;height:500px;background:#c8f070;top:-200px;left:50%;transform:translateX(-50%);opacity:.1;filter:blur(140px);">
+    const About = () => (
+      <section id="about" className="px-6 md:px-12 lg:px-24 py-32 bg-white">
+        <div className="max-w-[1200px] mx-auto">
+          <div className="mb-20">
+            <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">About Me</div>
           </div>
-          <div class="contact-inner reveal">
-            <div class="section-label">Contact</div>
-            <h2 class="section-title">Let's do<br>something <em>together</em></h2>
-            <p class="contact-desc">Want to say hello? Hit me up:</p>
-            <div class="contact-links">
-              <a href="mailto:pacochp@gmail.com" class="contact-btn"><span class="cb-icon"><i
-                    class="fa-solid fa-envelope"></i> Email</span></a>
-              <a href="https://www.linkedin.com/in/jakubpacocha/" class="contact-btn"><span class="cb-icon"><i
-                    class="fa-brands fa-linkedin"></i> LinkedIn</span></a>
-              <a href="https://x.com/JakubPacocha" class="contact-btn"><span class="cb-icon"><i
-                    class="fa-brands fa-twitter"></i> Twitter / X</span></a>
-              <a href="https://github.com/JPacoch" class="contact-btn"><span class="cb-icon"><i
-                    class="fa-brands fa-github"></i> GitHub</span></a>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+            <div className="md:col-span-8">
+              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-dark leading-[1.2] mb-12">
+                Scaling solutions, <em className="text-electric italic font-light">grounding ideas.</em>
+              </h2>
+              <div className="text-xl md:text-2xl text-dark/60 leading-relaxed font-sans max-w-2xl space-y-8 font-light">
+                <p><strong className="text-dark font-medium">I'm a full-stack AI engineer with over 5 years of hands-on experience </strong>building ML and AI-based solutions. When I'm not writing code, I'm writing essays - exploring the intersection of <em className="text-electric italic font-light">philosophy, theology and sociology.</em></p>
+                <p><strong className="text-dark font-medium">Every data tells a story</strong>. I build the digital layers that make sense of that data. As a Full-Stack AI Engineer, I don't just build and use models; I build the infrastructure - dockerized, hosted, and ready for production.</p>
+                <p>Beyond the IDE, <strong className="text-dark font-medium">I’m deeply invested in my local community</strong>. Whether it’s collaborating with NGOs or navigating municipal structures to improve urban life, I believe technology should serve the public good.</p>
+              </div>
+            </div>
+
+            <div className="md:col-span-4 flex flex-col gap-12 md:pl-12 md:border-l border-dark/10 mt-12 md:mt-0">
+              <div>
+                <div className="text-6xl font-serif text-electric mb-2">6+</div>
+                <div className="text-sm font-semibold tracking-widest uppercase text-dark/50">Years of Experience</div>
+              </div>
+              <div>
+                <div className="text-6xl font-serif text-dark mb-2">4+</div>
+                <div className="text-sm font-semibold tracking-widest uppercase text-dark/50">Years with AI</div>
+              </div>
+              <div>
+                <div className="text-6xl font-serif text-dark mb-2">6.5k</div>
+                <div className="text-sm font-semibold tracking-widest uppercase text-dark/50">Words Published</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    const Skills = () => {
+      const skillsData = [
+        { icon: "🖥️", title: "Generative AI & RAG", desc: "Utilizing LLMs and ML techniques for data analysis, serving AI-based apps and services.", tags: ["Python", "Vector stores", "Prompt Engineering"] },
+        { icon: "⚙️", title: "Full-Stack AI Infra", desc: "Productization of AI and ML workflows via containerization and cloud orchestration.", tags: ["Docker", "FastAPI", "Flask"] },
+        { icon: "☁️", title: "Cloud & DevOps", desc: "Deploying and maintaining infrastructure, containerization & monitoring on cloud.", tags: ["AWS", "Azure", "GitHub Actions"] },
+        { icon: "🗺️", title: "Spatial & Civic Tech", desc: "Leveraging GIS and Computer Vision backgrounds for municipal and social impact.", tags: ["GIS", "Computer Vision", "Spatial Data"] }
+      ];
+
+      return (
+        <section id="skills" className="px-6 md:px-12 lg:px-24 py-32 bg-offwhite relative">
+          <div className="max-w-[1400px] mx-auto relative z-10">
+            <div className="mb-16">
+              <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">Capabilities</div>
+              <h2 className="font-serif text-5xl md:text-7xl text-dark leading-tight">Tools &amp; <em className="text-electric italic font-light">expertise</em></h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {skillsData.map((skill, i) => (
+                <motion.div key={i} whileHover={{ y: -8, scale: 1.01 }} transition={{ type: "spring", stiffness: 300, damping: 20 }} className="group bg-white hover:bg-electric transition-colors duration-500 rounded-[2rem] p-10 md:p-12 shadow-[0_8px_30px_rgba(0,0,0,0.02)] border border-dark/5 flex flex-col cursor-crosshair">
+                  <div className="w-16 h-16 bg-offwhite rounded-2xl flex items-center justify-center text-3xl mb-8 group-hover:bg-white/20 transition-colors duration-500 shadow-sm">{skill.icon}</div>
+                  <h3 className="text-3xl font-serif font-bold text-dark group-hover:text-white transition-colors mb-4">{skill.title}</h3>
+                  <p className="text-lg text-dark/60 group-hover:text-white/80 transition-colors mb-10 leading-relaxed">{skill.desc}</p>
+                  <div className="flex flex-wrap gap-2 mt-auto">
+                    {skill.tags.map(tag => (
+                      <span key={tag} className="px-4 py-2 bg-offwhite group-hover:bg-white/20 group-hover:text-white text-dark/80 text-sm font-semibold rounded-full transition-colors">{tag}</span>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
-      </main>
+      );
+    };
 
+    const WritingEntry = ({ essay }) => (
+      <a href={essay.link} className="block py-10 border-b border-dark/10 relative overflow-hidden bg-transparent group hover:bg-electric transition-colors duration-300">
+        <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 px-4 md:px-8">
+          <div className="flex flex-col md:w-2/3">
+            <span className="text-sm font-semibold tracking-widest uppercase mb-4 text-dark/50 group-hover:text-white/70 transition-colors duration-300">{essay.category}</span>
+            <h3 className="text-3xl md:text-4xl font-serif font-bold text-dark mb-4 group-hover:text-white transition-colors duration-300">{essay.title}</h3>
+            <p className="text-lg text-dark/60 group-hover:text-white/80 transition-colors duration-300 leading-relaxed">{essay.desc}</p>
+          </div>
+          <div className="flex items-center gap-6 font-medium text-dark/50 group-hover:text-white/70 transition-colors duration-300">
+            <span>{essay.date}</span>
+            <span>•</span>
+            <span>{essay.read}</span>
+            <div className="w-12 h-12 rounded-full border border-dark/20 group-hover:border-white/0 group-hover:bg-white group-hover:text-electric flex items-center justify-center transition-all duration-300">
+              <ArrowUpRight />
+            </div>
+          </div>
+        </div>
+      </a>
+    );
 
-      <!-- FOOTER -->
-      <footer>
-        <div class="foot-left">© 2026 <span>Jakub Pacocha</span> All rights reserved.</div>
-        <div class="foot-right">Bydgoszcz, Poland</div>
-      </footer>
-      <script src="https://unpkg.com/@barba/core"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-      <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
-    </div> <!-- end barba container -->
-  </div> <!-- end barba wrapper -->
-  <script src="js/script.js"></script>
-  <script type="module" src="js/particles.js"></script>
+    const Writing = () => {
+      const essays = [
+        { title: "The Phenomenology and Certainty", category: "Epistemology", desc: "Science produces precise but constrained abstractions of experience, while metaphysics investigates the conditions that make experience possible; both contribute to understanding, but only within a cycle that returns them to the Life-World.", date: "Apr 2026", read: "5 min read", link: "https://fromthecabinet.com/texts/phenomenology-certainty.html" },
+        { title: "The Wall and Nausea", category: "Existentialism", desc: "Being truly conscious means existing in a painful superposition between a social system and the honest, dull silence of the 'In-Itself' and reality.", date: "Apr 2026", read: "3 min read", link: "https://fromthecabinet.com/text.html?slug=the-wall-and-nausea" },
+        { title: "The Sartrean Trap", category: "Metaphysics", desc: "When the method becomes a prison - on how Sartre misused phenomenology. 'And if phenomenology refuses to step outside of itself, then isn't it becoming the very thing it was meant to battle?'", date: "Feb 2026", read: "10 min read", link: "https://fromthecabinet.com/text.html?slug=sartrean-trap" },
+        { title: "Christocentric Determinism", category: "Theology", desc: "On bridging the theological tension between arminianism and calvinism. Creating a doctrine that might be both true to the gospel and intellectually satisfying.", date: "Jan 2026", read: "9 min read", link: "https://fromthecabinet.com/text.html?slug=christocentric-determinism" }
+      ];
+
+      return (
+        <section id="writing" className="px-6 md:px-12 lg:px-24 pt-32 pb-32 bg-white">
+          <div className="max-w-[1400px] mx-auto">
+            <div className="mb-16">
+              <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">Writing</div>
+              <h2 className="font-serif text-5xl md:text-7xl text-dark leading-tight">Recent <em className="text-electric italic font-light">essays</em></h2>
+            </div>
+            <div className="flex flex-col border-t border-dark/10">
+              {essays.map((essay, i) => <WritingEntry key={i} essay={essay} />)}
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    const App = () => {
+      useLayoutEffect(() => {
+        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        const initScrollTrigger = () => {
+          ScrollTrigger.create({
+            trigger: "#footer-spacer",
+            start: "top bottom",
+            end: "bottom bottom",
+            scrub: true,
+            animation: gsap.timeline()
+              .to("#main-content", {
+                scale: 0.96,
+                borderBottomLeftRadius: "48px",
+                borderBottomRightRadius: "48px",
+                ease: "none"
+              })
+              .fromTo("#footer-container-inner", { y: "15%" }, { y: "0%", ease: "none" }, 0)
+          });
+        };
+
+        // Initialize after a tiny delay to ensure layout is computed
+        setTimeout(() => {
+          initScrollTrigger();
+          ScrollTrigger.refresh();
+        }, 100);
+
+        const resizeObserver = new ResizeObserver(() => ScrollTrigger.refresh());
+        resizeObserver.observe(document.body);
+
+        return () => {
+          lenis.destroy();
+          ScrollTrigger.getAll().forEach(t => t.kill());
+          resizeObserver.disconnect();
+        };
+      }, []);
+
+      return (
+        <div className="bg-electric min-h-screen font-sans text-dark selection:bg-electric selection:text-white">
+          <Nav />
+
+          <main id="main-content" className="bg-white w-full relative z-10 shadow-[0_20px_60px_rgba(0,0,0,0.1)] origin-[50%_100%] overflow-hidden" style={{ willChange: "transform, border-radius" }}>
+            <Hero />
+            <About />
+            <Skills />
+            <Writing />
+          </main>
+
+          <div id="footer-spacer" className="h-[75vh] md:h-[70vh] w-full pointer-events-none"></div>
+
+          <footer id="footer-container" className="fixed bottom-0 left-0 w-full h-[75vh] md:h-[70vh] z-0 flex flex-col justify-end bg-electric text-white overflow-hidden">
+            <div id="footer-container-inner" className="w-full h-full px-6 md:px-12 lg:px-24 py-16 flex flex-col justify-between">
+              <div className="max-w-[1400px] w-full mx-auto flex flex-col h-full justify-between">
+                <div className="pt-8">
+                  <div id="contact" className="text-white/60 font-semibold uppercase tracking-widest text-sm mb-4">Contact</div>
+                  <h2 className="font-serif text-5xl md:text-7xl leading-tight mb-8">Let's do <br /> something <em className="italic font-light">together</em></h2>
+                  <p className="text-xl text-white/80 mb-12">Want to say hello? Hit me up:</p>
+
+                  <div className="flex flex-wrap gap-4">
+                    <a href="mailto:pacochp@gmail.com" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                      <MailIcon /> Email
+                    </a>
+                    <a href="https://www.linkedin.com/in/jakubpacocha/" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                      <LinkedinIcon /> LinkedIn
+                    </a>
+                    <a href="https://x.com/JakubPacocha" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                      <TwitterIcon /> Twitter / X
+                    </a>
+                    <a href="https://github.com/JPacoch" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                      <GithubIcon /> GitHub
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-white/50 text-sm mt-12">
+                  <div>© 2026 <span className="font-semibold text-white">Jakub Pacocha</span> All rights reserved.</div>
+                  <div>Bydgoszcz, Poland</div>
+                </div>
+              </div>
+            </div>
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
 </body>
 
 </html>
