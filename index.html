@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jakub Pacocha | dev & writing</title>
+  <link rel="icon" type="image/x-icon" href="assets/favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -279,9 +280,9 @@
             const lastYear = filtered.slice(-364);
 
             const firstDay = new Date(lastYear[0].date);
-            const firstDayOfWeek = firstDay.getDay(); 
-            const offset = (firstDayOfWeek + 6) % 7; 
-            
+            const firstDayOfWeek = firstDay.getDay();
+            const offset = (firstDayOfWeek + 6) % 7;
+
             const contributions = [
               ...Array(offset).fill(null),
               ...lastYear
