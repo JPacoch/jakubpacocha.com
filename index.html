@@ -349,8 +349,7 @@
                   style={{
                     '--hover-bg': proj.colors.bg,
                     '--hover-text': proj.colors.text,
-                    '--hover-accent': proj.colors.accent,
-                    fontFamily: proj.title === 'WideAwake' ? '"Comic Sans MS", "Comic Sans", cursive' : 'inherit'
+                    '--hover-accent': proj.colors.accent
                   }}
                 >
                   <div
@@ -359,30 +358,46 @@
                   ></div>
 
                   <div className="flex justify-between items-start mb-12">
-                    <h3
-                      className={`text-3xl md:text-4xl transition-colors duration-500 group-hover:[color:var(--hover-text)] text-dark 
-  ${proj.title === 'WideAwake'
-                          ? 'font-sans group-hover:font-["Comic_Sans_MS",_cursive]'
-                          : 'font-serif'}`}
-                    >
-                      {proj.title}
-                    </h3>
+                    <div className="relative">
+                      <h3
+                        className={`text-3xl md:text-4xl transition-all duration-500 ${proj.title === 'WideAwake' ? 'font-sans group-hover:opacity-0' : 'font-serif group-hover:[color:var(--hover-text)]'} text-dark`}
+                      >
+                        {proj.title}
+                      </h3>
+                      {proj.title === 'WideAwake' && (
+                        <h3 className="absolute inset-0 text-3xl md:text-4xl font-['Comic_Sans_MS',_cursive] [color:var(--hover-text)] opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none whitespace-nowrap">
+                          {proj.title}
+                        </h3>
+                      )}
+                    </div>
                     <ArrowUpRight className="transition-colors duration-500 group-hover:[color:var(--hover-accent)] text-dark/30 w-6 h-6" />
                   </div>
 
-                  <p className={`text-lg md:text-xl transition-colors duration-500 group-hover:[color:var(--hover-text)] text-dark/60 max-w-md mb-12 group-hover:opacity-80 
-  ${proj.title === 'WideAwake' ? 'font-sans group-hover:font-["Comic_Sans_MS",_cursive]' : 'font-sans'}`}>
-                    {proj.desc}
-                  </p>
+                  <div className="relative mb-12">
+                    <p className={`text-lg md:text-xl transition-all duration-500 ${proj.title === 'WideAwake' ? 'font-sans group-hover:opacity-0' : 'font-sans group-hover:[color:var(--hover-text)]'} text-dark/60 max-w-md group-hover:opacity-80`}>
+                      {proj.desc}
+                    </p>
+                    {proj.title === 'WideAwake' && (
+                      <p className="absolute inset-0 text-lg md:text-xl font-['Comic_Sans_MS',_cursive] [color:var(--hover-text)] opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none max-w-md">
+                        {proj.desc}
+                      </p>
+                    )}
+                  </div>
 
                   <div className="mt-auto flex flex-wrap gap-2">
                     {proj.tags.map(tag => (
-                      <span
-                        key={tag}
-                        className="px-4 py-1.5 border border-dark/10 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-500 group-hover:border-transparent group-hover:[background-color:var(--hover-accent)] group-hover:[color:var(--hover-bg)] text-dark/60"
-                      >
-                        {tag}
-                      </span>
+                      <div key={tag} className="relative">
+                        <span
+                          className={`px-4 py-1.5 border border-dark/10 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-500 ${proj.title === 'WideAwake' ? 'font-sans group-hover:opacity-0' : 'group-hover:border-transparent group-hover:[background-color:var(--hover-accent)] group-hover:[color:var(--hover-bg)]'} text-dark/60`}
+                        >
+                          {tag}
+                        </span>
+                        {proj.title === 'WideAwake' && (
+                          <span className="absolute inset-0 px-4 py-1.5 border border-transparent rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-500 font-['Comic_Sans_MS',_cursive] [background-color:var(--hover-accent)] [color:var(--hover-bg)] opacity-0 group-hover:opacity-100 pointer-events-none flex items-center justify-center whitespace-nowrap">
+                            {tag}
+                          </span>
+                        )}
+                      </div>
                     ))}
                   </div>
                 </a>
@@ -482,7 +497,6 @@
           });
         };
 
-        // Initialize after a tiny delay to ensure layout is computed
         setTimeout(() => {
           initScrollTrigger();
           ScrollTrigger.refresh();
