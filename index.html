@@ -41,7 +41,7 @@
     html {
       margin: 0;
       padding: 0;
-      background-color: #0055FF;
+      background-color: #ffffff;
       overflow-x: hidden;
       scroll-behavior: smooth;
     }
@@ -138,8 +138,17 @@
       const [index, setIndex] = useState(0);
 
       useEffect(() => {
-        const interval = setInterval(() => setIndex(prev => (prev + 1) % words.length), 2500);
-        return () => clearInterval(interval);
+        let timeout;
+        const tick = () => {
+          timeout = setTimeout(() => {
+            if (document.visibilityState === 'visible') {
+              setIndex(prev => (prev + 1) % words.length);
+            }
+            tick();
+          }, 2500);
+        };
+        tick();
+        return () => clearTimeout(timeout);
       }, []);
 
       return (
@@ -624,12 +633,13 @@
             end: "bottom bottom",
             scrub: true,
             animation: gsap.timeline()
+              .to(["#footer-container", "#blue-bg"], { autoAlpha: 1, duration: 0.05, ease: "none" }, 0)
               .to("#main-content", {
                 scale: 0.96,
                 borderBottomLeftRadius: "48px",
                 borderBottomRightRadius: "48px",
                 ease: "none"
-              })
+              }, 0)
               .fromTo("#footer-container-inner", { y: "15%" }, { y: "0%", ease: "none" }, 0)
           });
         };
@@ -650,7 +660,8 @@
       }, []);
 
       return (
-        <div className="bg-electric min-h-screen font-sans text-dark selection:bg-electric selection:text-white">
+        <div className="bg-white min-h-screen font-sans text-dark selection:bg-electric selection:text-white">
+          <div id="blue-bg" className="fixed inset-0 bg-electric z-0 opacity-0 invisible pointer-events-none"></div>
           <PageTransition isExiting={isExiting} />
           <Nav isCV={false} />
 
@@ -663,9 +674,9 @@
             <Writing />
           </main>
 
-          <div id="footer-spacer" className="h-[75vh] md:h-[70vh] w-full pointer-events-none"></div>
+          <div id="footer-spacer" className="min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] w-full pointer-events-none"></div>
 
-          <footer id="footer-container" className="fixed bottom-0 left-0 w-full h-[75vh] md:h-[70vh] z-0 flex flex-col justify-end bg-electric text-white overflow-hidden">
+          <footer id="footer-container" className="fixed bottom-0 left-0 w-full min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] z-0 flex flex-col justify-end bg-electric text-white overflow-hidden opacity-0 invisible">
             <div id="footer-container-inner" className="w-full h-full px-6 md:px-12 lg:px-24 py-16 flex flex-col justify-between">
               <div className="max-w-[1400px] w-full mx-auto flex flex-col h-full justify-between">
                 <div className="pt-8">
