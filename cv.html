@@ -63,8 +63,12 @@
 
 <body>
   <div id="root"></div>
-  <script type="text/babel" data-type="module">
-    /** @jsxRuntime classic */
+  <script>
+    Babel.registerPreset('my-react', {
+      presets: [[Babel.availablePresets['react'], { runtime: 'classic' }]]
+    });
+  </script>
+  <script type="text/babel" data-presets="my-react,env" data-type="module">
     const { useState, useEffect, useLayoutEffect, useRef } = React;
     const { motion, AnimatePresence } = window.Motion;
 
