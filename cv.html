@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jakub Pacocha | CV</title>
+  <title>Jakub Pacocha — Curriculum Vitae</title>
   <link rel="icon" type="image/x-icon" href="assets/favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -17,15 +17,16 @@
             offwhite: '#F9FAFB',
           },
           fontFamily: {
-            serif: ['Playfair Display', 'serif'],
-            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
           }
         }
       }
     }
   </script>
   <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     rel="stylesheet">
 
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
@@ -42,8 +43,11 @@
       margin: 0;
       padding: 0;
       background-color: #ffffff;
+      color: #111827;
       overflow-x: hidden;
       scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     ::-webkit-scrollbar {
@@ -58,6 +62,13 @@
       background: #ffffff;
       border-radius: 4px;
     }
+
+    .bg-Swiss-grid {
+      background-size: 48px 48px;
+      background-image: 
+        linear-gradient(to right, rgba(17, 24, 39, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(17, 24, 39, 0.035) 1px, transparent 1px);
+    }
   </style>
 </head>
 
@@ -69,265 +80,356 @@
     });
   </script>
   <script type="text/babel" data-presets="my-react,env" data-type="module">
-    const { useState, useEffect, useLayoutEffect, useRef } = React;
+    const { useState, useEffect, useLayoutEffect } = React;
     const { motion, AnimatePresence } = window.Motion;
 
     // --- ICONS ---
-    const ArrowRight = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>;
-    const ArrowUpRight = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17L17 7" /><path d="M7 7h10v10" /></svg>;
-    const MenuIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></svg>;
-    const CloseIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>;
-    const MailIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>;
-    const LinkedinIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect width="4" height="12" x="2" y="9" /><circle cx="4" cy="4" r="2" /></svg>;
-    const TwitterIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5 5.96 15.6 7 12c-1.2.3-2.4.2-3.6-.1C2.5 10.6 4 9 4 9c-1.1-.3-2-.9-2.5-1.9 1-.3 2.1-.3 3.1-.1C2.3 5 4 2 4 2c1.6 2 4 4 7.4 4.5 0-1.1.5-2.2 1.5-2.9 1.4-1.1 3.5-.8 4.6.5 1.1-.2 2.1-.7 3-1.2-.4 1.1-1.1 2-2 2.7 1-.1 1.9-.4 2.8-.8Z" /></svg>;
-    const GithubIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" /></svg>;
-
-    // --- COMPONENTS ---
-    const Nav = ({ isCV }) => {
-      const [isOpen, setIsOpen] = useState(false);
-      const links = isCV
-        ? [
-          { name: "Main Page", href: "index.html" },
-          { name: "Experience", href: "#experience" },
-          { name: "Skills", href: "#skills" },
-          { name: "Education", href: "#education" }
-        ]
-        : [
-          { name: "About", href: "#about" },
-          { name: "Skills", href: "#skills" },
-          { name: "Writing", href: "#writing" },
-          { name: "My CV", href: "cv.html" }
-        ];
-
-      return (
-        <>
-          <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] px-2 py-2 pr-6 bg-white/70 backdrop-blur-xl border border-dark/5 rounded-full flex items-center justify-between shadow-[0_8px_30px_rgba(0,0,0,0.04)] w-[90%] md:w-auto">
-            <div className="flex items-center gap-3 pl-4">
-              <span className="w-2.5 h-2.5 bg-electric rounded-full"></span>
-              <span className="font-bold tracking-tight text-dark">JP</span>
-            </div>
-            <div className="hidden md:flex gap-6 text-sm font-semibold text-dark/60 ml-8">
-              {links.map(l => (
-                <a key={l.name} href={l.href} className="hover:text-electric transition-colors">{l.name}</a>
-              ))}
-            </div>
-            <button onClick={() => setIsOpen(!isOpen)} className="md:hidden p-2 rounded-full bg-offwhite border border-dark/5 hover:bg-gray-200 transition-colors ml-4">
-              {isOpen ? <CloseIcon /> : <MenuIcon />}
-            </button>
-          </nav>
-
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-                className="fixed inset-0 z-[90] bg-white/80 backdrop-blur-xl pt-32 px-8 flex flex-col gap-8 items-center justify-center pb-20"
-              >
-                {links.map((l, i) => (
-                  <motion.a
-                    key={l.name} href={l.href} onClick={() => setIsOpen(false)}
-                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
-                    className="text-3xl md:text-4xl font-sans font-medium tracking-tight text-dark hover:text-electric transition-colors flex items-center gap-3"
-                  >
-                    {l.name}
-                  </motion.a>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </>
-      );
-    };
-
-    const Hero = () => (
-      <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 pt-32 pb-20 max-w-[1400px] mx-auto relative border-b border-dark/5">
-        <div className="max-w-5xl relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex items-center gap-4 mb-12">
-            <div className="w-12 h-[1px] bg-dark/20"></div>
-            <span className="text-sm font-semibold tracking-widest uppercase text-dark/50">Curriculum Vitae</span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
-            className="font-serif text-[3.5rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6.5rem] leading-[1.05] tracking-[-0.03em] text-dark mb-10"
-          >
-            Jakub <em className="text-electric italic font-light pr-4">Pacocha</em>
-          </motion.h1>
-
-          <div className="flex flex-col md:flex-row gap-8 md:items-end justify-between mt-16">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: [0.34, 1.56, 0.64, 1] }}
-              className="font-sans text-xl md:text-2xl text-dark/60 max-w-xl leading-relaxed font-light"
-            >
-              Full-stack AI engineer and hobbyist writer specializing in RAG architectures and scalable ML infrastructure. Based in Bydgoszcz, Poland.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
-              className="flex items-center gap-4"
-            >
-              <a href="mailto:pacochp@gmail.com" className="px-8 py-4 bg-electric text-white rounded-full font-semibold hover:bg-electric/90 transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(0,85,255,0.4)] hover:shadow-[0_0_25px_rgba(0,85,255,0.6)]">
-                Mail Me <ArrowRight />
-              </a>
-              <a href="assets/resume.pdf" download className="px-8 py-4 bg-white border border-dark/10 text-dark rounded-full font-semibold hover:bg-offwhite transition-colors">PDF</a>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+    const ArrowLeft = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M19 12H5" /><path d="m12 19-7-7 7-7" />
+      </svg>
+    );
+    const ArrowUpRight = ({ className = "w-5 h-5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M7 17L17 7" /><path d="M7 7h10v10" />
+      </svg>
+    );
+    const DownloadIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" />
+      </svg>
+    );
+    const MailIcon = () => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+      </svg>
+    );
+    const LinkedinIcon = () => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect width="4" height="12" x="2" y="9" /><circle cx="4" cy="4" r="2" />
+      </svg>
+    );
+    const TwitterIcon = () => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5 5.96 15.6 7 12c-1.2.3-2.4.2-3.6-.1C2.5 10.6 4 9 4 9c-1.1-.3-2-.9-2.5-1.9 1-.3 2.1-.3 3.1-.1C2.3 5 4 2 4 2c1.6 2 4 4 7.4 4.5 0-1.1.5-2.2 1.5-2.9 1.4-1.1 3.5-.8 4.6.5 1.1-.2 2.1-.7 3-1.2-.4 1.1-1.1 2-2 2.7 1-.1 1.9-.4 2.8-.8Z" />
+      </svg>
+    );
+    const GithubIcon = () => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" />
+      </svg>
     );
 
-    const Experience = () => {
-      const expData = [
-        { role: "AI Engineer / Data Scientist", company: "iQor", desc: "Architecting production-grade RAG systems and optimizing vector search performance. Leading the transition to agentic workflows.", tags: ["Python", "AWS", "LLMOps"], year: "2023 — Present" },
-        { role: "Data Scientist", company: "O-I Poland", desc: "Developed and maintained machine learning pipelines for internal clients on large, tabular sales and cost datasets.", tags: ["Python", "Azure", "MLOps"], year: "2021 — 2023" },
-        { role: "Spatial Data Analyst", company: "Heksagon Research", desc: "Analyzed and prepared datasets and visualizations for private, civic and municipal clients.", tags: ["Python", "GIS", "SQL"], year: "2021 — 2022" }
-      ];
-
-      return (
-        <section id="experience" className="px-6 md:px-12 lg:px-24 py-32 bg-white">
-          <div className="max-w-[1400px] mx-auto">
-            <div className="mb-20">
-              <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">Experience</div>
-              <h2 className="font-serif text-5xl md:text-7xl text-dark leading-tight">Professional <em className="text-electric italic font-light">Trajectory</em></h2>
-            </div>
-
-            <div className="flex flex-col border-t border-dark/10">
-              {expData.map((exp, i) => (
-                <div key={i} className="py-12 border-b border-dark/10 flex flex-col lg:flex-row items-start gap-8 lg:gap-16 group hover:bg-offwhite transition-colors duration-500 px-6 -mx-6 rounded-2xl">
-                  <div className="lg:w-1/4 pt-2">
-                    <span className={`text-sm font-semibold tracking-widest uppercase ${i === 0 ? 'text-electric' : 'text-dark/50'}`}>{exp.year}</span>
-                  </div>
-                  <div className="lg:w-3/4">
-                    <h3 className="text-3xl md:text-4xl font-serif font-bold text-dark mb-3">
-                      {exp.role}
-                    </h3>
-                    <div className="text-xl font-medium text-electric mb-6">{exp.company}</div>
-                    <p className="text-xl text-dark/60 leading-relaxed max-w-3xl mb-8 font-light">{exp.desc}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {exp.tags.map(tag => (
-                        <span key={tag} className="px-4 py-1.5 bg-white border border-dark/10 text-dark/70 text-sm font-semibold rounded-full shadow-sm">{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      );
-    };
-
-    const Skills = () => {
-      const skillsData = [
-        { icon: "🖥️", title: "Generative AI & RAG", desc: "Utilizing LLMs and ML techniques for data analysis, serving AI-based apps and services.", tags: ["Python", "Vector stores", "Prompt Engineering"] },
-        { icon: "⚙️", title: "Full-Stack AI Infra", desc: "Productization of AI and ML workflows via containerization and cloud orchestration.", tags: ["Docker", "FastAPI", "Flask"] },
-        { icon: "☁️", title: "Cloud & DevOps", desc: "Deploying and maintaining infrastructure, containerization & monitoring on cloud.", tags: ["AWS", "Azure", "GitHub Actions"] },
-        { icon: "🗺️", title: "Spatial & Civic Tech", desc: "Leveraging GIS and Computer Vision backgrounds for municipal and social impact.", tags: ["GIS", "Computer Vision", "Spatial Data"] }
-      ];
-
-      return (
-        <section id="skills" className="px-6 md:px-12 lg:px-24 py-32 bg-offwhite relative">
-          <div className="max-w-[1400px] mx-auto relative z-10">
-            <div className="mb-16">
-              <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">Capabilities</div>
-              <h2 className="font-serif text-5xl md:text-7xl text-dark leading-tight">Tools &amp; <em className="text-electric italic font-light">expertise</em></h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {skillsData.map((skill, i) => (
-                <motion.div key={i} whileHover={{ y: -8, scale: 1.01 }} transition={{ type: "spring", stiffness: 300, damping: 20 }} className="group bg-white hover:bg-electric transition-colors duration-500 rounded-[2rem] p-10 md:p-12 shadow-[0_8px_30px_rgba(0,0,0,0.02)] border border-dark/5 flex flex-col cursor-crosshair">
-                  <div className="w-16 h-16 bg-offwhite rounded-2xl flex items-center justify-center text-3xl mb-8 group-hover:bg-white/20 transition-colors duration-500 shadow-sm">{skill.icon}</div>
-                  <h3 className="text-3xl font-serif font-bold text-dark group-hover:text-white transition-colors mb-4">{skill.title}</h3>
-                  <p className="text-lg text-dark/60 group-hover:text-white/80 transition-colors mb-10 leading-relaxed">{skill.desc}</p>
-                  <div className="flex flex-wrap gap-2 mt-auto">
-                    {skill.tags.map(tag => (
-                      <span key={tag} className="px-4 py-2 bg-offwhite group-hover:bg-white/20 group-hover:text-white text-dark/80 text-sm font-semibold rounded-full transition-colors">{tag}</span>
-                    ))}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-      );
-    };
-
-    const Education = () => {
-      const eduData = [
-        { title: "Master's Geoinformatics", place: "Adam Mickiewicz University in Poznań", desc: "My master's thesis focused on computer vision in geomorphology and other earth sciences.", tags: ["GIS", "CNN", "Computer Vision"], year: "2022 - 2023" },
-        { title: "Engineering in Geoinformation", place: "Eötvös Loránd University", desc: "Erasmus+ programme.", tags: ["Python", "GIS"], year: "2019 - 2020" },
-        { title: "Engineering in Geoinformation", place: "Adam Mickiewicz University in Poznań", desc: "Engineering thesis focused on creating a python based spatial tool for transport analysis.", tags: ["Python", "GIS", "Network analysis"], year: "2018 - 2022" }
-      ];
-
-      return (
-        <section id="education" className="px-6 md:px-12 lg:px-24 pt-32 pb-32 bg-white">
-          <div className="max-w-[1400px] mx-auto">
-            <div className="mb-16">
-              <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">Education</div>
-              <h2 className="font-serif text-5xl md:text-7xl text-dark leading-tight">My <em className="text-electric italic font-light">Education</em></h2>
-            </div>
-            <div className="flex flex-col border-t border-dark/10">
-              {eduData.map((edu, i) => (
-                <div key={i} className="py-10 border-b border-dark/10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 group hover:px-6 hover:bg-electric transition-all duration-300">
-                  <div className="flex flex-col md:w-2/3">
-                    <span className="text-sm font-semibold tracking-widest uppercase mb-4 text-electric group-hover:text-white/70 transition-colors duration-300">{edu.year}</span>
-                    <h3 className="text-3xl md:text-4xl font-serif font-bold text-dark mb-2 group-hover:text-white transition-colors duration-300">{edu.title}</h3>
-                    <div className="text-xl font-medium text-dark/50 mb-4 group-hover:text-white/70 transition-colors duration-300">{edu.place}</div>
-                    <p className="text-lg text-dark/60 leading-relaxed mb-6 group-hover:text-white/80 transition-colors duration-300">{edu.desc}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {edu.tags.map(tag => <span key={tag} className="px-3 py-1 bg-white border border-dark/10 text-dark/70 text-xs font-semibold rounded-full shadow-sm group-hover:border-transparent transition-colors duration-300">{tag}</span>)}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      );
-    };
-
-    const PageTransition = ({ isExiting }) => (
-      <>
-        <motion.div
-          initial={{ y: "0%" }}
-          animate={{ y: "-100%" }}
-          transition={{ duration: 0.8, ease: [0.87, 0, 0.13, 1], delay: 0.2 }}
-          className="fixed inset-0 bg-electric z-[200] flex items-center justify-center pointer-events-none"
-        >
-          <span className="text-white font-sans text-3xl md:text-5xl font-medium tracking-tight">Loading...</span>
-        </motion.div>
-        <motion.div
-          initial={{ y: "100%" }}
-          animate={isExiting ? { y: "0%" } : { y: "100%" }}
-          transition={{ duration: 0.8, ease: [0.87, 0, 0.13, 1] }}
-          className="fixed inset-0 bg-electric z-[200] flex items-center justify-center pointer-events-none"
-        >
-          <span className="text-white font-sans text-3xl md:text-5xl font-medium tracking-tight">Loading...</span>
-        </motion.div>
-      </>
-    );
-
-    const App = () => {
-      const [isExiting, setIsExiting] = useState(false);
+    const Nav = () => {
+      const [scrolled, setScrolled] = useState(false);
 
       useEffect(() => {
-        const handleClick = (e) => {
-          const target = e.target.closest('a');
-          if (target && target.href && !target.hasAttribute('download') && target.getAttribute('target') !== '_blank') {
-            const url = new URL(target.href);
-            if (url.origin === window.location.origin && url.pathname !== window.location.pathname) {
-              e.preventDefault();
-              setIsExiting(true);
-              setTimeout(() => {
-                window.location.href = target.href;
-              }, 800);
-            }
-          }
-        };
-        document.addEventListener('click', handleClick);
-        return () => document.removeEventListener('click', handleClick);
+        const handleScroll = () => setScrolled(window.scrollY > 30);
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
       }, []);
 
+      return (
+        <header className="fixed top-5 left-0 right-0 z-[100] px-4 sm:px-8 pointer-events-none flex justify-center">
+          <nav
+            className={`pointer-events-auto transition-all duration-500 rounded-full flex items-center justify-between px-3 py-2 border ${
+              scrolled
+                ? "bg-white/85 backdrop-blur-xl border-dark/10 shadow-[0_12px_40px_rgba(17,24,39,0.08)]"
+                : "bg-white/75 backdrop-blur-md border-dark/8 shadow-[0_4px_20px_rgba(17,24,39,0.03)]"
+            } w-full max-w-[780px]`}
+          >
+            <a
+              href="index.html"
+              className="flex items-center gap-2.5 pl-3 pr-4 py-1.5 rounded-full hover:bg-offwhite text-dark font-medium text-xs transition-colors"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 text-electric" />
+              <span>Back to Portfolio</span>
+            </a>
+
+            <div className="hidden sm:flex items-center gap-4 text-xs font-mono text-dark/60">
+              <a href="#experience" className="hover:text-electric transition-colors">Experience</a>
+              <span>/</span>
+              <a href="#skills" className="hover:text-electric transition-colors">Stack</a>
+              <span>/</span>
+              <a href="#education" className="hover:text-electric transition-colors">Education</a>
+            </div>
+
+            <a
+              href="assets/resume.pdf"
+              download
+              className="px-4 py-1.5 rounded-full bg-electric text-white hover:bg-electric/90 text-xs font-mono font-medium transition-all flex items-center gap-1.5 shadow-[0_4px_14px_rgba(0,85,255,0.25)]"
+            >
+              <DownloadIcon className="w-3.5 h-3.5" />
+              <span>Download PDF</span>
+            </a>
+          </nav>
+        </header>
+      );
+    };
+
+    const CVDocument = () => {
+      const experience = [
+        {
+          period: "Nov 2026 - Present",
+          role: "Lead AI Engineer",
+          company: "HERE Technologies",
+          domain: "AI Systems",
+          bullets: [
+            "Architecting scalable AI and location-aware data services for global mapping and spatial intelligence workflows.",
+            "Building resilient production pipelines and containerized microservices with modern cloud infrastructure."
+          ],
+          tags: ["Python", "AI Engineering", "AWS"],
+          current: true
+        },
+        {
+          period: "Mar 2023 - Oct 2026",
+          role: "AI Engineer / Data Scientist",
+          company: "iQor",
+          domain: "Enterprise Generative AI & LLMOps",
+          bullets: [
+            "Architected production-grade Retrieval-Augmented Generation (RAG) systems and optimized high-throughput vector search performance.",
+            "Led the architectural transition toward agentic LLM workflows, containerized APIs (FastAPI / Docker), and AWS cloud deployment."
+          ],
+          tags: ["Python", "AWS", "LLMOps", "RAG", "Vector Databases", "FastAPI"]
+        },
+        {
+          period: "Jul 2021 - Feb 2023",
+          role: "Data Scientist",
+          company: "O-I Poland",
+          domain: "Predictive Analytics & MLOps",
+          bullets: [
+            "Developed, deployed, and maintained automated machine learning pipelines for internal global stakeholders on large-scale tabular sales and cost datasets.",
+            "Streamlined feature engineering and model lifecycle monitoring on Microsoft Azure."
+          ],
+          tags: ["Python", "Azure", "MLOps", "Tabular ML", "SQL"]
+        },
+        {
+          period: "Apr 2021 - Jan 2022",
+          role: "Spatial Data Analyst",
+          company: "Heksagon Research",
+          domain: "Civic & Municipal Geoinformatics",
+          bullets: [
+            "Analyzed complex spatial and demographic datasets, producing high-precision visualizations and analytical reports for private, civic, and municipal clients."
+          ],
+          tags: ["Python", "GIS", "SQL", "Spatial Statistics"]
+        }
+      ];
+
+      const skillMatrix = [
+        {
+          category: "AI & Machine Learning",
+          items: ["LLM Orchestration & RAG", "Vector Stores & Embeddings", "Agentic Workflows", "Prompt Engineering", "Computer Vision (CNNs)", "Classical ML"]
+        },
+        {
+          category: "Backend & Infrastructure",
+          items: ["Python (FastAPI, Flask)", "Docker & Containerization", "REST API Architecture", "SQL & Relational Databases", "C# / .NET Utilities", "React & Modern Web"]
+        },
+        {
+          category: "Cloud & DevOps",
+          items: ["Amazon Web Services (AWS)", "Microsoft Azure", "GitHub Actions CI/CD", "Linux Administration", "MLOps & Telemetry"]
+        },
+        {
+          category: "Spatial & Civic Systems",
+          items: ["GIS & Geocomputation", "Transport Network Analysis", "Municipal Data Systems", "Geomorphological Vision Models"]
+        }
+      ];
+
+      const education = [
+        {
+          year: "2022 - 2023",
+          degree: "Master of Science in Geoinformatics",
+          institution: "Adam Mickiewicz University in Poznań",
+          thesis: "Master's thesis focused on Deep Learning and Computer Vision (CNNs) applied to geomorphology and Earth sciences.",
+          tags: ["Computer Vision", "CNN", "Python"]
+        },
+        {
+          year: "2018 - 2022",
+          degree: "Bachelor of Engineering in Geoinformation",
+          institution: "Adam Mickiewicz University in Poznań",
+          thesis: "Engineering thesis focused on creating a Python-based spatial network analysis tool for public transport.",
+          tags: ["Python", "GIS", "Network Analysis"]
+        },
+        {
+          year: "2019 - 2020",
+          degree: "Engineering in Geoinformation (Erasmus+ Exchange)",
+          institution: "Eötvös Loránd University (ELTE), Budapest",
+          thesis: "International coursework in spatial data modeling, cartography, and geocomputation.",
+          tags: ["Python", "GIS", "International Exchange"]
+        }
+      ];
+
+      return (
+        <div className="pt-28 pb-24 px-6 md:px-12 lg:px-20 bg-Swiss-grid">
+          <div className="max-w-[1160px] mx-auto">
+            {/* CV Header Sheet */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="rounded-3xl bg-white border border-dark/10 p-8 md:p-12 shadow-[0_8px_30px_rgba(17,24,39,0.03)] mb-10"
+            >
+              <div className="flex flex-wrap items-center justify-between gap-4 pb-8 mb-8 border-b border-dark/10">
+                <div className="flex items-center gap-3">
+                  <span className="px-3 py-1 rounded-full bg-electric/10 text-electric font-mono text-xs font-semibold uppercase tracking-wider">
+                    Curriculum Vitae
+                  </span>
+                  <span className="font-mono text-xs text-dark/45">Bydgoszcz, Poland</span>
+                </div>
+                <div className="flex items-center gap-3 font-mono text-xs">
+                  <a href="mailto:pacochp@gmail.com" className="text-dark/70 hover:text-electric transition-colors">
+                    pacochp@gmail.com
+                  </a>
+                  <span className="text-dark/20">•</span>
+                  <a href="https://github.com/JPacoch" target="_blank" rel="noopener noreferrer" className="text-dark/70 hover:text-electric transition-colors">
+                    github.com/JPacoch
+                  </a>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+                <div className="lg:col-span-8">
+                  <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl text-dark tracking-tight leading-[1.05] mb-6">
+                    Jakub <em className="text-electric italic font-normal">Pacocha</em>
+                  </h1>
+                  <p className="text-lg md:text-xl text-dark/65 leading-relaxed max-w-2xl">
+                    Full-stack AI engineer with 6+ years of experience building production data systems, RAG architectures, and containerized ML infrastructure. Author of philosophical essays at <em className="font-serif italic text-dark">From the Cabinet</em>.
+                  </p>
+                </div>
+                <div className="lg:col-span-4 flex flex-wrap lg:justify-end gap-3">
+                  <a
+                    href="mailto:pacochp@gmail.com"
+                    className="px-6 py-3.5 rounded-full bg-electric text-white font-medium text-sm flex items-center gap-2 shadow-[0_8px_25px_rgba(0,85,255,0.28)] hover:bg-electric/90 transition-all"
+                  >
+                    <MailIcon />
+                    <span>Contact Direct</span>
+                  </a>
+                  <a
+                    href="assets/resume.pdf"
+                    download
+                    className="px-6 py-3.5 rounded-full bg-offwhite hover:bg-dark hover:text-white text-dark border border-dark/10 font-mono text-xs font-medium flex items-center gap-2 transition-all"
+                  >
+                    <DownloadIcon className="w-4 h-4" />
+                    <span>Save PDF</span>
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Experience Section */}
+            <section id="experience" className="mb-12">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="font-mono text-xs font-semibold text-electric bg-electric/10 px-2.5 py-1 rounded-md">01</span>
+                <h2 className="font-serif text-3xl text-dark font-semibold">Professional Experience</h2>
+              </div>
+
+              <div className="bg-white rounded-3xl border border-dark/10 divide-y divide-dark/10 overflow-hidden shadow-[0_4px_20px_rgba(17,24,39,0.02)]">
+                {experience.map((exp, i) => (
+                  <div key={i} className="p-7 md:p-9 hover:bg-offwhite/50 transition-colors grid grid-cols-1 md:grid-cols-12 gap-6">
+                    <div className="md:col-span-4">
+                      <span className={`inline-block font-mono text-xs font-semibold px-3 py-1 rounded-full mb-3 ${
+                        exp.current ? "bg-electric text-white" : "bg-offwhite border border-dark/10 text-dark/65"
+                      }`}>
+                        {exp.period}
+                      </span>
+                      <div className="text-lg font-semibold text-dark">{exp.company}</div>
+                      <div className="font-mono text-xs text-dark/45 mt-0.5">{exp.domain}</div>
+                    </div>
+
+                    <div className="md:col-span-8">
+                      <h3 className="font-serif text-2xl md:text-3xl text-dark font-semibold mb-4">
+                        {exp.role}
+                      </h3>
+                      <ul className="space-y-2.5 mb-6 text-dark/70 text-sm md:text-base leading-relaxed">
+                        {exp.bullets.map((b, idx) => (
+                          <li key={idx} className="flex items-start gap-3">
+                            <span className="w-1.5 h-1.5 rounded-full bg-electric mt-2 shrink-0" />
+                            <span>{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="flex flex-wrap gap-1.5">
+                        {exp.tags.map(tag => (
+                          <span key={tag} className="px-2.5 py-1 rounded-md bg-offwhite border border-dark/10 font-mono text-[11px] text-dark/70">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Technical Stack Section */}
+            <section id="skills" className="mb-12">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="font-mono text-xs font-semibold text-electric bg-electric/10 px-2.5 py-1 rounded-md">02</span>
+                <h2 className="font-serif text-3xl text-dark font-semibold">Technical Capabilities</h2>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                {skillMatrix.map((group, idx) => (
+                  <div key={idx} className="bg-white rounded-3xl border border-dark/10 p-6 shadow-[0_4px_20px_rgba(17,24,39,0.02)]">
+                    <div className="font-mono text-xs uppercase tracking-wider text-electric font-semibold mb-4 pb-3 border-b border-dark/10">
+                      {group.category}
+                    </div>
+                    <ul className="space-y-2.5">
+                      {group.items.map((item) => (
+                        <li key={item} className="text-sm text-dark/75 flex items-center gap-2.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-electric/60" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Education Section */}
+            <section id="education">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="font-mono text-xs font-semibold text-electric bg-electric/10 px-2.5 py-1 rounded-md">03</span>
+                <h2 className="font-serif text-3xl text-dark font-semibold">Academic Education</h2>
+              </div>
+
+              <div className="bg-white rounded-3xl border border-dark/10 divide-y divide-dark/10 overflow-hidden shadow-[0_4px_20px_rgba(17,24,39,0.02)]">
+                {education.map((edu, idx) => (
+                  <div key={idx} className="p-7 md:p-8 hover:bg-offwhite/50 transition-colors grid grid-cols-1 md:grid-cols-12 gap-6">
+                    <div className="md:col-span-4">
+                      <span className="font-mono text-xs font-semibold text-electric">{edu.year}</span>
+                      <div className="text-sm font-medium text-dark/65 mt-1">{edu.institution}</div>
+                    </div>
+                    <div className="md:col-span-8">
+                      <h3 className="font-serif text-2xl text-dark font-semibold mb-2">{edu.degree}</h3>
+                      <p className="text-sm md:text-base text-dark/65 leading-relaxed mb-4">{edu.thesis}</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {edu.tags.map(t => (
+                          <span key={t} className="px-2.5 py-0.5 rounded-md bg-offwhite border border-dark/10 font-mono text-[11px] text-dark/65">
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
+        </div>
+      );
+    };
+
+    const App = () => {
       useLayoutEffect(() => {
-        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        const lenis = new Lenis({
+          duration: 1.15,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+        });
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
         requestAnimationFrame(raf);
 
         gsap.registerPlugin(ScrollTrigger);
@@ -350,7 +452,6 @@
           });
         };
 
-        // Initialize after a tiny delay to ensure layout is computed
         setTimeout(() => {
           initScrollTrigger();
           ScrollTrigger.refresh();
@@ -369,24 +470,29 @@
       return (
         <div className="bg-white min-h-screen font-sans text-dark selection:bg-electric selection:text-white">
           <div id="blue-bg" className="fixed inset-0 bg-electric z-0 opacity-0 invisible pointer-events-none"></div>
-          <PageTransition isExiting={isExiting} />
-          <Nav isCV={true} />
+          <Nav />
 
-          <main id="main-content" className="bg-white w-full relative z-10 shadow-[0_20px_60px_rgba(0,0,0,0.1)] origin-[50%_100%] overflow-hidden" style={{ willChange: "transform, border-radius" }}>
-            <Hero />
-            <Experience />
-            <Skills />
-            <Education />
+          <main
+            id="main-content"
+            className="bg-white w-full relative z-10 shadow-[0_20px_60px_rgba(0,0,0,0.1)] origin-[50%_100%] overflow-hidden"
+            style={{ willChange: "transform, border-radius" }}
+          >
+            <CVDocument />
           </main>
 
           <div id="footer-spacer" className="min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] w-full pointer-events-none"></div>
 
-          <footer id="footer-container" className="fixed bottom-0 left-0 w-full min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] z-0 flex flex-col justify-end bg-electric text-white overflow-hidden opacity-0 invisible">
+          <footer
+            id="footer-container"
+            className="fixed bottom-0 left-0 w-full min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] z-0 flex flex-col justify-end bg-electric text-white overflow-hidden opacity-0 invisible"
+          >
             <div id="footer-container-inner" className="w-full h-full px-6 md:px-12 lg:px-24 py-16 flex flex-col justify-between">
               <div className="max-w-[1400px] w-full mx-auto flex flex-col h-full justify-between">
                 <div className="pt-8">
                   <div id="contact" className="text-white/60 font-semibold uppercase tracking-widest text-sm mb-4">Contact</div>
-                  <h2 className="font-serif text-5xl md:text-7xl leading-tight mb-8">Open for <br /> <em className="italic font-light">Collaboration</em>.</h2>
+                  <h2 className="font-serif text-5xl md:text-7xl leading-tight mb-8">
+                    Open for <br /> <em className="italic font-light">Collaboration</em>.
+                  </h2>
                   <p className="text-xl text-white/80 mb-12">Want to say hello? Hit me up:</p>
 
                   <div className="flex flex-wrap gap-4">
@@ -414,7 +520,7 @@
           </footer>
         </div>
       );
-    }
+    };
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<App />);

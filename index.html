@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jakub Pacocha | dev & writing</title>
+  <title>Jakub Pacocha — AI Engineer & Writer</title>
   <link rel="icon" type="image/x-icon" href="assets/favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -17,15 +17,16 @@
             offwhite: '#F9FAFB',
           },
           fontFamily: {
-            serif: ['Playfair Display', 'serif'],
-            sans: ['Inter', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
           }
         }
       }
     }
   </script>
   <link
-    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     rel="stylesheet">
 
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
@@ -42,8 +43,11 @@
       margin: 0;
       padding: 0;
       background-color: #ffffff;
+      color: #111827;
       overflow-x: hidden;
       scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     ::-webkit-scrollbar {
@@ -58,6 +62,25 @@
       background: #ffffff;
       border-radius: 4px;
     }
+
+    /* Subtle architectural dot/grid background */
+    .bg-Swiss-grid {
+      background-size: 48px 48px;
+      background-image: 
+        linear-gradient(to right, rgba(17, 24, 39, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(17, 24, 39, 0.035) 1px, transparent 1px);
+    }
+
+    .custom-scrollbar-minimal::-webkit-scrollbar {
+      height: 4px;
+    }
+    .custom-scrollbar-minimal::-webkit-scrollbar-track {
+      background: #F9FAFB;
+    }
+    .custom-scrollbar-minimal::-webkit-scrollbar-thumb {
+      background: rgba(17, 24, 39, 0.15);
+      border-radius: 9999px;
+    }
   </style>
 </head>
 
@@ -69,68 +92,268 @@
     });
   </script>
   <script type="text/babel" data-presets="my-react,env" data-type="module">
-    const { useState, useEffect, useLayoutEffect, useRef } = React;
+    const { useState, useEffect, useLayoutEffect, useRef, useMemo } = React;
     const { motion, AnimatePresence } = window.Motion;
 
     // --- ICONS ---
-    const ArrowRight = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>;
-    const ArrowUpRight = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17L17 7" /><path d="M7 7h10v10" /></svg>;
-    const MenuIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></svg>;
-    const CloseIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>;
-    const MailIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>;
-    const LinkedinIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect width="4" height="12" x="2" y="9" /><circle cx="4" cy="4" r="2" /></svg>;
-    const TwitterIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5 5.96 15.6 7 12c-1.2.3-2.4.2-3.6-.1C2.5 10.6 4 9 4 9c-1.1-.3-2-.9-2.5-1.9 1-.3 2.1-.3 3.1-.1C2.3 5 4 2 4 2c1.6 2 4 4 7.4 4.5 0-1.1.5-2.2 1.5-2.9 1.4-1.1 3.5-.8 4.6.5 1.1-.2 2.1-.7 3-1.2-.4 1.1-1.1 2-2 2.7 1-.1 1.9-.4 2.8-.8Z" /></svg>;
-    const GithubIcon = () => <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" /></svg>;
+    const ArrowRight = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+      </svg>
+    );
+    const ArrowUpRight = ({ className = "w-5 h-5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M7 17L17 7" /><path d="M7 7h10v10" />
+      </svg>
+    );
+    const DownloadIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" />
+      </svg>
+    );
+    const MenuIcon = () => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" />
+      </svg>
+    );
+    const CloseIcon = () => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    );
+    const MailIcon = () => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+      </svg>
+    );
+    const LinkedinIcon = () => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect width="4" height="12" x="2" y="9" /><circle cx="4" cy="4" r="2" />
+      </svg>
+    );
+    const TwitterIcon = () => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5 5.96 15.6 7 12c-1.2.3-2.4.2-3.6-.1C2.5 10.6 4 9 4 9c-1.1-.3-2-.9-2.5-1.9 1-.3 2.1-.3 3.1-.1C2.3 5 4 2 4 2c1.6 2 4 4 7.4 4.5 0-1.1.5-2.2 1.5-2.9 1.4-1.1 3.5-.8 4.6.5 1.1-.2 2.1-.7 3-1.2-.4 1.1-1.1 2-2 2.7 1-.1 1.9-.4 2.8-.8Z" />
+      </svg>
+    );
+    const GithubIcon = () => (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" />
+      </svg>
+    );
 
-    // --- COMPONENTS ---
-    const Nav = ({ isCV }) => {
+    // Custom Technical SVG Icons for Capabilities
+    const RagArchitectureSvg = () => (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="12 2 2 7 12 12 22 7 12 2" />
+        <polyline points="2 17 12 22 22 17" />
+        <polyline points="2 12 12 17 22 12" />
+      </svg>
+    );
+    const InfraSvg = () => (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
+        <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
+        <line x1="6" y1="6" x2="6.01" y2="6" />
+        <line x1="6" y1="18" x2="6.01" y2="18" />
+      </svg>
+    );
+    const CloudOpsSvg = () => (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
+      </svg>
+    );
+    const SpatialSvg = () => (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+        <path d="M2 12h20" />
+      </svg>
+    );
+
+    // --- LIVE LOCAL TIME HOOK ---
+    const useBydgoszczTime = () => {
+      const [time, setTime] = useState("");
+      useEffect(() => {
+        const update = () => {
+          try {
+            const fmt = new Intl.DateTimeFormat('en-GB', {
+              timeZone: 'Europe/Warsaw',
+              hour: '2-digit',
+              minute: '2-digit',
+              second: '2-digit',
+              hour12: false
+            });
+            setTime(fmt.format(new Date()) + " CET");
+          } catch (e) {
+            setTime("53°07'N 18°00'E");
+          }
+        };
+        update();
+        const id = setInterval(update, 1000);
+        return () => clearInterval(id);
+      }, []);
+      return time;
+    };
+
+    // --- SECTION HEADER COMPONENT ---
+    const SectionHeader = ({ index, label, title, italicTitle, subtitle, rightElement }) => (
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-12 mb-14 border-b border-dark/10">
+        <div>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="font-mono text-xs font-semibold text-electric bg-electric/8 px-2.5 py-1 rounded-md border border-electric/15">
+              {index}
+            </span>
+            <span className="font-mono text-xs uppercase tracking-[0.2em] text-dark/50 font-medium">
+              {label}
+            </span>
+          </div>
+          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl text-dark leading-[1.08] tracking-[-0.02em]">
+            {title} {italicTitle && <em className="text-electric italic font-normal">{italicTitle}</em>}
+          </h2>
+        </div>
+        {rightElement ? (
+          <div className="shrink-0">{rightElement}</div>
+        ) : subtitle ? (
+          <p className="text-base md:text-lg text-dark/60 max-w-md leading-relaxed font-normal">
+            {subtitle}
+          </p>
+        ) : null}
+      </div>
+    );
+
+    // --- FLOATING NAVIGATION BAR ---
+    const Nav = () => {
       const [isOpen, setIsOpen] = useState(false);
-      const links = isCV
-        ? [
-          { name: "Main Page", href: "index.html" },
-          { name: "Experience", href: "#experience" },
-          { name: "Skills", href: "#skills" },
-          { name: "Education", href: "#education" }
-        ]
-        : [
-          { name: "About", href: "#about" },
-          { name: "Skills", href: "#skills" },
-          { name: "Writing", href: "#writing" },
-          { name: "My CV", href: "cv.html" }
-        ];
+      const [activeSection, setActiveSection] = useState("hero");
+      const [scrolled, setScrolled] = useState(false);
+
+      const links = [
+        { id: "about", name: "About", href: "#about" },
+        { id: "projects", name: "Projects", href: "#projects" },
+        { id: "writing", name: "Writing", href: "#writing" },
+      ];
+
+      useEffect(() => {
+        const handleScroll = () => {
+          setScrolled(window.scrollY > 30);
+          const sections = ["writing", "projects", "about", "hero"];
+          const scrollPos = window.scrollY + 240;
+          for (const secId of sections) {
+            const el = document.getElementById(secId);
+            if (el && scrollPos >= el.offsetTop) {
+              setActiveSection(secId);
+              break;
+            }
+          }
+        };
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        return () => window.removeEventListener("scroll", handleScroll);
+      }, []);
 
       return (
         <>
-          <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] px-2 py-2 pr-6 bg-white/70 backdrop-blur-xl border border-dark/5 rounded-full flex items-center justify-between shadow-[0_8px_30px_rgba(0,0,0,0.04)] w-[90%] md:w-auto">
-            <div className="flex items-center gap-3 pl-4">
-              <span className="w-2.5 h-2.5 bg-electric rounded-full"></span>
-              <span className="font-bold tracking-tight text-dark">JP</span>
-            </div>
-            <div className="hidden md:flex gap-6 text-sm font-semibold text-dark/60 ml-8">
-              {links.map(l => (
-                <a key={l.name} href={l.href} className="hover:text-electric transition-colors">{l.name}</a>
-              ))}
-            </div>
-            <button onClick={() => setIsOpen(!isOpen)} className="md:hidden p-2 rounded-full bg-offwhite border border-dark/5 hover:bg-gray-200 transition-colors ml-4">
-              {isOpen ? <CloseIcon /> : <MenuIcon />}
-            </button>
-          </nav>
+          <header className="fixed top-5 left-0 right-0 z-[100] px-4 sm:px-8 pointer-events-none flex justify-center">
+            <nav
+              className={`pointer-events-auto transition-all duration-500 rounded-full flex items-center justify-between px-3 py-2 border ${
+                scrolled
+                  ? "bg-white/85 backdrop-blur-xl border-dark/10 shadow-[0_12px_40px_rgba(17,24,39,0.08)]"
+                  : "bg-white/70 backdrop-blur-md border-dark/8 shadow-[0_4px_20px_rgba(17,24,39,0.03)]"
+              } w-full max-w-[780px]`}
+            >
+              <a
+                href="#hero"
+                className="flex items-center gap-2.5 pl-3 pr-4 py-1 rounded-full hover:bg-offwhite transition-colors group"
+              >
+                <span className="h-2.5 w-2.5 rounded-full bg-electric shrink-0"></span>
+                <span className="font-bold tracking-tight text-dark text-sm">Jakub Pacocha</span>
+              </a>
+
+              <div className="hidden md:flex items-center gap-1 bg-offwhite/80 p-1 rounded-full border border-dark/5">
+                {links.map((l) => {
+                  const isActive = activeSection === l.id;
+                  return (
+                    <a
+                      key={l.id}
+                      href={l.href}
+                      className={`relative px-4 py-1.5 text-xs font-medium rounded-full transition-colors duration-200 ${
+                        isActive ? "text-white" : "text-dark/65 hover:text-dark"
+                      }`}
+                    >
+                      {isActive && (
+                        <motion.span
+                          layoutId="navIndicator"
+                          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                          className="absolute inset-0 bg-electric rounded-full -z-10 shadow-[0_2px_10px_rgba(0,85,255,0.3)]"
+                        />
+                      )}
+                      {l.name}
+                    </a>
+                  );
+                })}
+              </div>
+
+              <div className="hidden md:flex items-center gap-2 pr-1">
+                <a
+                  href="cv.html"
+                  className="px-4 py-1.5 rounded-full text-xs font-semibold text-dark/80 hover:text-electric hover:bg-electric/5 border border-dark/10 hover:border-electric/30 transition-all flex items-center gap-1.5"
+                >
+                  <span>Full CV</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                aria-label="Toggle Menu"
+                className="md:hidden p-2 rounded-full bg-offwhite border border-dark/10 text-dark hover:border-electric hover:text-electric transition-colors"
+              >
+                {isOpen ? <CloseIcon /> : <MenuIcon />}
+              </button>
+            </nav>
+          </header>
 
           <AnimatePresence>
             {isOpen && (
               <motion.div
-                initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-                className="fixed inset-0 z-[90] bg-white/80 backdrop-blur-xl pt-32 px-8 flex flex-col gap-8 items-center justify-center pb-20"
+                initial={{ opacity: 0, y: -12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.25 }}
+                className="fixed inset-x-4 top-20 z-[95] bg-white/95 backdrop-blur-2xl rounded-3xl border border-dark/10 shadow-2xl p-6 flex flex-col gap-3 md:hidden"
               >
                 {links.map((l, i) => (
                   <motion.a
-                    key={l.name} href={l.href} onClick={() => setIsOpen(false)}
-                    initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}
-                    className="text-3xl md:text-4xl font-sans font-medium tracking-tight text-dark hover:text-electric transition-colors flex items-center gap-3"
+                    key={l.name}
+                    href={l.href}
+                    onClick={() => setIsOpen(false)}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                    className="px-4 py-3 rounded-2xl text-lg font-medium text-dark hover:bg-electric hover:text-white transition-colors flex items-center justify-between"
                   >
-                    {l.name}
+                    <span>{l.name}</span>
+                    <ArrowRight className="w-4 h-4 opacity-60" />
                   </motion.a>
                 ))}
+                <div className="h-[1px] bg-dark/10 my-1" />
+                <div className="flex gap-3">
+                  <a
+                    href="cv.html"
+                    className="flex-1 py-3 px-4 rounded-2xl bg-electric text-white font-semibold text-sm flex items-center justify-center gap-2"
+                  >
+                    <span>Open Full CV</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </a>
+                  <a
+                    href="assets/resume.pdf"
+                    download
+                    className="py-3 px-4 rounded-2xl bg-offwhite border border-dark/10 text-dark font-semibold text-sm flex items-center justify-center gap-2"
+                  >
+                    <DownloadIcon className="w-4 h-4" />
+                    <span>PDF</span>
+                  </a>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
@@ -138,151 +361,320 @@
       );
     };
 
+    // --- ROTATING WORDS IN HERO ---
     const RotatingWords = () => {
-      const words = ["digital world", "HERE Technologies", "local NGOs", "mind & soul"];
+      const items = [
+        { text: "HERE Technologies", tag: "Spatial & AI Engineering" },
+        { text: "the digital world", tag: "Full-Stack ML Systems" },
+        { text: "local NGOs", tag: "Civic Tech & Urban Impact" },
+        { text: "mind & soul", tag: "Philosophy & Essays" }
+      ];
       const [index, setIndex] = useState(0);
 
       useEffect(() => {
-        let timeout;
-        const tick = () => {
-          timeout = setTimeout(() => {
-            if (document.visibilityState === 'visible') {
-              setIndex(prev => (prev + 1) % words.length);
-            }
-            tick();
-          }, 2500);
-        };
-        tick();
-        return () => clearTimeout(timeout);
+        const interval = setInterval(() => {
+          if (document.visibilityState === "visible") {
+            setIndex((prev) => (prev + 1) % items.length);
+          }
+        }, 2800);
+        return () => clearInterval(interval);
       }, []);
 
       return (
-        <span className="inline-grid align-bottom h-[1.1em]" style={{ clipPath: 'inset(0 0 -0.5em 0)' }}>
-          <AnimatePresence>
-            <motion.span
-              key={index}
-              initial={{ y: "100%", opacity: 0 }}
-              animate={{ y: "0%", opacity: 1 }}
-              exit={{ y: "-100%", opacity: 0 }}
-              transition={{ duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }}
-              className="col-start-1 row-start-1 text-electric italic pr-4 font-light whitespace-nowrap"
-            >
-              {words[index]}
-            </motion.span>
-          </AnimatePresence>
+        <span className="inline-flex flex-wrap items-baseline gap-x-4 align-baseline">
+          <span className="relative inline-grid overflow-hidden align-bottom py-2 -my-2" style={{ clipPath: 'inset(0 0 -0.45em 0)' }}>
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={index}
+                initial={{ y: "90%", opacity: 0, filter: "blur(4px)" }}
+                animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
+                exit={{ y: "-90%", opacity: 0, filter: "blur(4px)" }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                className="col-start-1 row-start-1 text-electric italic font-serif font-normal pr-2 pb-1"
+              >
+                {items[index].text}
+              </motion.span>
+            </AnimatePresence>
+          </span>
         </span>
       );
     };
 
-    const Hero = () => (
-      <section className="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 pt-32 pb-20 max-w-[1400px] mx-auto relative border-b border-dark/5">
-        <div className="max-w-5xl relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="flex items-center gap-4 mb-12">
-            <div className="w-12 h-[1px] bg-dark/20"></div>
-            <span className="text-sm font-semibold tracking-widest uppercase text-dark/50">Jakub Pacocha</span>
-          </motion.div>
+    // --- HERO SECTION ---
+    const Hero = () => {
+      const localTime = useBydgoszczTime();
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
-            className="font-serif text-[3.5rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6.5rem] leading-[1.05] tracking-[-0.03em] text-dark mb-10"
-          >
-            I build things <br /> for <RotatingWords /> <br /> & write about them.
-          </motion.h1>
-
-          <div className="flex flex-col md:flex-row gap-8 md:items-end justify-between mt-16">
-            <motion.p
-              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: [0.34, 1.56, 0.64, 1] }}
-              className="font-sans text-xl md:text-2xl text-dark/60 max-w-xl leading-relaxed font-light"
-            >
-              Full-stack AI engineer and hobbyist writer specializing in RAG architectures and scalable ML infrastructure. Based in Bydgoszcz, Poland.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
-              className="flex items-center gap-4"
-            >
-              <a href="#about" className="w-16 h-16 rounded-full border border-dark/20 flex items-center justify-center hover:bg-electric hover:border-electric hover:text-white transition-colors duration-300">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M19 12l-7 7-7-7" /></svg>
-              </a>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-    );
-
-    const About = () => (
-      <section id="about" className="px-6 md:px-12 lg:px-24 py-32 bg-white">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="mb-20">
-            <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">About Me</div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
-            <div className="md:col-span-8">
-              <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl text-dark leading-[1.2] mb-12">
-                Scaling solutions, <em className="text-electric italic font-light">grounding ideas.</em>
-              </h2>
-              <div className="text-xl md:text-2xl text-dark/60 leading-relaxed font-sans max-w-2xl space-y-8 font-light">
-                <p><strong className="text-dark font-medium">I'm a full-stack AI engineer with over 5 years of hands-on experience </strong>building ML and AI-based solutions. When I'm not writing code, I'm writing essays - exploring the intersection of <em className="text-electric italic font-light">philosophy, theology and sociology.</em></p>
-                <p><strong className="text-dark font-medium">Every data tells a story</strong>. I build the digital layers that make sense of that data. As a Full-Stack AI Engineer, I don't just build and use models; I build the infrastructure - dockerized, hosted, and ready for production.</p>
-                <p>Beyond the IDE, <strong className="text-dark font-medium">I’m deeply invested in my local community</strong>. Whether it’s collaborating with NGOs or navigating municipal structures to improve urban life, I believe technology should serve the public good.</p>
-              </div>
-            </div>
-
-            <div className="md:col-span-4 flex flex-col gap-12 md:pl-12 md:border-l border-dark/10 mt-12 md:mt-0">
-              <div>
-                <div className="text-6xl font-serif text-electric mb-2">6+</div>
-                <div className="text-sm font-semibold tracking-widest uppercase text-dark/50">Years of Experience</div>
-              </div>
-              <div>
-                <div className="text-6xl font-serif text-dark mb-2">4+</div>
-                <div className="text-sm font-semibold tracking-widest uppercase text-dark/50">Years with AI</div>
-              </div>
-              <div>
-                <div className="text-6xl font-serif text-dark mb-2">6.5k</div>
-                <div className="text-sm font-semibold tracking-widest uppercase text-dark/50">Words Published</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-
-    const Skills = () => {
-      const skillsData = [
-        { icon: "🖥️", title: "Generative AI & RAG", desc: "Utilizing LLMs and ML techniques for data analysis, serving AI-based apps and services.", tags: ["Python", "Vector stores", "Prompt Engineering"] },
-        { icon: "⚙️", title: "Full-Stack AI Infra", desc: "Productization of AI and ML workflows via containerization and cloud orchestration.", tags: ["Docker", "FastAPI", "Flask"] },
-        { icon: "☁️", title: "Cloud & DevOps", desc: "Deploying and maintaining infrastructure, containerization & monitoring on cloud.", tags: ["AWS", "Azure", "GitHub Actions"] },
-        { icon: "🗺️", title: "Spatial & Civic Tech", desc: "Leveraging GIS and Computer Vision backgrounds for municipal and social impact.", tags: ["GIS", "Computer Vision", "Spatial Data"] }
+      const stats = [
+        { id: "01", value: "6+", label: "Years in Data & Software", detail: "Production systems & pipelines" },
+        { id: "02", value: "4+", label: "Years Building AI / ML", detail: "RAG, LLMOps & Computer Vision" },
+        { id: "03", value: "8.5k+", label: "Words Published", detail: "Phenomenology, theology & society" },
+        { id: "04", value: "🇵🇱 PL", label: "Bydgoszcz, Poland", detail: "Civic tech & NGO contributor" }
       ];
 
       return (
-        <section id="skills" className="px-6 md:px-12 lg:px-24 py-32 bg-offwhite relative">
-          <div className="max-w-[1400px] mx-auto relative z-10">
-            <div className="mb-16">
-              <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">Capabilities</div>
-              <h2 className="font-serif text-5xl md:text-7xl text-dark leading-tight">Tools &amp; <em className="text-electric italic font-light">expertise</em></h2>
+        <section
+          id="hero"
+          className="relative min-h-screen flex flex-col justify-between pt-28 pb-16 px-6 md:px-12 lg:px-20 bg-Swiss-grid border-b border-dark/10 overflow-hidden"
+        >
+          {/* Subtle Ambient Radial Highlight */}
+          <div
+            className="pointer-events-none absolute -top-40 right-0 w-[650px] h-[650px] rounded-full opacity-40 blur-3xl"
+            style={{ background: "radial-gradient(circle, rgba(0,85,255,0.12) 0%, rgba(255,255,255,0) 70%)" }}
+          />
+
+          <div className="max-w-[1360px] w-full mx-auto relative z-10 flex-1 flex flex-col justify-between">
+            {/* Top Telemetry Bar */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="flex flex-wrap items-center justify-between gap-4 py-4 border-b border-dark/10 text-xs font-mono text-dark/55"
+            >
+              <div className="flex items-center gap-3">
+                <span className="px-2.5 py-0.5 rounded-full bg-electric/10 text-electric font-semibold uppercase tracking-wider">
+                  AI Engineer
+                </span>
+                <span className="hidden sm:inline text-dark/25">/</span>
+                <span className="hidden sm:inline">RAG Architectures • Scalable ML • Spatial Systems</span>
+              </div>
+              <div className="flex items-center gap-4">
+                <span className="hidden md:inline text-dark/40">53°07′N 18°00′E</span>
+                <span className="px-2.5 py-0.5 rounded-md bg-offwhite border border-dark/10 text-dark/70">
+                  {localTime}
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Main Editorial Headline */}
+            <div className="my-auto py-14 md:py-20">
+              <motion.h1
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+                className="font-serif text-[2.85rem] sm:text-[4.25rem] md:text-[5.25rem] lg:text-[6.2rem] leading-[1.04] tracking-[-0.03em] text-dark max-w-5xl"
+              >
+                I architect systems for <br className="hidden sm:inline" />
+                <RotatingWords /> <br />
+                &amp; write about them.
+              </motion.h1>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.75, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                className="mt-10 md:mt-14 flex flex-col lg:flex-row lg:items-end justify-between gap-8"
+              >
+                <p className="font-sans text-lg md:text-xl text-dark/65 max-w-2xl leading-relaxed font-normal">
+                  Full-stack AI engineer specializing in production <strong className="text-dark font-medium">RAG architectures</strong>,{" "}
+                  <strong className="text-dark font-medium">containerized ML infrastructure</strong>, and{" "}
+                  <strong className="text-dark font-medium">spatial intelligence</strong>. Outside the terminal, I write philosophical essays on phenomenology, theology, and society.
+                </p>
+
+                <div className="flex flex-wrap items-center gap-3.5 shrink-0">
+                  <a
+                    href="#projects"
+                    className="group px-6 py-3.5 rounded-full bg-electric text-white font-medium text-sm flex items-center gap-2.5 shadow-[0_8px_25px_rgba(0,85,255,0.28)] hover:shadow-[0_12px_32px_rgba(0,85,255,0.4)] hover:-translate-y-0.5 transition-all duration-300"
+                  >
+                    <span>Explore Side Projects</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                  <a
+                    href="#writing"
+                    className="px-6 py-3.5 rounded-full bg-white hover:bg-offwhite text-dark border border-dark/15 hover:border-dark/30 font-medium text-sm transition-all duration-300"
+                  >
+                    Read my Blog
+                  </a>
+                  <a
+                    href="assets/resume.pdf"
+                    download
+                    className="px-5 py-3.5 rounded-full bg-offwhite hover:bg-electric/10 text-dark/75 hover:text-electric border border-dark/10 hover:border-electric/25 font-mono text-xs font-medium flex items-center gap-2 transition-all duration-300"
+                  >
+                    <DownloadIcon className="w-3.5 h-3.5" />
+                    <span>CV.pdf</span>
+                  </a>
+                </div>
+              </motion.div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {skillsData.map((skill, i) => (
-                <motion.div key={i} whileHover={{ y: -8, scale: 1.01 }} transition={{ type: "spring", stiffness: 300, damping: 20 }} className="group bg-white hover:bg-electric transition-colors duration-500 rounded-[2rem] p-10 md:p-12 shadow-[0_8px_30px_rgba(0,0,0,0.02)] border border-dark/5 flex flex-col cursor-crosshair">
-                  <div className="w-16 h-16 bg-offwhite rounded-2xl flex items-center justify-center text-3xl mb-8 group-hover:bg-white/20 transition-colors duration-500 shadow-sm">{skill.icon}</div>
-                  <h3 className="text-3xl font-serif font-bold text-dark group-hover:text-white transition-colors mb-4">{skill.title}</h3>
-                  <p className="text-lg text-dark/60 group-hover:text-white/80 transition-colors mb-10 leading-relaxed">{skill.desc}</p>
-                  <div className="flex flex-wrap gap-2 mt-auto">
-                    {skill.tags.map(tag => (
-                      <span key={tag} className="px-4 py-2 bg-offwhite group-hover:bg-white/20 group-hover:text-white text-dark/80 text-sm font-semibold rounded-full transition-colors">{tag}</span>
-                    ))}
+
+            {/* Bottom Architectural Metrics Grid */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.25 }}
+              className="grid grid-cols-2 lg:grid-cols-4 bg-white/90 backdrop-blur-md border border-dark/10 rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(17,24,39,0.03)]"
+            >
+              {stats.map((s, idx) => (
+                <div
+                  key={s.id}
+                  className={`p-5 md:p-6 flex flex-col justify-between transition-colors hover:bg-offwhite/80 ${
+                    idx !== stats.length - 1 ? "border-b lg:border-b-0 border-r border-dark/10" : ""
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="font-mono text-[11px] text-dark/35">{s.id}</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-electric/60"></span>
                   </div>
-                </motion.div>
+                  <div>
+                    <div className="font-serif text-3xl md:text-4xl text-dark tracking-tight mb-1">{s.value}</div>
+                    <div className="text-xs font-semibold text-dark/80 uppercase tracking-wider">{s.label}</div>
+                    <div className="text-xs text-dark/45 mt-0.5">{s.detail}</div>
+                  </div>
+                </div>
               ))}
+            </motion.div>
+          </div>
+        </section>
+      );
+    };
+
+    // --- ABOUT & EXPERTISE SECTION ---
+    const AboutAndCapabilities = () => {
+      const skillsData = [
+        {
+          id: "01",
+          icon: <RagArchitectureSvg />,
+          title: "Generative AI & RAG",
+          desc: "Retrieval-augmented generation, embeddings, vector indexing, and LLM orchestration to build grounded AI applications.",
+          tags: ["Python", "Vector Stores", "LLMOps", "RAG"]
+        },
+        {
+          id: "02",
+          icon: <InfraSvg />,
+          title: "Full-Stack AI Infra",
+          desc: "Productizing models and pipelines via containerized microservices, streaming REST endpoints, and backend architectures.",
+          tags: ["Docker", "FastAPI", "Flask", "React", "K8s"]
+        },
+        {
+          id: "03",
+          icon: <CloudOpsSvg />,
+          title: "Cloud & DevOps",
+          desc: "Deploying and managing production systems, automated CI/CD workflows, and infrastructure monitoring on cloud providers.",
+          tags: ["AWS", "Azure", "GitHub Actions", "CI/CD"]
+        },
+        {
+          id: "04",
+          icon: <SpatialSvg />,
+          title: "Spatial & Civic Data",
+          desc: "Spatial data analysis, GIS tool development, and computer vision models applied to geomorphology and civic datasets.",
+          tags: ["GIS", "Computer Vision", "Spatial SQL", "Python"]
+        }
+      ];
+
+      return (
+        <section id="about" className="px-6 md:px-12 lg:px-20 py-24 bg-white border-b border-dark/10">
+          <div className="max-w-[1360px] mx-auto">
+            {/* Top Section Intro */}
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-12 mb-14 border-b border-dark/10">
+              <div>
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="font-mono text-xs font-semibold text-electric bg-electric/10 px-2.5 py-1 rounded-md border border-electric/15">
+                    01
+                  </span>
+                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-dark/50 font-medium">
+                    Profile &amp; Focus
+                  </span>
+                </div>
+                <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl text-dark leading-[1.08] tracking-[-0.02em]">
+                  Engineering systems &amp; <em className="text-electric italic font-normal">capabilities</em>.
+                </h2>
+              </div>
+              <p className="text-base md:text-lg text-dark/60 max-w-md leading-relaxed font-normal">
+                Hands-on AI and software engineering, building production-grade architectures and practical data solutions.
+              </p>
+            </div>
+
+            {/* Main Content Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              {/* Left Column: Straightforward summary */}
+              <div className="lg:col-span-5 space-y-6">
+                <div className="p-8 rounded-3xl bg-offwhite border border-dark/10 space-y-6">
+                  <div>
+                    <span className="font-mono text-xs font-semibold text-electric uppercase tracking-wider block mb-2">
+                      Background
+                    </span>
+                    <h3 className="font-serif text-2xl text-dark font-medium leading-snug">
+                      6+ years across data science, AI engineering, and spatial systems.
+                    </h3>
+                  </div>
+
+                  <p className="text-sm md:text-base text-dark/70 leading-relaxed font-normal">
+                    I currently work as an AI / Software Engineer at <strong>HERE Technologies</strong>. Previously at <strong>iQor</strong> and <strong>O-I Poland</strong>, I have built and maintained end-to-end ML and RAG services - from vector search pipelines to containerized APIs deployed on AWS and Azure.
+                  </p>
+
+                  <p className="text-sm md:text-base text-dark/70 leading-relaxed font-normal">
+                    With an academic foundation in Geoinformatics and computer vision, I have also build software utilities and civic archives with local NGOs in Bydgoszcz, and published essays on independent topics at <em>From the Cabinet</em>.
+                  </p>
+
+                  <div className="pt-4 border-t border-dark/10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+                    <span className="text-dark/45 uppercase tracking-wider">Current Stack</span>
+                    <span className="text-dark font-semibold">Python • RAG / LLMOps • AWS</span>
+                  </div>
+                </div>
+
+                <div className="p-6 rounded-3xl border border-dark/10 flex items-center justify-between bg-white">
+                  <div>
+                    <div className="text-sm font-semibold text-dark">Need complete job history?</div>
+                    <div className="text-xs text-dark/50 font-mono mt-0.5">Timeline, companies, education</div>
+                  </div>
+                  <a
+                    href="cv.html"
+                    className="px-4 py-2 rounded-full bg-electric text-white text-xs font-semibold hover:bg-electric/90 transition-colors flex items-center gap-1.5 shrink-0"
+                  >
+                    <span>View CV</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Right Column: 4 Capability Cards in a Clean 2x2 Grid */}
+              <div id="skills" className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                {skillsData.map((item) => (
+                  <div
+                    key={item.id}
+                    className="group rounded-3xl bg-white hover:bg-offwhite/50 p-7 border border-dark/10 hover:border-electric/30 transition-all duration-200 flex flex-col justify-between"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-5">
+                        <div className="w-11 h-11 rounded-2xl bg-offwhite group-hover:bg-electric group-hover:text-white text-electric border border-dark/10 group-hover:border-electric flex items-center justify-center transition-colors duration-200">
+                          {item.icon}
+                        </div>
+                        <span className="font-mono text-xs font-semibold text-dark/30">
+                          /{item.id}
+                        </span>
+                      </div>
+
+                      <h4 className="font-serif text-xl font-semibold text-dark mb-2 group-hover:text-electric transition-colors">
+                        {item.title}
+                      </h4>
+                      <p className="text-xs md:text-sm text-dark/65 leading-relaxed mb-6">
+                        {item.desc}
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-1.5 pt-4 border-t border-dark/8">
+                      {item.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2.5 py-0.5 rounded-md bg-offwhite border border-dark/8 text-dark/70 font-mono text-[11px]"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
       );
     };
 
+    // --- GITHUB TELEMETRY MODULE ---
     const GithubActivity = () => {
       const [data, setData] = useState(null);
       const [loading, setLoading] = useState(true);
+      const [hoveredDay, setHoveredDay] = useState(null);
 
       useEffect(() => {
         fetch('https://github-contributions-api.jogruber.de/v4/JPacoch?y=last')
@@ -338,77 +730,79 @@
       };
 
       return (
-        <section id="github" className="px-6 md:px-12 lg:px-24 py-32 bg-white relative">
-          <div className="max-w-[1400px] mx-auto relative z-10">
-            <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-dark/5 pb-12">
-              <div>
-                <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">GitHub</div>
-                <h2 className="font-serif text-5xl md:text-7xl text-dark leading-tight mb-4">Code <em className="text-electric italic font-light">pulse</em></h2>
-                <div className="flex items-center gap-6 text-[10px] font-bold uppercase tracking-[0.2em]">
-                  <span className="flex items-center gap-2 text-dark/40">
-                    <div className="w-1.5 h-1.5 rounded-full bg-electric animate-pulse"></div>
-                    {data.total} Contributions
-                  </span>
-                  <span className="w-1 h-1 rounded-full bg-dark/10"></span>
-                  <a
-                    href="https://github.com/JPacoch"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center gap-1 text-dark hover:text-electric transition-all duration-300 border-b border-dark/10 hover:border-electric pb-0.5"
-                  >
-                    @JPacoch
-                    <span className="opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300 transform scale-[0.6] origin-left">
-                      <ArrowUpRight />
-                    </span>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div className="py-2">
-              <div className="flex gap-3 md:gap-5">
-                <div className="flex flex-col justify-between py-[1px] text-[7px] md:text-[8px] font-bold text-dark/20 uppercase tracking-widest h-[102px] md:h-[116px] shrink-0 pt-[2px] pb-[4px]">
-                  <span>Mon</span>
-                  <span>Sun</span>
-                </div>
-                <div className="overflow-x-auto pb-4 custom-scrollbar-minimal">
-                  <div className="flex gap-[3px] min-w-max">
-                    {weeks.map((week, i) => (
-                      <div key={i} className="flex flex-col gap-[3px]">
-                        {week.map((day, j) => {
-                          if (!day) return <div key={`empty-${i}-${j}`} className="w-3 md:w-3.5 h-3 md:h-3.5" />;
-
-                          const activeLevel = (day.level === 0 && day.count > 0)
-                            ? getCalculatedLevel(day.count)
-                            : day.level;
-
-                          return (
-                            <motion.div
-                              key={day.date}
-                              initial={{ opacity: 0 }}
-                              whileInView={{ opacity: 1 }}
-                              transition={{ delay: (i * 0.005), duration: 0.2 }}
-                              className="w-3 md:w-3.5 h-3 md:h-3.5 rounded-[1px] transition-colors duration-300"
-                              style={{ backgroundColor: levelColors[activeLevel] }}
-                            />
-                          );
-                        })}
-                      </div>
-                    ))}
+        <section id="github" className="px-6 md:px-12 lg:px-20 py-16 bg-offwhite border-b border-dark/10">
+          <div className="max-w-[1360px] mx-auto">
+            <div className="bg-white rounded-3xl border border-dark/10 p-6 sm:p-8 md:p-10 shadow-[0_4px_20px_rgba(17,24,39,0.02)]">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 mb-6 border-b border-dark/10">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-electric/10 text-electric flex items-center justify-center">
+                    <GithubIcon />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2.5">
+                      <h3 className="font-serif text-2xl text-dark font-semibold">Code <em className="text-electric italic font-normal">Pulse</em></h3>
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-electric/10 text-electric font-mono text-[11px] font-semibold">
+                        <span className="w-1.5 h-1.5 rounded-full bg-electric animate-pulse"></span>
+                        {data.total} commits (12m)
+                      </span>
+                    </div>
+                    <p className="text-xs font-mono text-dark/50 mt-0.5">
+                      {hoveredDay
+                        ? `${hoveredDay.count} contribution${hoveredDay.count === 1 ? '' : 's'} on ${hoveredDay.date}`
+                        : "Rolling 52-week open-source & engineering activity"}
+                    </p>
                   </div>
                 </div>
+
+                <a
+                  href="https://github.com/JPacoch"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="self-start md:self-auto px-4 py-2 rounded-full bg-offwhite hover:bg-electric hover:text-white border border-dark/10 hover:border-electric text-xs font-mono font-medium text-dark transition-all flex items-center gap-2"
+                >
+                  <span>github.com/JPacoch</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
               </div>
 
-              <div className="mt-4 flex items-center gap-8 text-[9px] font-bold text-dark/20 uppercase tracking-[0.2em]">
-                <div className="flex items-center gap-3">
+              <div className="overflow-x-auto pb-2 custom-scrollbar-minimal">
+                <div className="flex gap-[3.5px] min-w-max">
+                  {weeks.map((week, i) => (
+                    <div key={i} className="flex flex-col gap-[3.5px]">
+                      {week.map((day, j) => {
+                        if (!day) return <div key={`empty-${i}-${j}`} className="w-3.5 h-3.5" />;
+
+                        const activeLevel = (day.level === 0 && day.count > 0)
+                          ? getCalculatedLevel(day.count)
+                          : day.level;
+
+                        return (
+                          <div
+                            key={day.date}
+                            onMouseEnter={() => setHoveredDay(day)}
+                            onMouseLeave={() => setHoveredDay(null)}
+                            className="w-3.5 h-3.5 rounded-[3px] transition-transform duration-150 hover:scale-125 cursor-pointer"
+                            style={{ backgroundColor: levelColors[activeLevel] }}
+                            title={`${day.count} contributions on ${day.date}`}
+                          />
+                        );
+                      })}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-4 pt-4 border-t border-dark/5 flex flex-wrap items-center justify-between gap-4 text-[11px] font-mono text-dark/45">
+                <span>Hover any cell to inspect daily commit telemetry</span>
+                <div className="flex items-center gap-2">
                   <span>Less</span>
                   <div className="flex gap-1">
-                    {levelColors.map(c => <div key={c} className="w-2 h-2 rounded-[1px]" style={{ backgroundColor: c }} />)}
+                    {levelColors.map(c => (
+                      <div key={c} className="w-2.5 h-2.5 rounded-[2px]" style={{ backgroundColor: c }} />
+                    ))}
                   </div>
                   <span>More</span>
                 </div>
-                <span className="w-[1px] h-3 bg-dark/10"></span>
-                <span>Rolling 12 Month Activity</span>
               </div>
             </div>
           </div>
@@ -416,225 +810,365 @@
       );
     };
 
-    const WritingEntry = ({ essay }) => (
-      <a href={essay.link} className="block py-10 border-b border-dark/10 relative overflow-hidden bg-transparent group hover:bg-electric transition-colors duration-300">
-        <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 px-4 md:px-8">
-          <div className="flex flex-col md:w-2/3">
-            <span className="text-sm font-semibold tracking-widest uppercase mb-4 text-dark/50 group-hover:text-white/70 transition-colors duration-300">{essay.category}</span>
-            <h3 className="text-3xl md:text-4xl font-serif font-bold text-dark mb-4 group-hover:text-white transition-colors duration-300">{essay.title}</h3>
-            <p className="text-lg text-dark/60 group-hover:text-white/80 transition-colors duration-300 leading-relaxed">{essay.desc}</p>
-          </div>
-          <div className="flex items-center gap-6 font-medium text-dark/50 group-hover:text-white/70 transition-colors duration-300">
-            <span>{essay.date}</span>
-            <span>•</span>
-            <span>{essay.read}</span>
-            <div className="w-12 h-12 rounded-full border border-dark/20 group-hover:border-white/0 group-hover:bg-white group-hover:text-electric flex items-center justify-center transition-all duration-300">
-              <ArrowUpRight />
-            </div>
-          </div>
-        </div>
-      </a>
-    );
-
+    // --- SELECTED PROJECTS SECTION ---
     const Projects = () => {
+      const [activeCategory, setActiveCategory] = useState("All");
+
       const projectsData = [
         {
-          title: "WideAwake",
-          desc: "A Windows utility that prevents sleep and keeps your status 'Green' using Kernel pings.",
-          url: "https://wideawake.jakubpacocha.com/",
-          tags: ["C#", "Utility"],
-          colors: {
-            bg: "#000080",
-            text: "#00FF00",
-            accent: "#FF00FF"
-          }
-        },
-        {
+          id: "01",
           title: "From the Cabinet",
-          desc: "A philosophical blog exploring ideas, theology and sociology.",
+          subtitle: "Philosophical & Theological Publication",
+          desc: "An independent digital publication and essay archive exploring phenomenology, epistemology, existentialism, and systematic theology.",
           url: "https://fromthecabinet.com/",
-          tags: ["Writing", "Blog"],
-          colors: { bg: "#f7f1e6", text: "#14110d", accent: "#b4512c" }
+          domain: "fromthecabinet.com",
+          category: "Thought & Publishing",
+          tags: ["Editorial", "Philosophy", "Web Platform"],
+          featured: true,
+          metric: "8.5k+ Words Published"
         },
         {
-          title: "Cabinet Quotes",
-          desc: "A dark-mode application for daily quotes and contemplation.",
-          url: "https://quotes.fromthecabinet.com/",
-          tags: ["Web App", "React"],
-          colors: { bg: "#0e0d0b", text: "#ede8e0", accent: "#d66940" }
+          id: "02",
+          title: "WideAwake",
+          subtitle: "Windows System & Kernel Utility",
+          desc: "Lightweight native Windows desktop utility that prevents system sleep and maintains active presence using low-level kernel ping intervals.",
+          url: "https://wideawake.jakubpacocha.com/",
+          domain: "wideawake.jakubpacocha.com",
+          category: "Engineering",
+          tags: ["C#", ".NET", "Windows API", "System Utility"],
+          featured: true,
+          metric: "Zero-dependency native binary"
         },
         {
-          title: "Gallery",
-          desc: "A minimalist digital exhibition of my personal photography.",
-          url: "https://gallery.jakubpacocha.com/",
-          tags: ["Photography", "Portfolio"],
-          colors: { bg: "#FDFDFD", text: "#0A0A0A", accent: "#6B6B6B" }
-        },
-        {
-          title: "OweWho",
-          desc: "An app for tracking travel expenses among the group.",
-          url: "https://owewho.jakubpacocha.com/",
-          tags: ["Travel", "Finance"],
-          colors: { bg: "#b9c7f8", text: "#0d21a5", accent: "#f4f5f8" }
-        },
-        {
+          id: "03",
           title: "Ostrzółka",
-          desc: "An NGO database project preserving the history of Bydgoszcz.",
+          subtitle: "Historical Archive & NGO Database",
+          desc: "Civic heritage database built in collaboration with local NGOs to preserve, index, and make searchable historical records of Bydgoszcz.",
           url: "https://ostrzolka.vercel.app/",
-          tags: ["Database", "NGO"],
-          colors: { bg: "#f3efe6", text: "#151515", accent: "#c85d52" }
+          domain: "ostrzolka.vercel.app",
+          category: "Civic & Data",
+          tags: ["Database", "Civic Tech", "NGO", "Bydgoszcz"],
+          featured: false,
+          metric: "Municipal Heritage Archive"
+        },
+        {
+          id: "04",
+          title: "OweWho",
+          subtitle: "Group Expense & Settlement Engine",
+          desc: "Streamlined financial web application designed for travelers and groups to track multi-person expenses and compute minimal settlement transfers.",
+          url: "https://owewho.jakubpacocha.com/",
+          domain: "owewho.jakubpacocha.com",
+          category: "Engineering",
+          tags: ["Web App", "Algorithms", "FinTech Utility"],
+          featured: false,
+          metric: "Real-time debt graph simplification"
+        },
+        {
+          id: "05",
+          title: "Cabinet Quotes",
+          subtitle: "Contemplative Commonplace Book",
+          desc: "A distraction-free dark-mode reader curating philosophical aphorisms, theological excerpts, and literary passages for daily reflection.",
+          url: "https://quotes.fromthecabinet.com/",
+          domain: "quotes.fromthecabinet.com",
+          category: "Thought & Publishing",
+          tags: ["React", "Digital Garden", "Minimal UI"],
+          featured: false,
+          metric: "Curated literary archive"
+        },
+        {
+          id: "06",
+          title: "Gallery",
+          subtitle: "Minimalist Visual Exhibition",
+          desc: "A curated digital photography space presenting architectural geometry, quiet landscapes, and observational street frames.",
+          url: "https://gallery.jakubpacocha.com/",
+          domain: "gallery.jakubpacocha.com",
+          category: "Civic & Data",
+          tags: ["Photography", "Visual Arts", "Exhibition"],
+          featured: false,
+          metric: "High-resolution visual archive"
         }
       ];
 
-      return (
-        <section id="projects" className="px-6 md:px-12 lg:px-24 py-32 bg-white relative">
-          <div className="max-w-[1400px] mx-auto relative z-10">
-            <div className="mb-16">
-              <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">My works</div>
-              <h2 className="font-serif text-5xl md:text-7xl text-dark leading-tight">
-                Selected <em className="text-electric italic font-light">projects</em>
-              </h2>
-            </div>
+      const categories = ["All", "Engineering", "Thought & Publishing", "Civic & Data"];
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {projectsData.map((proj, i) => (
-                <a
-                  key={i}
-                  href={proj.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex flex-col p-8 md:p-12 border border-dark/10 hover:border-transparent rounded-2xl group transition-all duration-500 relative overflow-hidden min-h-[320px]"
-                  style={{
-                    '--hover-bg': proj.colors.bg,
-                    '--hover-text': proj.colors.text,
-                    '--hover-accent': proj.colors.accent
-                  }}
-                >
-                  <div
-                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"
-                    style={{ backgroundColor: 'var(--hover-bg)' }}
-                  ></div>
-
-                  <div className="flex justify-between items-start mb-12">
-                    <div className="relative">
-                      <h3
-                        className={`text-3xl md:text-4xl transition-all duration-500 ${proj.title === 'WideAwake' ? 'font-sans group-hover:opacity-0' : 'font-serif group-hover:[color:var(--hover-text)]'} text-dark`}
-                      >
-                        {proj.title}
-                      </h3>
-                      {proj.title === 'WideAwake' && (
-                        <h3 className="absolute inset-0 text-3xl md:text-4xl font-['Comic_Sans_MS',_cursive] [color:var(--hover-text)] opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none whitespace-nowrap">
-                          {proj.title}
-                        </h3>
-                      )}
-                    </div>
-                    <ArrowUpRight className="transition-colors duration-500 group-hover:[color:var(--hover-accent)] text-dark/30 w-6 h-6" />
-                  </div>
-
-                  <div className="relative mb-12">
-                    <p className={`text-lg md:text-xl transition-all duration-500 ${proj.title === 'WideAwake' ? 'font-sans group-hover:opacity-0' : 'font-sans group-hover:[color:var(--hover-text)]'} text-dark/60 max-w-md group-hover:opacity-80`}>
-                      {proj.desc}
-                    </p>
-                    {proj.title === 'WideAwake' && (
-                      <p className="absolute inset-0 text-lg md:text-xl font-['Comic_Sans_MS',_cursive] [color:var(--hover-text)] opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none max-w-md">
-                        {proj.desc}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="mt-auto flex flex-wrap gap-2">
-                    {proj.tags.map(tag => (
-                      <div key={tag} className="relative">
-                        <span
-                          className={`px-4 py-1.5 border border-dark/10 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-500 ${proj.title === 'WideAwake' ? 'font-sans group-hover:opacity-0' : 'group-hover:border-transparent group-hover:[background-color:var(--hover-accent)] group-hover:[color:var(--hover-bg)]'} text-dark/60`}
-                        >
-                          {tag}
-                        </span>
-                        {proj.title === 'WideAwake' && (
-                          <span className="absolute inset-0 px-4 py-1.5 border border-transparent rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-500 font-['Comic_Sans_MS',_cursive] [background-color:var(--hover-accent)] [color:var(--hover-bg)] opacity-0 group-hover:opacity-100 pointer-events-none flex items-center justify-center whitespace-nowrap">
-                            {tag}
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </a>
-              ))}
-            </div>
-          </div>
-        </section>
-      );
-    };
-
-    const Writing = () => {
-      const essays = [
-        { title: "Timon, on authenticity", category: "Dialogue", desc: "What if you could take the journey of your dreams, see everything you ever wanted to see, and experience it all exactly as you wished—but no one could ever know you had been there? Would the journey still be worth the same?", date: "Sep 2026", read: "5 min read", link: "https://fromthecabinet.com/text.html?slug=dialogue1-on-socmed" },
-        { title: "The Phenomenology and Certainty", category: "Epistemology", desc: "Science produces precise but constrained abstractions of experience, while metaphysics investigates the conditions that make experience possible; both contribute to understanding, but only within a cycle that returns them to the Life-World.", date: "Apr 2026", read: "5 min read", link: "https://fromthecabinet.com/texts/phenomenology-certainty.html" },
-        { title: "The Wall and Nausea", category: "Existentialism", desc: "Being truly conscious means existing in a painful superposition between a social system and the honest, dull silence of the 'In-Itself' and reality.", date: "Apr 2026", read: "3 min read", link: "https://fromthecabinet.com/text.html?slug=the-wall-and-nausea" },
-        { title: "The Sartrean Trap", category: "Metaphysics", desc: "When the method becomes a prison - on how Sartre misused phenomenology. 'And if phenomenology refuses to step outside of itself, then isn't it becoming the very thing it was meant to battle?'", date: "Feb 2026", read: "10 min read", link: "https://fromthecabinet.com/text.html?slug=sartrean-trap" },
-        { title: "Christocentric Determinism", category: "Theology", desc: "On bridging the theological tension between arminianism and calvinism. Creating a doctrine that might be both true to the gospel and intellectually satisfying.", date: "Jan 2026", read: "9 min read", link: "https://fromthecabinet.com/text.html?slug=christocentric-determinism" }
-      ];
-
-      return (
-        <section id="writing" className="px-6 md:px-12 lg:px-24 pt-32 pb-32 bg-white">
-          <div className="max-w-[1400px] mx-auto">
-            <div className="mb-16">
-              <div className="text-electric font-semibold uppercase tracking-widest text-sm mb-4">Writing</div>
-              <h2 className="font-serif text-5xl md:text-7xl text-dark leading-tight">Recent <em className="text-electric italic font-light">essays</em></h2>
-            </div>
-            <div className="flex flex-col border-t border-dark/10">
-              {essays.map((essay, i) => <WritingEntry key={i} essay={essay} />)}
-            </div>
-          </div>
-        </section>
-      );
-    };
-
-    const PageTransition = ({ isExiting }) => (
-      <>
-        <motion.div
-          initial={{ y: "0%" }}
-          animate={{ y: "-100%" }}
-          transition={{ duration: 0.8, ease: [0.87, 0, 0.13, 1], delay: 0.2 }}
-          className="fixed inset-0 bg-electric z-[200] flex items-center justify-center pointer-events-none"
-        >
-          <span className="text-white font-sans text-3xl md:text-5xl font-medium tracking-tight">Loading...</span>
-        </motion.div>
-        <motion.div
-          initial={{ y: "100%" }}
-          animate={isExiting ? { y: "0%" } : { y: "100%" }}
-          transition={{ duration: 0.8, ease: [0.87, 0, 0.13, 1] }}
-          className="fixed inset-0 bg-electric z-[200] flex items-center justify-center pointer-events-none"
-        >
-          <span className="text-white font-sans text-3xl md:text-5xl font-medium tracking-tight">Loading...</span>
-        </motion.div>
-      </>
-    );
-
-    const App = () => {
-      const [isExiting, setIsExiting] = useState(false);
+      const filteredProjects = useMemo(() => {
+        if (activeCategory === "All") return projectsData;
+        return projectsData.filter(p => p.category === activeCategory);
+      }, [activeCategory]);
 
       useEffect(() => {
-        const handleClick = (e) => {
-          const target = e.target.closest('a');
-          if (target && target.href && !target.hasAttribute('download') && target.getAttribute('target') !== '_blank') {
-            const url = new URL(target.href);
-            if (url.origin === window.location.origin && url.pathname !== window.location.pathname) {
-              e.preventDefault();
-              setIsExiting(true);
-              setTimeout(() => {
-                window.location.href = target.href;
-              }, 800);
-            }
-          }
-        };
-        document.addEventListener('click', handleClick);
-        return () => document.removeEventListener('click', handleClick);
-      }, []);
+        if (window.ScrollTrigger) {
+          setTimeout(() => window.ScrollTrigger.refresh(), 100);
+        }
+      }, [activeCategory]);
 
+      return (
+        <section id="projects" className="px-6 md:px-12 lg:px-20 py-28 bg-white border-b border-dark/10">
+          <div className="max-w-[1360px] mx-auto">
+            <SectionHeader
+              index="02"
+              label="Side Projects"
+              title="Engineered tools &"
+              italicTitle="digital artifacts."
+              rightElement={
+                <div className="flex flex-wrap gap-1.5 bg-offwhite p-1.5 rounded-2xl border border-dark/10">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setActiveCategory(cat)}
+                      className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all ${
+                        activeCategory === cat
+                          ? "bg-electric text-white shadow-sm"
+                          : "text-dark/60 hover:text-dark"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              }
+            />
+
+            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <AnimatePresence mode="popLayout">
+                {filteredProjects.map((proj) => (
+                  <motion.a
+                    layout
+                    key={proj.id}
+                    href={proj.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    initial={{ opacity: 0, scale: 0.96 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.96 }}
+                    transition={{ duration: 0.25 }}
+                    className={`group relative rounded-3xl p-7 md:p-8 bg-offwhite/60 hover:bg-white border border-dark/10 hover:border-electric transition-all duration-300 flex flex-col justify-between hover:shadow-[0_20px_50px_rgba(0,85,255,0.08)] ${
+                      proj.featured && activeCategory === "All" ? "md:col-span-1 lg:col-span-1" : ""
+                    }`}
+                  >
+                    {/* Top Metadata Bar */}
+                    <div>
+                      <div className="flex items-center justify-between gap-2 mb-6">
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-xs font-semibold text-electric bg-electric/10 px-2.5 py-1 rounded-md">
+                            {proj.id}
+                          </span>
+                          <span className="font-mono text-[11px] text-dark/45 truncate max-w-[180px]">
+                            {proj.domain}
+                          </span>
+                        </div>
+                        <div className="w-9 h-9 rounded-full bg-white border border-dark/10 group-hover:bg-electric group-hover:border-electric group-hover:text-white text-dark/60 flex items-center justify-center transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                          <ArrowUpRight className="w-4 h-4" />
+                        </div>
+                      </div>
+
+                      <div className="font-mono text-[11px] uppercase tracking-wider text-electric font-medium mb-1.5">
+                        {proj.subtitle}
+                      </div>
+                      <h3 className="font-serif text-3xl text-dark font-semibold mb-3 group-hover:text-electric transition-colors">
+                        {proj.title}
+                      </h3>
+                      <p className="text-sm text-dark/65 leading-relaxed mb-8">
+                        {proj.desc}
+                      </p>
+                    </div>
+
+                    {/* Footer of Card */}
+                    <div className="pt-5 border-t border-dark/8">
+                      <div className="flex items-center justify-between text-xs font-mono text-dark/50 mb-3">
+                        <span>HIGHLIGHT</span>
+                        <span className="text-dark/80 font-medium">{proj.metric}</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {proj.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-2.5 py-1 rounded-md bg-white border border-dark/10 text-dark/70 font-mono text-[11px]"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.a>
+                ))}
+              </AnimatePresence>
+            </motion.div>
+          </div>
+        </section>
+      );
+    };
+
+    // --- WRITING / ESSAYS SECTION ---
+    const Writing = () => {
+      const essays = [
+        {
+          id: "01",
+          title: "Timon, on authenticity",
+          category: "Dialogue",
+          desc: "What if you could take the journey of your dreams, see everything you ever wanted to see, and experience it all exactly as you wished but no one could ever know you had been there? Would the journey still be worth the same?",
+          date: "Sep 2026",
+          read: "5 min read",
+          link: "https://fromthecabinet.com/text.html?slug=dialogue1-on-socmed",
+          featured: true
+        },
+        {
+          id: "02",
+          title: "The Phenomenology and Certainty",
+          category: "Epistemology",
+          desc: "Science produces precise but constrained abstractions of experience, while metaphysics investigates the conditions that make experience possible; both contribute to understanding, but only within a cycle that returns them to the Life-World.",
+          date: "Apr 2026",
+          read: "5 min read",
+          link: "https://fromthecabinet.com/texts/phenomenology-certainty.html"
+        },
+        {
+          id: "03",
+          title: "The Wall and Nausea",
+          category: "Existentialism",
+          desc: "Being truly conscious means existing in a painful superposition between a social system and the honest, dull silence of the 'In-Itself' and reality.",
+          date: "Apr 2026",
+          read: "3 min read",
+          link: "https://fromthecabinet.com/text.html?slug=the-wall-and-nausea"
+        },
+        {
+          id: "04",
+          title: "The Sartrean Trap",
+          category: "Metaphysics",
+          desc: "When the method becomes a prison — on how Sartre misused phenomenology. 'And if phenomenology refuses to step outside of itself, then isn't it becoming the very thing it was meant to battle?'",
+          date: "Feb 2026",
+          read: "10 min read",
+          link: "https://fromthecabinet.com/text.html?slug=sartrean-trap"
+        },
+        {
+          id: "05",
+          title: "Christocentric Determinism",
+          category: "Theology",
+          desc: "On bridging the theological tension between Arminianism and Calvinism. Creating a doctrine that might be both true to the gospel and intellectually satisfying.",
+          date: "Jan 2026",
+          read: "9 min read",
+          link: "https://fromthecabinet.com/text.html?slug=christocentric-determinism"
+        }
+      ];
+
+      const featuredEssay = essays[0];
+      const archiveEssays = essays.slice(1);
+
+      return (
+        <section id="writing" className="px-6 md:px-12 lg:px-20 py-28 bg-offwhite border-b border-dark/10">
+          <div className="max-w-[1360px] mx-auto">
+            <SectionHeader
+              index="03"
+              label="From The Cabinet"
+              title="Philosophical"
+              italicTitle="essays & dialogues."
+              rightElement={
+                <a
+                  href="https://fromthecabinet.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-electric hover:text-white text-dark border border-dark/10 hover:border-electric text-xs font-mono font-medium transition-all"
+                >
+                  <span>Visit Publication</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+              }
+            />
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+              {/* Featured Latest Essay Card */}
+              <a
+                href={featuredEssay.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="lg:col-span-5 group rounded-3xl bg-dark text-white p-8 md:p-10 flex flex-col justify-between relative overflow-hidden shadow-[0_16px_40px_rgba(17,24,39,0.12)]"
+              >
+                <div
+                  className="pointer-events-none absolute -bottom-24 -right-24 w-72 h-72 rounded-full opacity-35 blur-2xl group-hover:opacity-60 transition-opacity duration-500"
+                  style={{ background: "radial-gradient(circle, #0055FF 0%, transparent 70%)" }}
+                />
+
+                <div>
+                  <div className="flex items-center justify-between gap-2 mb-8">
+                    <span className="px-3 py-1 rounded-full bg-electric text-white font-mono text-[11px] font-semibold uppercase tracking-wider">
+                      Latest Essay • {featuredEssay.category}
+                    </span>
+                    <span className="font-mono text-xs text-white/50">
+                      {featuredEssay.date}
+                    </span>
+                  </div>
+
+                  <h3 className="font-serif text-3xl md:text-4xl text-white leading-tight mb-5 group-hover:text-electric transition-colors">
+                    {featuredEssay.title}
+                  </h3>
+
+                  <p className="text-white/75 text-base leading-relaxed mb-8">
+                    “{featuredEssay.desc}”
+                  </p>
+                </div>
+
+                <div className="pt-6 border-t border-white/15 flex items-center justify-between">
+                  <span className="font-mono text-xs text-white/60">{featuredEssay.read}</span>
+                  <span className="inline-flex items-center gap-2 text-sm font-medium text-white group-hover:text-electric transition-colors">
+                    <span>Read full dialogue</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </a>
+
+              {/* Editorial Index List */}
+              <div className="lg:col-span-7 bg-white rounded-3xl border border-dark/10 divide-y divide-dark/10 overflow-hidden flex flex-col justify-between">
+                {archiveEssays.map((essay) => (
+                  <a
+                    key={essay.id}
+                    href={essay.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group p-6 md:p-7 hover:bg-offwhite/70 transition-all duration-300 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative"
+                  >
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-electric scale-y-0 group-hover:scale-y-100 transition-transform origin-center duration-300" />
+                    <div className="space-y-2 max-w-xl pl-1">
+                      <div className="flex items-center gap-3 text-xs font-mono">
+                        <span className="text-electric font-semibold">{essay.id}</span>
+                        <span className="uppercase tracking-wider text-dark/50 font-medium">{essay.category}</span>
+                        <span className="text-dark/25">•</span>
+                        <span className="text-dark/45">{essay.date}</span>
+                      </div>
+                      <h4 className="font-serif text-2xl text-dark font-semibold group-hover:text-electric transition-colors">
+                        {essay.title}
+                      </h4>
+                      <p className="text-sm text-dark/60 line-clamp-2 leading-relaxed">
+                        {essay.desc}
+                      </p>
+                    </div>
+
+                    <div className="flex sm:flex-col items-center sm:items-end justify-between shrink-0 gap-3">
+                      <span className="font-mono text-[11px] px-2.5 py-1 rounded-md bg-offwhite border border-dark/8 text-dark/60">
+                        {essay.read}
+                      </span>
+                      <div className="w-9 h-9 rounded-full border border-dark/10 group-hover:bg-electric group-hover:border-electric group-hover:text-white text-dark/50 flex items-center justify-center transition-all">
+                        <ArrowUpRight className="w-4 h-4" />
+                      </div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    // --- MAIN APP WITH PRESERVED FOOTER REVEAL ---
+    const App = () => {
       useLayoutEffect(() => {
-        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
-        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        const lenis = new Lenis({
+          duration: 1.15,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+        });
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
         requestAnimationFrame(raf);
 
         gsap.registerPlugin(ScrollTrigger);
@@ -675,13 +1209,15 @@
       return (
         <div className="bg-white min-h-screen font-sans text-dark selection:bg-electric selection:text-white">
           <div id="blue-bg" className="fixed inset-0 bg-electric z-0 opacity-0 invisible pointer-events-none"></div>
-          <PageTransition isExiting={isExiting} />
-          <Nav isCV={false} />
+          <Nav />
 
-          <main id="main-content" className="bg-white w-full relative z-10 shadow-[0_20px_60px_rgba(0,0,0,0.1)] origin-[50%_100%] overflow-hidden" style={{ willChange: "transform, border-radius" }}>
+          <main
+            id="main-content"
+            className="bg-white w-full relative z-10 shadow-[0_20px_60px_rgba(0,0,0,0.1)] origin-[50%_100%] overflow-hidden"
+            style={{ willChange: "transform, border-radius" }}
+          >
             <Hero />
-            <About />
-            <Skills />
+            <AboutAndCapabilities />
             <GithubActivity />
             <Projects />
             <Writing />
@@ -689,12 +1225,17 @@
 
           <div id="footer-spacer" className="min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] w-full pointer-events-none"></div>
 
-          <footer id="footer-container" className="fixed bottom-0 left-0 w-full min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] z-0 flex flex-col justify-end bg-electric text-white overflow-hidden opacity-0 invisible">
+          <footer
+            id="footer-container"
+            className="fixed bottom-0 left-0 w-full min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] z-0 flex flex-col justify-end bg-electric text-white overflow-hidden opacity-0 invisible"
+          >
             <div id="footer-container-inner" className="w-full h-full px-6 md:px-12 lg:px-24 py-16 flex flex-col justify-between">
               <div className="max-w-[1400px] w-full mx-auto flex flex-col h-full justify-between">
                 <div className="pt-8">
                   <div id="contact" className="text-white/60 font-semibold uppercase tracking-widest text-sm mb-4">Contact</div>
-                  <h2 className="font-serif text-5xl md:text-7xl leading-tight mb-8">Let's do <br /> something <em className="italic font-light">together</em></h2>
+                  <h2 className="font-serif text-5xl md:text-7xl leading-tight mb-8">
+                    Let's do <br /> something <em className="italic font-light">together</em>
+                  </h2>
                   <p className="text-xl text-white/80 mb-12">Want to say hello? Hit me up:</p>
 
                   <div className="flex flex-wrap gap-4">
@@ -722,7 +1263,7 @@
           </footer>
         </div>
       );
-    }
+    };
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<App />);
