@@ -80,8 +80,66 @@
     });
   </script>
   <script type="text/babel" data-presets="my-react,env" data-type="module">
-    const { useState, useEffect, useLayoutEffect } = React;
+    const { useState, useEffect, useLayoutEffect, useReducer, useCallback } = React;
     const { motion, AnimatePresence } = window.Motion;
+
+    // --- EXPLICIT FINITE STATE MACHINE ENGINE (DX + AX + UX) ---
+    window.__APP_MACHINES__ = window.__APP_MACHINES__ || {};
+
+    function useMachine(config) {
+      const reducer = useCallback((current, event) => {
+        const eventObj = typeof event === "string" ? { type: event } : event;
+        const stateNode = config.states[current.value];
+        const handler =
+          (stateNode && stateNode.on && stateNode.on[eventObj.type]) ||
+          (config.on && config.on[eventObj.type]);
+
+        if (!handler) return current;
+
+        if (typeof handler === "string") {
+          return { value: handler, context: current.context };
+        }
+
+        if (typeof handler === "function") {
+          const next = handler(current.context, eventObj, current.value);
+          if (!next) return current;
+          return {
+            value: next.target || current.value,
+            context: next.context !== undefined ? next.context : current.context
+          };
+        }
+
+        const nextContext = handler.reduce
+          ? handler.reduce(current.context, eventObj)
+          : current.context;
+        return {
+          value: handler.target || current.value,
+          context: nextContext
+        };
+      }, [config]);
+
+      const [state, dispatch] = useReducer(reducer, undefined, () => ({
+        value: typeof config.initial === "function" ? config.initial() : config.initial,
+        context: typeof config.context === "function" ? config.context() : (config.context || {})
+      }));
+
+      useEffect(() => {
+        if (!config.id) return;
+        window.__APP_MACHINES__[config.id] = {
+          id: config.id,
+          state: state.value,
+          context: state.context,
+          states: Object.keys(config.states),
+          send: dispatch,
+          getSnapshot: () => ({ state: state.value, context: state.context })
+        };
+        return () => {
+          delete window.__APP_MACHINES__[config.id];
+        };
+      }, [config.id, config.states, state, dispatch]);
+
+      return [state, dispatch];
+    }
 
     // --- ICONS ---
     const ArrowLeft = ({ className = "w-4 h-4" }) => (
@@ -120,18 +178,85 @@
       </svg>
     );
 
+    // --- CV NAVIGATION & SCROLL-SPY STATE MACHINE ---
+    const CV_NAV_SECTIONS = [
+      { id: "experience", label: "Experience", href: "#experience" },
+      { id: "skills", label: "Stack", href: "#skills" },
+      { id: "education", label: "Education", href: "#education" }
+    ];
+
+    const CV_NAV_MACHINE = {
+      id: "cvNavigation",
+      initial: () => (typeof window !== "undefined" && window.scrollY > 30 ? "elevated" : "top"),
+      context: () => ({
+        activeSection: "experience"
+      }),
+      on: {
+        SCROLL_UPDATE: (ctx, event, currentState) => {
+          const nextState = event.scrollY > 30 ? "elevated" : "top";
+          const nextSection = event.activeSection || ctx.activeSection;
+          if (nextState === currentState && nextSection === ctx.activeSection) return null;
+          return {
+            target: nextState,
+            context: { ...ctx, activeSection: nextSection }
+          };
+        },
+        SELECT_SECTION: (ctx, event, currentState) => ({
+          target: currentState,
+          context: { ...ctx, activeSection: event.section || ctx.activeSection }
+        })
+      },
+      states: {
+        top: {},
+        elevated: {}
+      }
+    };
+
     const Nav = () => {
-      const [scrolled, setScrolled] = useState(false);
+      const [navState, send] = useMachine(CV_NAV_MACHINE);
+      const scrolled = navState.value === "elevated";
+      const { activeSection } = navState.context;
 
       useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 30);
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        return () => window.removeEventListener("scroll", handleScroll);
-      }, []);
+        const computeScrollState = () => {
+          const ordered = ["education", "skills", "experience"];
+          const scrollPos = window.scrollY + 260;
+          let detected = "experience";
+          for (const id of ordered) {
+            const el = document.getElementById(id);
+            if (el && scrollPos >= el.offsetTop) {
+              detected = id;
+              break;
+            }
+          }
+          send({ type: "SCROLL_UPDATE", scrollY: window.scrollY, activeSection: detected });
+        };
+
+        computeScrollState();
+        window.addEventListener("scroll", computeScrollState, { passive: true });
+        return () => window.removeEventListener("scroll", computeScrollState);
+      }, [send]);
+
+      const handleAnchorClick = (e, id, href) => {
+        send({ type: "SELECT_SECTION", section: id });
+        if (window.__LENIS__ && href.startsWith("#")) {
+          const targetEl = document.querySelector(href);
+          if (targetEl) {
+            e.preventDefault();
+            window.__LENIS__.scrollTo(targetEl, { offset: -96 });
+          }
+        }
+      };
 
       return (
-        <header className="fixed top-5 left-0 right-0 z-[100] px-4 sm:px-8 pointer-events-none flex justify-center">
+        <header
+          data-machine="cvNavigation"
+          data-state={navState.value}
+          data-active-section={activeSection}
+          className="fixed top-5 left-0 right-0 z-[100] px-4 sm:px-8 pointer-events-none flex justify-center"
+        >
           <nav
+            aria-label="CV Navigation"
             className={`pointer-events-auto transition-all duration-500 rounded-full flex items-center justify-between px-3 py-2 border ${
               scrolled
                 ? "bg-white/85 backdrop-blur-xl border-dark/10 shadow-[0_12px_40px_rgba(17,24,39,0.08)]"
@@ -147,11 +272,25 @@
             </a>
 
             <div className="hidden sm:flex items-center gap-4 text-xs font-mono text-dark/60">
-              <a href="#experience" className="hover:text-electric transition-colors">Experience</a>
-              <span>/</span>
-              <a href="#skills" className="hover:text-electric transition-colors">Stack</a>
-              <span>/</span>
-              <a href="#education" className="hover:text-electric transition-colors">Education</a>
+              {CV_NAV_SECTIONS.map((sec, idx) => {
+                const isActive = activeSection === sec.id;
+                return (
+                  <React.Fragment key={sec.id}>
+                    {idx > 0 && <span className="text-dark/25">/</span>}
+                    <a
+                      href={sec.href}
+                      onClick={(e) => handleAnchorClick(e, sec.id, sec.href)}
+                      aria-current={isActive ? "location" : undefined}
+                      data-active={isActive}
+                      className={`transition-colors ${
+                        isActive ? "text-electric font-semibold" : "hover:text-electric"
+                      }`}
+                    >
+                      {sec.label}
+                    </a>
+                  </React.Fragment>
+                );
+              })}
             </div>
 
             <a
@@ -420,19 +559,50 @@
       );
     };
 
+    const FOOTER_CURTAIN_MACHINE = {
+      id: "footerCurtain",
+      initial: "hidden",
+      context: () => ({ progress: 0 }),
+      on: {
+        SCRUB_PROGRESS: (ctx, event, currentState) => {
+          const p = Math.max(0, Math.min(1, Number(event.progress) || 0));
+          const nextState = p <= 0.01 ? "hidden" : p >= 0.98 ? "revealed" : "revealing";
+          if (nextState === currentState && Math.abs(ctx.progress - p) < 0.02) {
+            return null;
+          }
+          return {
+            target: nextState,
+            context: { progress: Number(p.toFixed(3)) }
+          };
+        }
+      },
+      states: {
+        hidden: {},
+        revealing: {},
+        revealed: {}
+      }
+    };
+
     const App = () => {
+      const [curtainState, sendCurtain] = useMachine(FOOTER_CURTAIN_MACHINE);
+      const isFooterHidden = curtainState.value === "hidden";
+
       useLayoutEffect(() => {
         const lenis = new Lenis({
           duration: 1.15,
           easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
         });
-        function raf(time) {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
+        window.__LENIS__ = lenis;
 
         gsap.registerPlugin(ScrollTrigger);
+        lenis.on("scroll", ScrollTrigger.update);
+
+        let rafId = null;
+        function raf(time) {
+          lenis.raf(time);
+          rafId = requestAnimationFrame(raf);
+        }
+        rafId = requestAnimationFrame(raf);
 
         const initScrollTrigger = () => {
           ScrollTrigger.create({
@@ -440,6 +610,9 @@
             start: "top bottom",
             end: "bottom bottom",
             scrub: true,
+            onUpdate: (self) => {
+              sendCurtain({ type: "SCRUB_PROGRESS", progress: self.progress });
+            },
             animation: gsap.timeline()
               .to(["#footer-container", "#blue-bg"], { autoAlpha: 1, duration: 0.05, ease: "none" }, 0)
               .to("#main-content", {
@@ -452,7 +625,7 @@
           });
         };
 
-        setTimeout(() => {
+        const initTimer = setTimeout(() => {
           initScrollTrigger();
           ScrollTrigger.refresh();
         }, 100);
@@ -461,11 +634,14 @@
         resizeObserver.observe(document.body);
 
         return () => {
+          clearTimeout(initTimer);
+          if (rafId !== null) cancelAnimationFrame(rafId);
+          delete window.__LENIS__;
           lenis.destroy();
           ScrollTrigger.getAll().forEach(t => t.kill());
           resizeObserver.disconnect();
         };
-      }, []);
+      }, [sendCurtain]);
 
       return (
         <div className="bg-white min-h-screen font-sans text-dark selection:bg-electric selection:text-white">
@@ -484,6 +660,10 @@
 
           <footer
             id="footer-container"
+            data-machine="footerCurtain"
+            data-state={curtainState.value}
+            data-progress={curtainState.context.progress}
+            aria-hidden={isFooterHidden}
             className="fixed bottom-0 left-0 w-full min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] z-0 flex flex-col justify-end bg-electric text-white overflow-hidden opacity-0 invisible"
           >
             <div id="footer-container-inner" className="w-full h-full px-6 md:px-12 lg:px-24 py-16 flex flex-col justify-between">
@@ -496,16 +676,32 @@
                   <p className="text-xl text-white/80 mb-12">Want to say hello? Hit me up:</p>
 
                   <div className="flex flex-wrap gap-4">
-                    <a href="mailto:pacochp@gmail.com" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                    <a
+                      href="mailto:pacochp@gmail.com"
+                      tabIndex={isFooterHidden ? -1 : 0}
+                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
+                    >
                       <MailIcon /> Email
                     </a>
-                    <a href="https://www.linkedin.com/in/jakubpacocha/" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                    <a
+                      href="https://www.linkedin.com/in/jakubpacocha/"
+                      tabIndex={isFooterHidden ? -1 : 0}
+                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
+                    >
                       <LinkedinIcon /> LinkedIn
                     </a>
-                    <a href="https://x.com/JakubPacocha" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                    <a
+                      href="https://x.com/JakubPacocha"
+                      tabIndex={isFooterHidden ? -1 : 0}
+                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
+                    >
                       <TwitterIcon /> Twitter / X
                     </a>
-                    <a href="https://github.com/JPacoch" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                    <a
+                      href="https://github.com/JPacoch"
+                      tabIndex={isFooterHidden ? -1 : 0}
+                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
+                    >
                       <GithubIcon /> GitHub
                     </a>
                   </div>

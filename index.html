@@ -92,8 +92,68 @@
     });
   </script>
   <script type="text/babel" data-presets="my-react,env" data-type="module">
-    const { useState, useEffect, useLayoutEffect, useRef, useMemo } = React;
+    const { useState, useEffect, useLayoutEffect, useRef, useMemo, useReducer, useCallback } = React;
     const { motion, AnimatePresence } = window.Motion;
+
+    // --- EXPLICIT FINITE STATE MACHINE ENGINE (DX + AX + UX) ---
+    // Provides deterministic state transitions, prevents impossible states,
+    // and exposes live machine inspection on window.__APP_MACHINES__ for agents & devtools.
+    window.__APP_MACHINES__ = window.__APP_MACHINES__ || {};
+
+    function useMachine(config) {
+      const reducer = useCallback((current, event) => {
+        const eventObj = typeof event === "string" ? { type: event } : event;
+        const stateNode = config.states[current.value];
+        const handler =
+          (stateNode && stateNode.on && stateNode.on[eventObj.type]) ||
+          (config.on && config.on[eventObj.type]);
+
+        if (!handler) return current;
+
+        if (typeof handler === "string") {
+          return { value: handler, context: current.context };
+        }
+
+        if (typeof handler === "function") {
+          const next = handler(current.context, eventObj, current.value);
+          if (!next) return current;
+          return {
+            value: next.target || current.value,
+            context: next.context !== undefined ? next.context : current.context
+          };
+        }
+
+        const nextContext = handler.reduce
+          ? handler.reduce(current.context, eventObj)
+          : current.context;
+        return {
+          value: handler.target || current.value,
+          context: nextContext
+        };
+      }, [config]);
+
+      const [state, dispatch] = useReducer(reducer, undefined, () => ({
+        value: typeof config.initial === "function" ? config.initial() : config.initial,
+        context: typeof config.context === "function" ? config.context() : (config.context || {})
+      }));
+
+      useEffect(() => {
+        if (!config.id) return;
+        window.__APP_MACHINES__[config.id] = {
+          id: config.id,
+          state: state.value,
+          context: state.context,
+          states: Object.keys(config.states),
+          send: dispatch,
+          getSnapshot: () => ({ state: state.value, context: state.context })
+        };
+        return () => {
+          delete window.__APP_MACHINES__[config.id];
+        };
+      }, [config.id, config.states, state, dispatch]);
+
+      return [state, dispatch];
+    }
 
     // --- ICONS ---
     const ArrowRight = ({ className = "w-4 h-4" }) => (
@@ -171,26 +231,36 @@
       </svg>
     );
 
-    // --- LIVE LOCAL TIME HOOK ---
+    // --- LIVE LOCAL TIME HOOK (Synchronous Initial State + Dynamic CET/CEST) ---
+    const formatBydgoszczTime = () => {
+      try {
+        const now = new Date();
+        const timeFmt = new Intl.DateTimeFormat('en-GB', {
+          timeZone: 'Europe/Warsaw',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        });
+        const tzParts = new Intl.DateTimeFormat('en-GB', {
+          timeZone: 'Europe/Warsaw',
+          timeZoneName: 'short'
+        }).formatToParts(now);
+        const tzName = tzParts.find(p => p.type === 'timeZoneName')?.value || 'CET';
+        return `${timeFmt.format(now)} ${tzName}`;
+      } catch (e) {
+        return "53°07'N 18°00'E";
+      }
+    };
+
     const useBydgoszczTime = () => {
-      const [time, setTime] = useState("");
+      const [time, setTime] = useState(formatBydgoszczTime);
       useEffect(() => {
-        const update = () => {
-          try {
-            const fmt = new Intl.DateTimeFormat('en-GB', {
-              timeZone: 'Europe/Warsaw',
-              hour: '2-digit',
-              minute: '2-digit',
-              second: '2-digit',
-              hour12: false
-            });
-            setTime(fmt.format(new Date()) + " CET");
-          } catch (e) {
-            setTime("53°07'N 18°00'E");
+        const id = setInterval(() => {
+          if (document.visibilityState === "visible") {
+            setTime(formatBydgoszczTime());
           }
-        };
-        update();
-        const id = setInterval(update, 1000);
+        }, 1000);
         return () => clearInterval(id);
       }, []);
       return time;
@@ -222,39 +292,123 @@
       </div>
     );
 
-    // --- FLOATING NAVIGATION BAR ---
-    const Nav = () => {
-      const [isOpen, setIsOpen] = useState(false);
-      const [activeSection, setActiveSection] = useState("hero");
-      const [scrolled, setScrolled] = useState(false);
+    // --- FLOATING NAVIGATION BAR (Explicit Navigation & Scroll-Spy State Machine) ---
+    const NAV_LINKS = [
+      { id: "about", name: "About", href: "#about" },
+      { id: "projects", name: "Projects", href: "#projects" },
+      { id: "writing", name: "Writing", href: "#writing" },
+    ];
 
-      const links = [
-        { id: "about", name: "About", href: "#about" },
-        { id: "projects", name: "Projects", href: "#projects" },
-        { id: "writing", name: "Writing", href: "#writing" },
-      ];
+    const NAV_MACHINE_CONFIG = {
+      id: "navigation",
+      initial: "closed",
+      context: () => ({
+        elevation: typeof window !== "undefined" && window.scrollY > 30 ? "elevated" : "top",
+        activeSection: "hero"
+      }),
+      on: {
+        SCROLL_UPDATE: (ctx, event) => {
+          const nextElevation = event.scrollY > 30 ? "elevated" : "top";
+          const nextSection = event.activeSection || ctx.activeSection;
+          if (ctx.elevation === nextElevation && ctx.activeSection === nextSection) return null;
+          return {
+            context: {
+              ...ctx,
+              elevation: nextElevation,
+              activeSection: nextSection
+            }
+          };
+        },
+        NAVIGATE: (ctx, event) => ({
+          target: "closed",
+          context: {
+            ...ctx,
+            activeSection: event.section || ctx.activeSection
+          }
+        })
+      },
+      states: {
+        closed: {
+          on: {
+            TOGGLE_MENU: "open",
+            OPEN_MENU: "open"
+          }
+        },
+        open: {
+          on: {
+            TOGGLE_MENU: "closed",
+            CLOSE_MENU: "closed",
+            ESCAPE: "closed",
+            VIEWPORT_DESKTOP: "closed"
+          }
+        }
+      }
+    };
+
+    const Nav = () => {
+      const [navState, send] = useMachine(NAV_MACHINE_CONFIG);
+      const isOpen = navState.value === "open";
+      const { elevation, activeSection } = navState.context;
+      const scrolled = elevation === "elevated";
 
       useEffect(() => {
-        const handleScroll = () => {
-          setScrolled(window.scrollY > 30);
+        const computeScrollState = () => {
           const sections = ["writing", "projects", "about", "hero"];
           const scrollPos = window.scrollY + 240;
+          let detected = "hero";
           for (const secId of sections) {
             const el = document.getElementById(secId);
             if (el && scrollPos >= el.offsetTop) {
-              setActiveSection(secId);
+              detected = secId;
               break;
             }
           }
+          send({ type: "SCROLL_UPDATE", scrollY: window.scrollY, activeSection: detected });
         };
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        return () => window.removeEventListener("scroll", handleScroll);
-      }, []);
+
+        computeScrollState();
+        window.addEventListener("scroll", computeScrollState, { passive: true });
+        return () => window.removeEventListener("scroll", computeScrollState);
+      }, [send]);
+
+      useEffect(() => {
+        if (!isOpen) return;
+        const onKeyDown = (e) => {
+          if (e.key === "Escape") send("ESCAPE");
+        };
+        const onResize = () => {
+          if (window.innerWidth >= 768) send("VIEWPORT_DESKTOP");
+        };
+        window.addEventListener("keydown", onKeyDown);
+        window.addEventListener("resize", onResize);
+        return () => {
+          window.removeEventListener("keydown", onKeyDown);
+          window.removeEventListener("resize", onResize);
+        };
+      }, [isOpen, send]);
+
+      const handleAnchorClick = (e, sectionId, href) => {
+        send({ type: "NAVIGATE", section: sectionId });
+        if (window.__LENIS__ && href && href.startsWith("#")) {
+          const targetEl = document.querySelector(href);
+          if (targetEl) {
+            e.preventDefault();
+            window.__LENIS__.scrollTo(targetEl, { offset: -20 });
+          }
+        }
+      };
 
       return (
         <>
-          <header className="fixed top-5 left-0 right-0 z-[100] px-4 sm:px-8 pointer-events-none flex justify-center">
+          <header
+            data-machine="navigation"
+            data-state={navState.value}
+            data-elevation={elevation}
+            data-active-section={activeSection}
+            className="fixed top-5 left-0 right-0 z-[100] px-4 sm:px-8 pointer-events-none flex justify-center"
+          >
             <nav
+              aria-label="Primary Navigation"
               className={`pointer-events-auto transition-all duration-500 rounded-full flex items-center justify-between px-3 py-2 border ${
                 scrolled
                   ? "bg-white/85 backdrop-blur-xl border-dark/10 shadow-[0_12px_40px_rgba(17,24,39,0.08)]"
@@ -263,6 +417,7 @@
             >
               <a
                 href="#hero"
+                onClick={(e) => handleAnchorClick(e, "hero", "#hero")}
                 className="flex items-center gap-2.5 pl-3 pr-4 py-1 rounded-full hover:bg-offwhite transition-colors group"
               >
                 <span className="h-2.5 w-2.5 rounded-full bg-electric shrink-0"></span>
@@ -270,12 +425,15 @@
               </a>
 
               <div className="hidden md:flex items-center gap-1 bg-offwhite/80 p-1 rounded-full border border-dark/5">
-                {links.map((l) => {
+                {NAV_LINKS.map((l) => {
                   const isActive = activeSection === l.id;
                   return (
                     <a
                       key={l.id}
                       href={l.href}
+                      onClick={(e) => handleAnchorClick(e, l.id, l.href)}
+                      aria-current={isActive ? "location" : undefined}
+                      data-active={isActive}
                       className={`relative px-4 py-1.5 text-xs font-medium rounded-full transition-colors duration-200 ${
                         isActive ? "text-white" : "text-dark/65 hover:text-dark"
                       }`}
@@ -304,8 +462,10 @@
               </div>
 
               <button
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => send("TOGGLE_MENU")}
                 aria-label="Toggle Menu"
+                aria-expanded={isOpen}
+                aria-controls="mobile-nav-drawer"
                 className="md:hidden p-2 rounded-full bg-offwhite border border-dark/10 text-dark hover:border-electric hover:text-electric transition-colors"
               >
                 {isOpen ? <CloseIcon /> : <MenuIcon />}
@@ -315,73 +475,167 @@
 
           <AnimatePresence>
             {isOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.25 }}
-                className="fixed inset-x-4 top-20 z-[95] bg-white/95 backdrop-blur-2xl rounded-3xl border border-dark/10 shadow-2xl p-6 flex flex-col gap-3 md:hidden"
-              >
-                {links.map((l, i) => (
-                  <motion.a
-                    key={l.name}
-                    href={l.href}
-                    onClick={() => setIsOpen(false)}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    className="px-4 py-3 rounded-2xl text-lg font-medium text-dark hover:bg-electric hover:text-white transition-colors flex items-center justify-between"
-                  >
-                    <span>{l.name}</span>
-                    <ArrowRight className="w-4 h-4 opacity-60" />
-                  </motion.a>
-                ))}
-                <div className="h-[1px] bg-dark/10 my-1" />
-                <div className="flex gap-3">
-                  <a
-                    href="cv.html"
-                    className="flex-1 py-3 px-4 rounded-2xl bg-electric text-white font-semibold text-sm flex items-center justify-center gap-2"
-                  >
-                    <span>Open Full CV</span>
-                    <ArrowUpRight className="w-4 h-4" />
-                  </a>
-                  <a
-                    href="assets/resume.pdf"
-                    download
-                    className="py-3 px-4 rounded-2xl bg-offwhite border border-dark/10 text-dark font-semibold text-sm flex items-center justify-center gap-2"
-                  >
-                    <DownloadIcon className="w-4 h-4" />
-                    <span>PDF</span>
-                  </a>
-                </div>
-              </motion.div>
+              <>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => send("CLOSE_MENU")}
+                  className="fixed inset-0 z-[90] bg-dark/10 backdrop-blur-[2px] md:hidden"
+                  aria-hidden="true"
+                />
+                <motion.div
+                  id="mobile-nav-drawer"
+                  role="dialog"
+                  aria-label="Mobile Navigation Menu"
+                  initial={{ opacity: 0, y: -12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.25 }}
+                  className="fixed inset-x-4 top-20 z-[95] bg-white/95 backdrop-blur-2xl rounded-3xl border border-dark/10 shadow-2xl p-6 flex flex-col gap-3 md:hidden"
+                >
+                  {NAV_LINKS.map((l, i) => (
+                    <motion.a
+                      key={l.name}
+                      href={l.href}
+                      onClick={(e) => handleAnchorClick(e, l.id, l.href)}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                      className={`px-4 py-3 rounded-2xl text-lg font-medium transition-colors flex items-center justify-between ${
+                        activeSection === l.id
+                          ? "bg-electric text-white"
+                          : "text-dark hover:bg-electric hover:text-white"
+                      }`}
+                    >
+                      <span>{l.name}</span>
+                      <ArrowRight className="w-4 h-4 opacity-60" />
+                    </motion.a>
+                  ))}
+                  <div className="h-[1px] bg-dark/10 my-1" />
+                  <div className="flex gap-3">
+                    <a
+                      href="cv.html"
+                      className="flex-1 py-3 px-4 rounded-2xl bg-electric text-white font-semibold text-sm flex items-center justify-center gap-2"
+                    >
+                      <span>Open Full CV</span>
+                      <ArrowUpRight className="w-4 h-4" />
+                    </a>
+                    <a
+                      href="assets/resume.pdf"
+                      download
+                      className="py-3 px-4 rounded-2xl bg-offwhite border border-dark/10 text-dark font-semibold text-sm flex items-center justify-center gap-2"
+                    >
+                      <DownloadIcon className="w-4 h-4" />
+                      <span>PDF</span>
+                    </a>
+                  </div>
+                </motion.div>
+              </>
             )}
           </AnimatePresence>
         </>
       );
     };
 
-    // --- ROTATING WORDS IN HERO ---
+    // --- ROTATING WORDS IN HERO (Explicit Ticker State Machine) ---
+    const HERO_ROTATOR_ITEMS = [
+      { text: "HERE Technologies", tag: "Spatial & AI Engineering" },
+      { text: "the digital world", tag: "Full-Stack ML Systems" },
+      { text: "local NGOs", tag: "Civic Tech & Urban Impact" },
+      { text: "mind & soul", tag: "Philosophy & Essays" }
+    ];
+
+    const HERO_ROTATOR_MACHINE = {
+      id: "heroRotator",
+      initial: () =>
+        typeof window !== "undefined" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "reducedMotion"
+          : "running",
+      context: () => ({ index: 0, total: HERO_ROTATOR_ITEMS.length }),
+      on: {
+        NEXT: (ctx) => ({
+          context: { ...ctx, index: (ctx.index + 1) % ctx.total }
+        }),
+        SELECT_INDEX: (ctx, event) => ({
+          context: { ...ctx, index: Math.abs(event.index || 0) % ctx.total }
+        })
+      },
+      states: {
+        running: {
+          on: {
+            TICK: (ctx) => ({
+              target: "running",
+              context: { ...ctx, index: (ctx.index + 1) % ctx.total }
+            }),
+            PAUSE: "paused",
+            VISIBILITY_HIDDEN: "paused",
+            REDUCED_MOTION: "reducedMotion"
+          }
+        },
+        paused: {
+          on: {
+            RESUME: "running",
+            VISIBILITY_VISIBLE: "running",
+            REDUCED_MOTION: "reducedMotion"
+          }
+        },
+        reducedMotion: {
+          on: {
+            MOTION_ALLOWED: "running"
+          }
+        }
+      }
+    };
+
     const RotatingWords = () => {
-      const items = [
-        { text: "HERE Technologies", tag: "Spatial & AI Engineering" },
-        { text: "the digital world", tag: "Full-Stack ML Systems" },
-        { text: "local NGOs", tag: "Civic Tech & Urban Impact" },
-        { text: "mind & soul", tag: "Philosophy & Essays" }
-      ];
-      const [index, setIndex] = useState(0);
+      const [rotator, send] = useMachine(HERO_ROTATOR_MACHINE);
+      const { index } = rotator.context;
+      const currentItem = HERO_ROTATOR_ITEMS[index];
 
       useEffect(() => {
+        if (rotator.value !== "running") return;
         const interval = setInterval(() => {
-          if (document.visibilityState === "visible") {
-            setIndex((prev) => (prev + 1) % items.length);
-          }
+          send("TICK");
         }, 2800);
         return () => clearInterval(interval);
-      }, []);
+      }, [rotator.value, send]);
+
+      useEffect(() => {
+        const onVisChange = () => {
+          send(document.visibilityState === "visible" ? "VISIBILITY_VISIBLE" : "VISIBILITY_HIDDEN");
+        };
+        document.addEventListener("visibilitychange", onVisChange);
+        return () => document.removeEventListener("visibilitychange", onVisChange);
+      }, [send]);
 
       return (
-        <span className="inline-flex flex-wrap items-baseline gap-x-4 align-baseline">
+        <span
+          data-machine="heroRotator"
+          data-state={rotator.value}
+          data-index={index}
+          data-tag={currentItem.tag}
+          onMouseEnter={() => send("PAUSE")}
+          onMouseLeave={() => send("RESUME")}
+          onFocus={() => send("PAUSE")}
+          onBlur={() => send("RESUME")}
+          onClick={() => send("NEXT")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              send("NEXT");
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-live="polite"
+          aria-label={`${currentItem.text} — ${currentItem.tag}. Click to cycle.`}
+          title={`${currentItem.tag} (Click to cycle)`}
+          className="inline-flex flex-wrap items-baseline gap-x-4 align-baseline cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-electric/40 rounded-lg"
+        >
           <span className="relative inline-grid overflow-hidden align-bottom py-2 -my-2" style={{ clipPath: 'inset(0 0 -0.45em 0)' }}>
             <AnimatePresence mode="wait">
               <motion.span
@@ -392,7 +646,7 @@
                 transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                 className="col-start-1 row-start-1 text-electric italic font-serif font-normal pr-2 pb-1"
               >
-                {items[index].text}
+                {currentItem.text}
               </motion.span>
             </AnimatePresence>
           </span>
@@ -670,16 +924,76 @@
       );
     };
 
-    // --- GITHUB TELEMETRY MODULE ---
+    // --- GITHUB TELEMETRY MODULE (Explicit Fetch + Inspection State Machine) ---
+    const GITHUB_TELEMETRY_MACHINE = {
+      id: "githubTelemetry",
+      initial: "loading",
+      context: () => ({
+        data: null,
+        hoveredDay: null,
+        error: null
+      }),
+      states: {
+        loading: {
+          on: {
+            FETCH_SUCCESS: (ctx, event) => ({
+              target: "ready",
+              context: { ...ctx, data: event.data, error: null }
+            }),
+            FETCH_ERROR: (ctx, event) => ({
+              target: "error",
+              context: { ...ctx, error: event.error || "Failed to load activity" }
+            })
+          }
+        },
+        ready: {
+          on: {
+            INSPECT_DAY: (ctx, event) => ({
+              target: "inspecting",
+              context: { ...ctx, hoveredDay: event.day }
+            })
+          }
+        },
+        inspecting: {
+          on: {
+            INSPECT_DAY: (ctx, event) => ({
+              target: "inspecting",
+              context: { ...ctx, hoveredDay: event.day }
+            }),
+            CLEAR_INSPECT: (ctx) => ({
+              target: "ready",
+              context: { ...ctx, hoveredDay: null }
+            })
+          }
+        },
+        error: {
+          on: {
+            RETRY: (ctx) => ({
+              target: "loading",
+              context: { ...ctx, error: null }
+            })
+          }
+        }
+      }
+    };
+
     const GithubActivity = () => {
-      const [data, setData] = useState(null);
-      const [loading, setLoading] = useState(true);
-      const [hoveredDay, setHoveredDay] = useState(null);
+      const [telemetry, send] = useMachine(GITHUB_TELEMETRY_MACHINE);
+      const { data, hoveredDay } = telemetry.context;
+      const isLoading = telemetry.value === "loading";
+      const isError = telemetry.value === "error";
 
       useEffect(() => {
+        if (telemetry.value !== "loading") return;
+        let cancelled = false;
+
         fetch('https://github-contributions-api.jogruber.de/v4/JPacoch?y=last')
-          .then(res => res.json())
+          .then(res => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            return res.json();
+          })
           .then(json => {
+            if (cancelled) return;
             const today = new Date().toISOString().split('T')[0];
             const sorted = json.contributions.sort((a, b) => new Date(a.date) - new Date(b.date));
             const filtered = sorted.filter(c => c.date <= today);
@@ -694,24 +1008,35 @@
               ...lastYear
             ];
 
-            setData({
-              total: json.total.lastYear || json.total[new Date().getFullYear()] || 'Many',
-              contributions: contributions
+            send({
+              type: "FETCH_SUCCESS",
+              data: {
+                total: json.total.lastYear || json.total[new Date().getFullYear()] || 'Many',
+                contributions
+              }
             });
-            setLoading(false);
           })
           .catch(err => {
+            if (cancelled) return;
             console.error('Error fetching github data:', err);
-            setLoading(false);
+            send({ type: "FETCH_ERROR", error: err.message });
           });
-      }, []);
 
-      if (loading || !data) return null;
+        return () => {
+          cancelled = true;
+        };
+      }, [telemetry.value, send]);
 
-      const weeks = [];
-      for (let i = 0; i < data.contributions.length; i += 7) {
-        weeks.push(data.contributions.slice(i, i + 7));
-      }
+      const weeks = useMemo(() => {
+        if (!data) {
+          return Array.from({ length: 52 }, () => Array.from({ length: 7 }, () => null));
+        }
+        const result = [];
+        for (let i = 0; i < data.contributions.length; i += 7) {
+          result.push(data.contributions.slice(i, i + 7));
+        }
+        return result;
+      }, [data]);
 
       const levelColors = [
         '#F3F4F6',
@@ -730,7 +1055,14 @@
       };
 
       return (
-        <section id="github" className="px-6 md:px-12 lg:px-20 py-16 bg-offwhite border-b border-dark/10">
+        <section
+          id="github"
+          data-machine="githubTelemetry"
+          data-state={telemetry.value}
+          data-total-commits={data ? data.total : undefined}
+          data-inspected-date={hoveredDay ? hoveredDay.date : undefined}
+          className="px-6 md:px-12 lg:px-20 py-16 bg-offwhite border-b border-dark/10"
+        >
           <div className="max-w-[1360px] mx-auto">
             <div className="bg-white rounded-3xl border border-dark/10 p-6 sm:p-8 md:p-10 shadow-[0_4px_20px_rgba(17,24,39,0.02)]">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 mb-6 border-b border-dark/10">
@@ -743,26 +1075,38 @@
                       <h3 className="font-serif text-2xl text-dark font-semibold">Code <em className="text-electric italic font-normal">Pulse</em></h3>
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-electric/10 text-electric font-mono text-[11px] font-semibold">
                         <span className="w-1.5 h-1.5 rounded-full bg-electric animate-pulse"></span>
-                        {data.total} commits (12m)
+                        {isLoading ? "Syncing..." : isError ? "Offline" : `${data.total} commits (12m)`}
                       </span>
                     </div>
-                    <p className="text-xs font-mono text-dark/50 mt-0.5">
+                    <p className="text-xs font-mono text-dark/50 mt-0.5" aria-live="polite">
                       {hoveredDay
                         ? `${hoveredDay.count} contribution${hoveredDay.count === 1 ? '' : 's'} on ${hoveredDay.date}`
+                        : isError
+                        ? "Telemetry temporarily unavailable — view directly on GitHub"
                         : "Rolling 52-week open-source & engineering activity"}
                     </p>
                   </div>
                 </div>
 
-                <a
-                  href="https://github.com/JPacoch"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="self-start md:self-auto px-4 py-2 rounded-full bg-offwhite hover:bg-electric hover:text-white border border-dark/10 hover:border-electric text-xs font-mono font-medium text-dark transition-all flex items-center gap-2"
-                >
-                  <span>github.com/JPacoch</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
+                <div className="flex items-center gap-2 self-start md:self-auto">
+                  {isError && (
+                    <button
+                      onClick={() => send("RETRY")}
+                      className="px-3.5 py-2 rounded-full bg-electric/10 hover:bg-electric text-electric hover:text-white text-xs font-mono font-medium transition-colors"
+                    >
+                      Retry
+                    </button>
+                  )}
+                  <a
+                    href="https://github.com/JPacoch"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 py-2 rounded-full bg-offwhite hover:bg-electric hover:text-white border border-dark/10 hover:border-electric text-xs font-mono font-medium text-dark transition-all flex items-center gap-2"
+                  >
+                    <span>github.com/JPacoch</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
               </div>
 
               <div className="overflow-x-auto pb-2 custom-scrollbar-minimal">
@@ -770,6 +1114,15 @@
                   {weeks.map((week, i) => (
                     <div key={i} className="flex flex-col gap-[3.5px]">
                       {week.map((day, j) => {
+                        if (isLoading || isError) {
+                          return (
+                            <div
+                              key={`skeleton-${i}-${j}`}
+                              className={`w-3.5 h-3.5 rounded-[3px] bg-offwhite ${isLoading ? "animate-pulse" : "opacity-50"}`}
+                            />
+                          );
+                        }
+
                         if (!day) return <div key={`empty-${i}-${j}`} className="w-3.5 h-3.5" />;
 
                         const activeLevel = (day.level === 0 && day.count > 0)
@@ -779,9 +1132,14 @@
                         return (
                           <div
                             key={day.date}
-                            onMouseEnter={() => setHoveredDay(day)}
-                            onMouseLeave={() => setHoveredDay(null)}
-                            className="w-3.5 h-3.5 rounded-[3px] transition-transform duration-150 hover:scale-125 cursor-pointer"
+                            tabIndex={0}
+                            role="gridcell"
+                            aria-label={`${day.count} contributions on ${day.date}`}
+                            onMouseEnter={() => send({ type: "INSPECT_DAY", day })}
+                            onMouseLeave={() => send("CLEAR_INSPECT")}
+                            onFocus={() => send({ type: "INSPECT_DAY", day })}
+                            onBlur={() => send("CLEAR_INSPECT")}
+                            className="w-3.5 h-3.5 rounded-[3px] transition-transform duration-150 hover:scale-125 focus:scale-125 focus:outline-none focus:ring-1 focus:ring-electric cursor-pointer"
                             style={{ backgroundColor: levelColors[activeLevel] }}
                             title={`${day.count} contributions on ${day.date}`}
                           />
@@ -793,7 +1151,7 @@
               </div>
 
               <div className="mt-4 pt-4 border-t border-dark/5 flex flex-wrap items-center justify-between gap-4 text-[11px] font-mono text-dark/45">
-                <span>Hover any cell to inspect daily commit telemetry</span>
+                <span>Hover or focus any cell to inspect daily commit telemetry</span>
                 <div className="flex items-center gap-2">
                   <span>Less</span>
                   <div className="flex gap-1">
@@ -810,100 +1168,149 @@
       );
     };
 
-    // --- SELECTED PROJECTS SECTION ---
-    const Projects = () => {
-      const [activeCategory, setActiveCategory] = useState("All");
+    // --- SELECTED PROJECTS SECTION (Explicit Category Filter + Layout Sync State Machine) ---
+    const PROJECTS_DATA = [
+      {
+        id: "01",
+        title: "From the Cabinet",
+        subtitle: "Philosophical & Theological Publication",
+        desc: "An independent digital publication and essay archive exploring phenomenology, epistemology, existentialism, and systematic theology.",
+        url: "https://fromthecabinet.com/",
+        domain: "fromthecabinet.com",
+        category: "Thought & Publishing",
+        tags: ["Editorial", "Philosophy", "Web Platform"],
+        featured: true,
+        metric: "8.5k+ Words Published"
+      },
+      {
+        id: "02",
+        title: "WideAwake",
+        subtitle: "Windows System & Kernel Utility",
+        desc: "Lightweight native Windows desktop utility that prevents system sleep and maintains active presence using low-level kernel ping intervals.",
+        url: "https://wideawake.jakubpacocha.com/",
+        domain: "wideawake.jakubpacocha.com",
+        category: "Engineering",
+        tags: ["C#", ".NET", "Windows API", "System Utility"],
+        featured: true,
+        metric: "Zero-dependency native binary"
+      },
+      {
+        id: "03",
+        title: "Ostrzółka",
+        subtitle: "Historical Archive & NGO Database",
+        desc: "Civic heritage database built in collaboration with local NGOs to preserve, index, and make searchable historical records of Bydgoszcz.",
+        url: "https://ostrzolka.vercel.app/",
+        domain: "ostrzolka.vercel.app",
+        category: "Civic & Data",
+        tags: ["Database", "Civic Tech", "NGO", "Bydgoszcz"],
+        featured: false,
+        metric: "Municipal Heritage Archive"
+      },
+      {
+        id: "04",
+        title: "OweWho",
+        subtitle: "Group Expense & Settlement Engine",
+        desc: "Streamlined financial web application designed for travelers and groups to track multi-person expenses and compute minimal settlement transfers.",
+        url: "https://owewho.jakubpacocha.com/",
+        domain: "owewho.jakubpacocha.com",
+        category: "Engineering",
+        tags: ["Web App", "Algorithms", "FinTech Utility"],
+        featured: false,
+        metric: "Real-time debt graph simplification"
+      },
+      {
+        id: "05",
+        title: "Cabinet Quotes",
+        subtitle: "Contemplative Commonplace Book",
+        desc: "A distraction-free dark-mode reader curating philosophical aphorisms, theological excerpts, and literary passages for daily reflection.",
+        url: "https://quotes.fromthecabinet.com/",
+        domain: "quotes.fromthecabinet.com",
+        category: "Thought & Publishing",
+        tags: ["React", "Digital Garden", "Minimal UI"],
+        featured: false,
+        metric: "Curated literary archive"
+      },
+      {
+        id: "06",
+        title: "Gallery",
+        subtitle: "Minimalist Visual Exhibition",
+        desc: "A curated digital photography space presenting architectural geometry, quiet landscapes, and observational street frames.",
+        url: "https://gallery.jakubpacocha.com/",
+        domain: "gallery.jakubpacocha.com",
+        category: "Civic & Data",
+        tags: ["Photography", "Visual Arts", "Exhibition"],
+        featured: false,
+        metric: "High-resolution visual archive"
+      }
+    ];
 
-      const projectsData = [
-        {
-          id: "01",
-          title: "From the Cabinet",
-          subtitle: "Philosophical & Theological Publication",
-          desc: "An independent digital publication and essay archive exploring phenomenology, epistemology, existentialism, and systematic theology.",
-          url: "https://fromthecabinet.com/",
-          domain: "fromthecabinet.com",
-          category: "Thought & Publishing",
-          tags: ["Editorial", "Philosophy", "Web Platform"],
-          featured: true,
-          metric: "8.5k+ Words Published"
-        },
-        {
-          id: "02",
-          title: "WideAwake",
-          subtitle: "Windows System & Kernel Utility",
-          desc: "Lightweight native Windows desktop utility that prevents system sleep and maintains active presence using low-level kernel ping intervals.",
-          url: "https://wideawake.jakubpacocha.com/",
-          domain: "wideawake.jakubpacocha.com",
-          category: "Engineering",
-          tags: ["C#", ".NET", "Windows API", "System Utility"],
-          featured: true,
-          metric: "Zero-dependency native binary"
-        },
-        {
-          id: "03",
-          title: "Ostrzółka",
-          subtitle: "Historical Archive & NGO Database",
-          desc: "Civic heritage database built in collaboration with local NGOs to preserve, index, and make searchable historical records of Bydgoszcz.",
-          url: "https://ostrzolka.vercel.app/",
-          domain: "ostrzolka.vercel.app",
-          category: "Civic & Data",
-          tags: ["Database", "Civic Tech", "NGO", "Bydgoszcz"],
-          featured: false,
-          metric: "Municipal Heritage Archive"
-        },
-        {
-          id: "04",
-          title: "OweWho",
-          subtitle: "Group Expense & Settlement Engine",
-          desc: "Streamlined financial web application designed for travelers and groups to track multi-person expenses and compute minimal settlement transfers.",
-          url: "https://owewho.jakubpacocha.com/",
-          domain: "owewho.jakubpacocha.com",
-          category: "Engineering",
-          tags: ["Web App", "Algorithms", "FinTech Utility"],
-          featured: false,
-          metric: "Real-time debt graph simplification"
-        },
-        {
-          id: "05",
-          title: "Cabinet Quotes",
-          subtitle: "Contemplative Commonplace Book",
-          desc: "A distraction-free dark-mode reader curating philosophical aphorisms, theological excerpts, and literary passages for daily reflection.",
-          url: "https://quotes.fromthecabinet.com/",
-          domain: "quotes.fromthecabinet.com",
-          category: "Thought & Publishing",
-          tags: ["React", "Digital Garden", "Minimal UI"],
-          featured: false,
-          metric: "Curated literary archive"
-        },
-        {
-          id: "06",
-          title: "Gallery",
-          subtitle: "Minimalist Visual Exhibition",
-          desc: "A curated digital photography space presenting architectural geometry, quiet landscapes, and observational street frames.",
-          url: "https://gallery.jakubpacocha.com/",
-          domain: "gallery.jakubpacocha.com",
-          category: "Civic & Data",
-          tags: ["Photography", "Visual Arts", "Exhibition"],
-          featured: false,
-          metric: "High-resolution visual archive"
+    const PROJECT_CATEGORIES = ["All", "Engineering", "Thought & Publishing", "Civic & Data"];
+
+    const PROJECT_FILTER_MACHINE = {
+      id: "projectFilter",
+      initial: "idle",
+      context: () => ({
+        category: "All"
+      }),
+      on: {
+        SELECT_CATEGORY: (ctx, event) => {
+          const nextCat = PROJECT_CATEGORIES.includes(event.category) ? event.category : "All";
+          if (nextCat === ctx.category) return null;
+          return {
+            target: "transitioning",
+            context: { ...ctx, category: nextCat }
+          };
         }
-      ];
+      },
+      states: {
+        idle: {},
+        transitioning: {
+          on: {
+            TRANSITION_COMPLETE: "idle"
+          }
+        }
+      }
+    };
 
-      const categories = ["All", "Engineering", "Thought & Publishing", "Civic & Data"];
+    const Projects = () => {
+      const [filterState, send] = useMachine(PROJECT_FILTER_MACHINE);
+      const activeCategory = filterState.context.category;
 
       const filteredProjects = useMemo(() => {
-        if (activeCategory === "All") return projectsData;
-        return projectsData.filter(p => p.category === activeCategory);
+        if (activeCategory === "All") return PROJECTS_DATA;
+        return PROJECTS_DATA.filter(p => p.category === activeCategory);
       }, [activeCategory]);
+
+      const categoryCounts = useMemo(() => {
+        const counts = { All: PROJECTS_DATA.length };
+        for (const cat of PROJECT_CATEGORIES.slice(1)) {
+          counts[cat] = PROJECTS_DATA.filter(p => p.category === cat).length;
+        }
+        return counts;
+      }, []);
+
+      const completeTransition = useCallback(() => {
+        send("TRANSITION_COMPLETE");
+        if (window.ScrollTrigger) {
+          window.ScrollTrigger.refresh();
+        }
+      }, [send]);
 
       useEffect(() => {
-        if (window.ScrollTrigger) {
-          setTimeout(() => window.ScrollTrigger.refresh(), 100);
-        }
-      }, [activeCategory]);
+        if (filterState.value !== "transitioning") return;
+        const timer = setTimeout(completeTransition, 280);
+        return () => clearTimeout(timer);
+      }, [filterState.value, activeCategory, completeTransition]);
 
       return (
-        <section id="projects" className="px-6 md:px-12 lg:px-20 py-28 bg-white border-b border-dark/10">
+        <section
+          id="projects"
+          data-machine="projectFilter"
+          data-state={filterState.value}
+          data-category={activeCategory}
+          data-visible-count={filteredProjects.length}
+          className="px-6 md:px-12 lg:px-20 py-28 bg-white border-b border-dark/10"
+        >
           <div className="max-w-[1360px] mx-auto">
             <SectionHeader
               index="02"
@@ -911,26 +1318,39 @@
               title="Engineered tools &"
               italicTitle="digital artifacts."
               rightElement={
-                <div className="flex flex-wrap gap-1.5 bg-offwhite p-1.5 rounded-2xl border border-dark/10">
-                  {categories.map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => setActiveCategory(cat)}
-                      className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all ${
-                        activeCategory === cat
-                          ? "bg-electric text-white shadow-sm"
-                          : "text-dark/60 hover:text-dark"
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
+                <div
+                  role="tablist"
+                  aria-label="Filter projects by category"
+                  className="flex flex-wrap gap-1.5 bg-offwhite p-1.5 rounded-2xl border border-dark/10"
+                >
+                  {PROJECT_CATEGORIES.map((cat) => {
+                    const isSelected = activeCategory === cat;
+                    return (
+                      <button
+                        key={cat}
+                        role="tab"
+                        aria-selected={isSelected}
+                        data-category={cat}
+                        onClick={() => send({ type: "SELECT_CATEGORY", category: cat })}
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ${
+                          isSelected
+                            ? "bg-electric text-white shadow-sm"
+                            : "text-dark/60 hover:text-dark"
+                        }`}
+                      >
+                        <span>{cat}</span>
+                        <span className={`font-mono text-[10px] ${isSelected ? "text-white/80" : "text-dark/35"}`}>
+                          {categoryCounts[cat]}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               }
             />
 
             <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <AnimatePresence mode="popLayout">
+              <AnimatePresence mode="popLayout" onExitComplete={completeTransition}>
                 {filteredProjects.map((proj) => (
                   <motion.a
                     layout
@@ -1158,20 +1578,51 @@
       );
     };
 
-    // --- MAIN APP WITH PRESERVED FOOTER REVEAL ---
+    // --- MAIN APP WITH PRESERVED FOOTER REVEAL (Explicit Curtain Lifecycle State Machine) ---
+    const FOOTER_CURTAIN_MACHINE = {
+      id: "footerCurtain",
+      initial: "hidden",
+      context: () => ({ progress: 0 }),
+      on: {
+        SCRUB_PROGRESS: (ctx, event, currentState) => {
+          const p = Math.max(0, Math.min(1, Number(event.progress) || 0));
+          const nextState = p <= 0.01 ? "hidden" : p >= 0.98 ? "revealed" : "revealing";
+          if (nextState === currentState && Math.abs(ctx.progress - p) < 0.02) {
+            return null;
+          }
+          return {
+            target: nextState,
+            context: { progress: Number(p.toFixed(3)) }
+          };
+        }
+      },
+      states: {
+        hidden: {},
+        revealing: {},
+        revealed: {}
+      }
+    };
+
     const App = () => {
+      const [curtainState, sendCurtain] = useMachine(FOOTER_CURTAIN_MACHINE);
+      const isFooterHidden = curtainState.value === "hidden";
+
       useLayoutEffect(() => {
         const lenis = new Lenis({
           duration: 1.15,
           easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
         });
-        function raf(time) {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
+        window.__LENIS__ = lenis;
 
         gsap.registerPlugin(ScrollTrigger);
+        lenis.on("scroll", ScrollTrigger.update);
+
+        let rafId = null;
+        function raf(time) {
+          lenis.raf(time);
+          rafId = requestAnimationFrame(raf);
+        }
+        rafId = requestAnimationFrame(raf);
 
         const initScrollTrigger = () => {
           ScrollTrigger.create({
@@ -1179,6 +1630,9 @@
             start: "top bottom",
             end: "bottom bottom",
             scrub: true,
+            onUpdate: (self) => {
+              sendCurtain({ type: "SCRUB_PROGRESS", progress: self.progress });
+            },
             animation: gsap.timeline()
               .to(["#footer-container", "#blue-bg"], { autoAlpha: 1, duration: 0.05, ease: "none" }, 0)
               .to("#main-content", {
@@ -1191,7 +1645,7 @@
           });
         };
 
-        setTimeout(() => {
+        const initTimer = setTimeout(() => {
           initScrollTrigger();
           ScrollTrigger.refresh();
         }, 100);
@@ -1200,11 +1654,14 @@
         resizeObserver.observe(document.body);
 
         return () => {
+          clearTimeout(initTimer);
+          if (rafId !== null) cancelAnimationFrame(rafId);
+          delete window.__LENIS__;
           lenis.destroy();
           ScrollTrigger.getAll().forEach(t => t.kill());
           resizeObserver.disconnect();
         };
-      }, []);
+      }, [sendCurtain]);
 
       return (
         <div className="bg-white min-h-screen font-sans text-dark selection:bg-electric selection:text-white">
@@ -1227,6 +1684,10 @@
 
           <footer
             id="footer-container"
+            data-machine="footerCurtain"
+            data-state={curtainState.value}
+            data-progress={curtainState.context.progress}
+            aria-hidden={isFooterHidden}
             className="fixed bottom-0 left-0 w-full min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] z-0 flex flex-col justify-end bg-electric text-white overflow-hidden opacity-0 invisible"
           >
             <div id="footer-container-inner" className="w-full h-full px-6 md:px-12 lg:px-24 py-16 flex flex-col justify-between">
@@ -1239,16 +1700,32 @@
                   <p className="text-xl text-white/80 mb-12">Want to say hello? Hit me up:</p>
 
                   <div className="flex flex-wrap gap-4">
-                    <a href="mailto:pacochp@gmail.com" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                    <a
+                      href="mailto:pacochp@gmail.com"
+                      tabIndex={isFooterHidden ? -1 : 0}
+                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
+                    >
                       <MailIcon /> Email
                     </a>
-                    <a href="https://www.linkedin.com/in/jakubpacocha/" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                    <a
+                      href="https://www.linkedin.com/in/jakubpacocha/"
+                      tabIndex={isFooterHidden ? -1 : 0}
+                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
+                    >
                       <LinkedinIcon /> LinkedIn
                     </a>
-                    <a href="https://x.com/JakubPacocha" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                    <a
+                      href="https://x.com/JakubPacocha"
+                      tabIndex={isFooterHidden ? -1 : 0}
+                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
+                    >
                       <TwitterIcon /> Twitter / X
                     </a>
-                    <a href="https://github.com/JPacoch" className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium">
+                    <a
+                      href="https://github.com/JPacoch"
+                      tabIndex={isFooterHidden ? -1 : 0}
+                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
+                    >
                       <GithubIcon /> GitHub
                     </a>
                   </div>
