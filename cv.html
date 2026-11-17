@@ -69,6 +69,18 @@
         linear-gradient(to right, rgba(17, 24, 39, 0.035) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(17, 24, 39, 0.035) 1px, transparent 1px);
     }
+
+    .custom-scrollbar-minimal::-webkit-scrollbar {
+      height: 4px;
+      width: 4px;
+    }
+    .custom-scrollbar-minimal::-webkit-scrollbar-track {
+      background: #F9FAFB;
+    }
+    .custom-scrollbar-minimal::-webkit-scrollbar-thumb {
+      background: rgba(17, 24, 39, 0.15);
+      border-radius: 9999px;
+    }
   </style>
 </head>
 
@@ -80,65 +92,252 @@
     });
   </script>
   <script type="text/babel" data-presets="my-react,env" data-type="module">
-    const { useState, useEffect, useLayoutEffect, useReducer, useCallback } = React;
+    const { useState, useEffect, useLayoutEffect, useRef, useMemo, useReducer, useCallback } = React;
     const { motion, AnimatePresence } = window.Motion;
 
-    // --- EXPLICIT FINITE STATE MACHINE ENGINE (DX + AX + UX) ---
-    window.__APP_MACHINES__ = window.__APP_MACHINES__ || {};
+    // --- EXPLICIT FINITE STATE MACHINE ENGINE & AGENT/DEV TELEMETRY REGISTRY (UX + DX + AX) ---
+    const MACHINE_REGISTRY = window.__APP_MACHINES__ || {};
+    const GLOBAL_HISTORY = [];
+    const GLOBAL_SUBSCRIBERS = new Set();
+    let GLOBAL_SEQ = 0;
+
+    function notifyGlobalSubscribers(record) {
+      GLOBAL_SUBSCRIBERS.forEach((fn) => {
+        try {
+          fn(record);
+        } catch (err) {
+          console.error("[FSM Registry] Subscriber error:", err);
+        }
+      });
+    }
+
+    Object.defineProperties(MACHINE_REGISTRY, {
+      __history__: { value: GLOBAL_HISTORY, enumerable: false, configurable: true },
+      getAllSnapshots: {
+        value: () => {
+          const out = {};
+          Object.keys(MACHINE_REGISTRY).forEach((k) => {
+            if (MACHINE_REGISTRY[k] && typeof MACHINE_REGISTRY[k].getSnapshot === "function") {
+              out[k] = MACHINE_REGISTRY[k].getSnapshot();
+            }
+          });
+          return out;
+        },
+        enumerable: false,
+        configurable: true
+      },
+      getHistory: {
+        value: (limit = 30) => GLOBAL_HISTORY.slice(-limit),
+        enumerable: false,
+        configurable: true
+      },
+      send: {
+        value: (machineId, event) => {
+          const target = MACHINE_REGISTRY[machineId];
+          if (!target || typeof target.send !== "function") return false;
+          target.send(event);
+          return true;
+        },
+        enumerable: false,
+        configurable: true
+      },
+      resetAll: {
+        value: () => {
+          Object.keys(MACHINE_REGISTRY).forEach((k) => {
+            if (MACHINE_REGISTRY[k] && typeof MACHINE_REGISTRY[k].reset === "function") {
+              MACHINE_REGISTRY[k].reset();
+            }
+          });
+        },
+        enumerable: false,
+        configurable: true
+      },
+      subscribe: {
+        value: (listener) => {
+          if (typeof listener !== "function") return () => {};
+          GLOBAL_SUBSCRIBERS.add(listener);
+          return () => GLOBAL_SUBSCRIBERS.delete(listener);
+        },
+        enumerable: false,
+        configurable: true
+      },
+      inspect: {
+        value: () => {
+          if (MACHINE_REGISTRY.machineInspector) {
+            MACHINE_REGISTRY.machineInspector.send("TOGGLE");
+            return MACHINE_REGISTRY.getAllSnapshots();
+          }
+          return MACHINE_REGISTRY.getAllSnapshots();
+        },
+        enumerable: false,
+        configurable: true
+      }
+    });
+
+    window.__APP_MACHINES__ = MACHINE_REGISTRY;
+
+    function getAvailableEvents(config, stateValue) {
+      const stateNode = config.states && config.states[stateValue];
+      const stateEvents = stateNode && stateNode.on ? Object.keys(stateNode.on) : [];
+      const rootEvents = config.on ? Object.keys(config.on) : [];
+      return Array.from(new Set([...stateEvents, ...rootEvents]));
+    }
+
+    function evaluateMachineTransition(config, current, event) {
+      const eventObj = typeof event === "string" ? { type: event } : (event || { type: "NOOP" });
+
+      if (eventObj.type === "@@RESET") {
+        const initialValue = typeof config.initial === "function" ? config.initial() : config.initial;
+        const initialContext = typeof config.context === "function" ? config.context() : (config.context || {});
+        return {
+          value: initialValue,
+          context: initialContext,
+          changed: true,
+          event: eventObj
+        };
+      }
+
+      const stateNode = config.states && config.states[current.value];
+      const handler =
+        (stateNode && stateNode.on && stateNode.on[eventObj.type]) ||
+        (config.on && config.on[eventObj.type]);
+
+      if (!handler) {
+        return { value: current.value, context: current.context, changed: false, event: eventObj };
+      }
+
+      let nextValue = current.value;
+      let nextContext = current.context;
+
+      if (typeof handler === "string") {
+        nextValue = handler;
+      } else if (typeof handler === "function") {
+        const next = handler(current.context, eventObj, current.value);
+        if (!next) {
+          return { value: current.value, context: current.context, changed: false, event: eventObj };
+        }
+        nextValue = next.target || current.value;
+        nextContext = next.context !== undefined ? next.context : current.context;
+      } else if (typeof handler === "object") {
+        nextValue = handler.target || current.value;
+        nextContext = handler.reduce
+          ? handler.reduce(current.context, eventObj, current.value)
+          : current.context;
+      }
+
+      const changed = nextValue !== current.value || nextContext !== current.context;
+      return { value: nextValue, context: nextContext, changed, event: eventObj };
+    }
 
     function useMachine(config) {
-      const reducer = useCallback((current, event) => {
-        const eventObj = typeof event === "string" ? { type: event } : event;
-        const stateNode = config.states[current.value];
-        const handler =
-          (stateNode && stateNode.on && stateNode.on[eventObj.type]) ||
-          (config.on && config.on[eventObj.type]);
-
-        if (!handler) return current;
-
-        if (typeof handler === "string") {
-          return { value: handler, context: current.context };
-        }
-
-        if (typeof handler === "function") {
-          const next = handler(current.context, eventObj, current.value);
-          if (!next) return current;
-          return {
-            value: next.target || current.value,
-            context: next.context !== undefined ? next.context : current.context
-          };
-        }
-
-        const nextContext = handler.reduce
-          ? handler.reduce(current.context, eventObj)
-          : current.context;
-        return {
-          value: handler.target || current.value,
-          context: nextContext
+      const initialRef = useRef(null);
+      if (!initialRef.current) {
+        initialRef.current = {
+          value: typeof config.initial === "function" ? config.initial() : config.initial,
+          context: typeof config.context === "function" ? config.context() : (config.context || {})
         };
+      }
+
+      const stateRef = useRef(initialRef.current);
+      const historyRef = useRef([]);
+      const listenersRef = useRef(new Set());
+      const [, forceRender] = useReducer((x) => x + 1, 0);
+
+      const send = useCallback((event) => {
+        const prev = stateRef.current;
+        const result = evaluateMachineTransition(config, prev, event);
+        if (!result.changed) return stateRef.current;
+
+        const nextState = { value: result.value, context: result.context };
+        stateRef.current = nextState;
+
+        const record = {
+          seq: ++GLOBAL_SEQ,
+          id: config.id || "anonymous",
+          timestamp: new Date().toISOString(),
+          event: result.event.type,
+          from: prev.value,
+          to: nextState.value
+        };
+
+        historyRef.current = [...historyRef.current.slice(-24), record];
+        if (config.id !== "machineInspector" && result.event.type !== "SCROLL_UPDATE" && result.event.type !== "SCRUB_PROGRESS") {
+          GLOBAL_HISTORY.push(record);
+          if (GLOBAL_HISTORY.length > 60) GLOBAL_HISTORY.shift();
+        }
+
+        forceRender();
+
+        listenersRef.current.forEach((fn) => {
+          try {
+            fn(nextState, record);
+          } catch (e) {
+            console.error(e);
+          }
+        });
+        notifyGlobalSubscribers(record);
+
+        return nextState;
       }, [config]);
 
-      const [state, dispatch] = useReducer(reducer, undefined, () => ({
-        value: typeof config.initial === "function" ? config.initial() : config.initial,
-        context: typeof config.context === "function" ? config.context() : (config.context || {})
-      }));
+      const actor = useMemo(() => {
+        const controller = {
+          id: config.id,
+          states: Object.keys(config.states || {}),
+          send,
+          reset: () => send({ type: "@@RESET" }),
+          can: (eventType) => getAvailableEvents(config, stateRef.current.value).includes(eventType),
+          getSnapshot: () => ({
+            id: config.id,
+            state: stateRef.current.value,
+            context: stateRef.current.context,
+            states: Object.keys(config.states || {}),
+            availableEvents: getAvailableEvents(config, stateRef.current.value)
+          }),
+          subscribe: (fn) => {
+            if (typeof fn !== "function") return () => {};
+            listenersRef.current.add(fn);
+            return () => listenersRef.current.delete(fn);
+          }
+        };
+
+        Object.defineProperties(controller, {
+          state: {
+            get: () => stateRef.current.value,
+            enumerable: true
+          },
+          context: {
+            get: () => stateRef.current.context,
+            enumerable: true
+          },
+          availableEvents: {
+            get: () => getAvailableEvents(config, stateRef.current.value),
+            enumerable: true
+          },
+          history: {
+            get: () => historyRef.current.slice(),
+            enumerable: true
+          }
+        });
+
+        return controller;
+      }, [config, send]);
+
+      if (config.id && !MACHINE_REGISTRY[config.id]) {
+        MACHINE_REGISTRY[config.id] = actor;
+      }
 
       useEffect(() => {
         if (!config.id) return;
-        window.__APP_MACHINES__[config.id] = {
-          id: config.id,
-          state: state.value,
-          context: state.context,
-          states: Object.keys(config.states),
-          send: dispatch,
-          getSnapshot: () => ({ state: state.value, context: state.context })
-        };
+        MACHINE_REGISTRY[config.id] = actor;
         return () => {
-          delete window.__APP_MACHINES__[config.id];
+          if (MACHINE_REGISTRY[config.id] === actor) {
+            delete MACHINE_REGISTRY[config.id];
+          }
         };
-      }, [config.id, config.states, state, dispatch]);
+      }, [config.id, actor]);
 
-      return [state, dispatch];
+      return [stateRef.current, send, actor];
     }
 
     // --- ICONS ---
@@ -178,7 +377,7 @@
       </svg>
     );
 
-    // --- CV NAVIGATION & SCROLL-SPY STATE MACHINE ---
+    // --- CV NAVIGATION & SCROLL-SPY STATE MACHINE (With Programmatic Scroll Lock) ---
     const CV_NAV_SECTIONS = [
       { id: "experience", label: "Experience", href: "#experience" },
       { id: "skills", label: "Stack", href: "#skills" },
@@ -189,22 +388,63 @@
       id: "cvNavigation",
       initial: () => (typeof window !== "undefined" && window.scrollY > 30 ? "elevated" : "top"),
       context: () => ({
-        activeSection: "experience"
+        activeSection: "experience",
+        scrollMode: "spy",
+        targetSection: null
       }),
       on: {
         SCROLL_UPDATE: (ctx, event, currentState) => {
           const nextState = event.scrollY > 30 ? "elevated" : "top";
-          const nextSection = event.activeSection || ctx.activeSection;
-          if (nextState === currentState && nextSection === ctx.activeSection) return null;
+          let nextSection = event.activeSection || ctx.activeSection;
+          let nextScrollMode = ctx.scrollMode;
+          let nextTarget = ctx.targetSection;
+
+          if (ctx.scrollMode === "programmatic" && ctx.targetSection) {
+            if (event.activeSection === ctx.targetSection) {
+              nextScrollMode = "spy";
+              nextTarget = null;
+              nextSection = ctx.targetSection;
+            } else {
+              nextSection = ctx.targetSection;
+            }
+          }
+
+          if (nextState === currentState && nextSection === ctx.activeSection && nextScrollMode === ctx.scrollMode) {
+            return null;
+          }
           return {
             target: nextState,
-            context: { ...ctx, activeSection: nextSection }
+            context: {
+              ...ctx,
+              activeSection: nextSection,
+              scrollMode: nextScrollMode,
+              targetSection: nextTarget
+            }
           };
         },
-        SELECT_SECTION: (ctx, event, currentState) => ({
-          target: currentState,
-          context: { ...ctx, activeSection: event.section || ctx.activeSection }
-        })
+        SELECT_SECTION: (ctx, event, currentState) => {
+          const targetSec = event.section || ctx.activeSection;
+          return {
+            target: currentState,
+            context: {
+              ...ctx,
+              activeSection: targetSec,
+              targetSection: targetSec,
+              scrollMode: "programmatic"
+            }
+          };
+        },
+        NAVIGATE_COMPLETE: (ctx, _event, currentState) => {
+          if (ctx.scrollMode === "spy" && !ctx.targetSection) return null;
+          return {
+            target: currentState,
+            context: {
+              ...ctx,
+              scrollMode: "spy",
+              targetSection: null
+            }
+          };
+        }
       },
       states: {
         top: {},
@@ -215,12 +455,14 @@
     const Nav = () => {
       const [navState, send] = useMachine(CV_NAV_MACHINE);
       const scrolled = navState.value === "elevated";
-      const { activeSection } = navState.context;
+      const { activeSection, scrollMode } = navState.context;
 
       useEffect(() => {
+        let programmaticTimer = null;
+
         const computeScrollState = () => {
           const ordered = ["education", "skills", "experience"];
-          const scrollPos = window.scrollY + 260;
+          const scrollPos = window.scrollY + Math.min(340, window.innerHeight * 0.45);
           let detected = "experience";
           for (const id of ordered) {
             const el = document.getElementById(id);
@@ -232,18 +474,45 @@
           send({ type: "SCROLL_UPDATE", scrollY: window.scrollY, activeSection: detected });
         };
 
+        const cancelProgrammaticOnUserInput = () => {
+          if (MACHINE_REGISTRY.cvNavigation && MACHINE_REGISTRY.cvNavigation.context.scrollMode === "programmatic") {
+            clearTimeout(programmaticTimer);
+            programmaticTimer = setTimeout(() => {
+              send("NAVIGATE_COMPLETE");
+            }, 150);
+          }
+        };
+
         computeScrollState();
         window.addEventListener("scroll", computeScrollState, { passive: true });
-        return () => window.removeEventListener("scroll", computeScrollState);
+        window.addEventListener("wheel", cancelProgrammaticOnUserInput, { passive: true });
+        window.addEventListener("touchmove", cancelProgrammaticOnUserInput, { passive: true });
+        return () => {
+          clearTimeout(programmaticTimer);
+          window.removeEventListener("scroll", computeScrollState);
+          window.removeEventListener("wheel", cancelProgrammaticOnUserInput);
+          window.removeEventListener("touchmove", cancelProgrammaticOnUserInput);
+        };
       }, [send]);
 
       const handleAnchorClick = (e, id, href) => {
         send({ type: "SELECT_SECTION", section: id });
+        if (MACHINE_REGISTRY.scrollEngine) {
+          MACHINE_REGISTRY.scrollEngine.send({ type: "PROGRAMMATIC_START", target: id });
+        }
         if (window.__LENIS__ && href.startsWith("#")) {
           const targetEl = document.querySelector(href);
           if (targetEl) {
             e.preventDefault();
-            window.__LENIS__.scrollTo(targetEl, { offset: -96 });
+            window.__LENIS__.scrollTo(targetEl, {
+              offset: -96,
+              onComplete: () => {
+                send("NAVIGATE_COMPLETE");
+                if (MACHINE_REGISTRY.scrollEngine) {
+                  MACHINE_REGISTRY.scrollEngine.send("PROGRAMMATIC_END");
+                }
+              }
+            });
           }
         }
       };
@@ -253,6 +522,7 @@
           data-machine="cvNavigation"
           data-state={navState.value}
           data-active-section={activeSection}
+          data-scroll-mode={scrollMode}
           className="fixed top-5 left-0 right-0 z-[100] px-4 sm:px-8 pointer-events-none flex justify-center"
         >
           <nav
@@ -306,7 +576,59 @@
       );
     };
 
+    // --- CV CREDENTIAL & TAG EXPLORER MACHINE (Cross-Section Skill Highlighting) ---
+    const CV_EXPLORER_MACHINE = {
+      id: "cvExplorer",
+      initial: "overview",
+      context: () => ({
+        selectedTag: null,
+        hoveredRole: null
+      }),
+      on: {
+        TOGGLE_TAG: (ctx, event) => {
+          const nextTag = ctx.selectedTag === event.tag ? null : event.tag;
+          return {
+            target: nextTag ? "filteringByTag" : "overview",
+            context: { ...ctx, selectedTag: nextTag }
+          };
+        },
+        CLEAR_TAG: (ctx) => ({
+          target: "overview",
+          context: { ...ctx, selectedTag: null }
+        }),
+        HOVER_ROLE: (ctx, event) => ({
+          context: { ...ctx, hoveredRole: event.company || null }
+        }),
+        LEAVE_ROLE: (ctx) => ({
+          context: { ...ctx, hoveredRole: null }
+        })
+      },
+      states: {
+        overview: {},
+        filteringByTag: {
+          on: {
+            ESCAPE: (ctx) => ({
+              target: "overview",
+              context: { ...ctx, selectedTag: null }
+            })
+          }
+        }
+      }
+    };
+
     const CVDocument = () => {
+      const [explorerState, sendExplorer] = useMachine(CV_EXPLORER_MACHINE);
+      const { selectedTag, hoveredRole } = explorerState.context;
+
+      useEffect(() => {
+        if (!selectedTag) return;
+        const onKeyDown = (e) => {
+          if (e.key === "Escape") sendExplorer("ESCAPE");
+        };
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+      }, [selectedTag, sendExplorer]);
+
       const experience = [
         {
           period: "Nov 2026 - Present",
@@ -398,7 +720,13 @@
       ];
 
       return (
-        <div className="pt-28 pb-24 px-6 md:px-12 lg:px-20 bg-Swiss-grid">
+        <div
+          data-machine="cvExplorer"
+          data-state={explorerState.value}
+          data-selected-tag={selectedTag || undefined}
+          data-hovered-role={hoveredRole || undefined}
+          className="pt-28 pb-24 px-6 md:px-12 lg:px-20 bg-Swiss-grid"
+        >
           <div className="max-w-[1160px] mx-auto">
             {/* CV Header Sheet */}
             <motion.div
@@ -440,7 +768,7 @@
                     className="px-6 py-3.5 rounded-full bg-electric text-white font-medium text-sm flex items-center gap-2 shadow-[0_8px_25px_rgba(0,85,255,0.28)] hover:bg-electric/90 transition-all"
                   >
                     <MailIcon />
-                    <span>Contact Direct</span>
+                    <span>Direct Contact</span>
                   </a>
                   <a
                     href="assets/resume.pdf"
@@ -456,46 +784,87 @@
 
             {/* Experience Section */}
             <section id="experience" className="mb-12">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="font-mono text-xs font-semibold text-electric bg-electric/10 px-2.5 py-1 rounded-md">01</span>
-                <h2 className="font-serif text-3xl text-dark font-semibold">Professional Experience</h2>
+              <div className="flex items-center justify-between gap-3 mb-6">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs font-semibold text-electric bg-electric/10 px-2.5 py-1 rounded-md">01</span>
+                  <h2 className="font-serif text-3xl text-dark font-semibold">Professional Experience</h2>
+                </div>
+                {selectedTag && (
+                  <button
+                    type="button"
+                    onClick={() => sendExplorer("CLEAR_TAG")}
+                    className="px-3 py-1 rounded-full bg-electric/10 hover:bg-electric text-electric hover:text-white font-mono text-xs font-medium transition-colors"
+                  >
+                    Filter: {selectedTag} ×
+                  </button>
+                )}
               </div>
 
               <div className="bg-white rounded-3xl border border-dark/10 divide-y divide-dark/10 overflow-hidden shadow-[0_4px_20px_rgba(17,24,39,0.02)]">
-                {experience.map((exp, i) => (
-                  <div key={i} className="p-7 md:p-9 hover:bg-offwhite/50 transition-colors grid grid-cols-1 md:grid-cols-12 gap-6">
-                    <div className="md:col-span-4">
-                      <span className={`inline-block font-mono text-xs font-semibold px-3 py-1 rounded-full mb-3 ${
-                        exp.current ? "bg-electric text-white" : "bg-offwhite border border-dark/10 text-dark/65"
-                      }`}>
-                        {exp.period}
-                      </span>
-                      <div className="text-lg font-semibold text-dark">{exp.company}</div>
-                      <div className="font-mono text-xs text-dark/45 mt-0.5">{exp.domain}</div>
-                    </div>
+                {experience.map((exp, i) => {
+                  const matchesTag = !selectedTag || exp.tags.includes(selectedTag);
+                  return (
+                    <div
+                      key={i}
+                      onMouseEnter={() => sendExplorer({ type: "HOVER_ROLE", company: exp.company })}
+                      onMouseLeave={() => sendExplorer("LEAVE_ROLE")}
+                      className={`p-7 md:p-9 hover:bg-offwhite/50 transition-all grid grid-cols-1 md:grid-cols-12 gap-6 ${
+                        selectedTag && !matchesTag ? "opacity-45" : ""
+                      }`}
+                    >
+                      <div className="md:col-span-4">
+                        <span className={`inline-block font-mono text-xs font-semibold px-3 py-1 rounded-full mb-3 ${
+                          exp.current ? "bg-electric text-white" : "bg-offwhite border border-dark/10 text-dark/65"
+                        }`}>
+                          {exp.period}
+                        </span>
+                        <div className="text-lg font-semibold text-dark">{exp.company}</div>
+                        <div className="font-mono text-xs text-dark/45 mt-0.5">{exp.domain}</div>
+                      </div>
 
-                    <div className="md:col-span-8">
-                      <h3 className="font-serif text-2xl md:text-3xl text-dark font-semibold mb-4">
-                        {exp.role}
-                      </h3>
-                      <ul className="space-y-2.5 mb-6 text-dark/70 text-sm md:text-base leading-relaxed">
-                        {exp.bullets.map((b, idx) => (
-                          <li key={idx} className="flex items-start gap-3">
-                            <span className="w-1.5 h-1.5 rounded-full bg-electric mt-2 shrink-0" />
-                            <span>{b}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="flex flex-wrap gap-1.5">
-                        {exp.tags.map(tag => (
-                          <span key={tag} className="px-2.5 py-1 rounded-md bg-offwhite border border-dark/10 font-mono text-[11px] text-dark/70">
-                            {tag}
-                          </span>
-                        ))}
+                      <div className="md:col-span-8">
+                        <h3 className="font-serif text-2xl md:text-3xl text-dark font-semibold mb-4">
+                          {exp.role}
+                        </h3>
+                        <ul className="space-y-2.5 mb-6 text-dark/70 text-sm md:text-base leading-relaxed">
+                          {exp.bullets.map((b, idx) => (
+                            <li key={idx} className="flex items-start gap-3">
+                              <span className="w-1.5 h-1.5 rounded-full bg-electric mt-2 shrink-0" />
+                              <span>{b}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        <div className="flex flex-wrap gap-1.5">
+                          {exp.tags.map(tag => {
+                            const isTagSelected = selectedTag === tag;
+                            return (
+                              <span
+                                key={tag}
+                                role="button"
+                                tabIndex={0}
+                                aria-pressed={isTagSelected}
+                                onClick={() => sendExplorer({ type: "TOGGLE_TAG", tag })}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    sendExplorer({ type: "TOGGLE_TAG", tag });
+                                  }
+                                }}
+                                className={`px-2.5 py-1 rounded-md border font-mono text-[11px] cursor-pointer transition-colors ${
+                                  isTagSelected
+                                    ? "bg-electric text-white border-electric"
+                                    : "bg-offwhite hover:bg-electric/10 border-dark/10 text-dark/70 hover:text-electric"
+                                }`}
+                              >
+                                {tag}
+                              </span>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </section>
 
@@ -513,12 +882,22 @@
                       {group.category}
                     </div>
                     <ul className="space-y-2.5">
-                      {group.items.map((item) => (
-                        <li key={item} className="text-sm text-dark/75 flex items-center gap-2.5">
-                          <span className="w-1.5 h-1.5 rounded-full bg-electric/60" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
+                      {group.items.map((item) => {
+                        const isMatched = Boolean(
+                          selectedTag && item.toLowerCase().includes(selectedTag.toLowerCase())
+                        );
+                        return (
+                          <li
+                            key={item}
+                            className={`text-sm flex items-center gap-2.5 transition-colors ${
+                              isMatched ? "text-electric font-semibold" : "text-dark/75"
+                            }`}
+                          >
+                            <span className={`w-1.5 h-1.5 rounded-full ${isMatched ? "bg-electric scale-125" : "bg-electric/60"}`} />
+                            <span>{item}</span>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 ))}
@@ -533,25 +912,53 @@
               </div>
 
               <div className="bg-white rounded-3xl border border-dark/10 divide-y divide-dark/10 overflow-hidden shadow-[0_4px_20px_rgba(17,24,39,0.02)]">
-                {education.map((edu, idx) => (
-                  <div key={idx} className="p-7 md:p-8 hover:bg-offwhite/50 transition-colors grid grid-cols-1 md:grid-cols-12 gap-6">
-                    <div className="md:col-span-4">
-                      <span className="font-mono text-xs font-semibold text-electric">{edu.year}</span>
-                      <div className="text-sm font-medium text-dark/65 mt-1">{edu.institution}</div>
-                    </div>
-                    <div className="md:col-span-8">
-                      <h3 className="font-serif text-2xl text-dark font-semibold mb-2">{edu.degree}</h3>
-                      <p className="text-sm md:text-base text-dark/65 leading-relaxed mb-4">{edu.thesis}</p>
-                      <div className="flex flex-wrap gap-1.5">
-                        {edu.tags.map(t => (
-                          <span key={t} className="px-2.5 py-0.5 rounded-md bg-offwhite border border-dark/10 font-mono text-[11px] text-dark/65">
-                            {t}
-                          </span>
-                        ))}
+                {education.map((edu, idx) => {
+                  const matchesTag = !selectedTag || edu.tags.includes(selectedTag);
+                  return (
+                    <div
+                      key={idx}
+                      className={`p-7 md:p-8 hover:bg-offwhite/50 transition-all grid grid-cols-1 md:grid-cols-12 gap-6 ${
+                        selectedTag && !matchesTag ? "opacity-45" : ""
+                      }`}
+                    >
+                      <div className="md:col-span-4">
+                        <span className="font-mono text-xs font-semibold text-electric">{edu.year}</span>
+                        <div className="text-sm font-medium text-dark/65 mt-1">{edu.institution}</div>
+                      </div>
+                      <div className="md:col-span-8">
+                        <h3 className="font-serif text-2xl text-dark font-semibold mb-2">{edu.degree}</h3>
+                        <p className="text-sm md:text-base text-dark/65 leading-relaxed mb-4">{edu.thesis}</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {edu.tags.map(t => {
+                            const isTagSelected = selectedTag === t;
+                            return (
+                              <span
+                                key={t}
+                                role="button"
+                                tabIndex={0}
+                                aria-pressed={isTagSelected}
+                                onClick={() => sendExplorer({ type: "TOGGLE_TAG", tag: t })}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    sendExplorer({ type: "TOGGLE_TAG", tag: t });
+                                  }
+                                }}
+                                className={`px-2.5 py-0.5 rounded-md border font-mono text-[11px] cursor-pointer transition-colors ${
+                                  isTagSelected
+                                    ? "bg-electric text-white border-electric"
+                                    : "bg-offwhite hover:bg-electric/10 border-dark/10 text-dark/65 hover:text-electric"
+                                }`}
+                              >
+                                {t}
+                              </span>
+                            );
+                          })}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </section>
           </div>
@@ -559,10 +966,78 @@
       );
     };
 
+    // --- SMOOTH SCROLL & VIEWPORT LIFECYCLE ENGINE MACHINE ---
+    const SCROLL_ENGINE_MACHINE = {
+      id: "scrollEngine",
+      initial: () =>
+        typeof window !== "undefined" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "reducedMotion"
+          : "initializing",
+      context: () => ({
+        direction: "down",
+        targetSection: null
+      }),
+      on: {
+        VISIBILITY_HIDDEN: "suspended",
+        VISIBILITY_VISIBLE: "idle",
+        REDUCED_MOTION: "reducedMotion",
+        MOTION_ALLOWED: "idle"
+      },
+      states: {
+        initializing: {
+          on: {
+            READY: "idle"
+          }
+        },
+        idle: {
+          on: {
+            SCROLL_ACTIVE: (ctx, event) => ({
+              target: "scrolling",
+              context: { ...ctx, direction: event.direction || ctx.direction }
+            }),
+            PROGRAMMATIC_START: (ctx, event) => ({
+              target: "programmatic",
+              context: { ...ctx, targetSection: event.target || null }
+            })
+          }
+        },
+        scrolling: {
+          on: {
+            SCROLL_ACTIVE: (ctx, event) => {
+              const nextDir = event.direction || ctx.direction;
+              if (nextDir === ctx.direction) return null;
+              return { target: "scrolling", context: { ...ctx, direction: nextDir } };
+            },
+            SCROLL_IDLE: "idle",
+            PROGRAMMATIC_START: (ctx, event) => ({
+              target: "programmatic",
+              context: { ...ctx, targetSection: event.target || null }
+            })
+          }
+        },
+        programmatic: {
+          on: {
+            PROGRAMMATIC_END: (ctx) => ({
+              target: "idle",
+              context: { ...ctx, targetSection: null }
+            }),
+            SCROLL_IDLE: (ctx) => ({
+              target: "idle",
+              context: { ...ctx, targetSection: null }
+            })
+          }
+        },
+        suspended: {},
+        reducedMotion: {}
+      }
+    };
+
     const FOOTER_CURTAIN_MACHINE = {
       id: "footerCurtain",
       initial: "hidden",
-      context: () => ({ progress: 0 }),
+      context: () => ({ progress: 0, activeChannel: null }),
       on: {
         SCRUB_PROGRESS: (ctx, event, currentState) => {
           const p = Math.max(0, Math.min(1, Number(event.progress) || 0));
@@ -572,9 +1047,23 @@
           }
           return {
             target: nextState,
-            context: { progress: Number(p.toFixed(3)) }
+            context: { ...ctx, progress: Number(p.toFixed(3)) }
           };
-        }
+        },
+        REVEAL: (ctx) => ({
+          target: "revealed",
+          context: { ...ctx, progress: 1 }
+        }),
+        HIDE: (ctx) => ({
+          target: "hidden",
+          context: { ...ctx, progress: 0 }
+        }),
+        FOCUS_CHANNEL: (ctx, event) => ({
+          context: { ...ctx, activeChannel: event.channel || null }
+        }),
+        BLUR_CHANNEL: (ctx) => ({
+          context: { ...ctx, activeChannel: null }
+        })
       },
       states: {
         hidden: {},
@@ -583,26 +1072,233 @@
       }
     };
 
+    // --- DEV / AGENT STATE MACHINE TELEMETRY HUD (Toggle with Alt+M or ?debug=machines) ---
+    const MACHINE_INSPECTOR_CONFIG = {
+      id: "machineInspector",
+      initial: () => {
+        if (typeof window !== "undefined") {
+          const params = new URLSearchParams(window.location.search);
+          if (params.get("debug") === "machines" || params.get("inspector") === "1") {
+            return "open";
+          }
+        }
+        return "closed";
+      },
+      context: () => ({
+        selectedMachineId: "cvNavigation"
+      }),
+      on: {
+        SELECT_MACHINE: (ctx, event) => ({
+          context: { ...ctx, selectedMachineId: event.id }
+        })
+      },
+      states: {
+        closed: {
+          on: {
+            TOGGLE: "open",
+            OPEN: "open"
+          }
+        },
+        open: {
+          on: {
+            TOGGLE: "closed",
+            CLOSE: "closed",
+            ESCAPE: "closed"
+          }
+        }
+      }
+    };
+
+    const MachineInspectorHUD = () => {
+      const [inspector, send] = useMachine(MACHINE_INSPECTOR_CONFIG);
+      const [, setTick] = useState(0);
+      const isOpen = inspector.value === "open";
+      const { selectedMachineId } = inspector.context;
+
+      useEffect(() => {
+        const onKeyDown = (e) => {
+          if ((e.altKey && e.key.toLowerCase() === "m") || (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "m")) {
+            e.preventDefault();
+            send("TOGGLE");
+          } else if (e.key === "Escape" && isOpen) {
+            send("ESCAPE");
+          }
+        };
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+      }, [isOpen, send]);
+
+      useEffect(() => {
+        if (!isOpen) return;
+        return MACHINE_REGISTRY.subscribe(() => {
+          setTick((t) => t + 1);
+        });
+      }, [isOpen]);
+
+      if (!isOpen) return null;
+
+      const snapshots = MACHINE_REGISTRY.getAllSnapshots();
+      const machineIds = Object.keys(snapshots).filter((id) => id !== "machineInspector");
+      const activeSnap = snapshots[selectedMachineId] || snapshots[machineIds[0]];
+      const recentHistory = MACHINE_REGISTRY.getHistory(8).slice().reverse();
+
+      return (
+        <aside
+          data-machine="machineInspector"
+          data-state={inspector.value}
+          aria-label="State Machine Telemetry Inspector"
+          className="fixed bottom-4 right-4 z-[9999] w-[380px] max-w-[calc(100vw-2rem)] bg-dark/95 backdrop-blur-xl text-white rounded-2xl border border-white/15 shadow-2xl p-4 font-mono text-xs"
+        >
+          <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-electric animate-pulse" />
+              <span className="font-semibold tracking-wider uppercase text-[11px]">FSM Telemetry HUD</span>
+              <span className="text-[10px] text-white/40">({machineIds.length} active)</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => send("CLOSE")}
+              className="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white/70 hover:text-white text-[10px]"
+            >
+              Esc / Alt+M
+            </button>
+          </div>
+
+          <div className="flex flex-wrap gap-1 mb-3">
+            {machineIds.map((id) => {
+              const snap = snapshots[id];
+              const isSelected = activeSnap && activeSnap.id === id;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => send({ type: "SELECT_MACHINE", id })}
+                  className={`px-2 py-1 rounded-md text-[10px] transition-colors flex items-center gap-1.5 ${
+                    isSelected ? "bg-electric text-white" : "bg-white/5 hover:bg-white/10 text-white/70"
+                  }`}
+                >
+                  <span>{id}</span>
+                  <span className="px-1 rounded bg-black/30 text-[9px] text-white/90">{snap.state}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {activeSnap && (
+            <div className="space-y-2.5 bg-black/30 rounded-xl p-3 border border-white/10 mb-3">
+              <div className="flex items-center justify-between">
+                <span className="text-white/50">State:</span>
+                <span className="px-2 py-0.5 rounded bg-electric/20 text-electric font-semibold">
+                  {activeSnap.state}
+                </span>
+              </div>
+              <div>
+                <div className="text-white/50 mb-1">Available Events:</div>
+                <div className="flex flex-wrap gap-1">
+                  {activeSnap.availableEvents.map((evt) => (
+                    <button
+                      key={evt}
+                      type="button"
+                      onClick={() => MACHINE_REGISTRY.send(activeSnap.id, evt)}
+                      className="px-1.5 py-0.5 rounded bg-white/10 hover:bg-electric text-white text-[10px] transition-colors"
+                    >
+                      {evt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <div className="text-white/50 mb-1">Context:</div>
+                <pre className="text-[10px] text-white/80 overflow-x-auto max-h-24 custom-scrollbar-minimal">
+                  {JSON.stringify(activeSnap.context, null, 2)}
+                </pre>
+              </div>
+            </div>
+          )}
+
+          <div>
+            <div className="text-white/45 text-[10px] uppercase tracking-wider mb-1">Recent Transitions</div>
+            <div className="space-y-1 max-h-24 overflow-y-auto custom-scrollbar-minimal">
+              {recentHistory.length === 0 ? (
+                <div className="text-white/35 text-[10px]">Interact with the page to log transitions</div>
+              ) : (
+                recentHistory.map((h) => (
+                  <div key={h.seq} className="text-[10px] text-white/70 flex items-center justify-between gap-2">
+                    <span className="truncate">
+                      <strong className="text-white">{h.id}</strong>: {h.from} → <span className="text-electric">{h.to}</span>
+                    </span>
+                    <span className="text-white/40 shrink-0">{h.event}</span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </aside>
+      );
+    };
+
     const App = () => {
+      const [scrollEngine, sendScrollEngine] = useMachine(SCROLL_ENGINE_MACHINE);
       const [curtainState, sendCurtain] = useMachine(FOOTER_CURTAIN_MACHINE);
       const isFooterHidden = curtainState.value === "hidden";
 
       useLayoutEffect(() => {
+        const prefersReduced =
+          window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
         const lenis = new Lenis({
-          duration: 1.15,
+          duration: prefersReduced ? 0 : 1.15,
           easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
         });
         window.__LENIS__ = lenis;
 
         gsap.registerPlugin(ScrollTrigger);
-        lenis.on("scroll", ScrollTrigger.update);
+
+        let scrollIdleTimer = null;
+        lenis.on("scroll", ({ velocity, direction }) => {
+          ScrollTrigger.update();
+          const currentEngineState = MACHINE_REGISTRY.scrollEngine && MACHINE_REGISTRY.scrollEngine.state;
+          if (currentEngineState === "programmatic") return;
+
+          if (Math.abs(velocity) > 0.08) {
+            sendScrollEngine({
+              type: "SCROLL_ACTIVE",
+              direction: direction >= 0 ? "down" : "up"
+            });
+            clearTimeout(scrollIdleTimer);
+            scrollIdleTimer = setTimeout(() => {
+              sendScrollEngine("SCROLL_IDLE");
+            }, 160);
+          }
+        });
 
         let rafId = null;
+        let isTabVisible = document.visibilityState !== "hidden";
+
         function raf(time) {
-          lenis.raf(time);
-          rafId = requestAnimationFrame(raf);
+          if (isTabVisible) {
+            lenis.raf(time);
+            rafId = requestAnimationFrame(raf);
+          } else {
+            rafId = null;
+          }
         }
         rafId = requestAnimationFrame(raf);
+
+        const onVisChange = () => {
+          isTabVisible = document.visibilityState !== "hidden";
+          if (isTabVisible) {
+            sendScrollEngine("VISIBILITY_VISIBLE");
+            if (rafId === null) rafId = requestAnimationFrame(raf);
+          } else {
+            sendScrollEngine("VISIBILITY_HIDDEN");
+            if (rafId !== null) {
+              cancelAnimationFrame(rafId);
+              rafId = null;
+            }
+          }
+        };
+        document.addEventListener("visibilitychange", onVisChange);
 
         const initScrollTrigger = () => {
           ScrollTrigger.create({
@@ -623,6 +1319,7 @@
               }, 0)
               .fromTo("#footer-container-inner", { y: "15%" }, { y: "0%", ease: "none" }, 0)
           });
+          sendScrollEngine("READY");
         };
 
         const initTimer = setTimeout(() => {
@@ -635,16 +1332,31 @@
 
         return () => {
           clearTimeout(initTimer);
+          clearTimeout(scrollIdleTimer);
+          document.removeEventListener("visibilitychange", onVisChange);
           if (rafId !== null) cancelAnimationFrame(rafId);
           delete window.__LENIS__;
           lenis.destroy();
           ScrollTrigger.getAll().forEach(t => t.kill());
           resizeObserver.disconnect();
         };
-      }, [sendCurtain]);
+      }, [sendCurtain, sendScrollEngine]);
+
+      const handleFooterLinkFocus = (channel) => {
+        sendCurtain({ type: "FOCUS_CHANNEL", channel });
+        if (curtainState.value !== "revealed" && window.__LENIS__) {
+          window.__LENIS__.scrollTo(document.body.scrollHeight);
+        }
+      };
 
       return (
-        <div className="bg-white min-h-screen font-sans text-dark selection:bg-electric selection:text-white">
+        <div
+          id="app-shell"
+          data-machine="scrollEngine"
+          data-state={scrollEngine.value}
+          data-scroll-direction={scrollEngine.context.direction}
+          className="bg-white min-h-screen font-sans text-dark selection:bg-electric selection:text-white"
+        >
           <div id="blue-bg" className="fixed inset-0 bg-electric z-0 opacity-0 invisible pointer-events-none"></div>
           <Nav />
 
@@ -663,6 +1375,7 @@
             data-machine="footerCurtain"
             data-state={curtainState.value}
             data-progress={curtainState.context.progress}
+            data-active-channel={curtainState.context.activeChannel || undefined}
             aria-hidden={isFooterHidden}
             className="fixed bottom-0 left-0 w-full min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] z-0 flex flex-col justify-end bg-electric text-white overflow-hidden opacity-0 invisible"
           >
@@ -679,27 +1392,49 @@
                     <a
                       href="mailto:pacochp@gmail.com"
                       tabIndex={isFooterHidden ? -1 : 0}
+                      onFocus={() => handleFooterLinkFocus("email")}
+                      onBlur={() => sendCurtain("BLUR_CHANNEL")}
+                      onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: "email" })}
+                      onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
                       className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
                     >
                       <MailIcon /> Email
                     </a>
                     <a
                       href="https://www.linkedin.com/in/jakubpacocha/"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       tabIndex={isFooterHidden ? -1 : 0}
+                      onFocus={() => handleFooterLinkFocus("linkedin")}
+                      onBlur={() => sendCurtain("BLUR_CHANNEL")}
+                      onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: "linkedin" })}
+                      onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
                       className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
                     >
                       <LinkedinIcon /> LinkedIn
                     </a>
                     <a
                       href="https://x.com/JakubPacocha"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       tabIndex={isFooterHidden ? -1 : 0}
+                      onFocus={() => handleFooterLinkFocus("twitter")}
+                      onBlur={() => sendCurtain("BLUR_CHANNEL")}
+                      onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: "twitter" })}
+                      onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
                       className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
                     >
                       <TwitterIcon /> Twitter / X
                     </a>
                     <a
                       href="https://github.com/JPacoch"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       tabIndex={isFooterHidden ? -1 : 0}
+                      onFocus={() => handleFooterLinkFocus("github")}
+                      onBlur={() => sendCurtain("BLUR_CHANNEL")}
+                      onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: "github" })}
+                      onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
                       className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
                     >
                       <GithubIcon /> GitHub
@@ -714,6 +1449,8 @@
               </div>
             </div>
           </footer>
+
+          <MachineInspectorHUD />
         </div>
       );
     };

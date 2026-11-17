@@ -73,6 +73,7 @@
 
     .custom-scrollbar-minimal::-webkit-scrollbar {
       height: 4px;
+      width: 4px;
     }
     .custom-scrollbar-minimal::-webkit-scrollbar-track {
       background: #F9FAFB;
@@ -95,64 +96,295 @@
     const { useState, useEffect, useLayoutEffect, useRef, useMemo, useReducer, useCallback } = React;
     const { motion, AnimatePresence } = window.Motion;
 
-    // --- EXPLICIT FINITE STATE MACHINE ENGINE (DX + AX + UX) ---
-    // Provides deterministic state transitions, prevents impossible states,
-    // and exposes live machine inspection on window.__APP_MACHINES__ for agents & devtools.
-    window.__APP_MACHINES__ = window.__APP_MACHINES__ || {};
+    // --- EXPLICIT FINITE STATE MACHINE ENGINE & AGENT/DEV TELEMETRY REGISTRY (UX + DX + AX) ---
+    // Deterministic state transitions, synchronous snapshot consistency, bounded transition history,
+    // event capability introspection, and live pub/sub on window.__APP_MACHINES__.
+    const MACHINE_REGISTRY = window.__APP_MACHINES__ || {};
+    const GLOBAL_HISTORY = [];
+    const GLOBAL_SUBSCRIBERS = new Set();
+    let GLOBAL_SEQ = 0;
+
+    function notifyGlobalSubscribers(record) {
+      GLOBAL_SUBSCRIBERS.forEach((fn) => {
+        try {
+          fn(record);
+        } catch (err) {
+          console.error("[FSM Registry] Subscriber error:", err);
+        }
+      });
+    }
+
+    Object.defineProperties(MACHINE_REGISTRY, {
+      __history__: { value: GLOBAL_HISTORY, enumerable: false, configurable: true },
+      getAllSnapshots: {
+        value: () => {
+          const out = {};
+          Object.keys(MACHINE_REGISTRY).forEach((k) => {
+            if (MACHINE_REGISTRY[k] && typeof MACHINE_REGISTRY[k].getSnapshot === "function") {
+              out[k] = MACHINE_REGISTRY[k].getSnapshot();
+            }
+          });
+          return out;
+        },
+        enumerable: false,
+        configurable: true
+      },
+      getHistory: {
+        value: (limit = 30) => GLOBAL_HISTORY.slice(-limit),
+        enumerable: false,
+        configurable: true
+      },
+      send: {
+        value: (machineId, event) => {
+          const target = MACHINE_REGISTRY[machineId];
+          if (!target || typeof target.send !== "function") return false;
+          target.send(event);
+          return true;
+        },
+        enumerable: false,
+        configurable: true
+      },
+      resetAll: {
+        value: () => {
+          Object.keys(MACHINE_REGISTRY).forEach((k) => {
+            if (MACHINE_REGISTRY[k] && typeof MACHINE_REGISTRY[k].reset === "function") {
+              MACHINE_REGISTRY[k].reset();
+            }
+          });
+        },
+        enumerable: false,
+        configurable: true
+      },
+      subscribe: {
+        value: (listener) => {
+          if (typeof listener !== "function") return () => {};
+          GLOBAL_SUBSCRIBERS.add(listener);
+          return () => GLOBAL_SUBSCRIBERS.delete(listener);
+        },
+        enumerable: false,
+        configurable: true
+      },
+      inspect: {
+        value: () => {
+          if (MACHINE_REGISTRY.machineInspector) {
+            MACHINE_REGISTRY.machineInspector.send("TOGGLE");
+            return MACHINE_REGISTRY.getAllSnapshots();
+          }
+          return MACHINE_REGISTRY.getAllSnapshots();
+        },
+        enumerable: false,
+        configurable: true
+      }
+    });
+
+    window.__APP_MACHINES__ = MACHINE_REGISTRY;
+
+    function getAvailableEvents(config, stateValue) {
+      const stateNode = config.states && config.states[stateValue];
+      const stateEvents = stateNode && stateNode.on ? Object.keys(stateNode.on) : [];
+      const rootEvents = config.on ? Object.keys(config.on) : [];
+      return Array.from(new Set([...stateEvents, ...rootEvents]));
+    }
+
+    function evaluateMachineTransition(config, current, event) {
+      const eventObj = typeof event === "string" ? { type: event } : (event || { type: "NOOP" });
+
+      if (eventObj.type === "@@RESET") {
+        const initialValue = typeof config.initial === "function" ? config.initial() : config.initial;
+        const initialContext = typeof config.context === "function" ? config.context() : (config.context || {});
+        return {
+          value: initialValue,
+          context: initialContext,
+          changed: true,
+          event: eventObj
+        };
+      }
+
+      const stateNode = config.states && config.states[current.value];
+      const handler =
+        (stateNode && stateNode.on && stateNode.on[eventObj.type]) ||
+        (config.on && config.on[eventObj.type]);
+
+      if (!handler) {
+        return { value: current.value, context: current.context, changed: false, event: eventObj };
+      }
+
+      let nextValue = current.value;
+      let nextContext = current.context;
+
+      if (typeof handler === "string") {
+        nextValue = handler;
+      } else if (typeof handler === "function") {
+        const next = handler(current.context, eventObj, current.value);
+        if (!next) {
+          return { value: current.value, context: current.context, changed: false, event: eventObj };
+        }
+        nextValue = next.target || current.value;
+        nextContext = next.context !== undefined ? next.context : current.context;
+      } else if (typeof handler === "object") {
+        nextValue = handler.target || current.value;
+        nextContext = handler.reduce
+          ? handler.reduce(current.context, eventObj, current.value)
+          : current.context;
+      }
+
+      const changed = nextValue !== current.value || nextContext !== current.context;
+      return { value: nextValue, context: nextContext, changed, event: eventObj };
+    }
 
     function useMachine(config) {
-      const reducer = useCallback((current, event) => {
-        const eventObj = typeof event === "string" ? { type: event } : event;
-        const stateNode = config.states[current.value];
-        const handler =
-          (stateNode && stateNode.on && stateNode.on[eventObj.type]) ||
-          (config.on && config.on[eventObj.type]);
-
-        if (!handler) return current;
-
-        if (typeof handler === "string") {
-          return { value: handler, context: current.context };
-        }
-
-        if (typeof handler === "function") {
-          const next = handler(current.context, eventObj, current.value);
-          if (!next) return current;
-          return {
-            value: next.target || current.value,
-            context: next.context !== undefined ? next.context : current.context
-          };
-        }
-
-        const nextContext = handler.reduce
-          ? handler.reduce(current.context, eventObj)
-          : current.context;
-        return {
-          value: handler.target || current.value,
-          context: nextContext
+      const initialRef = useRef(null);
+      if (!initialRef.current) {
+        initialRef.current = {
+          value: typeof config.initial === "function" ? config.initial() : config.initial,
+          context: typeof config.context === "function" ? config.context() : (config.context || {})
         };
+      }
+
+      const stateRef = useRef(initialRef.current);
+      const historyRef = useRef([]);
+      const listenersRef = useRef(new Set());
+      const [, forceRender] = useReducer((x) => x + 1, 0);
+
+      const send = useCallback((event) => {
+        const prev = stateRef.current;
+        const result = evaluateMachineTransition(config, prev, event);
+        if (!result.changed) return stateRef.current;
+
+        const nextState = { value: result.value, context: result.context };
+        stateRef.current = nextState;
+
+        const record = {
+          seq: ++GLOBAL_SEQ,
+          id: config.id || "anonymous",
+          timestamp: new Date().toISOString(),
+          event: result.event.type,
+          from: prev.value,
+          to: nextState.value
+        };
+
+        historyRef.current = [...historyRef.current.slice(-24), record];
+        if (config.id !== "machineInspector" && result.event.type !== "SCROLL_UPDATE" && result.event.type !== "SCRUB_PROGRESS" && result.event.type !== "TICK") {
+          GLOBAL_HISTORY.push(record);
+          if (GLOBAL_HISTORY.length > 60) GLOBAL_HISTORY.shift();
+        }
+
+        forceRender();
+
+        listenersRef.current.forEach((fn) => {
+          try {
+            fn(nextState, record);
+          } catch (e) {
+            console.error(e);
+          }
+        });
+        notifyGlobalSubscribers(record);
+
+        return nextState;
       }, [config]);
 
-      const [state, dispatch] = useReducer(reducer, undefined, () => ({
-        value: typeof config.initial === "function" ? config.initial() : config.initial,
-        context: typeof config.context === "function" ? config.context() : (config.context || {})
-      }));
+      const actor = useMemo(() => {
+        const controller = {
+          id: config.id,
+          states: Object.keys(config.states || {}),
+          send,
+          reset: () => send({ type: "@@RESET" }),
+          can: (eventType) => getAvailableEvents(config, stateRef.current.value).includes(eventType),
+          getSnapshot: () => ({
+            id: config.id,
+            state: stateRef.current.value,
+            context: stateRef.current.context,
+            states: Object.keys(config.states || {}),
+            availableEvents: getAvailableEvents(config, stateRef.current.value)
+          }),
+          subscribe: (fn) => {
+            if (typeof fn !== "function") return () => {};
+            listenersRef.current.add(fn);
+            return () => listenersRef.current.delete(fn);
+          }
+        };
+
+        Object.defineProperties(controller, {
+          state: {
+            get: () => stateRef.current.value,
+            enumerable: true
+          },
+          context: {
+            get: () => stateRef.current.context,
+            enumerable: true
+          },
+          availableEvents: {
+            get: () => getAvailableEvents(config, stateRef.current.value),
+            enumerable: true
+          },
+          history: {
+            get: () => historyRef.current.slice(),
+            enumerable: true
+          }
+        });
+
+        return controller;
+      }, [config, send]);
+
+      if (config.id && !MACHINE_REGISTRY[config.id]) {
+        MACHINE_REGISTRY[config.id] = actor;
+      }
 
       useEffect(() => {
         if (!config.id) return;
-        window.__APP_MACHINES__[config.id] = {
-          id: config.id,
-          state: state.value,
-          context: state.context,
-          states: Object.keys(config.states),
-          send: dispatch,
-          getSnapshot: () => ({ state: state.value, context: state.context })
-        };
+        MACHINE_REGISTRY[config.id] = actor;
         return () => {
-          delete window.__APP_MACHINES__[config.id];
+          if (MACHINE_REGISTRY[config.id] === actor) {
+            delete MACHINE_REGISTRY[config.id];
+          }
         };
-      }, [config.id, config.states, state, dispatch]);
+      }, [config.id, actor]);
 
-      return [state, dispatch];
+      return [stateRef.current, send, actor];
+    }
+
+    // --- UNIFIED SECTION & HASH NAVIGATION HELPER ---
+    function triggerSectionNavigation(e, sectionId, href) {
+      const targetHref = href || `#${sectionId}`;
+      const isContact = sectionId === "contact" || targetHref === "#contact";
+      const targetEl = isContact
+        ? document.getElementById("footer-spacer")
+        : document.querySelector(targetHref);
+
+      if (!targetEl) return;
+      if (e && typeof e.preventDefault === "function") {
+        e.preventDefault();
+      }
+
+      if (MACHINE_REGISTRY.navigation) {
+        MACHINE_REGISTRY.navigation.send({ type: "NAVIGATE", section: isContact ? "writing" : sectionId });
+      }
+      if (MACHINE_REGISTRY.scrollEngine) {
+        MACHINE_REGISTRY.scrollEngine.send({ type: "PROGRAMMATIC_START", target: sectionId });
+      }
+      if (isContact && MACHINE_REGISTRY.footerCurtain) {
+        MACHINE_REGISTRY.footerCurtain.send("REVEAL");
+      }
+
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState(null, "", targetHref);
+      }
+
+      if (window.__LENIS__) {
+        window.__LENIS__.scrollTo(isContact ? document.body.scrollHeight : targetEl, {
+          offset: isContact ? 0 : -20,
+          onComplete: () => {
+            if (MACHINE_REGISTRY.navigation) {
+              MACHINE_REGISTRY.navigation.send("NAVIGATE_COMPLETE");
+            }
+            if (MACHINE_REGISTRY.scrollEngine) {
+              MACHINE_REGISTRY.scrollEngine.send("PROGRAMMATIC_END");
+            }
+          }
+        });
+      } else {
+        targetEl.scrollIntoView({ behavior: "smooth" });
+      }
     }
 
     // --- ICONS ---
@@ -231,8 +463,8 @@
       </svg>
     );
 
-    // --- LIVE LOCAL TIME HOOK (Synchronous Initial State + Dynamic CET/CEST) ---
-    const formatBydgoszczTime = () => {
+    // --- LIVE LOCAL TIME TELEMETRY MACHINE (Explicit Visibility & Deterministic Freeze State Machine) ---
+    const computeBydgoszczTimeSnapshot = () => {
       try {
         const now = new Date();
         const timeFmt = new Intl.DateTimeFormat('en-GB', {
@@ -247,23 +479,109 @@
           timeZoneName: 'short'
         }).formatToParts(now);
         const tzName = tzParts.find(p => p.type === 'timeZoneName')?.value || 'CET';
-        return `${timeFmt.format(now)} ${tzName}`;
+        return {
+          formatted: `${timeFmt.format(now)} ${tzName}`,
+          timezone: tzName,
+          ok: true
+        };
       } catch (e) {
-        return "53°07'N 18°00'E";
+        return {
+          formatted: "53°07'N 18°00'E",
+          timezone: "UTC+1",
+          ok: false
+        };
+      }
+    };
+
+    const TELEMETRY_CLOCK_MACHINE = {
+      id: "telemetryClock",
+      initial: () => {
+        const snap = computeBydgoszczTimeSnapshot();
+        if (!snap.ok) return "fallback";
+        if (typeof document !== "undefined" && document.visibilityState === "hidden") return "suspended";
+        return "ticking";
+      },
+      context: () => {
+        const snap = computeBydgoszczTimeSnapshot();
+        return {
+          formatted: snap.formatted,
+          timezone: snap.timezone,
+          coordinates: "53°07′N 18°00′E"
+        };
+      },
+      on: {
+        FREEZE: (ctx, event) => ({
+          target: "frozen",
+          context: {
+            ...ctx,
+            formatted: event.formatted || ctx.formatted
+          }
+        }),
+        UNFREEZE: (ctx) => {
+          const snap = computeBydgoszczTimeSnapshot();
+          return {
+            target: snap.ok ? "ticking" : "fallback",
+            context: {
+              ...ctx,
+              formatted: snap.formatted,
+              timezone: snap.timezone
+            }
+          };
+        }
+      },
+      states: {
+        ticking: {
+          on: {
+            TICK: (ctx) => {
+              const snap = computeBydgoszczTimeSnapshot();
+              if (!snap.ok) {
+                return { target: "fallback", context: { ...ctx, formatted: snap.formatted } };
+              }
+              if (snap.formatted === ctx.formatted) return null;
+              return {
+                target: "ticking",
+                context: { ...ctx, formatted: snap.formatted, timezone: snap.timezone }
+              };
+            },
+            VISIBILITY_HIDDEN: "suspended"
+          }
+        },
+        suspended: {
+          on: {
+            VISIBILITY_VISIBLE: (ctx) => {
+              const snap = computeBydgoszczTimeSnapshot();
+              return {
+                target: snap.ok ? "ticking" : "fallback",
+                context: { ...ctx, formatted: snap.formatted, timezone: snap.timezone }
+              };
+            }
+          }
+        },
+        frozen: {},
+        fallback: {}
       }
     };
 
     const useBydgoszczTime = () => {
-      const [time, setTime] = useState(formatBydgoszczTime);
+      const [clockState, send] = useMachine(TELEMETRY_CLOCK_MACHINE);
+
       useEffect(() => {
+        if (clockState.value !== "ticking") return;
         const id = setInterval(() => {
-          if (document.visibilityState === "visible") {
-            setTime(formatBydgoszczTime());
-          }
+          send("TICK");
         }, 1000);
         return () => clearInterval(id);
-      }, []);
-      return time;
+      }, [clockState.value, send]);
+
+      useEffect(() => {
+        const onVisChange = () => {
+          send(document.visibilityState === "visible" ? "VISIBILITY_VISIBLE" : "VISIBILITY_HIDDEN");
+        };
+        document.addEventListener("visibilitychange", onVisChange);
+        return () => document.removeEventListener("visibilitychange", onVisChange);
+      }, [send]);
+
+      return clockState;
     };
 
     // --- SECTION HEADER COMPONENT ---
@@ -292,7 +610,7 @@
       </div>
     );
 
-    // --- FLOATING NAVIGATION BAR (Explicit Navigation & Scroll-Spy State Machine) ---
+    // --- FLOATING NAVIGATION BAR (Explicit Drawer + Elevation + Programmatic/Spy State Machine) ---
     const NAV_LINKS = [
       { id: "about", name: "About", href: "#about" },
       { id: "projects", name: "Projects", href: "#projects" },
@@ -304,28 +622,71 @@
       initial: "closed",
       context: () => ({
         elevation: typeof window !== "undefined" && window.scrollY > 30 ? "elevated" : "top",
-        activeSection: "hero"
+        activeSection: "hero",
+        detectedRegion: "hero",
+        scrollMode: "spy",
+        targetSection: null
       }),
       on: {
         SCROLL_UPDATE: (ctx, event) => {
           const nextElevation = event.scrollY > 30 ? "elevated" : "top";
-          const nextSection = event.activeSection || ctx.activeSection;
-          if (ctx.elevation === nextElevation && ctx.activeSection === nextSection) return null;
+          const nextRegion = event.detectedRegion || event.activeSection || ctx.detectedRegion;
+          let nextSection = event.activeSection || ctx.activeSection;
+          let nextScrollMode = ctx.scrollMode;
+          let nextTarget = ctx.targetSection;
+
+          if (ctx.scrollMode === "programmatic" && ctx.targetSection) {
+            if (event.activeSection === ctx.targetSection) {
+              nextScrollMode = "spy";
+              nextTarget = null;
+              nextSection = ctx.targetSection;
+            } else {
+              nextSection = ctx.targetSection;
+            }
+          }
+
+          if (
+            ctx.elevation === nextElevation &&
+            ctx.activeSection === nextSection &&
+            ctx.detectedRegion === nextRegion &&
+            ctx.scrollMode === nextScrollMode
+          ) {
+            return null;
+          }
+
           return {
             context: {
               ...ctx,
               elevation: nextElevation,
-              activeSection: nextSection
+              activeSection: nextSection,
+              detectedRegion: nextRegion,
+              scrollMode: nextScrollMode,
+              targetSection: nextTarget
             }
           };
         },
-        NAVIGATE: (ctx, event) => ({
-          target: "closed",
-          context: {
-            ...ctx,
-            activeSection: event.section || ctx.activeSection
-          }
-        })
+        NAVIGATE: (ctx, event) => {
+          const targetSec = event.section || ctx.activeSection;
+          return {
+            target: "closed",
+            context: {
+              ...ctx,
+              activeSection: targetSec,
+              targetSection: targetSec,
+              scrollMode: "programmatic"
+            }
+          };
+        },
+        NAVIGATE_COMPLETE: (ctx) => {
+          if (ctx.scrollMode === "spy" && !ctx.targetSection) return null;
+          return {
+            context: {
+              ...ctx,
+              scrollMode: "spy",
+              targetSection: null
+            }
+          };
+        }
       },
       states: {
         closed: {
@@ -348,27 +709,85 @@
     const Nav = () => {
       const [navState, send] = useMachine(NAV_MACHINE_CONFIG);
       const isOpen = navState.value === "open";
-      const { elevation, activeSection } = navState.context;
+      const { elevation, activeSection, detectedRegion, scrollMode } = navState.context;
       const scrolled = elevation === "elevated";
 
       useEffect(() => {
+        if (MACHINE_REGISTRY.scrollEngine) {
+          MACHINE_REGISTRY.scrollEngine.send(
+            isOpen ? { type: "LOCK", reason: "mobile-nav" } : { type: "UNLOCK" }
+          );
+        }
+      }, [isOpen]);
+
+      useEffect(() => {
+        let programmaticTimer = null;
+
         const computeScrollState = () => {
-          const sections = ["writing", "projects", "about", "hero"];
+          const navSections = ["writing", "projects", "about", "hero"];
+          const allRegions = ["writing", "projects", "github", "skills", "about", "hero"];
           const scrollPos = window.scrollY + 240;
-          let detected = "hero";
-          for (const secId of sections) {
+
+          let detectedSec = "hero";
+          for (const secId of navSections) {
             const el = document.getElementById(secId);
             if (el && scrollPos >= el.offsetTop) {
-              detected = secId;
+              detectedSec = secId;
               break;
             }
           }
-          send({ type: "SCROLL_UPDATE", scrollY: window.scrollY, activeSection: detected });
+
+          let region = detectedSec;
+          for (const regId of allRegions) {
+            const el = document.getElementById(regId);
+            if (el && scrollPos >= el.offsetTop) {
+              region = regId;
+              break;
+            }
+          }
+
+          const footerSpacer = document.getElementById("footer-spacer");
+          if (footerSpacer && window.scrollY + window.innerHeight >= footerSpacer.offsetTop + 180) {
+            region = "contact";
+          }
+
+          send({
+            type: "SCROLL_UPDATE",
+            scrollY: window.scrollY,
+            activeSection: detectedSec,
+            detectedRegion: region
+          });
+        };
+
+        const cancelProgrammaticOnUserInput = () => {
+          if (MACHINE_REGISTRY.navigation && MACHINE_REGISTRY.navigation.context.scrollMode === "programmatic") {
+            clearTimeout(programmaticTimer);
+            programmaticTimer = setTimeout(() => {
+              send("NAVIGATE_COMPLETE");
+            }, 150);
+          }
         };
 
         computeScrollState();
+
+        if (window.location.hash && window.location.hash.length > 1) {
+          const initialHashId = window.location.hash.slice(1);
+          if (["about", "projects", "writing", "contact"].includes(initialHashId)) {
+            setTimeout(() => {
+              triggerSectionNavigation(null, initialHashId, `#${initialHashId}`);
+            }, 120);
+          }
+        }
+
         window.addEventListener("scroll", computeScrollState, { passive: true });
-        return () => window.removeEventListener("scroll", computeScrollState);
+        window.addEventListener("wheel", cancelProgrammaticOnUserInput, { passive: true });
+        window.addEventListener("touchmove", cancelProgrammaticOnUserInput, { passive: true });
+        return () => {
+          clearTimeout(programmaticTimer);
+          window.removeEventListener("scroll", computeScrollState);
+          window.removeEventListener("wheel", cancelProgrammaticOnUserInput);
+          window.removeEventListener("touchmove", cancelProgrammaticOnUserInput);
+        };
       }, [send]);
 
       useEffect(() => {
@@ -388,14 +807,7 @@
       }, [isOpen, send]);
 
       const handleAnchorClick = (e, sectionId, href) => {
-        send({ type: "NAVIGATE", section: sectionId });
-        if (window.__LENIS__ && href && href.startsWith("#")) {
-          const targetEl = document.querySelector(href);
-          if (targetEl) {
-            e.preventDefault();
-            window.__LENIS__.scrollTo(targetEl, { offset: -20 });
-          }
-        }
+        triggerSectionNavigation(e, sectionId, href);
       };
 
       return (
@@ -405,6 +817,8 @@
             data-state={navState.value}
             data-elevation={elevation}
             data-active-section={activeSection}
+            data-detected-region={detectedRegion}
+            data-scroll-mode={scrollMode}
             className="fixed top-5 left-0 right-0 z-[100] px-4 sm:px-8 pointer-events-none flex justify-center"
           >
             <nav
@@ -488,6 +902,7 @@
                 <motion.div
                   id="mobile-nav-drawer"
                   role="dialog"
+                  aria-modal="true"
                   aria-label="Mobile Navigation Menu"
                   initial={{ opacity: 0, y: -12 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -539,7 +954,7 @@
       );
     };
 
-    // --- ROTATING WORDS IN HERO (Explicit Ticker State Machine) ---
+    // --- ROTATING WORDS IN HERO (Explicit Ticker + Dual-Source Pause + Timer Reset State Machine) ---
     const HERO_ROTATOR_ITEMS = [
       { text: "HERE Technologies", tag: "Spatial & AI Engineering" },
       { text: "the digital world", tag: "Full-Stack ML Systems" },
@@ -555,13 +970,37 @@
         window.matchMedia("(prefers-reduced-motion: reduce)").matches
           ? "reducedMotion"
           : "running",
-      context: () => ({ index: 0, total: HERO_ROTATOR_ITEMS.length }),
+      context: () => ({
+        index: 0,
+        total: HERO_ROTATOR_ITEMS.length,
+        interactionPaused: false,
+        visibilityPaused: false,
+        cycleKey: 0
+      }),
       on: {
-        NEXT: (ctx) => ({
-          context: { ...ctx, index: (ctx.index + 1) % ctx.total }
+        NEXT: (ctx, _event, currentState) => ({
+          target: currentState,
+          context: {
+            ...ctx,
+            index: (ctx.index + 1) % ctx.total,
+            cycleKey: ctx.cycleKey + 1
+          }
         }),
-        SELECT_INDEX: (ctx, event) => ({
-          context: { ...ctx, index: Math.abs(event.index || 0) % ctx.total }
+        PREV: (ctx, _event, currentState) => ({
+          target: currentState,
+          context: {
+            ...ctx,
+            index: (ctx.index - 1 + ctx.total) % ctx.total,
+            cycleKey: ctx.cycleKey + 1
+          }
+        }),
+        SELECT_INDEX: (ctx, event, currentState) => ({
+          target: currentState,
+          context: {
+            ...ctx,
+            index: Math.abs(Number(event.index) || 0) % ctx.total,
+            cycleKey: ctx.cycleKey + 1
+          }
         })
       },
       states: {
@@ -571,21 +1010,50 @@
               target: "running",
               context: { ...ctx, index: (ctx.index + 1) % ctx.total }
             }),
-            PAUSE: "paused",
-            VISIBILITY_HIDDEN: "paused",
+            PAUSE: (ctx) => ({
+              target: "paused",
+              context: { ...ctx, interactionPaused: true }
+            }),
+            VISIBILITY_HIDDEN: (ctx) => ({
+              target: "paused",
+              context: { ...ctx, visibilityPaused: true }
+            }),
             REDUCED_MOTION: "reducedMotion"
           }
         },
         paused: {
           on: {
-            RESUME: "running",
-            VISIBILITY_VISIBLE: "running",
+            PAUSE: (ctx) => ({
+              target: "paused",
+              context: { ...ctx, interactionPaused: true }
+            }),
+            VISIBILITY_HIDDEN: (ctx) => ({
+              target: "paused",
+              context: { ...ctx, visibilityPaused: true }
+            }),
+            RESUME: (ctx) => {
+              const nextCtx = { ...ctx, interactionPaused: false };
+              return {
+                target: nextCtx.visibilityPaused ? "paused" : "running",
+                context: nextCtx
+              };
+            },
+            VISIBILITY_VISIBLE: (ctx) => {
+              const nextCtx = { ...ctx, visibilityPaused: false };
+              return {
+                target: nextCtx.interactionPaused ? "paused" : "running",
+                context: nextCtx
+              };
+            },
             REDUCED_MOTION: "reducedMotion"
           }
         },
         reducedMotion: {
           on: {
-            MOTION_ALLOWED: "running"
+            MOTION_ALLOWED: (ctx) => ({
+              target: ctx.interactionPaused || ctx.visibilityPaused ? "paused" : "running",
+              context: ctx
+            })
           }
         }
       }
@@ -593,7 +1061,7 @@
 
     const RotatingWords = () => {
       const [rotator, send] = useMachine(HERO_ROTATOR_MACHINE);
-      const { index } = rotator.context;
+      const { index, cycleKey } = rotator.context;
       const currentItem = HERO_ROTATOR_ITEMS[index];
 
       useEffect(() => {
@@ -602,14 +1070,28 @@
           send("TICK");
         }, 2800);
         return () => clearInterval(interval);
-      }, [rotator.value, send]);
+      }, [rotator.value, cycleKey, send]);
 
       useEffect(() => {
         const onVisChange = () => {
           send(document.visibilityState === "visible" ? "VISIBILITY_VISIBLE" : "VISIBILITY_HIDDEN");
         };
         document.addEventListener("visibilitychange", onVisChange);
-        return () => document.removeEventListener("visibilitychange", onVisChange);
+
+        const mql = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
+        const onMotionChange = (e) => {
+          send(e.matches ? "REDUCED_MOTION" : "MOTION_ALLOWED");
+        };
+        if (mql && mql.addEventListener) {
+          mql.addEventListener("change", onMotionChange);
+        }
+
+        return () => {
+          document.removeEventListener("visibilitychange", onVisChange);
+          if (mql && mql.removeEventListener) {
+            mql.removeEventListener("change", onMotionChange);
+          }
+        };
       }, [send]);
 
       return (
@@ -624,16 +1106,19 @@
           onBlur={() => send("RESUME")}
           onClick={() => send("NEXT")}
           onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
+            if (e.key === "Enter" || e.key === " " || e.key === "ArrowRight") {
               e.preventDefault();
               send("NEXT");
+            } else if (e.key === "ArrowLeft") {
+              e.preventDefault();
+              send("PREV");
             }
           }}
           role="button"
           tabIndex={0}
           aria-live="polite"
-          aria-label={`${currentItem.text} — ${currentItem.tag}. Click to cycle.`}
-          title={`${currentItem.tag} (Click to cycle)`}
+          aria-label={`${currentItem.text} — ${currentItem.tag}. Click or use arrow keys to cycle.`}
+          title={`${currentItem.tag} (Click or use arrow keys to cycle)`}
           className="inline-flex flex-wrap items-baseline gap-x-4 align-baseline cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-electric/40 rounded-lg"
         >
           <span className="relative inline-grid overflow-hidden align-bottom py-2 -my-2" style={{ clipPath: 'inset(0 0 -0.45em 0)' }}>
@@ -656,7 +1141,8 @@
 
     // --- HERO SECTION ---
     const Hero = () => {
-      const localTime = useBydgoszczTime();
+      const clockState = useBydgoszczTime();
+      const localTime = clockState.context.formatted;
 
       const stats = [
         { id: "01", value: "6+", label: "Years in Data & Software", detail: "Production systems & pipelines" },
@@ -691,8 +1177,13 @@
                 <span className="hidden sm:inline text-dark/25">/</span>
                 <span className="hidden sm:inline">RAG Architectures • Scalable ML • Spatial Systems</span>
               </div>
-              <div className="flex items-center gap-4">
-                <span className="hidden md:inline text-dark/40">53°07′N 18°00′E</span>
+              <div
+                data-machine="telemetryClock"
+                data-state={clockState.value}
+                data-timezone={clockState.context.timezone}
+                className="flex items-center gap-4"
+              >
+                <span className="hidden md:inline text-dark/40">{clockState.context.coordinates}</span>
                 <span className="px-2.5 py-0.5 rounded-md bg-offwhite border border-dark/10 text-dark/70">
                   {localTime}
                 </span>
@@ -707,7 +1198,7 @@
                 transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
                 className="font-serif text-[2.85rem] sm:text-[4.25rem] md:text-[5.25rem] lg:text-[6.2rem] leading-[1.04] tracking-[-0.03em] text-dark max-w-5xl"
               >
-                I architect systems for <br className="hidden sm:inline" />
+                I build systems for <br className="hidden sm:inline" />
                 <RotatingWords /> <br />
                 &amp; write about them.
               </motion.h1>
@@ -727,6 +1218,7 @@
                 <div className="flex flex-wrap items-center gap-3.5 shrink-0">
                   <a
                     href="#projects"
+                    onClick={(e) => triggerSectionNavigation(e, "projects", "#projects")}
                     className="group px-6 py-3.5 rounded-full bg-electric text-white font-medium text-sm flex items-center gap-2.5 shadow-[0_8px_25px_rgba(0,85,255,0.28)] hover:shadow-[0_12px_32px_rgba(0,85,255,0.4)] hover:-translate-y-0.5 transition-all duration-300"
                   >
                     <span>Explore Side Projects</span>
@@ -734,6 +1226,7 @@
                   </a>
                   <a
                     href="#writing"
+                    onClick={(e) => triggerSectionNavigation(e, "writing", "#writing")}
                     className="px-6 py-3.5 rounded-full bg-white hover:bg-offwhite text-dark border border-dark/15 hover:border-dark/30 font-medium text-sm transition-all duration-300"
                   >
                     Read my Blog
@@ -781,8 +1274,67 @@
       );
     };
 
-    // --- ABOUT & EXPERTISE SECTION ---
+    // --- ABOUT & EXPERTISE SECTION (Explicit Capability & Stack Inspector State Machine) ---
+    const CAPABILITIES_MACHINE = {
+      id: "capabilitiesInspector",
+      initial: "idle",
+      context: () => ({
+        activeCardId: null,
+        selectedTag: null
+      }),
+      on: {
+        TOGGLE_TAG: (ctx, event) => {
+          const nextTag = ctx.selectedTag === event.tag ? null : event.tag;
+          return {
+            target: nextTag ? "filteredByTag" : (ctx.activeCardId ? "inspecting" : "idle"),
+            context: { ...ctx, selectedTag: nextTag }
+          };
+        },
+        CLEAR_TAG: (ctx) => ({
+          target: ctx.activeCardId ? "inspecting" : "idle",
+          context: { ...ctx, selectedTag: null }
+        })
+      },
+      states: {
+        idle: {
+          on: {
+            INSPECT_CARD: (ctx, event) => ({
+              target: "inspecting",
+              context: { ...ctx, activeCardId: event.id }
+            })
+          }
+        },
+        inspecting: {
+          on: {
+            INSPECT_CARD: (ctx, event) => ({
+              target: "inspecting",
+              context: { ...ctx, activeCardId: event.id }
+            }),
+            LEAVE_CARD: (ctx) => ({
+              target: ctx.selectedTag ? "filteredByTag" : "idle",
+              context: { ...ctx, activeCardId: null }
+            })
+          }
+        },
+        filteredByTag: {
+          on: {
+            INSPECT_CARD: (ctx, event) => ({
+              target: "filteredByTag",
+              context: { ...ctx, activeCardId: event.id }
+            }),
+            LEAVE_CARD: (ctx) => ({
+              target: "filteredByTag",
+              context: { ...ctx, activeCardId: null }
+            })
+          }
+        }
+      }
+    };
+
     const AboutAndCapabilities = () => {
+      const [capState, sendCap] = useMachine(CAPABILITIES_MACHINE);
+      const { activeCardId, selectedTag } = capState.context;
+
       const skillsData = [
         {
           id: "01",
@@ -815,7 +1367,14 @@
       ];
 
       return (
-        <section id="about" className="px-6 md:px-12 lg:px-20 py-24 bg-white border-b border-dark/10">
+        <section
+          id="about"
+          data-machine="capabilitiesInspector"
+          data-state={capState.value}
+          data-active-card={activeCardId || undefined}
+          data-selected-tag={selectedTag || undefined}
+          className="px-6 md:px-12 lg:px-20 py-24 bg-white border-b border-dark/10"
+        >
           <div className="max-w-[1360px] mx-auto">
             {/* Top Section Intro */}
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-12 mb-14 border-b border-dark/10">
@@ -882,41 +1441,75 @@
 
               {/* Right Column: 4 Capability Cards in a Clean 2x2 Grid */}
               <div id="skills" className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {skillsData.map((item) => (
-                  <div
-                    key={item.id}
-                    className="group rounded-3xl bg-white hover:bg-offwhite/50 p-7 border border-dark/10 hover:border-electric/30 transition-all duration-200 flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-5">
-                        <div className="w-11 h-11 rounded-2xl bg-offwhite group-hover:bg-electric group-hover:text-white text-electric border border-dark/10 group-hover:border-electric flex items-center justify-center transition-colors duration-200">
-                          {item.icon}
+                {skillsData.map((item) => {
+                  const matchesSelectedTag = !selectedTag || item.tags.includes(selectedTag);
+                  const isHighlighted = activeCardId === item.id || (selectedTag && matchesSelectedTag);
+                  return (
+                    <div
+                      key={item.id}
+                      tabIndex={0}
+                      data-card-id={item.id}
+                      data-highlighted={isHighlighted ? "true" : "false"}
+                      onMouseEnter={() => sendCap({ type: "INSPECT_CARD", id: item.id })}
+                      onMouseLeave={() => sendCap("LEAVE_CARD")}
+                      onFocus={() => sendCap({ type: "INSPECT_CARD", id: item.id })}
+                      onBlur={() => sendCap("LEAVE_CARD")}
+                      className={`group rounded-3xl bg-white hover:bg-offwhite/50 p-7 border transition-all duration-200 flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-electric/40 ${
+                        selectedTag && matchesSelectedTag
+                          ? "border-electric shadow-[0_12px_30px_rgba(0,85,255,0.07)]"
+                          : selectedTag && !matchesSelectedTag
+                          ? "border-dark/8 opacity-55"
+                          : "border-dark/10 hover:border-electric/30"
+                      }`}
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-5">
+                          <div className={`w-11 h-11 rounded-2xl border flex items-center justify-center transition-colors duration-200 ${
+                            selectedTag && matchesSelectedTag
+                              ? "bg-electric text-white border-electric"
+                              : "bg-offwhite group-hover:bg-electric group-hover:text-white text-electric border-dark/10 group-hover:border-electric"
+                          }`}>
+                            {item.icon}
+                          </div>
+                          <span className="font-mono text-xs font-semibold text-dark/30">
+                            /{item.id}
+                          </span>
                         </div>
-                        <span className="font-mono text-xs font-semibold text-dark/30">
-                          /{item.id}
-                        </span>
+
+                        <h4 className="font-serif text-xl font-semibold text-dark mb-2 group-hover:text-electric transition-colors">
+                          {item.title}
+                        </h4>
+                        <p className="text-xs md:text-sm text-dark/65 leading-relaxed mb-6">
+                          {item.desc}
+                        </p>
                       </div>
 
-                      <h4 className="font-serif text-xl font-semibold text-dark mb-2 group-hover:text-electric transition-colors">
-                        {item.title}
-                      </h4>
-                      <p className="text-xs md:text-sm text-dark/65 leading-relaxed mb-6">
-                        {item.desc}
-                      </p>
+                      <div className="flex flex-wrap gap-1.5 pt-4 border-t border-dark/8">
+                        {item.tags.map((tag) => {
+                          const isTagActive = selectedTag === tag;
+                          return (
+                            <button
+                              key={tag}
+                              type="button"
+                              aria-pressed={isTagActive}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                sendCap({ type: "TOGGLE_TAG", tag });
+                              }}
+                              className={`px-2.5 py-0.5 rounded-md border font-mono text-[11px] transition-colors ${
+                                isTagActive
+                                  ? "bg-electric text-white border-electric"
+                                  : "bg-offwhite hover:bg-electric/10 border-dark/8 text-dark/70 hover:text-electric"
+                              }`}
+                            >
+                              {tag}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
-
-                    <div className="flex flex-wrap gap-1.5 pt-4 border-t border-dark/8">
-                      {item.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2.5 py-0.5 rounded-md bg-offwhite border border-dark/8 text-dark/70 font-mono text-[11px]"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -924,13 +1517,14 @@
       );
     };
 
-    // --- GITHUB TELEMETRY MODULE (Explicit Fetch + Inspection State Machine) ---
+    // --- GITHUB TELEMETRY MODULE (Explicit Fetch + Inspect + Pin State Machine) ---
     const GITHUB_TELEMETRY_MACHINE = {
       id: "githubTelemetry",
       initial: "loading",
       context: () => ({
         data: null,
         hoveredDay: null,
+        pinnedDay: null,
         error: null
       }),
       states: {
@@ -951,6 +1545,10 @@
             INSPECT_DAY: (ctx, event) => ({
               target: "inspecting",
               context: { ...ctx, hoveredDay: event.day }
+            }),
+            TOGGLE_PIN_DAY: (ctx, event) => ({
+              target: "pinned",
+              context: { ...ctx, pinnedDay: event.day, hoveredDay: event.day }
             })
           }
         },
@@ -963,6 +1561,46 @@
             CLEAR_INSPECT: (ctx) => ({
               target: "ready",
               context: { ...ctx, hoveredDay: null }
+            }),
+            TOGGLE_PIN_DAY: (ctx, event) => ({
+              target: "pinned",
+              context: { ...ctx, pinnedDay: event.day, hoveredDay: event.day }
+            }),
+            ESCAPE: (ctx) => ({
+              target: "ready",
+              context: { ...ctx, hoveredDay: null }
+            })
+          }
+        },
+        pinned: {
+          on: {
+            INSPECT_DAY: (ctx, event) => ({
+              target: "pinned",
+              context: { ...ctx, hoveredDay: event.day }
+            }),
+            CLEAR_INSPECT: (ctx) => ({
+              target: "pinned",
+              context: { ...ctx, hoveredDay: null }
+            }),
+            TOGGLE_PIN_DAY: (ctx, event) => {
+              if (ctx.pinnedDay && event.day && ctx.pinnedDay.date === event.day.date) {
+                return {
+                  target: "ready",
+                  context: { ...ctx, pinnedDay: null, hoveredDay: null }
+                };
+              }
+              return {
+                target: "pinned",
+                context: { ...ctx, pinnedDay: event.day, hoveredDay: event.day }
+              };
+            },
+            UNPIN_DAY: (ctx) => ({
+              target: "ready",
+              context: { ...ctx, pinnedDay: null, hoveredDay: null }
+            }),
+            ESCAPE: (ctx) => ({
+              target: "ready",
+              context: { ...ctx, pinnedDay: null, hoveredDay: null }
             })
           }
         },
@@ -979,25 +1617,36 @@
 
     const GithubActivity = () => {
       const [telemetry, send] = useMachine(GITHUB_TELEMETRY_MACHINE);
-      const { data, hoveredDay } = telemetry.context;
+      const { data, hoveredDay, pinnedDay } = telemetry.context;
+      const activeDay = hoveredDay || pinnedDay;
       const isLoading = telemetry.value === "loading";
       const isError = telemetry.value === "error";
+      const isPinned = telemetry.value === "pinned";
+      const gridRef = useRef(null);
 
       useEffect(() => {
         if (telemetry.value !== "loading") return;
         let cancelled = false;
+        const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+        const timeoutId = setTimeout(() => {
+          if (controller) controller.abort();
+        }, 8000);
 
-        fetch('https://github-contributions-api.jogruber.de/v4/JPacoch?y=last')
+        fetch('https://github-contributions-api.jogruber.de/v4/JPacoch?y=last', controller ? { signal: controller.signal } : undefined)
           .then(res => {
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             return res.json();
           })
           .then(json => {
             if (cancelled) return;
+            const rawList = Array.isArray(json.contributions) ? json.contributions : [];
+            if (!rawList.length) throw new Error("Empty contribution dataset");
+
             const today = new Date().toISOString().split('T')[0];
-            const sorted = json.contributions.sort((a, b) => new Date(a.date) - new Date(b.date));
+            const sorted = rawList.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
             const filtered = sorted.filter(c => c.date <= today);
-            const lastYear = filtered.slice(-364);
+            const sourceDays = filtered.length > 0 ? filtered : sorted;
+            const lastYear = sourceDays.slice(-364);
 
             const firstDay = new Date(lastYear[0].date);
             const firstDayOfWeek = firstDay.getDay();
@@ -1011,7 +1660,7 @@
             send({
               type: "FETCH_SUCCESS",
               data: {
-                total: json.total.lastYear || json.total[new Date().getFullYear()] || 'Many',
+                total: (json.total && (json.total.lastYear || json.total[new Date().getFullYear()])) || 'Many',
                 contributions
               }
             });
@@ -1020,10 +1669,15 @@
             if (cancelled) return;
             console.error('Error fetching github data:', err);
             send({ type: "FETCH_ERROR", error: err.message });
+          })
+          .finally(() => {
+            clearTimeout(timeoutId);
           });
 
         return () => {
           cancelled = true;
+          clearTimeout(timeoutId);
+          if (controller) controller.abort();
         };
       }, [telemetry.value, send]);
 
@@ -1054,13 +1708,35 @@
         return 4;
       };
 
+      const handleCellKeyDown = (e, day) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          send({ type: "TOGGLE_PIN_DAY", day });
+          return;
+        }
+        if (e.key === "Escape") {
+          e.preventDefault();
+          send("ESCAPE");
+          return;
+        }
+        if (!["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp"].includes(e.key) || !gridRef.current) return;
+        e.preventDefault();
+        const cells = Array.from(gridRef.current.querySelectorAll('[data-day-date]'));
+        const currentIdx = cells.findIndex((el) => el.getAttribute("data-day-date") === day.date);
+        if (currentIdx === -1) return;
+        const delta = e.key === "ArrowRight" ? 7 : e.key === "ArrowLeft" ? -7 : e.key === "ArrowDown" ? 1 : -1;
+        const nextCell = cells[currentIdx + delta];
+        if (nextCell) nextCell.focus();
+      };
+
       return (
         <section
           id="github"
           data-machine="githubTelemetry"
           data-state={telemetry.value}
           data-total-commits={data ? data.total : undefined}
-          data-inspected-date={hoveredDay ? hoveredDay.date : undefined}
+          data-inspected-date={activeDay ? activeDay.date : undefined}
+          data-pinned-date={pinnedDay ? pinnedDay.date : undefined}
           className="px-6 md:px-12 lg:px-20 py-16 bg-offwhite border-b border-dark/10"
         >
           <div className="max-w-[1360px] mx-auto">
@@ -1079,8 +1755,8 @@
                       </span>
                     </div>
                     <p className="text-xs font-mono text-dark/50 mt-0.5" aria-live="polite">
-                      {hoveredDay
-                        ? `${hoveredDay.count} contribution${hoveredDay.count === 1 ? '' : 's'} on ${hoveredDay.date}`
+                      {activeDay
+                        ? `${activeDay.count} contribution${activeDay.count === 1 ? '' : 's'} on ${activeDay.date}${isPinned && pinnedDay && pinnedDay.date === activeDay.date ? ' (Pinned)' : ''}`
                         : isError
                         ? "Telemetry temporarily unavailable — view directly on GitHub"
                         : "Rolling 52-week open-source & engineering activity"}
@@ -1089,8 +1765,18 @@
                 </div>
 
                 <div className="flex items-center gap-2 self-start md:self-auto">
+                  {isPinned && (
+                    <button
+                      type="button"
+                      onClick={() => send("UNPIN_DAY")}
+                      className="px-3 py-1.5 rounded-full bg-electric/10 hover:bg-electric text-electric hover:text-white text-xs font-mono font-medium transition-colors"
+                    >
+                      Clear Pin
+                    </button>
+                  )}
                   {isError && (
                     <button
+                      type="button"
                       onClick={() => send("RETRY")}
                       className="px-3.5 py-2 rounded-full bg-electric/10 hover:bg-electric text-electric hover:text-white text-xs font-mono font-medium transition-colors"
                     >
@@ -1110,36 +1796,50 @@
               </div>
 
               <div className="overflow-x-auto pb-2 custom-scrollbar-minimal">
-                <div className="flex gap-[3.5px] min-w-max">
+                <div
+                  ref={gridRef}
+                  role="grid"
+                  aria-label="52-week GitHub contribution matrix"
+                  className="flex gap-[3.5px] min-w-max"
+                >
                   {weeks.map((week, i) => (
-                    <div key={i} className="flex flex-col gap-[3.5px]">
+                    <div key={i} role="row" className="flex flex-col gap-[3.5px]">
                       {week.map((day, j) => {
                         if (isLoading || isError) {
                           return (
                             <div
                               key={`skeleton-${i}-${j}`}
+                              role="gridcell"
+                              aria-disabled="true"
                               className={`w-3.5 h-3.5 rounded-[3px] bg-offwhite ${isLoading ? "animate-pulse" : "opacity-50"}`}
                             />
                           );
                         }
 
-                        if (!day) return <div key={`empty-${i}-${j}`} className="w-3.5 h-3.5" />;
+                        if (!day) return <div key={`empty-${i}-${j}`} role="gridcell" aria-hidden="true" className="w-3.5 h-3.5" />;
 
                         const activeLevel = (day.level === 0 && day.count > 0)
                           ? getCalculatedLevel(day.count)
                           : day.level;
+                        const isDayPinned = Boolean(pinnedDay && pinnedDay.date === day.date);
 
                         return (
                           <div
                             key={day.date}
+                            data-day-date={day.date}
                             tabIndex={0}
                             role="gridcell"
+                            aria-selected={isDayPinned}
                             aria-label={`${day.count} contributions on ${day.date}`}
                             onMouseEnter={() => send({ type: "INSPECT_DAY", day })}
                             onMouseLeave={() => send("CLEAR_INSPECT")}
                             onFocus={() => send({ type: "INSPECT_DAY", day })}
                             onBlur={() => send("CLEAR_INSPECT")}
-                            className="w-3.5 h-3.5 rounded-[3px] transition-transform duration-150 hover:scale-125 focus:scale-125 focus:outline-none focus:ring-1 focus:ring-electric cursor-pointer"
+                            onClick={() => send({ type: "TOGGLE_PIN_DAY", day })}
+                            onKeyDown={(e) => handleCellKeyDown(e, day)}
+                            className={`w-3.5 h-3.5 rounded-[3px] transition-transform duration-150 hover:scale-125 focus:scale-125 focus:outline-none focus:ring-1 focus:ring-electric cursor-pointer ${
+                              isDayPinned ? "ring-2 ring-dark scale-125 z-10" : ""
+                            }`}
                             style={{ backgroundColor: levelColors[activeLevel] }}
                             title={`${day.count} contributions on ${day.date}`}
                           />
@@ -1151,7 +1851,7 @@
               </div>
 
               <div className="mt-4 pt-4 border-t border-dark/5 flex flex-wrap items-center justify-between gap-4 text-[11px] font-mono text-dark/45">
-                <span>Hover or focus any cell to inspect daily commit telemetry</span>
+                <span>Hover, focus, or click any cell to inspect daily commit telemetry</span>
                 <div className="flex items-center gap-2">
                   <span>Less</span>
                   <div className="flex gap-1">
@@ -1168,7 +1868,7 @@
       );
     };
 
-    // --- SELECTED PROJECTS SECTION (Explicit Category Filter + Layout Sync State Machine) ---
+    // --- SELECTED PROJECTS SECTION (Explicit Category Filter + Layout Sync + Keyboard Tablist State Machine) ---
     const PROJECTS_DATA = [
       {
         id: "01",
@@ -1250,7 +1950,8 @@
       id: "projectFilter",
       initial: "idle",
       context: () => ({
-        category: "All"
+        category: "All",
+        hoveredProjectId: null
       }),
       on: {
         SELECT_CATEGORY: (ctx, event) => {
@@ -1260,7 +1961,20 @@
             target: "transitioning",
             context: { ...ctx, category: nextCat }
           };
-        }
+        },
+        RESET_FILTER: (ctx) => {
+          if (ctx.category === "All") return null;
+          return {
+            target: "transitioning",
+            context: { ...ctx, category: "All" }
+          };
+        },
+        INSPECT_PROJECT: (ctx, event) => ({
+          context: { ...ctx, hoveredProjectId: event.id || null }
+        }),
+        LEAVE_PROJECT: (ctx) => ({
+          context: { ...ctx, hoveredProjectId: null }
+        })
       },
       states: {
         idle: {},
@@ -1274,7 +1988,8 @@
 
     const Projects = () => {
       const [filterState, send] = useMachine(PROJECT_FILTER_MACHINE);
-      const activeCategory = filterState.context.category;
+      const { category: activeCategory, hoveredProjectId } = filterState.context;
+      const tabRefs = useRef([]);
 
       const filteredProjects = useMemo(() => {
         if (activeCategory === "All") return PROJECTS_DATA;
@@ -1302,6 +2017,19 @@
         return () => clearTimeout(timer);
       }, [filterState.value, activeCategory, completeTransition]);
 
+      const handleTabKeyDown = (e, idx) => {
+        let nextIdx = null;
+        if (e.key === "ArrowRight") nextIdx = (idx + 1) % PROJECT_CATEGORIES.length;
+        else if (e.key === "ArrowLeft") nextIdx = (idx - 1 + PROJECT_CATEGORIES.length) % PROJECT_CATEGORIES.length;
+        else if (e.key === "Home") nextIdx = 0;
+        else if (e.key === "End") nextIdx = PROJECT_CATEGORIES.length - 1;
+        if (nextIdx === null) return;
+        e.preventDefault();
+        const nextCat = PROJECT_CATEGORIES[nextIdx];
+        send({ type: "SELECT_CATEGORY", category: nextCat });
+        if (tabRefs.current[nextIdx]) tabRefs.current[nextIdx].focus();
+      };
+
       return (
         <section
           id="projects"
@@ -1309,6 +2037,7 @@
           data-state={filterState.value}
           data-category={activeCategory}
           data-visible-count={filteredProjects.length}
+          data-hovered-project={hoveredProjectId || undefined}
           className="px-6 md:px-12 lg:px-20 py-28 bg-white border-b border-dark/10"
         >
           <div className="max-w-[1360px] mx-auto">
@@ -1323,16 +2052,21 @@
                   aria-label="Filter projects by category"
                   className="flex flex-wrap gap-1.5 bg-offwhite p-1.5 rounded-2xl border border-dark/10"
                 >
-                  {PROJECT_CATEGORIES.map((cat) => {
+                  {PROJECT_CATEGORIES.map((cat, idx) => {
                     const isSelected = activeCategory === cat;
                     return (
                       <button
                         key={cat}
+                        ref={(el) => { tabRefs.current[idx] = el; }}
+                        type="button"
                         role="tab"
                         aria-selected={isSelected}
+                        aria-controls="projects-tabpanel"
+                        tabIndex={isSelected ? 0 : -1}
                         data-category={cat}
                         onClick={() => send({ type: "SELECT_CATEGORY", category: cat })}
-                        className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ${
+                        onKeyDown={(e) => handleTabKeyDown(e, idx)}
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-electric/50 ${
                           isSelected
                             ? "bg-electric text-white shadow-sm"
                             : "text-dark/60 hover:text-dark"
@@ -1349,7 +2083,13 @@
               }
             />
 
-            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <motion.div
+              id="projects-tabpanel"
+              role="tabpanel"
+              aria-label={`${activeCategory} projects`}
+              layout
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
               <AnimatePresence mode="popLayout" onExitComplete={completeTransition}>
                 {filteredProjects.map((proj) => (
                   <motion.a
@@ -1358,6 +2098,10 @@
                     href={proj.url}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onMouseEnter={() => send({ type: "INSPECT_PROJECT", id: proj.id })}
+                    onMouseLeave={() => send("LEAVE_PROJECT")}
+                    onFocus={() => send({ type: "INSPECT_PROJECT", id: proj.id })}
+                    onBlur={() => send("LEAVE_PROJECT")}
                     initial={{ opacity: 0, scale: 0.96 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.96 }}
@@ -1419,62 +2163,107 @@
       );
     };
 
-    // --- WRITING / ESSAYS SECTION ---
-    const Writing = () => {
-      const essays = [
-        {
-          id: "01",
-          title: "Timon, on authenticity",
-          category: "Dialogue",
-          desc: "What if you could take the journey of your dreams, see everything you ever wanted to see, and experience it all exactly as you wished but no one could ever know you had been there? Would the journey still be worth the same?",
-          date: "Sep 2026",
-          read: "5 min read",
-          link: "https://fromthecabinet.com/text.html?slug=dialogue1-on-socmed",
-          featured: true
-        },
-        {
-          id: "02",
-          title: "The Phenomenology and Certainty",
-          category: "Epistemology",
-          desc: "Science produces precise but constrained abstractions of experience, while metaphysics investigates the conditions that make experience possible; both contribute to understanding, but only within a cycle that returns them to the Life-World.",
-          date: "Apr 2026",
-          read: "5 min read",
-          link: "https://fromthecabinet.com/texts/phenomenology-certainty.html"
-        },
-        {
-          id: "03",
-          title: "The Wall and Nausea",
-          category: "Existentialism",
-          desc: "Being truly conscious means existing in a painful superposition between a social system and the honest, dull silence of the 'In-Itself' and reality.",
-          date: "Apr 2026",
-          read: "3 min read",
-          link: "https://fromthecabinet.com/text.html?slug=the-wall-and-nausea"
-        },
-        {
-          id: "04",
-          title: "The Sartrean Trap",
-          category: "Metaphysics",
-          desc: "When the method becomes a prison — on how Sartre misused phenomenology. 'And if phenomenology refuses to step outside of itself, then isn't it becoming the very thing it was meant to battle?'",
-          date: "Feb 2026",
-          read: "10 min read",
-          link: "https://fromthecabinet.com/text.html?slug=sartrean-trap"
-        },
-        {
-          id: "05",
-          title: "Christocentric Determinism",
-          category: "Theology",
-          desc: "On bridging the theological tension between Arminianism and Calvinism. Creating a doctrine that might be both true to the gospel and intellectually satisfying.",
-          date: "Jan 2026",
-          read: "9 min read",
-          link: "https://fromthecabinet.com/text.html?slug=christocentric-determinism"
-        }
-      ];
+    // --- WRITING / ESSAYS SECTION (Explicit Editorial Spotlight & Archive Inspection State Machine) ---
+    const ESSAYS_DATA = [
+      {
+        id: "01",
+        title: "Timon, on authenticity",
+        category: "Dialogue",
+        desc: "What if you could take the journey of your dreams, see everything you ever wanted to see, and experience it all exactly as you wished but no one could ever know you had been there? Would the journey still be worth the same?",
+        date: "Sep 2026",
+        read: "5 min read",
+        link: "https://fromthecabinet.com/text.html?slug=dialogue1-on-socmed",
+        featured: true
+      },
+      {
+        id: "02",
+        title: "The Phenomenology and Certainty",
+        category: "Epistemology",
+        desc: "Science produces precise but constrained abstractions of experience, while metaphysics investigates the conditions that make experience possible; both contribute to understanding, but only within a cycle that returns them to the Life-World.",
+        date: "Apr 2026",
+        read: "5 min read",
+        link: "https://fromthecabinet.com/texts/phenomenology-certainty.html"
+      },
+      {
+        id: "03",
+        title: "The Wall and Nausea",
+        category: "Existentialism",
+        desc: "Being truly conscious means existing in a painful superposition between a social system and the honest, dull silence of the 'In-Itself' and reality.",
+        date: "Apr 2026",
+        read: "3 min read",
+        link: "https://fromthecabinet.com/text.html?slug=the-wall-and-nausea"
+      },
+      {
+        id: "04",
+        title: "The Sartrean Trap",
+        category: "Metaphysics",
+        desc: "When the method becomes a prison — on how Sartre misused phenomenology. 'And if phenomenology refuses to step outside of itself, then isn't it becoming the very thing it was meant to battle?'",
+        date: "Feb 2026",
+        read: "10 min read",
+        link: "https://fromthecabinet.com/text.html?slug=sartrean-trap"
+      },
+      {
+        id: "05",
+        title: "Christocentric Determinism",
+        category: "Theology",
+        desc: "On bridging the theological tension between Arminianism and Calvinism. Creating a doctrine that might be both true to the gospel and intellectually satisfying.",
+        date: "Jan 2026",
+        read: "9 min read",
+        link: "https://fromthecabinet.com/text.html?slug=christocentric-determinism"
+      }
+    ];
 
-      const featuredEssay = essays[0];
-      const archiveEssays = essays.slice(1);
+    const WRITING_CATALOG_MACHINE = {
+      id: "writingCatalog",
+      initial: "defaultSpotlight",
+      context: () => ({
+        spotlightId: "01",
+        hoveredEssayId: null
+      }),
+      on: {
+        SPOTLIGHT_ESSAY: (ctx, event) => {
+          const nextId = ESSAYS_DATA.some(e => e.id === event.id) ? event.id : "01";
+          return {
+            target: nextId === "01" ? "defaultSpotlight" : "customSpotlight",
+            context: { ...ctx, spotlightId: nextId }
+          };
+        },
+        HOVER_ESSAY: (ctx, event) => ({
+          context: { ...ctx, hoveredEssayId: event.id || null }
+        }),
+        LEAVE_ESSAY: (ctx) => ({
+          context: { ...ctx, hoveredEssayId: null }
+        }),
+        RESET_SPOTLIGHT: (ctx) => ({
+          target: "defaultSpotlight",
+          context: { ...ctx, spotlightId: "01" }
+        })
+      },
+      states: {
+        defaultSpotlight: {},
+        customSpotlight: {}
+      }
+    };
+
+    const Writing = () => {
+      const [writingState, sendWriting] = useMachine(WRITING_CATALOG_MACHINE);
+      const { spotlightId, hoveredEssayId } = writingState.context;
+
+      const featuredEssay = useMemo(
+        () => ESSAYS_DATA.find(e => e.id === spotlightId) || ESSAYS_DATA[0],
+        [spotlightId]
+      );
+      const archiveEssays = useMemo(() => ESSAYS_DATA.slice(1), []);
 
       return (
-        <section id="writing" className="px-6 md:px-12 lg:px-20 py-28 bg-offwhite border-b border-dark/10">
+        <section
+          id="writing"
+          data-machine="writingCatalog"
+          data-state={writingState.value}
+          data-spotlight-id={spotlightId}
+          data-hovered-essay={hoveredEssayId || undefined}
+          className="px-6 md:px-12 lg:px-20 py-28 bg-offwhite border-b border-dark/10"
+        >
           <div className="max-w-[1360px] mx-auto">
             <SectionHeader
               index="03"
@@ -1482,20 +2271,31 @@
               title="Philosophical"
               italicTitle="essays & dialogues."
               rightElement={
-                <a
-                  href="https://fromthecabinet.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-electric hover:text-white text-dark border border-dark/10 hover:border-electric text-xs font-mono font-medium transition-all"
-                >
-                  <span>Visit Publication</span>
-                  <ArrowUpRight className="w-4 h-4" />
-                </a>
+                <div className="flex items-center gap-2.5">
+                  {writingState.value === "customSpotlight" && (
+                    <button
+                      type="button"
+                      onClick={() => sendWriting("RESET_SPOTLIGHT")}
+                      className="px-4 py-2.5 rounded-full bg-electric/10 hover:bg-electric text-electric hover:text-white text-xs font-mono font-medium transition-colors"
+                    >
+                      Reset Spotlight
+                    </button>
+                  )}
+                  <a
+                    href="https://fromthecabinet.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-electric hover:text-white text-dark border border-dark/10 hover:border-electric text-xs font-mono font-medium transition-all"
+                  >
+                    <span>Visit Publication</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </a>
+                </div>
               }
             />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-              {/* Featured Latest Essay Card */}
+              {/* Featured Latest / Spotlight Essay Card */}
               <a
                 href={featuredEssay.link}
                 target="_blank"
@@ -1510,7 +2310,7 @@
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-8">
                     <span className="px-3 py-1 rounded-full bg-electric text-white font-mono text-[11px] font-semibold uppercase tracking-wider">
-                      Latest Essay • {featuredEssay.category}
+                      {featuredEssay.id === "01" ? "Latest Essay" : `Essay #${featuredEssay.id}`} • {featuredEssay.category}
                     </span>
                     <span className="font-mono text-xs text-white/50">
                       {featuredEssay.date}
@@ -1529,7 +2329,7 @@
                 <div className="pt-6 border-t border-white/15 flex items-center justify-between">
                   <span className="font-mono text-xs text-white/60">{featuredEssay.read}</span>
                   <span className="inline-flex items-center gap-2 text-sm font-medium text-white group-hover:text-electric transition-colors">
-                    <span>Read full dialogue</span>
+                    <span>{featuredEssay.id === "01" ? "Read full dialogue" : "Read full essay"}</span>
                     <ArrowUpRight className="w-4 h-4" />
                   </span>
                 </div>
@@ -1537,40 +2337,69 @@
 
               {/* Editorial Index List */}
               <div className="lg:col-span-7 bg-white rounded-3xl border border-dark/10 divide-y divide-dark/10 overflow-hidden flex flex-col justify-between">
-                {archiveEssays.map((essay) => (
-                  <a
-                    key={essay.id}
-                    href={essay.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group p-6 md:p-7 hover:bg-offwhite/70 transition-all duration-300 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative"
-                  >
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-electric scale-y-0 group-hover:scale-y-100 transition-transform origin-center duration-300" />
-                    <div className="space-y-2 max-w-xl pl-1">
-                      <div className="flex items-center gap-3 text-xs font-mono">
-                        <span className="text-electric font-semibold">{essay.id}</span>
-                        <span className="uppercase tracking-wider text-dark/50 font-medium">{essay.category}</span>
-                        <span className="text-dark/25">•</span>
-                        <span className="text-dark/45">{essay.date}</span>
+                {archiveEssays.map((essay) => {
+                  const isSpotlighted = spotlightId === essay.id;
+                  return (
+                    <a
+                      key={essay.id}
+                      href={essay.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onMouseEnter={() => sendWriting({ type: "HOVER_ESSAY", id: essay.id })}
+                      onMouseLeave={() => sendWriting("LEAVE_ESSAY")}
+                      onFocus={() => sendWriting({ type: "HOVER_ESSAY", id: essay.id })}
+                      onBlur={() => sendWriting("LEAVE_ESSAY")}
+                      className={`group p-6 md:p-7 hover:bg-offwhite/70 transition-all duration-300 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative ${
+                        isSpotlighted ? "bg-offwhite/60" : ""
+                      }`}
+                    >
+                      <div className={`absolute left-0 top-0 bottom-0 w-1 bg-electric transition-transform origin-center duration-300 ${
+                        isSpotlighted ? "scale-y-100" : "scale-y-0 group-hover:scale-y-100"
+                      }`} />
+                      <div className="space-y-2 max-w-xl pl-1">
+                        <div className="flex items-center gap-3 text-xs font-mono">
+                          <span className="text-electric font-semibold">{essay.id}</span>
+                          <span className="uppercase tracking-wider text-dark/50 font-medium">{essay.category}</span>
+                          <span className="text-dark/25">•</span>
+                          <span className="text-dark/45">{essay.date}</span>
+                        </div>
+                        <h4 className="font-serif text-2xl text-dark font-semibold group-hover:text-electric transition-colors">
+                          {essay.title}
+                        </h4>
+                        <p className="text-sm text-dark/60 line-clamp-2 leading-relaxed">
+                          {essay.desc}
+                        </p>
                       </div>
-                      <h4 className="font-serif text-2xl text-dark font-semibold group-hover:text-electric transition-colors">
-                        {essay.title}
-                      </h4>
-                      <p className="text-sm text-dark/60 line-clamp-2 leading-relaxed">
-                        {essay.desc}
-                      </p>
-                    </div>
 
-                    <div className="flex sm:flex-col items-center sm:items-end justify-between shrink-0 gap-3">
-                      <span className="font-mono text-[11px] px-2.5 py-1 rounded-md bg-offwhite border border-dark/8 text-dark/60">
-                        {essay.read}
-                      </span>
-                      <div className="w-9 h-9 rounded-full border border-dark/10 group-hover:bg-electric group-hover:border-electric group-hover:text-white text-dark/50 flex items-center justify-center transition-all">
-                        <ArrowUpRight className="w-4 h-4" />
+                      <div className="flex sm:flex-col items-center sm:items-end justify-between shrink-0 gap-3">
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              sendWriting({ type: "SPOTLIGHT_ESSAY", id: isSpotlighted ? "01" : essay.id });
+                            }}
+                            aria-pressed={isSpotlighted}
+                            className={`font-mono text-[10px] px-2 py-1 rounded-md border transition-colors ${
+                              isSpotlighted
+                                ? "bg-electric text-white border-electric"
+                                : "bg-white hover:bg-electric/10 border-dark/10 text-dark/60 hover:text-electric"
+                            }`}
+                          >
+                            {isSpotlighted ? "Spotlighted" : "Spotlight"}
+                          </button>
+                          <span className="font-mono text-[11px] px-2.5 py-1 rounded-md bg-offwhite border border-dark/8 text-dark/60">
+                            {essay.read}
+                          </span>
+                        </div>
+                        <div className="w-9 h-9 rounded-full border border-dark/10 group-hover:bg-electric group-hover:border-electric group-hover:text-white text-dark/50 flex items-center justify-center transition-all">
+                          <ArrowUpRight className="w-4 h-4" />
+                        </div>
                       </div>
-                    </div>
-                  </a>
-                ))}
+                    </a>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -1578,11 +2407,92 @@
       );
     };
 
-    // --- MAIN APP WITH PRESERVED FOOTER REVEAL (Explicit Curtain Lifecycle State Machine) ---
+    // --- SMOOTH SCROLL & VIEWPORT LIFECYCLE ENGINE MACHINE ---
+    const SCROLL_ENGINE_MACHINE = {
+      id: "scrollEngine",
+      initial: () =>
+        typeof window !== "undefined" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "reducedMotion"
+          : "initializing",
+      context: () => ({
+        direction: "down",
+        lockReason: null,
+        targetSection: null
+      }),
+      on: {
+        LOCK: (ctx, event) => ({
+          target: "locked",
+          context: { ...ctx, lockReason: event.reason || "modal" }
+        }),
+        UNLOCK: (ctx) => ({
+          target: "idle",
+          context: { ...ctx, lockReason: null }
+        }),
+        VISIBILITY_HIDDEN: "suspended",
+        VISIBILITY_VISIBLE: (ctx) => ({
+          target: ctx.lockReason ? "locked" : "idle",
+          context: ctx
+        }),
+        REDUCED_MOTION: "reducedMotion",
+        MOTION_ALLOWED: "idle"
+      },
+      states: {
+        initializing: {
+          on: {
+            READY: "idle"
+          }
+        },
+        idle: {
+          on: {
+            SCROLL_ACTIVE: (ctx, event) => ({
+              target: "scrolling",
+              context: { ...ctx, direction: event.direction || ctx.direction }
+            }),
+            PROGRAMMATIC_START: (ctx, event) => ({
+              target: "programmatic",
+              context: { ...ctx, targetSection: event.target || null }
+            })
+          }
+        },
+        scrolling: {
+          on: {
+            SCROLL_ACTIVE: (ctx, event) => {
+              const nextDir = event.direction || ctx.direction;
+              if (nextDir === ctx.direction) return null;
+              return { target: "scrolling", context: { ...ctx, direction: nextDir } };
+            },
+            SCROLL_IDLE: "idle",
+            PROGRAMMATIC_START: (ctx, event) => ({
+              target: "programmatic",
+              context: { ...ctx, targetSection: event.target || null }
+            })
+          }
+        },
+        programmatic: {
+          on: {
+            PROGRAMMATIC_END: (ctx) => ({
+              target: "idle",
+              context: { ...ctx, targetSection: null }
+            }),
+            SCROLL_IDLE: (ctx) => ({
+              target: "idle",
+              context: { ...ctx, targetSection: null }
+            })
+          }
+        },
+        locked: {},
+        suspended: {},
+        reducedMotion: {}
+      }
+    };
+
+    // --- FOOTER REVEAL CURTAIN MACHINE ---
     const FOOTER_CURTAIN_MACHINE = {
       id: "footerCurtain",
       initial: "hidden",
-      context: () => ({ progress: 0 }),
+      context: () => ({ progress: 0, activeChannel: null }),
       on: {
         SCRUB_PROGRESS: (ctx, event, currentState) => {
           const p = Math.max(0, Math.min(1, Number(event.progress) || 0));
@@ -1592,9 +2502,23 @@
           }
           return {
             target: nextState,
-            context: { progress: Number(p.toFixed(3)) }
+            context: { ...ctx, progress: Number(p.toFixed(3)) }
           };
-        }
+        },
+        REVEAL: (ctx) => ({
+          target: "revealed",
+          context: { ...ctx, progress: 1 }
+        }),
+        HIDE: (ctx) => ({
+          target: "hidden",
+          context: { ...ctx, progress: 0 }
+        }),
+        FOCUS_CHANNEL: (ctx, event) => ({
+          context: { ...ctx, activeChannel: event.channel || null }
+        }),
+        BLUR_CHANNEL: (ctx) => ({
+          context: { ...ctx, activeChannel: null }
+        })
       },
       states: {
         hidden: {},
@@ -1603,26 +2527,243 @@
       }
     };
 
+    // --- DEV / AGENT STATE MACHINE TELEMETRY HUD (Toggle with Alt+M or ?debug=machines) ---
+    const MACHINE_INSPECTOR_CONFIG = {
+      id: "machineInspector",
+      initial: () => {
+        if (typeof window !== "undefined") {
+          const params = new URLSearchParams(window.location.search);
+          if (params.get("debug") === "machines" || params.get("inspector") === "1") {
+            return "open";
+          }
+        }
+        return "closed";
+      },
+      context: () => ({
+        selectedMachineId: "navigation"
+      }),
+      on: {
+        SELECT_MACHINE: (ctx, event) => ({
+          context: { ...ctx, selectedMachineId: event.id }
+        })
+      },
+      states: {
+        closed: {
+          on: {
+            TOGGLE: "open",
+            OPEN: "open"
+          }
+        },
+        open: {
+          on: {
+            TOGGLE: "closed",
+            CLOSE: "closed",
+            ESCAPE: "closed"
+          }
+        }
+      }
+    };
+
+    const MachineInspectorHUD = () => {
+      const [inspector, send] = useMachine(MACHINE_INSPECTOR_CONFIG);
+      const [, setTick] = useState(0);
+      const isOpen = inspector.value === "open";
+      const { selectedMachineId } = inspector.context;
+
+      useEffect(() => {
+        const onKeyDown = (e) => {
+          if ((e.altKey && e.key.toLowerCase() === "m") || (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "m")) {
+            e.preventDefault();
+            send("TOGGLE");
+          } else if (e.key === "Escape" && isOpen) {
+            send("ESCAPE");
+          }
+        };
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+      }, [isOpen, send]);
+
+      useEffect(() => {
+        if (!isOpen) return;
+        return MACHINE_REGISTRY.subscribe(() => {
+          setTick((t) => t + 1);
+        });
+      }, [isOpen]);
+
+      if (!isOpen) return null;
+
+      const snapshots = MACHINE_REGISTRY.getAllSnapshots();
+      const machineIds = Object.keys(snapshots).filter((id) => id !== "machineInspector");
+      const activeSnap = snapshots[selectedMachineId] || snapshots[machineIds[0]];
+      const recentHistory = MACHINE_REGISTRY.getHistory(8).slice().reverse();
+
+      return (
+        <aside
+          data-machine="machineInspector"
+          data-state={inspector.value}
+          aria-label="State Machine Telemetry Inspector"
+          className="fixed bottom-4 right-4 z-[9999] w-[380px] max-w-[calc(100vw-2rem)] bg-dark/95 backdrop-blur-xl text-white rounded-2xl border border-white/15 shadow-2xl p-4 font-mono text-xs"
+        >
+          <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-electric animate-pulse" />
+              <span className="font-semibold tracking-wider uppercase text-[11px]">FSM Telemetry HUD</span>
+              <span className="text-[10px] text-white/40">({machineIds.length} active)</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => send("CLOSE")}
+              className="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white/70 hover:text-white text-[10px]"
+            >
+              Esc / Alt+M
+            </button>
+          </div>
+
+          <div className="flex flex-wrap gap-1 mb-3">
+            {machineIds.map((id) => {
+              const snap = snapshots[id];
+              const isSelected = activeSnap && activeSnap.id === id;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => send({ type: "SELECT_MACHINE", id })}
+                  className={`px-2 py-1 rounded-md text-[10px] transition-colors flex items-center gap-1.5 ${
+                    isSelected ? "bg-electric text-white" : "bg-white/5 hover:bg-white/10 text-white/70"
+                  }`}
+                >
+                  <span>{id}</span>
+                  <span className="px-1 rounded bg-black/30 text-[9px] text-white/90">{snap.state}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {activeSnap && (
+            <div className="space-y-2.5 bg-black/30 rounded-xl p-3 border border-white/10 mb-3">
+              <div className="flex items-center justify-between">
+                <span className="text-white/50">State:</span>
+                <span className="px-2 py-0.5 rounded bg-electric/20 text-electric font-semibold">
+                  {activeSnap.state}
+                </span>
+              </div>
+              <div>
+                <div className="text-white/50 mb-1">Available Events:</div>
+                <div className="flex flex-wrap gap-1">
+                  {activeSnap.availableEvents.map((evt) => (
+                    <button
+                      key={evt}
+                      type="button"
+                      onClick={() => MACHINE_REGISTRY.send(activeSnap.id, evt)}
+                      className="px-1.5 py-0.5 rounded bg-white/10 hover:bg-electric text-white text-[10px] transition-colors"
+                    >
+                      {evt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <div className="text-white/50 mb-1">Context:</div>
+                <pre className="text-[10px] text-white/80 overflow-x-auto max-h-24 custom-scrollbar-minimal">
+                  {JSON.stringify(activeSnap.context, null, 2)}
+                </pre>
+              </div>
+            </div>
+          )}
+
+          <div>
+            <div className="text-white/45 text-[10px] uppercase tracking-wider mb-1">Recent Transitions</div>
+            <div className="space-y-1 max-h-24 overflow-y-auto custom-scrollbar-minimal">
+              {recentHistory.length === 0 ? (
+                <div className="text-white/35 text-[10px]">Interact with the page to log transitions</div>
+              ) : (
+                recentHistory.map((h) => (
+                  <div key={h.seq} className="text-[10px] text-white/70 flex items-center justify-between gap-2">
+                    <span className="truncate">
+                      <strong className="text-white">{h.id}</strong>: {h.from} → <span className="text-electric">{h.to}</span>
+                    </span>
+                    <span className="text-white/40 shrink-0">{h.event}</span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </aside>
+      );
+    };
+
     const App = () => {
+      const [scrollEngine, sendScrollEngine] = useMachine(SCROLL_ENGINE_MACHINE);
       const [curtainState, sendCurtain] = useMachine(FOOTER_CURTAIN_MACHINE);
       const isFooterHidden = curtainState.value === "hidden";
 
+      useEffect(() => {
+        const lenis = window.__LENIS__;
+        if (!lenis) return;
+        if (scrollEngine.value === "locked") {
+          lenis.stop();
+        } else if (scrollEngine.value !== "suspended") {
+          lenis.start();
+        }
+      }, [scrollEngine.value]);
+
       useLayoutEffect(() => {
+        const prefersReduced =
+          window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
         const lenis = new Lenis({
-          duration: 1.15,
+          duration: prefersReduced ? 0 : 1.15,
           easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
         });
         window.__LENIS__ = lenis;
 
         gsap.registerPlugin(ScrollTrigger);
-        lenis.on("scroll", ScrollTrigger.update);
+
+        let scrollIdleTimer = null;
+        lenis.on("scroll", ({ velocity, direction }) => {
+          ScrollTrigger.update();
+          const currentEngineState = MACHINE_REGISTRY.scrollEngine && MACHINE_REGISTRY.scrollEngine.state;
+          if (currentEngineState === "programmatic" || currentEngineState === "locked") return;
+
+          if (Math.abs(velocity) > 0.08) {
+            sendScrollEngine({
+              type: "SCROLL_ACTIVE",
+              direction: direction >= 0 ? "down" : "up"
+            });
+            clearTimeout(scrollIdleTimer);
+            scrollIdleTimer = setTimeout(() => {
+              sendScrollEngine("SCROLL_IDLE");
+            }, 160);
+          }
+        });
 
         let rafId = null;
+        let isTabVisible = document.visibilityState !== "hidden";
+
         function raf(time) {
-          lenis.raf(time);
-          rafId = requestAnimationFrame(raf);
+          if (isTabVisible) {
+            lenis.raf(time);
+            rafId = requestAnimationFrame(raf);
+          } else {
+            rafId = null;
+          }
         }
         rafId = requestAnimationFrame(raf);
+
+        const onVisChange = () => {
+          isTabVisible = document.visibilityState !== "hidden";
+          if (isTabVisible) {
+            sendScrollEngine("VISIBILITY_VISIBLE");
+            if (rafId === null) rafId = requestAnimationFrame(raf);
+          } else {
+            sendScrollEngine("VISIBILITY_HIDDEN");
+            if (rafId !== null) {
+              cancelAnimationFrame(rafId);
+              rafId = null;
+            }
+          }
+        };
+        document.addEventListener("visibilitychange", onVisChange);
 
         const initScrollTrigger = () => {
           ScrollTrigger.create({
@@ -1643,6 +2784,7 @@
               }, 0)
               .fromTo("#footer-container-inner", { y: "15%" }, { y: "0%", ease: "none" }, 0)
           });
+          sendScrollEngine("READY");
         };
 
         const initTimer = setTimeout(() => {
@@ -1655,16 +2797,31 @@
 
         return () => {
           clearTimeout(initTimer);
+          clearTimeout(scrollIdleTimer);
+          document.removeEventListener("visibilitychange", onVisChange);
           if (rafId !== null) cancelAnimationFrame(rafId);
           delete window.__LENIS__;
           lenis.destroy();
           ScrollTrigger.getAll().forEach(t => t.kill());
           resizeObserver.disconnect();
         };
-      }, [sendCurtain]);
+      }, [sendCurtain, sendScrollEngine]);
+
+      const handleFooterLinkFocus = (channel) => {
+        sendCurtain({ type: "FOCUS_CHANNEL", channel });
+        if (curtainState.value !== "revealed" && window.__LENIS__) {
+          window.__LENIS__.scrollTo(document.body.scrollHeight);
+        }
+      };
 
       return (
-        <div className="bg-white min-h-screen font-sans text-dark selection:bg-electric selection:text-white">
+        <div
+          id="app-shell"
+          data-machine="scrollEngine"
+          data-state={scrollEngine.value}
+          data-scroll-direction={scrollEngine.context.direction}
+          className="bg-white min-h-screen font-sans text-dark selection:bg-electric selection:text-white"
+        >
           <div id="blue-bg" className="fixed inset-0 bg-electric z-0 opacity-0 invisible pointer-events-none"></div>
           <Nav />
 
@@ -1687,6 +2844,7 @@
             data-machine="footerCurtain"
             data-state={curtainState.value}
             data-progress={curtainState.context.progress}
+            data-active-channel={curtainState.context.activeChannel || undefined}
             aria-hidden={isFooterHidden}
             className="fixed bottom-0 left-0 w-full min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] z-0 flex flex-col justify-end bg-electric text-white overflow-hidden opacity-0 invisible"
           >
@@ -1703,27 +2861,49 @@
                     <a
                       href="mailto:pacochp@gmail.com"
                       tabIndex={isFooterHidden ? -1 : 0}
+                      onFocus={() => handleFooterLinkFocus("email")}
+                      onBlur={() => sendCurtain("BLUR_CHANNEL")}
+                      onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: "email" })}
+                      onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
                       className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
                     >
                       <MailIcon /> Email
                     </a>
                     <a
                       href="https://www.linkedin.com/in/jakubpacocha/"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       tabIndex={isFooterHidden ? -1 : 0}
+                      onFocus={() => handleFooterLinkFocus("linkedin")}
+                      onBlur={() => sendCurtain("BLUR_CHANNEL")}
+                      onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: "linkedin" })}
+                      onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
                       className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
                     >
                       <LinkedinIcon /> LinkedIn
                     </a>
                     <a
                       href="https://x.com/JakubPacocha"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       tabIndex={isFooterHidden ? -1 : 0}
+                      onFocus={() => handleFooterLinkFocus("twitter")}
+                      onBlur={() => sendCurtain("BLUR_CHANNEL")}
+                      onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: "twitter" })}
+                      onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
                       className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
                     >
                       <TwitterIcon /> Twitter / X
                     </a>
                     <a
                       href="https://github.com/JPacoch"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       tabIndex={isFooterHidden ? -1 : 0}
+                      onFocus={() => handleFooterLinkFocus("github")}
+                      onBlur={() => sendCurtain("BLUR_CHANNEL")}
+                      onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: "github" })}
+                      onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
                       className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
                     >
                       <GithubIcon /> GitHub
@@ -1738,6 +2918,8 @@
               </div>
             </div>
           </footer>
+
+          <MachineInspectorHUD />
         </div>
       );
     };
