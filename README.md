@@ -6,10 +6,10 @@ Live site: [jakubpacocha.com](https://jakubpacocha.com)
 
 ## Overview
 
-A client-side personal website featuring an interactive portfolio, a dedicated curriculum vitae view, and a headless Chrome script for generating print-accurate PDF resumes.
+A client-side personal website featuring an interactive portfolio, a dedicated curriculum vitae view and a headless Chrome script for generating print-accurate PDF resumes.
 
-- **Portfolio (`index.html`)**: Interactive showcase, hero typography, project gallery, and GSAP scroll curtain-reveal footer.
-- **Curriculum Vitae (`cv.html`)**: Complete work history, technical stack breakdown, and academic credentials.
+- **Portfolio (`index.html`)**: Interactive showcase, hero typography, project gallery and GSAP scroll curtain-reveal footer.
+- **Curriculum Vitae (`cv.html`)**: Complete work history, technical stack breakdown and academic credentials.
 - **Resume Export (`assets/resume.pdf`)**: A balanced 2-page A4 PDF rendered directly from the CV DOM.
 
 ## Tech Stack
@@ -46,7 +46,7 @@ bun install
 bun run generate-pdf
 ```
 
-The script launches headless Chrome, isolates the CV document, applies print typography and layout constraints, and writes the output to `assets/resume.pdf`.
+The script launches headless Chrome, isolates the CV document, applies print typography and layout constraints and writes the output to `assets/resume.pdf`.
 
 ## License
 

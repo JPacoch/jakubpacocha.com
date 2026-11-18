@@ -1,11 +1,11 @@
 # Jakub Pacocha
 
-> AI & Software Engineer at HERE Technologies and writer at From the Cabinet, based in Bydgoszcz, Poland. Building production RAG architectures, containerized ML infrastructure, and spatial intelligence systems.
+> AI & Software Engineer at HERE Technologies and writer at From the Cabinet, based in Bydgoszcz, Poland. Building production RAG architectures, containerized ML infrastructure and spatial intelligence systems.
 
 ## Primary Pages
 
-- [Portfolio](https://jakubpacocha.com/): Overview, live GitHub activity, selected projects, writing, and core focus areas.
-- [Curriculum Vitae](https://jakubpacocha.com/cv.html): Full work experience, technical capabilities, and academic background.
+- [Portfolio](https://jakubpacocha.com/): Overview, live GitHub activity, selected projects, writing and core focus areas.
+- [Curriculum Vitae](https://jakubpacocha.com/cv.html): Full work experience, technical capabilities and academic background.
 - [Resume (PDF)](https://jakubpacocha.com/assets/resume.pdf): Downloadable 2-page A4 resume.
 
 ## Selected Projects

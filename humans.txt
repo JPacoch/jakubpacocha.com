@@ -11,5 +11,5 @@ Location: Bydgoszcz, Poland
 /* SITE */
 Language: English
 Standards: HTML5, CSS3, ES2022, WCAG 2.2 AA
-Typography: Open Runde
+Typography: Geist
 Updated: 2026-11-18

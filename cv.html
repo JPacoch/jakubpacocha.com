@@ -5,21 +5,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Jakub Pacocha — Curriculum Vitae</title>
-  <meta name="description" content="Curriculum Vitae of Jakub Pacocha — Lead AI Engineer with 6+ years of experience across production data systems, RAG architectures, containerized ML infrastructure, AWS/Azure, and geoinformatics." />
+  <meta name="description" content="Curriculum Vitae of Jakub Pacocha — Lead AI Engineer with 6+ years of experience across production data systems, RAG architectures, containerized ML infrastructure, AWS/Azure and geoinformatics." />
   <meta name="author" content="Jakub Pacocha" />
   <meta name="keywords" content="Jakub Pacocha CV, Resume, Lead AI Engineer, Data Scientist, RAG, LLMOps, MLOps, FastAPI, Python, AWS, Azure, Geoinformatics, HERE Technologies, iQor, O-I" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <meta name="color-scheme" content="light dark" />
   <meta name="theme-color" content="#fcfcfc" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#2c2c2c" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#141414" media="(prefers-color-scheme: dark)" />
   <link rel="canonical" href="https://jakubpacocha.com/cv.html" />
   <link rel="icon" type="image/png" href="assets/favicon.png" />
   <link rel="apple-touch-icon" href="assets/favicon.png" />
   <link rel="manifest" href="site.webmanifest" />
   <link rel="author" href="humans.txt" />
   <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml" />
-  <link rel="preload" href="assets/fonts/OpenRunde-Medium.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="assets/fonts/OpenRunde-Semibold.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin />
 
   <!-- Open Graph / Social -->
   <meta property="og:type" content="profile" />
@@ -27,7 +26,7 @@
   <meta property="og:locale" content="en_US" />
   <meta property="og:url" content="https://jakubpacocha.com/cv.html" />
   <meta property="og:title" content="Jakub Pacocha — Curriculum Vitae" />
-  <meta property="og:description" content="Lead AI Engineer with 6+ years of experience building production data systems, RAG architectures, containerized ML infrastructure, and spatial analytics." />
+  <meta property="og:description" content="Lead AI Engineer with 6+ years of experience building production data systems, RAG architectures, containerized ML infrastructure and spatial analytics." />
   <meta property="og:image" content="https://jakubpacocha.com/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:alt" content="Jakub Pacocha — Curriculum Vitae" />
@@ -41,7 +40,7 @@
   <meta name="twitter:site" content="@JakubPacocha" />
   <meta name="twitter:creator" content="@JakubPacocha" />
   <meta name="twitter:title" content="Jakub Pacocha — Curriculum Vitae" />
-  <meta name="twitter:description" content="Lead AI Engineer with 6+ years of experience across RAG architectures, containerized ML infrastructure, AWS/Azure, and geoinformatics." />
+  <meta name="twitter:description" content="Lead AI Engineer with 6+ years of experience across RAG architectures, containerized ML infrastructure, AWS/Azure and geoinformatics." />
   <meta name="twitter:image" content="https://jakubpacocha.com/assets/og-image.jpg" />
   <meta name="twitter:image:alt" content="Jakub Pacocha — Curriculum Vitae" />
 
@@ -142,6 +141,7 @@
             surface: 'var(--color-surface)',
             'surface-hover': 'var(--color-surface-hover)',
             ink: 'var(--color-ink)',
+            'ink-subtitle': 'var(--color-ink-subtitle)',
             'ink-secondary': 'var(--color-ink-secondary)',
             'ink-muted': 'var(--color-ink-muted)',
             hairline: 'var(--color-hairline)',
@@ -153,8 +153,8 @@
             'footer-muted': 'var(--color-footer-muted)',
           },
           fontFamily: {
-            sans: ['"Open Runde"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
-            mono: ['"Open Runde"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            sans: ['"Geist"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            mono: ['"Geist"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
           },
         },
       },
@@ -170,54 +170,37 @@
 
   <style>
     @font-face {
-      font-family: "Open Runde";
-      src: url("assets/fonts/OpenRunde-Regular.woff2") format("woff2");
-      font-weight: 400;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    @font-face {
-      font-family: "Open Runde";
-      src: url("assets/fonts/OpenRunde-Medium.woff2") format("woff2");
-      font-weight: 500;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    @font-face {
-      font-family: "Open Runde";
-      src: url("assets/fonts/OpenRunde-Semibold.woff2") format("woff2");
-      font-weight: 600;
-      font-style: normal;
-      font-display: swap;
-    }
-
-    @font-face {
-      font-family: "Open Runde";
-      src: url("assets/fonts/OpenRunde-Bold.woff2") format("woff2");
-      font-weight: 700;
+      font-family: "Geist";
+      src: url("assets/fonts/Geist-Variable.woff2") format("woff2");
+      font-weight: 100 900;
       font-style: normal;
       font-display: swap;
     }
 
     :root {
-      /* Light Mode Palette — Verified WCAG AA */
+      /* Light Mode Palette — Soft Charcoal Ink, No Pure Black (Verified WCAG AA/AAA) */
       --color-canvas: #fcfcfc;
       --color-surface: #f4f4f5;
       --color-surface-hover: #ececef;
-      --color-ink: #171717;
+      --color-ink: #26262a;
+      --color-ink-subtitle: #45454c;
       --color-ink-secondary: #6b6b73;
       --color-ink-muted: #71717a;
-      --color-hairline: rgba(23, 23, 23, 0.08);
-      --color-underline: rgba(23, 23, 23, 0.34);
-      --color-underline-hover: #171717;
+      --color-hairline: rgba(38, 38, 42, 0.08);
+      --color-underline: rgba(38, 38, 42, 0.34);
+      --color-underline-hover: #26262a;
 
-      --color-badge-bg: #dcfce7;
-      --color-badge-text: #166534;
+      /* Brand Accent System (Burgundy / Rose) */
+      --color-accent: #881337;
+      --color-accent-strong: #6b0f2b;
+      --color-selection-bg: rgba(190, 62, 92, 0.2);
+      --color-selection-text: #6b0f2b;
 
-      /* Emerging Curtain Footer */
-      --color-footer-bg: #0a0a0c;
+      --color-badge-bg: #fae8ec;
+      --color-badge-text: #881337;
+
+      /* Emerging Curtain Footer (Deep Charcoal, Not Pure Black) */
+      --color-footer-bg: #1c1c1f;
       --color-footer-ink: #fafafa;
       --color-footer-secondary: #d4d4d8;
       --color-footer-muted: #a1a1aa;
@@ -226,35 +209,43 @@
         0px 0px 0px 1px oklch(0 0 0 / 0.06),
         0px 1px 2px 0px oklch(0 0 0 / 0.035);
       --shadow-chip: 0px 0px 0px 1px oklch(0 0 0 / 0.07);
-      --shadow-main-curtain: 0px 24px 64px rgba(10, 10, 12, 0.22);
+      --shadow-main-curtain: 0px 24px 64px rgba(24, 24, 28, 0.22);
       --main-edge-ring: transparent;
     }
 
     html[data-theme="dark"] {
-      /* Dark Mode Off-Black Palette (#2C2C2C) — Verified WCAG AA */
-      --color-canvas: #2c2c2c;
-      --color-surface: #353538;
-      --color-surface-hover: #3e3e42;
-      --color-ink: #f5f5f5;
-      --color-ink-secondary: #a8a8b2;
-      --color-ink-muted: #9696a0;
-      --color-hairline: rgba(255, 255, 255, 0.1);
-      --color-underline: rgba(255, 255, 255, 0.42);
-      --color-underline-hover: #f5f5f5;
+      /* Dark Mode Palette (#141414) — Verified WCAG AA/AAA */
+      --color-canvas: #141414;
+      --color-surface: #1e1e20;
+      --color-surface-hover: #27272a;
+      --color-ink: #f2f2f2;
+      --color-ink-subtitle: #c8c8cf;
+      --color-ink-secondary: #a1a1aa;
+      --color-ink-muted: #8a8a94;
+      --color-hairline: rgba(255, 255, 255, 0.09);
+      --color-underline: rgba(255, 255, 255, 0.38);
+      --color-underline-hover: #f2f2f2;
 
-      --color-badge-bg: #1a4d2e;
-      --color-badge-text: #bbf7d0;
+      /* Brand Accent System (Burgundy / Rose — Dark) */
+      --color-accent: #e57389;
+      --color-accent-strong: #f29aac;
+      --color-on-accent: #260710;
+      --color-selection-bg: #e57389;
+      --color-selection-text: #260710;
 
-      /* Emerging Curtain Footer (Deeper Charcoal under #2C2C2C) */
-      --color-footer-bg: #1e1e20;
-      --color-footer-ink: #f5f5f5;
+      --color-badge-bg: #3d1522;
+      --color-badge-text: #f29aac;
+
+      /* Emerging Curtain Footer (Deeper Obsidian under #141414) */
+      --color-footer-bg: #0c0c0e;
+      --color-footer-ink: #f2f2f2;
       --color-footer-secondary: #d4d4d8;
-      --color-footer-muted: #a8a8b2;
+      --color-footer-muted: #9a9aa4;
 
-      --shadow-tile: 0px 0px 0px 1px oklch(1 0 0 / 0.1);
-      --shadow-chip: 0px 0px 0px 1px oklch(1 0 0 / 0.11);
-      --shadow-main-curtain: 0px 24px 64px rgba(0, 0, 0, 0.45);
-      --main-edge-ring: rgba(255, 255, 255, 0.08);
+      --shadow-tile: 0px 0px 0px 1px oklch(1 0 0 / 0.08);
+      --shadow-chip: 0px 0px 0px 1px oklch(1 0 0 / 0.09);
+      --shadow-main-curtain: 0px 24px 64px rgba(0, 0, 0, 0.55);
+      --main-edge-ring: rgba(255, 255, 255, 0.07);
     }
 
     html {
@@ -277,12 +268,25 @@
       padding: 0;
       background-color: var(--color-canvas);
       color: var(--color-ink);
-      font-family: "Open Runde", Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-      font-size: 16px;
-      line-height: 24px;
-      font-weight: 500;
-      letter-spacing: -0.01em;
+      font-family: "Geist", Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 26px;
+      font-weight: 400;
+      letter-spacing: -0.011em;
       overflow-x: clip;
+    }
+
+    /* Tactile monochrome film grain in dark mode only */
+    html[data-theme="dark"] body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      opacity: 0.088;
+      background-repeat: repeat;
+      background-size: 160px 160px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.6' intercept='-0.8'/%3E%3CfeFuncG type='linear' slope='2.6' intercept='-0.8'/%3E%3CfeFuncB type='linear' slope='2.6' intercept='-0.8'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
     button,
@@ -290,6 +294,16 @@
     textarea,
     select {
       font-family: inherit;
+    }
+
+    ::selection {
+      background-color: var(--color-selection-bg);
+      color: var(--color-selection-text);
+    }
+
+    #footer-container ::selection {
+      background-color: #e57389;
+      color: #260710;
     }
 
     .text-balance {
@@ -314,6 +328,102 @@
       transition-timing-function: ease-out;
     }
 
+    /* Smooth hover/focus trailing icon reveal (nudges following text smoothly) */
+    .reveal-link {
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .reveal-link .reveal-slot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      vertical-align: 0.04em;
+      max-width: 0;
+      margin-inline-start: 0;
+      opacity: 0;
+      color: var(--color-ink-muted);
+      transition:
+        max-width 400ms cubic-bezier(0.22, 1, 0.36, 1),
+        margin-inline-start 400ms cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 220ms ease-out,
+        color 240ms ease-out;
+    }
+
+    .reveal-link .reveal-slot-copy {
+      vertical-align: -0.08em;
+    }
+
+    .reveal-link .reveal-glyph {
+      flex-shrink: 0;
+      transform: translate(-3px, 3px) scale(0.7);
+      transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal-link .reveal-glyph-copy {
+      transform: scale(0.7);
+    }
+
+    .reveal-link:focus-visible .inline-link,
+    .reveal-link[data-revealed="true"] .inline-link {
+      color: var(--color-ink);
+      text-decoration-color: var(--color-underline-hover);
+    }
+
+    .reveal-link:focus-visible .reveal-slot,
+    .reveal-link[data-revealed="true"] .reveal-slot {
+      max-width: 0.68em;
+      margin-inline-start: 0.14em;
+      opacity: 1;
+      transition:
+        max-width 480ms cubic-bezier(0.22, 1, 0.36, 1),
+        margin-inline-start 480ms cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 320ms ease-out 90ms,
+        color 240ms ease-out;
+    }
+
+    .reveal-link:focus-visible .reveal-slot-copy,
+    .reveal-link[data-revealed="true"] .reveal-slot-copy {
+      max-width: 0.84em;
+      margin-inline-start: 0.18em;
+    }
+
+    .reveal-link:focus-visible .reveal-glyph,
+    .reveal-link[data-revealed="true"] .reveal-glyph {
+      transform: translate(0, 0) scale(1);
+      transition: transform 460ms cubic-bezier(0.22, 1, 0.36, 1) 50ms;
+    }
+
+    @media (hover: hover) {
+      .reveal-link:hover .inline-link {
+        color: var(--color-ink);
+        text-decoration-color: var(--color-underline-hover);
+      }
+
+      .reveal-link:hover .reveal-slot {
+        max-width: 0.68em;
+        margin-inline-start: 0.14em;
+        opacity: 1;
+        color: var(--color-ink);
+        transition:
+          max-width 480ms cubic-bezier(0.22, 1, 0.36, 1),
+          margin-inline-start 480ms cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 320ms ease-out 90ms,
+          color 240ms ease-out;
+      }
+
+      .reveal-link:hover .reveal-slot-copy {
+        max-width: 0.84em;
+        margin-inline-start: 0.18em;
+      }
+
+      .reveal-link:hover .reveal-glyph {
+        transform: translate(0, 0) scale(1);
+        transition: transform 460ms cubic-bezier(0.22, 1, 0.36, 1) 50ms;
+      }
+    }
+
     @keyframes icon-swap-in {
       0% {
         opacity: 0;
@@ -331,9 +441,30 @@
       animation: icon-swap-in 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
+    @keyframes tag-pill-in {
+      0% {
+        opacity: 0;
+        transform: scale(0.92);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .tag-pill-in {
+      animation: tag-pill-in 150ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
     @media (prefers-reduced-motion: reduce) {
-      .icon-swap-in {
+      .icon-swap-in,
+      .tag-pill-in {
         animation: none;
+      }
+      .reveal-link .reveal-slot,
+      .reveal-link .reveal-glyph {
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
       }
     }
 
@@ -414,12 +545,13 @@
       html,
       body {
         background: #ffffff !important;
-        color: #111113 !important;
+        color: #26262a !important;
       }
       #footer-spacer,
       #footer-container,
       #footer-backdrop,
-      .no-print {
+      .no-print,
+      html[data-theme="dark"] body::after {
         display: none !important;
       }
       #main-content {
@@ -434,9 +566,9 @@
 <body>
   <div id="root"></div>
   <noscript>
-    <main style="max-width:768px;margin:0 auto;padding:48px 24px;font-family:'Open Runde',Inter,system-ui,sans-serif;line-height:1.6;">
+    <main style="max-width:768px;margin:0 auto;padding:48px 24px;font-family:'Geist',Inter,system-ui,sans-serif;line-height:1.6;">
       <h1>Jakub Pacocha — Curriculum Vitae</h1>
-      <p>Full-stack AI engineer with 6+ years of experience building production data systems, RAG architectures, and containerized ML infrastructure. Based in Bydgoszcz, Poland.</p>
+      <p>Full-stack AI engineer with 6+ years of experience building production data systems, RAG architectures and containerized ML infrastructure. Based in Bydgoszcz, Poland.</p>
       <p><a href="index.html">Portfolio</a> · <a href="assets/resume.pdf">Download PDF</a> · <a href="mailto:pacochp@gmail.com">pacochp@gmail.com</a> · <a href="https://github.com/JPacoch">GitHub</a> · <a href="https://www.linkedin.com/in/jakubpacocha/">LinkedIn</a></p>
       <h2>Experience</h2>
       <ul>
@@ -974,6 +1106,13 @@
     }
 
     // --- ICONS ---
+    const ArrowUpRightIcon = ({ className = "w-3.5 h-3.5", strokeWidth = 1.75, tight = false }) => (
+      <svg className={className} viewBox={tight ? "5.5 5.5 13 13" : "0 0 24 24"} fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M7 17 17 7" />
+        <path vectorEffect="non-scaling-stroke" d="M7 7h10v10" />
+      </svg>
+    );
+
     const ArrowLeftIcon = ({ className = "w-3.5 h-3.5" }) => (
       <svg className={`rtl:-scale-x-100 ${className}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path vectorEffect="non-scaling-stroke" d="M19 12H5" />
@@ -1336,7 +1475,7 @@
             >
               <a
                 href="index.html"
-                className="back-link tap-press hover-surface -ms-2.5 px-2.5 min-h-[40px] rounded-lg inline-flex items-center gap-1.5 text-[0.875rem] font-medium text-ink-muted"
+                className="back-link tap-press hover-surface -ms-2.5 px-2.5 min-h-[40px] rounded-lg inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-ink-muted"
               >
                 <ArrowLeftIcon className="back-arrow w-3.5 h-3.5 transition-transform duration-150 ease-out" />
                 <span>Portfolio</span>
@@ -1345,19 +1484,19 @@
               <div className="flex items-center gap-1 -me-1.5">
                 <a
                   href="#experience"
-                  className="hidden sm:inline-flex tap-press hover-surface px-2.5 min-h-[38px] rounded-lg items-center text-[0.875rem] text-ink-muted"
+                  className="hidden sm:inline-flex tap-press hover-surface px-2.5 min-h-[38px] rounded-lg items-center text-[0.9375rem] text-ink-muted"
                 >
                   Experience
                 </a>
                 <a
                   href="#skills"
-                  className="hidden sm:inline-flex tap-press hover-surface px-2.5 min-h-[38px] rounded-lg items-center text-[0.875rem] text-ink-muted"
+                  className="hidden sm:inline-flex tap-press hover-surface px-2.5 min-h-[38px] rounded-lg items-center text-[0.9375rem] text-ink-muted"
                 >
                   Stack
                 </a>
                 <a
                   href="#education"
-                  className="hidden sm:inline-flex tap-press hover-surface px-2.5 min-h-[38px] rounded-lg items-center text-[0.875rem] text-ink-muted"
+                  className="hidden sm:inline-flex tap-press hover-surface px-2.5 min-h-[38px] rounded-lg items-center text-[0.9375rem] text-ink-muted"
                 >
                   Education
                 </a>
@@ -1367,7 +1506,7 @@
                 <a
                   href="assets/resume.pdf"
                   download
-                  className="tap-press hover-surface px-2.5 min-h-[40px] rounded-lg inline-flex items-center gap-1.5 text-[0.875rem] font-medium text-ink"
+                  className="tap-press hover-surface px-2.5 min-h-[40px] rounded-lg inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-ink"
                 >
                   <DownloadIcon className="w-3.5 h-3.5" />
                   <span>PDF</span>
@@ -1406,39 +1545,47 @@
             {/* Identity & Summary */}
             <header className="space-y-4">
               <div>
-                <h1 className="text-xl sm:text-2xl font-semibold text-ink tracking-[-0.02em] leading-[1.3]">
+                <h1 className="text-[1.375rem] sm:text-[1.5rem] font-semibold text-ink tracking-[-0.02em] leading-[1.3]">
                   Jakub Pacocha
                 </h1>
-                <p className="text-base text-ink-muted leading-[1.45]">
+                <p className="mt-0.5 text-[1.0625rem] sm:text-[1.125rem] font-medium text-ink-subtitle leading-[1.45]">
                   Curriculum Vitae / Bydgoszcz, Poland
                 </p>
               </div>
 
-              <p className="text-base sm:text-[1.0625rem] text-ink-secondary leading-[1.7] text-pretty max-w-[58ch]">
+              <p className="text-[1.0625rem] sm:text-[1.125rem] text-ink-secondary leading-[1.7] text-pretty max-w-[60ch]">
                 Full-stack AI engineer with 6+ years of experience building production data systems, RAG architectures and containerized ML infrastructure. Author of philosophical blog at{" "}
                 <a
                   href="https://fromthecabinet.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-link"
+                  className="reveal-link"
                 >
-                  From the Cabinet
+                  <span className="inline-link">From the Cabinet</span>
+                  <span className="reveal-slot" aria-hidden="true">
+                    <ArrowUpRightIcon tight className="reveal-glyph w-[0.5em] h-[0.5em]" strokeWidth={1.9} />
+                  </span>
                 </a>
                 .
               </p>
 
-              {/* Unified Email + Copy Icon Single Clickable Element */}
-              <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.9375rem] text-ink-secondary">
+              {/* Unified Email + Hover-Reveal Copy Icon, plus Hover-Reveal Arrows */}
+              <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[1.0625rem] sm:text-[1.125rem] text-ink-secondary">
                 <button
                   type="button"
                   onClick={handleCopyEmail}
+                  data-revealed={copied ? "true" : undefined}
                   aria-label={copied ? "Email copied to clipboard" : "Copy pacochp@gmail.com to clipboard"}
-                  className="tap-press hover-surface inline-flex items-center gap-1.5 px-1.5 -ms-1.5 py-0.5 rounded-md cursor-pointer bg-transparent border-0 text-inherit"
+                  className="reveal-link tap-press inline-block p-0 m-0 bg-transparent border-0 text-inherit cursor-pointer align-baseline"
                 >
                   <span className="inline-link">pacochp@gmail.com</span>
-                  <span className="no-print inline-flex items-center text-ink-muted">
+                  <span className="no-print reveal-slot reveal-slot-copy" aria-hidden="true">
                     <IconSwap activeKey={copied ? "check" : "copy"}>
-                      {copied ? <CheckIcon className="w-3.5 h-3.5 text-ink" /> : <CopyIcon />}
+                      {copied ? (
+                        <CheckIcon className="reveal-glyph reveal-glyph-copy w-[0.68em] h-[0.68em] text-ink" />
+                      ) : (
+                        <CopyIcon className="reveal-glyph reveal-glyph-copy w-[0.68em] h-[0.68em]" />
+                      )}
                     </IconSwap>
                   </span>
                 </button>
@@ -1448,18 +1595,24 @@
                   href="https://github.com/JPacoch"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-link"
+                  className="reveal-link"
                 >
-                  github.com/JPacoch
+                  <span className="inline-link">github.com/JPacoch</span>
+                  <span className="no-print reveal-slot" aria-hidden="true">
+                    <ArrowUpRightIcon tight className="reveal-glyph w-[0.5em] h-[0.5em]" strokeWidth={1.9} />
+                  </span>
                 </a>
                 <span aria-hidden="true" className="text-ink-muted">/</span>
                 <a
                   href="https://www.linkedin.com/in/jakubpacocha/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-link"
+                  className="reveal-link"
                 >
-                  LinkedIn
+                  <span className="inline-link">LinkedIn</span>
+                  <span className="no-print reveal-slot" aria-hidden="true">
+                    <ArrowUpRightIcon tight className="reveal-glyph w-[0.5em] h-[0.5em]" strokeWidth={1.9} />
+                  </span>
                 </a>
                 <span className="sr-only" role="status" aria-live="polite">
                   {copied ? "Email address pacochp@gmail.com copied." : ""}
@@ -1470,29 +1623,28 @@
 
           {/* Experience Section (Most recent open by default; rest click-to-open) */}
           <motion.section id="experience" variants={enterItem} aria-labelledby="experience-heading" className="tracking-normal">
-            <div className="flex flex-wrap items-baseline justify-between gap-3 pb-3.5 mb-1 border-b border-hairline">
-              <h2 id="experience-heading" className="text-[0.9375rem] font-semibold text-ink tracking-normal">
+            <span className="sr-only" role="status" aria-live="polite">
+              {selectedTag ? `Filtered by tag ${selectedTag}.` : "Tag filter cleared."}
+            </span>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-3 border-b border-hairline">
+              <h2 id="experience-heading" className="text-base sm:text-[1.0625rem] font-semibold text-ink tracking-normal">
                 Experience
               </h2>
 
-              <div className="flex items-center gap-3">
-                <div role="status" aria-live="polite">
-                  <AnimatePresence initial={false}>
-                    {selectedTag && (
-                      <motion.button
-                        type="button"
-                        initial={reduce ? { opacity: 0 } : { opacity: 0, y: 4 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4 }}
-                        transition={{ duration: 0.15, ease: "easeOut" }}
-                        onClick={() => sendExplorer("CLEAR_TAG")}
-                        className="tap-press px-2.5 py-0.5 rounded-md bg-ink text-canvas text-[0.8125rem] font-medium"
-                      >
-                        {selectedTag} ×
-                      </motion.button>
-                    )}
-                  </AnimatePresence>
-                </div>
+              <div className="flex items-center gap-3 h-7">
+                {selectedTag && (
+                  <button
+                    key={selectedTag}
+                    type="button"
+                    onClick={() => sendExplorer("CLEAR_TAG")}
+                    aria-label={`Clear ${selectedTag} filter`}
+                    className="tag-pill-in no-print inline-flex items-center gap-1 h-7 px-2.5 rounded-md bg-ink text-canvas text-[0.875rem] leading-none font-medium cursor-pointer border-0 active:scale-[0.96] transition-transform duration-150 ease-out"
+                  >
+                    <span>{selectedTag}</span>
+                    <span aria-hidden="true">×</span>
+                  </button>
+                )}
 
                 <button
                   type="button"
@@ -1503,7 +1655,7 @@
                       collapsed: allExpOpen
                     })
                   }
-                  className="no-print text-[0.875rem] text-ink-muted hover-ink transition-colors duration-150 ease-out"
+                  className="no-print inline-flex items-center h-7 text-[0.9375rem] leading-none text-ink-muted hover-ink transition-colors duration-150 ease-out"
                 >
                   {allExpOpen ? "Collapse all" : "Expand all"}
                 </button>
@@ -1520,7 +1672,7 @@
                     key={exp.id}
                     onMouseEnter={() => sendExplorer({ type: "HOVER_ROLE", company: exp.company })}
                     onMouseLeave={() => sendExplorer("LEAVE_ROLE")}
-                    className={`py-4 transition-opacity duration-150 ease-out ${
+                    className={`py-4 sm:py-5 transition-opacity duration-150 ease-out ${
                       selectedTag && !matchesTag ? "opacity-35" : ""
                     }`}
                   >
@@ -1529,28 +1681,28 @@
                       aria-expanded={open}
                       aria-controls={panelId}
                       onClick={() => sendExplorer({ type: "TOGGLE_ITEM", id: exp.id })}
-                      className="tap-press hover-surface w-full text-start -mx-3 px-3 py-2.5 rounded-xl flex items-start justify-between gap-3 cursor-pointer bg-transparent border-0"
+                      className="tap-press hover-surface w-[calc(100%+1.75rem)] sm:w-[calc(100%+2rem)] text-start -mx-3.5 sm:-mx-4 px-3.5 sm:px-4 py-3 rounded-xl flex items-start justify-between gap-4 cursor-pointer bg-transparent border-0"
                     >
-                      <div className="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4">
+                      <div className="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5 sm:gap-4">
                         <div className="min-w-0">
-                          <div className="flex flex-wrap items-center gap-2">
-                            <h3 className="text-base sm:text-[1.0625rem] font-semibold text-ink tracking-normal leading-[1.35]">
+                          <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+                            <h3 className="text-[1.0625rem] sm:text-[1.125rem] font-semibold text-ink tracking-normal leading-[1.35]">
                               {exp.role}
                             </h3>
                             {exp.current && (
-                              <span className="px-2 py-0.5 rounded-full bg-badge-bg text-badge-text text-[0.6875rem] leading-none font-semibold tracking-[0.05em] uppercase">
+                              <span className="inline-flex items-center justify-center h-6 px-2.5 rounded-full bg-badge-bg text-badge-text text-[0.6875rem] leading-none font-semibold tracking-[0.06em] uppercase">
                                 Current
                               </span>
                             )}
                           </div>
-                          <p className="mt-0.5 text-[0.9375rem] text-ink-muted">
+                          <p className="mt-1.5 text-base text-ink-muted">
                             <span className="text-ink font-semibold">{exp.company}</span>
                             {" / "}
                             <span>{exp.domain}</span>
                           </p>
                         </div>
 
-                        <span className="text-[0.875rem] text-ink-muted tabular-nums shrink-0">
+                        <span className="text-[0.9375rem] text-ink-muted tabular-nums shrink-0">
                           {exp.period}
                         </span>
                       </div>
@@ -1563,8 +1715,8 @@
                     </button>
 
                     <CollapsiblePanel id={panelId} isOpen={open}>
-                      <div className="pt-3 pb-1.5">
-                        <ul className="space-y-2.5 mb-5 text-[0.96875rem] sm:text-base text-ink-secondary leading-[1.65] text-pretty list-none p-0 max-w-[58ch]">
+                      <div className="pt-3.5 pb-2">
+                        <ul className="space-y-3 mb-5 text-base text-ink-secondary leading-[1.65] text-pretty list-none p-0 max-w-[60ch]">
                           {exp.bullets.map((b, idx) => (
                             <li key={idx} className="flex items-start gap-2.5">
                               <span aria-hidden="true" className="text-ink-muted select-none mt-px">–</span>
@@ -1573,7 +1725,7 @@
                           ))}
                         </ul>
 
-                        <div className="flex flex-wrap gap-1.5">
+                        <div className="flex flex-wrap gap-2">
                           {exp.tags.map((tag) => {
                             const isTagSelected = selectedTag === tag;
                             return (
@@ -1582,7 +1734,7 @@
                                 type="button"
                                 aria-pressed={isTagSelected}
                                 onClick={() => sendExplorer({ type: "TOGGLE_TAG", tag })}
-                                className={`tap-press px-2.5 py-1 min-h-[30px] rounded-md text-[0.8125rem] font-medium transition-colors duration-150 ease-out ${
+                                className={`tap-press px-2.5 py-1 min-h-[30px] rounded-md text-[0.875rem] font-medium transition-colors duration-150 ease-out ${
                                   isTagSelected
                                     ? "bg-ink text-canvas"
                                     : "bg-surface text-ink-secondary hover-ink"
@@ -1603,8 +1755,8 @@
 
           {/* Technical Capabilities Section (Pure Editorial Text-Based, Togglable Hairline Rows) */}
           <motion.section id="skills" variants={enterItem} aria-labelledby="skills-heading" className="tracking-normal">
-            <div className="flex flex-wrap items-baseline justify-between gap-3 pb-3.5 mb-1 border-b border-hairline">
-              <h2 id="skills-heading" className="text-[0.9375rem] font-semibold text-ink tracking-normal">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-3 border-b border-hairline">
+              <h2 id="skills-heading" className="text-base sm:text-[1.0625rem] font-semibold text-ink tracking-normal">
                 Technical Capabilities
               </h2>
               <button
@@ -1616,7 +1768,7 @@
                     collapsed: allSkillsOpen
                   })
                 }
-                className="no-print text-[0.875rem] text-ink-muted hover-ink transition-colors duration-150 ease-out"
+                className="no-print inline-flex items-center h-7 text-[0.9375rem] leading-none text-ink-muted hover-ink transition-colors duration-150 ease-out"
               >
                 {allSkillsOpen ? "Collapse all" : "Expand all"}
               </button>
@@ -1627,20 +1779,20 @@
                 const open = isOpen(group.id);
                 const panelId = `${group.id}-panel`;
                 return (
-                  <div key={group.id} className="py-3.5">
+                  <div key={group.id} className="py-4 sm:py-[1.125rem]">
                     <button
                       type="button"
                       aria-expanded={open}
                       aria-controls={panelId}
                       onClick={() => sendExplorer({ type: "TOGGLE_ITEM", id: group.id })}
-                      className="tap-press hover-surface w-full text-start -mx-3 px-3 py-2 rounded-xl flex items-baseline justify-between gap-4 cursor-pointer bg-transparent border-0"
+                      className="tap-press hover-surface w-[calc(100%+1.75rem)] sm:w-[calc(100%+2rem)] text-start -mx-3.5 sm:-mx-4 px-3.5 sm:px-4 py-2.5 rounded-xl flex items-baseline justify-between gap-4 cursor-pointer bg-transparent border-0"
                     >
-                      <h3 className="text-base sm:text-[1.0625rem] font-semibold text-ink tracking-normal">
+                      <h3 className="text-[1.0625rem] sm:text-[1.125rem] font-semibold text-ink tracking-normal">
                         {group.category}
                       </h3>
 
                       <div className="flex items-center gap-2.5 shrink-0">
-                        <span className="text-[0.875rem] text-ink-muted tabular-nums">
+                        <span className="text-[0.9375rem] text-ink-muted tabular-nums">
                           {group.items.length}
                         </span>
                         <ChevronDownIcon
@@ -1652,7 +1804,7 @@
                     </button>
 
                     <CollapsiblePanel id={panelId} isOpen={open}>
-                      <ul className="pt-2.5 pb-1 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 list-none p-0 m-0">
+                      <ul className="pt-3 pb-2 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5 list-none m-0">
                         {group.items.map((item) => {
                           const isMatched = Boolean(
                             selectedTag && item.toLowerCase().includes(selectedTag.toLowerCase())
@@ -1660,9 +1812,9 @@
                           return (
                             <li
                               key={item}
-                              className={`flex items-baseline gap-2.5 text-[0.96875rem] sm:text-base leading-[1.55] transition-colors duration-150 ease-out ${
+                              className={`flex items-baseline gap-2.5 text-base leading-[1.55] transition-colors duration-150 ease-out ${
                                 isMatched
-                                  ? "text-ink font-medium underline decoration-dotted underline-offset-[3px]"
+                                  ? "text-ink font-semibold underline decoration-dotted underline-offset-[3px]"
                                   : "text-ink-secondary"
                               }`}
                             >
@@ -1681,8 +1833,8 @@
 
           {/* Education Section (Most recent open by default; rest click-to-open) */}
           <motion.section id="education" variants={enterItem} aria-labelledby="education-heading" className="tracking-normal">
-            <div className="flex flex-wrap items-baseline justify-between gap-3 pb-3.5 mb-1 border-b border-hairline">
-              <h2 id="education-heading" className="text-[0.9375rem] font-semibold text-ink tracking-normal">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-3 border-b border-hairline">
+              <h2 id="education-heading" className="text-base sm:text-[1.0625rem] font-semibold text-ink tracking-normal">
                 Education
               </h2>
               <button
@@ -1694,7 +1846,7 @@
                     collapsed: allEduOpen
                   })
                 }
-                className="no-print text-[0.875rem] text-ink-muted hover-ink transition-colors duration-150 ease-out"
+                className="no-print inline-flex items-center h-7 text-[0.9375rem] leading-none text-ink-muted hover-ink transition-colors duration-150 ease-out"
               >
                 {allEduOpen ? "Collapse all" : "Expand all"}
               </button>
@@ -1708,7 +1860,7 @@
                 return (
                   <article
                     key={edu.id}
-                    className={`py-4 transition-opacity duration-150 ease-out ${
+                    className={`py-4 sm:py-5 transition-opacity duration-150 ease-out ${
                       selectedTag && !matchesTag ? "opacity-35" : ""
                     }`}
                   >
@@ -1717,19 +1869,19 @@
                       aria-expanded={open}
                       aria-controls={panelId}
                       onClick={() => sendExplorer({ type: "TOGGLE_ITEM", id: edu.id })}
-                      className="tap-press hover-surface w-full text-start -mx-3 px-3 py-2.5 rounded-xl flex items-start justify-between gap-3 cursor-pointer bg-transparent border-0"
+                      className="tap-press hover-surface w-[calc(100%+1.75rem)] sm:w-[calc(100%+2rem)] text-start -mx-3.5 sm:-mx-4 px-3.5 sm:px-4 py-3 rounded-xl flex items-start justify-between gap-4 cursor-pointer bg-transparent border-0"
                     >
-                      <div className="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4">
+                      <div className="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5 sm:gap-4">
                         <div className="min-w-0">
-                          <h3 className="text-base sm:text-[1.0625rem] font-semibold text-ink tracking-normal leading-[1.35]">
+                          <h3 className="text-[1.0625rem] sm:text-[1.125rem] font-semibold text-ink tracking-normal leading-[1.35]">
                             {edu.degree}
                           </h3>
-                          <p className="mt-0.5 text-[0.9375rem] text-ink-muted">
+                          <p className="mt-1.5 text-base text-ink-muted">
                             {edu.institution}
                           </p>
                         </div>
 
-                        <span className="text-[0.875rem] text-ink-muted tabular-nums shrink-0">
+                        <span className="text-[0.9375rem] text-ink-muted tabular-nums shrink-0">
                           {edu.year}
                         </span>
                       </div>
@@ -1742,12 +1894,12 @@
                     </button>
 
                     <CollapsiblePanel id={panelId} isOpen={open}>
-                      <div className="pt-2.5 pb-1.5">
-                        <p className="text-[0.96875rem] sm:text-base text-ink-secondary leading-[1.65] text-pretty mb-4 max-w-[58ch]">
+                      <div className="pt-3 pb-2">
+                        <p className="text-base text-ink-secondary leading-[1.65] text-pretty mb-5 max-w-[60ch]">
                           {edu.thesis}
                         </p>
 
-                        <div className="flex flex-wrap gap-1.5">
+                        <div className="flex flex-wrap gap-2">
                           {edu.tags.map((tag) => {
                             const isTagSelected = selectedTag === tag;
                             return (
@@ -1756,7 +1908,7 @@
                                 type="button"
                                 aria-pressed={isTagSelected}
                                 onClick={() => sendExplorer({ type: "TOGGLE_TAG", tag })}
-                                className={`tap-press px-2.5 py-1 min-h-[30px] rounded-md text-[0.8125rem] font-medium transition-colors duration-150 ease-out ${
+                                className={`tap-press px-2.5 py-1 min-h-[30px] rounded-md text-[0.875rem] font-medium transition-colors duration-150 ease-out ${
                                   isTagSelected
                                     ? "bg-ink text-canvas"
                                     : "bg-surface text-ink-secondary hover-ink"
@@ -1867,19 +2019,14 @@
             className="w-full h-full max-w-[768px] mx-auto px-5 sm:px-8 pt-14 sm:pt-20 safe-bottom flex flex-col justify-between text-start"
           >
             <div className="my-auto">
-              <p
-                id="contact"
-                className="font-semibold text-xs uppercase tracking-[0.08em] text-footer-muted mb-4"
-              >
-                Contact
-              </p>
 
-              <h2 className="text-3xl sm:text-5xl font-semibold leading-[1.08] tracking-[-0.03em] text-footer-ink text-balance mb-4">
+
+              <h2 className="text-4xl sm:text-7xl font-semibold leading-[1.08] tracking-[-0.03em] text-footer-ink text-balance mb-4">
                 Open for{" "}
-                <span className="text-footer-muted font-medium">collaboration.</span>
+                <span className="text-footer-muted font-medium italic">collaboration.</span>
               </h2>
 
-              <p className="text-[0.9375rem] sm:text-base text-footer-secondary leading-[1.6] text-pretty max-w-[42ch] mb-8">
+              <p className="text-base sm:text-[1.0625rem] text-footer-secondary leading-[1.6] text-pretty max-w-[42ch] mb-8">
                 Want to discuss AI engineering, data systems or a potential role?
               </p>
 
@@ -1894,7 +2041,7 @@
                     onBlur={() => sendCurtain("BLUR_CHANNEL")}
                     onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: ch.id })}
                     onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
-                    className="focus-ring-light tap-press hover-light-pill min-h-[42px] ps-3.5 pe-4 py-2 rounded-full bg-white/10 border border-white/15 text-footer-ink text-sm font-medium inline-flex items-center gap-2"
+                    className="focus-ring-light tap-press hover-light-pill min-h-[42px] ps-3.5 pe-4 py-2 rounded-full bg-white/10 border border-white/15 text-footer-ink text-[0.9375rem] font-medium inline-flex items-center gap-2"
                   >
                     {ch.icon}
                     <span>{ch.label}</span>
@@ -1903,7 +2050,7 @@
               </div>
             </div>
 
-            <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-[0.8125rem] text-footer-muted">
+            <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-base text-footer-muted">
               <span>© 2026 <span className="font-semibold text-footer-ink">Jakub Pacocha</span>. All rights reserved.</span>
               <span>Bydgoszcz, Poland</span>
             </div>
@@ -2061,7 +2208,7 @@
             data-machine="scrollEngine"
             data-state={scrollEngine.value}
             data-scroll-direction={scrollEngine.context.direction}
-            className="bg-canvas min-h-[100dvh] font-sans text-ink selection:bg-ink selection:text-canvas"
+            className="bg-canvas min-h-[100dvh] font-sans text-ink"
           >
             <GlobalHaptics />
             <ClickSpark />
