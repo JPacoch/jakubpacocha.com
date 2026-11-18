@@ -1,33 +1,162 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jakub Pacocha — AI Engineer & Writer</title>
-  <link rel="icon" type="image/x-icon" href="assets/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Jakub Pacocha — AI &amp; Software Engineer, Writer</title>
+  <meta name="description" content="Jakub Pacocha — AI & Software Engineer at HERE Technologies. Building production RAG architectures, containerized ML infrastructure, spatial intelligence systems and writing philosophical essays." />
+  <meta name="author" content="Jakub Pacocha" />
+  <meta name="keywords" content="Jakub Pacocha, AI Engineer, Software Engineer, RAG, LLMOps, MLOps, Spatial Intelligence, Geoinformatics, Machine Learning, Python, AWS, Azure, Bydgoszcz, Poland, From the Cabinet" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#fcfcfc" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#141414" media="(prefers-color-scheme: dark)" />
+  <link rel="canonical" href="https://jakubpacocha.com/" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/favicon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="author" href="humans.txt" />
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml" />
+  <link rel="preload" href="assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin />
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Jakub Pacocha" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://jakubpacocha.com/" />
+  <meta property="og:title" content="Jakub Pacocha — AI &amp; Software Engineer, Writer" />
+  <meta property="og:description" content="AI & Software Engineer at HERE Technologies. Building production RAG architectures, containerized ML infrastructure, spatial intelligence systems and writing essays." />
+  <meta property="og:image" content="https://jakubpacocha.com/assets/og-image.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Jakub Pacocha — AI & Software Engineer, Writer" />
+  <meta property="og:image:width" content="1376" />
+  <meta property="og:image:height" content="768" />
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@JakubPacocha" />
+  <meta name="twitter:creator" content="@JakubPacocha" />
+  <meta name="twitter:title" content="Jakub Pacocha — AI &amp; Software Engineer, Writer" />
+  <meta name="twitter:description" content="AI & Software Engineer at HERE Technologies. Building production RAG architectures, containerized ML infrastructure, spatial intelligence systems and writing essays." />
+  <meta name="twitter:image" content="https://jakubpacocha.com/assets/og-image.jpg" />
+  <meta name="twitter:image:alt" content="Jakub Pacocha — AI & Software Engineer, Writer" />
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://jakubpacocha.com/#website",
+          "url": "https://jakubpacocha.com/",
+          "name": "Jakub Pacocha",
+          "description": "Personal portfolio and writing index of Jakub Pacocha — AI & Software Engineer and Writer.",
+          "inLanguage": "en",
+          "publisher": { "@id": "https://jakubpacocha.com/#person" }
+        },
+        {
+          "@type": "ProfilePage",
+          "@id": "https://jakubpacocha.com/#profilepage",
+          "url": "https://jakubpacocha.com/",
+          "name": "Jakub Pacocha — AI & Software Engineer, Writer",
+          "isPartOf": { "@id": "https://jakubpacocha.com/#website" },
+          "mainEntity": { "@id": "https://jakubpacocha.com/#person" },
+          "inLanguage": "en"
+        },
+        {
+          "@type": "Person",
+          "@id": "https://jakubpacocha.com/#person",
+          "name": "Jakub Pacocha",
+          "url": "https://jakubpacocha.com/",
+          "email": "mailto:pacochp@gmail.com",
+          "image": "https://jakubpacocha.com/assets/og-image.jpg",
+          "jobTitle": "Lead AI & Software Engineer",
+          "description": "Full-stack AI engineer building production RAG architectures, containerized ML infrastructure and spatial intelligence systems. Philosophical essayist at From the Cabinet.",
+          "worksFor": {
+            "@type": "Organization",
+            "name": "HERE Technologies"
+          },
+          "alumniOf": [
+            {
+              "@type": "CollegeOrUniversity",
+              "name": "Adam Mickiewicz University in Poznań"
+            },
+            {
+              "@type": "CollegeOrUniversity",
+              "name": "Eötvös Loránd University (ELTE)"
+            }
+          ],
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Bydgoszcz",
+            "addressCountry": "PL"
+          },
+          "knowsAbout": [
+            "Artificial Intelligence",
+            "Retrieval-Augmented Generation (RAG)",
+            "LLMOps",
+            "MLOps",
+            "Machine Learning Infrastructure",
+            "Spatial Intelligence",
+            "Geoinformatics",
+            "Python",
+            "AWS",
+            "Microsoft Azure"
+          ],
+          "sameAs": [
+            "https://github.com/JPacoch",
+            "https://www.linkedin.com/in/jakubpacocha/",
+            "https://x.com/JakubPacocha",
+            "https://fromthecabinet.com/"
+          ]
+        }
+      ]
+    }
+  </script>
+
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('jp-theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            electric: '#0055FF',
-            dark: '#111827',
-            offwhite: '#F9FAFB',
+            canvas: 'var(--color-canvas)',
+            surface: 'var(--color-surface)',
+            ink: 'var(--color-ink)',
+            'ink-subtitle': 'var(--color-ink-subtitle)',
+            'ink-secondary': 'var(--color-ink-secondary)',
+            'ink-muted': 'var(--color-ink-muted)',
+            hairline: 'var(--color-hairline)',
+            'badge-bg': 'var(--color-badge-bg)',
+            'badge-text': 'var(--color-badge-text)',
+            'footer-bg': 'var(--color-footer-bg)',
+            'footer-ink': 'var(--color-footer-ink)',
+            'footer-secondary': 'var(--color-footer-secondary)',
+            'footer-muted': 'var(--color-footer-muted)',
           },
           fontFamily: {
-            serif: ['Playfair Display', 'Georgia', 'serif'],
-            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          }
-        }
-      }
-    }
+            sans: ['"Geist"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            mono: ['"Geist"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
   </script>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
-    rel="stylesheet">
 
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -35,204 +164,1210 @@
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 
   <style>
-    body,
+    @font-face {
+      font-family: "Geist";
+      src: url("assets/fonts/Geist-Variable.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      /* Light Mode Palette — Soft Charcoal Ink, No Pure Black (Verified WCAG AA/AAA) */
+      --color-canvas: #fcfcfc;
+      --color-surface: #f4f4f5;
+      --color-ink: #26262a;
+      --color-ink-subtitle: #45454c;
+      --color-ink-secondary: #6b6b73;
+      --color-ink-muted: #71717a;
+      --color-hairline: rgba(38, 38, 42, 0.08);
+      --color-underline: rgba(38, 38, 42, 0.34);
+      --color-underline-hover: #26262a;
+
+      /* Brand Accent System (Burgundy / Rose) */
+      --color-accent: #881337;
+      --color-selection-bg: rgba(190, 62, 92, 0.2);
+      --color-selection-text: #6b0f2b;
+
+      --color-badge-bg: #fae8ec;
+      --color-badge-text: #881337;
+
+      /* Emerging Curtain Footer (Deep Charcoal, Not Pure Black) */
+      --color-footer-bg: #1c1c1f;
+      --color-footer-ink: #fafafa;
+      --color-footer-secondary: #d4d4d8;
+      --color-footer-muted: #a1a1aa;
+
+      /* Contribution Scale — Burgundy / Rose Ramp (Light) */
+      --contrib-0: #e5e5e5;
+      --contrib-1: #f2c6d0;
+      --contrib-2: #d9758d;
+      --contrib-3: #be3e5c;
+      --contrib-4: #881337;
+
+      /* Paper Thumbnail & Icon Tile Shadows (better-ui) */
+      --shadow-tile:
+        0px 0px 0px 1px oklch(0 0 0 / 0.06),
+        0px 1px 2px 0px oklch(0 0 0 / 0.04);
+      --shadow-paper:
+        0px 0px 0px 1px oklch(0 0 0 / 0.08),
+        0px 2px 5px -1px oklch(0 0 0 / 0.06);
+      --shadow-main-curtain: 0px 24px 64px rgba(24, 24, 28, 0.22);
+      --main-edge-ring: transparent;
+    }
+
+    html[data-theme="dark"] {
+      /* Dark Mode Palette (#141414) — Verified WCAG AA/AAA */
+      --color-canvas: #141414;
+      --color-surface: #1e1e20;
+      --color-ink: #f2f2f2;
+      --color-ink-subtitle: #c8c8cf;
+      --color-ink-secondary: #a1a1aa;
+      --color-ink-muted: #8a8a94;
+      --color-hairline: rgba(255, 255, 255, 0.09);
+      --color-underline: rgba(255, 255, 255, 0.38);
+      --color-underline-hover: #f2f2f2;
+
+      /* Brand Accent System (Burgundy / Rose — Dark) */
+      --color-accent: #e57389;
+      --color-selection-bg: #e57389;
+      --color-selection-text: #260710;
+
+      --color-badge-bg: #3d1522;
+      --color-badge-text: #f29aac;
+
+      /* Emerging Curtain Footer (Deeper Obsidian under #141414) */
+      --color-footer-bg: #0c0c0e;
+      --color-footer-ink: #f2f2f2;
+      --color-footer-secondary: #d4d4d8;
+      --color-footer-muted: #9a9aa4;
+
+      /* Contribution Scale — Burgundy / Rose Ramp (Dark) */
+      --contrib-0: #26262a;
+      --contrib-1: #4c1929;
+      --contrib-2: #8c2643;
+      --contrib-3: #e57389;
+      --contrib-4: #f29aac;
+
+      --shadow-tile: 0px 0px 0px 1px oklch(1 0 0 / 0.08);
+      --shadow-paper: 0px 0px 0px 1px oklch(1 0 0 / 0.1);
+      --shadow-main-curtain: 0px 24px 64px rgba(0, 0, 0, 0.55);
+      --main-edge-ring: rgba(255, 255, 255, 0.07);
+    }
+
     html {
-      margin: 0;
-      padding: 0;
-      background-color: #ffffff;
-      color: #111827;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
+      background-color: var(--color-canvas);
+      color: var(--color-ink);
+      scroll-padding-block-start: 2rem;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      text-size-adjust: 100%;
     }
 
-    ::-webkit-scrollbar {
-      width: 8px;
+    @media (prefers-reduced-motion: no-preference) {
+      html {
+        scroll-behavior: smooth;
+      }
     }
 
-    ::-webkit-scrollbar-track {
-      background: #0055FF;
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--color-canvas);
+      color: var(--color-ink);
+      font-family: "Geist", Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 26px;
+      font-weight: 400;
+      letter-spacing: -0.011em;
+      overflow-x: clip;
     }
 
-    ::-webkit-scrollbar-thumb {
-      background: #ffffff;
-      border-radius: 4px;
+    /* Tactile monochrome film grain in dark mode only */
+    html[data-theme="dark"] body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      opacity: 0.088;
+      background-repeat: repeat;
+      background-size: 160px 160px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.6' intercept='-0.8'/%3E%3CfeFuncG type='linear' slope='2.6' intercept='-0.8'/%3E%3CfeFuncB type='linear' slope='2.6' intercept='-0.8'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
-    /* Subtle architectural dot/grid background */
-    .bg-Swiss-grid {
-      background-size: 48px 48px;
-      background-image: 
-        linear-gradient(to right, rgba(17, 24, 39, 0.035) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(17, 24, 39, 0.035) 1px, transparent 1px);
+    button,
+    input,
+    textarea,
+    select {
+      font-family: inherit;
     }
 
-    .custom-scrollbar-minimal::-webkit-scrollbar {
-      height: 4px;
+    ::selection {
+      background-color: var(--color-selection-bg);
+      color: var(--color-selection-text);
     }
-    .custom-scrollbar-minimal::-webkit-scrollbar-track {
-      background: #F9FAFB;
+
+    #footer-container ::selection {
+      background-color: #e57389;
+      color: #260710;
     }
-    .custom-scrollbar-minimal::-webkit-scrollbar-thumb {
-      background: rgba(17, 24, 39, 0.15);
-      border-radius: 9999px;
+
+    .text-balance {
+      text-wrap: balance;
+    }
+
+    .text-pretty {
+      text-wrap: pretty;
+    }
+
+    /* Crisp Apple-style dotted underlines */
+    .inline-link {
+      color: var(--color-ink);
+      font-weight: 600;
+      text-decoration-line: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-color: var(--color-underline);
+      transition-property: color, text-decoration-color;
+      transition-duration: 150ms;
+      transition-timing-function: ease-out;
+    }
+
+    /* Smooth hover/focus trailing icon reveal (nudges following text smoothly) */
+    .reveal-link {
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .reveal-link .reveal-slot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      vertical-align: 0.04em;
+      max-width: 0;
+      margin-inline-start: 0;
+      opacity: 0;
+      color: var(--color-ink-muted);
+      transition:
+        max-width 400ms cubic-bezier(0.22, 1, 0.36, 1),
+        margin-inline-start 400ms cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 220ms ease-out,
+        color 240ms ease-out;
+    }
+
+    .reveal-link .reveal-slot-copy {
+      vertical-align: -0.08em;
+    }
+
+    .reveal-link .reveal-glyph {
+      flex-shrink: 0;
+      transform: translate(-3px, 3px) scale(0.7);
+      transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal-link .reveal-glyph-copy {
+      transform: scale(0.7);
+    }
+
+    .reveal-link:focus-visible .inline-link,
+    .reveal-link[data-revealed="true"] .inline-link {
+      color: var(--color-ink);
+      text-decoration-color: var(--color-underline-hover);
+    }
+
+    .reveal-link:focus-visible .reveal-slot,
+    .reveal-link[data-revealed="true"] .reveal-slot {
+      max-width: 0.68em;
+      margin-inline-start: 0.14em;
+      opacity: 1;
+      transition:
+        max-width 480ms cubic-bezier(0.22, 1, 0.36, 1),
+        margin-inline-start 480ms cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 320ms ease-out 90ms,
+        color 240ms ease-out;
+    }
+
+    .reveal-link:focus-visible .reveal-slot-copy,
+    .reveal-link[data-revealed="true"] .reveal-slot-copy {
+      max-width: 0.84em;
+      margin-inline-start: 0.18em;
+    }
+
+    .reveal-link:focus-visible .reveal-glyph,
+    .reveal-link[data-revealed="true"] .reveal-glyph {
+      transform: translate(0, 0) scale(1);
+      transition: transform 460ms cubic-bezier(0.22, 1, 0.36, 1) 50ms;
+    }
+
+    @media (hover: hover) {
+      .reveal-link:hover .inline-link {
+        color: var(--color-ink);
+        text-decoration-color: var(--color-underline-hover);
+      }
+
+      .reveal-link:hover .reveal-slot {
+        max-width: 0.68em;
+        margin-inline-start: 0.14em;
+        opacity: 1;
+        color: var(--color-ink);
+        transition:
+          max-width 480ms cubic-bezier(0.22, 1, 0.36, 1),
+          margin-inline-start 480ms cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 320ms ease-out 90ms,
+          color 240ms ease-out;
+      }
+
+      .reveal-link:hover .reveal-slot-copy {
+        max-width: 0.84em;
+        margin-inline-start: 0.18em;
+      }
+
+      .reveal-link:hover .reveal-glyph {
+        transform: translate(0, 0) scale(1);
+        transition: transform 460ms cubic-bezier(0.22, 1, 0.36, 1) 50ms;
+      }
+    }
+
+    @keyframes icon-swap-in {
+      0% {
+        opacity: 0;
+        transform: scale(0.6);
+        filter: blur(3px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0px);
+      }
+    }
+
+    .icon-swap-in {
+      animation: icon-swap-in 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes digit-tick-in {
+      0% {
+        opacity: 0;
+        transform: translateY(3px);
+        filter: blur(2.5px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0px);
+      }
+    }
+
+    .digit-tick-in {
+      animation: digit-tick-in 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .icon-swap-in,
+      .digit-tick-in {
+        animation: none;
+      }
+      .reveal-link .reveal-slot,
+      .reveal-link .reveal-glyph {
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+      }
+    }
+
+    .muted-link {
+      color: var(--color-ink-muted);
+      text-decoration-line: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-color: var(--color-underline);
+      transition-property: color, text-decoration-color;
+      transition-duration: 150ms;
+      transition-timing-function: ease-out;
+    }
+
+    /* Accessible focus rings */
+    :where(a, button, [tabindex]):focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
+    .focus-ring-light:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
+    }
+
+    /* Tactile press feedback: exact scale(0.96) over 150ms ease-out */
+    .tap-press {
+      -webkit-tap-highlight-color: transparent;
+      transition-property: transform, background-color, color, opacity, border-color;
+      transition-duration: 150ms;
+      transition-timing-function: ease-out;
+    }
+
+    .tap-press:not(:disabled):active {
+      transform: scale(0.96);
+    }
+
+    .icon-tile {
+      background-color: var(--color-surface);
+      border: 1px solid transparent;
+      box-shadow: var(--shadow-tile);
+      transition-property: transform, background-color, box-shadow;
+      transition-duration: 180ms;
+      transition-timing-function: ease-out;
+    }
+
+    .paper-thumb {
+      background-color: var(--color-canvas);
+      border: 1px solid transparent;
+      box-shadow: var(--shadow-paper);
+      transition-property: transform, box-shadow;
+      transition-duration: 200ms;
+      transition-timing-function: ease-out;
+    }
+
+    .main-curtain-surface {
+      background-color: var(--color-canvas);
+      box-shadow: 0 0 0 1px var(--main-edge-ring), var(--shadow-main-curtain);
+    }
+
+    /* Hover effects strictly gated behind hover-capable pointers (better-ui) */
+    @media (hover: hover) {
+      .inline-link:hover,
+      .muted-link:hover {
+        color: var(--color-ink);
+        text-decoration-color: var(--color-underline-hover);
+      }
+
+      /* Rauno/Linear-style sibling dimming on list hover */
+      .focus-list:hover .focus-list-item:not(:hover) {
+        opacity: 0.45;
+      }
+
+      .focus-list-item:hover {
+        background-color: var(--color-surface);
+      }
+
+      .focus-list-item:hover .row-arrow {
+        opacity: 1;
+        transform: translate(2px, -2px);
+      }
+
+      .focus-list-item:hover .icon-tile {
+        transform: scale(1.04);
+      }
+
+      .focus-list-item:hover .paper-thumb {
+        transform: translateY(-2px) rotate(-3deg);
+      }
+
+      .hover-surface:hover {
+        background-color: var(--color-surface);
+        color: var(--color-ink);
+      }
+
+      .hover-ink:hover {
+        color: var(--color-ink);
+      }
+
+      .hover-light-pill:hover {
+        background-color: rgba(255, 255, 255, 0.16);
+        border-color: rgba(255, 255, 255, 0.28);
+      }
+    }
+
+    .safe-top {
+      padding-block-start: max(3.5rem, calc(env(safe-area-inset-top) + 2.5rem));
+    }
+
+    .safe-bottom {
+      padding-block-end: max(2rem, env(safe-area-inset-bottom));
     }
   </style>
 </head>
 
 <body>
   <div id="root"></div>
+  <noscript>
+    <main style="max-width:768px;margin:0 auto;padding:48px 24px;font-family:'Geist',Inter,system-ui,sans-serif;line-height:1.6;">
+      <h1>Jakub Pacocha</h1>
+      <p>AI &amp; Software Engineer at HERE Technologies (previously at iQor and O-I), based in Bydgoszcz, Poland. Building production RAG architectures, containerized ML infrastructure and spatial intelligence systems and writing philosophical essays at <a href="https://fromthecabinet.com/">From the Cabinet</a>.</p>
+      <p><a href="cv.html">Curriculum Vitae</a> · <a href="assets/resume.pdf">Resume (PDF)</a> · <a href="mailto:pacochp@gmail.com">pacochp@gmail.com</a> · <a href="https://github.com/JPacoch">GitHub</a> · <a href="https://www.linkedin.com/in/jakubpacocha/">LinkedIn</a> · <a href="https://x.com/JakubPacocha">X</a></p>
+      <h2>Projects</h2>
+      <ul>
+        <li><a href="https://fromthecabinet.com/">From the Cabinet</a> — Philosophical &amp; theological essay archive</li>
+        <li><a href="https://wideawake.jakubpacocha.com/">WideAwake</a> — Zero-dependency Windows keep-awake utility</li>
+        <li><a href="https://ostrzolka.vercel.app/">Ostrzółka</a> — Municipal heritage database for NGOs</li>
+        <li><a href="https://owewho.jakubpacocha.com/">OweWho</a> — Group expense &amp; travel debt settlement</li>
+        <li><a href="https://quotes.fromthecabinet.com/">Cabinet Quotes</a> — Distraction-free literary commonplace book</li>
+        <li><a href="https://gallery.jakubpacocha.com/">Gallery</a> — Private photography archive</li>
+      </ul>
+    </main>
+  </noscript>
+
   <script>
     Babel.registerPreset('my-react', {
       presets: [[Babel.availablePresets['react'], { runtime: 'classic' }]]
     });
   </script>
-  <script type="text/babel" data-presets="my-react,env" data-type="module">
-    const { useState, useEffect, useLayoutEffect, useRef, useMemo, useReducer, useCallback } = React;
-    const { motion, AnimatePresence } = window.Motion;
 
-    // --- EXPLICIT FINITE STATE MACHINE ENGINE (DX + AX + UX) ---
-    // Provides deterministic state transitions, prevents impossible states,
-    // and exposes live machine inspection on window.__APP_MACHINES__ for agents & devtools.
-    window.__APP_MACHINES__ = window.__APP_MACHINES__ || {};
+  <script type="text/babel" data-presets="my-react,env" data-type="module">
+    const {
+      useState,
+      useEffect,
+      useLayoutEffect,
+      useRef,
+      useMemo,
+      useReducer,
+      useCallback
+    } = React;
+
+    const MotionLib = window.Motion || {};
+    const motion = MotionLib.motion;
+    const AnimatePresence = MotionLib.AnimatePresence;
+    const MotionConfig = MotionLib.MotionConfig || (({ children }) => children);
+    const useFramerReducedMotion = MotionLib.useReducedMotion;
+
+    function useReducedMotionSafe() {
+      const framerPref = typeof useFramerReducedMotion === "function" ? useFramerReducedMotion() : null;
+      const [mediaPref, setMediaPref] = useState(() =>
+        typeof window !== "undefined" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      );
+
+      useEffect(() => {
+        if (!window.matchMedia) return;
+        const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const onChange = (e) => setMediaPref(e.matches);
+        if (mql.addEventListener) mql.addEventListener("change", onChange);
+        return () => {
+          if (mql.removeEventListener) mql.removeEventListener("change", onChange);
+        };
+      }, []);
+
+      return Boolean(framerPref ?? mediaPref);
+    }
+
+    // --- GLOBAL SOUND & HAPTICS ENGINE (Reproduces 0xchsh/portfolio GlobalHaptics + useHaptics + tick) ---
+    let SHARED_AUDIO_CTX = null;
+    function getSharedAudioContext() {
+      if (typeof window === "undefined") return null;
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return null;
+      if (!SHARED_AUDIO_CTX) {
+        try {
+          SHARED_AUDIO_CTX = new AudioCtx();
+        } catch (e) {
+          return null;
+        }
+      }
+      if (SHARED_AUDIO_CTX.state === "suspended") {
+        SHARED_AUDIO_CTX.resume().catch(() => {});
+      }
+      return SHARED_AUDIO_CTX;
+    }
+
+    function isHapticsMuted() {
+      try {
+        return localStorage.getItem("haptics-muted") === "true";
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function playSoundPreset(preset) {
+      if (isHapticsMuted()) return;
+      const ctx = getSharedAudioContext();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
+
+        if (preset === "tick") {
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(1180, now);
+          osc.frequency.exponentialRampToValueAtTime(640, now + 0.011);
+          filter.type = "bandpass";
+          filter.frequency.setValueAtTime(1600, now);
+          filter.Q.setValueAtTime(1.4, now);
+          gain.gain.setValueAtTime(0.032, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.012);
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.014);
+        } else {
+          // Subtle tactile "toggle" click matching cuelume's toggle preset
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(620, now);
+          osc.frequency.exponentialRampToValueAtTime(220, now + 0.02);
+          filter.type = "lowpass";
+          filter.frequency.setValueAtTime(2200, now);
+          gain.gain.setValueAtTime(0.055, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.022);
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.024);
+        }
+      } catch (e) {}
+    }
+
+    function playHapticClick() {
+      playSoundPreset("toggle");
+      if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
+        try {
+          navigator.vibrate(8);
+        } catch (e) {}
+      }
+    }
+
+    function playTick() {
+      playSoundPreset("tick");
+    }
+
+    function useGlobalHaptics() {
+      useEffect(() => {
+        function handleClick() {
+          if (!isHapticsMuted()) {
+            playHapticClick();
+          }
+        }
+        document.addEventListener("click", handleClick, true);
+        return () => {
+          document.removeEventListener("click", handleClick, true);
+        };
+      }, []);
+    }
+
+    const GlobalHaptics = () => {
+      useGlobalHaptics();
+      return null;
+    };
+
+    // --- GLOBAL CLICK SPARK CANVAS OVERLAY (Exact 0xchsh/portfolio ClickSpark.tsx mechanics) ---
+    const ClickSpark = ({
+      sparkColor = "currentColor",
+      sparkOpacity = 0.3,
+      sparkSize = 6,
+      sparkRadius = 12,
+      sparkCount = 6,
+      duration = 300,
+      easing = "ease-out",
+      extraScale = 1.0
+    }) => {
+      const canvasRef = useRef(null);
+      const sparksRef = useRef([]);
+      const mutedRef = useRef(false);
+      const reduce = useReducedMotionSafe();
+
+      useEffect(() => {
+        mutedRef.current = isHapticsMuted();
+        const onMutedChange = () => {
+          mutedRef.current = isHapticsMuted();
+        };
+        window.addEventListener("storage", onMutedChange);
+        window.addEventListener("haptics-muted-change", onMutedChange);
+        return () => {
+          window.removeEventListener("storage", onMutedChange);
+          window.removeEventListener("haptics-muted-change", onMutedChange);
+        };
+      }, []);
+
+      const easeFunc = useCallback(
+        (t) => {
+          switch (easing) {
+            case "linear":
+              return t;
+            case "ease-in":
+              return t * t;
+            case "ease-in-out":
+              return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+            default:
+              return t * (2 - t);
+          }
+        },
+        [easing]
+      );
+
+      useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        const resize = () => {
+          const dpr = window.devicePixelRatio || 1;
+          canvas.width = window.innerWidth * dpr;
+          canvas.height = window.innerHeight * dpr;
+          canvas.style.width = `${window.innerWidth}px`;
+          canvas.style.height = `${window.innerHeight}px`;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        };
+        resize();
+        window.addEventListener("resize", resize);
+
+        let animationId = null;
+
+        const draw = (timestamp) => {
+          ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+          ctx.globalAlpha = sparkOpacity;
+          const resolvedColor =
+            sparkColor === "currentColor" ? getComputedStyle(canvas).color : sparkColor;
+
+          sparksRef.current = sparksRef.current.filter((spark) => {
+            const elapsed = timestamp - spark.startTime;
+            if (elapsed >= duration) return false;
+            const progress = elapsed / duration;
+            const eased = easeFunc(progress);
+            const distance = eased * sparkRadius * extraScale;
+            const lineLength = sparkSize * (1 - eased);
+            const x1 = spark.x + distance * Math.cos(spark.angle);
+            const y1 = spark.y + distance * Math.sin(spark.angle);
+            const x2 = spark.x + (distance + lineLength) * Math.cos(spark.angle);
+            const y2 = spark.y + (distance + lineLength) * Math.sin(spark.angle);
+            ctx.strokeStyle = resolvedColor;
+            ctx.lineWidth = 1.5;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            return true;
+          });
+
+          if (sparksRef.current.length > 0) {
+            animationId = requestAnimationFrame(draw);
+          } else {
+            animationId = null;
+          }
+        };
+
+        const handleClick = (e) => {
+          if (mutedRef.current || reduce) return;
+          if (e.clientX === 0 && e.clientY === 0 && e.detail === 0) return;
+          const now = performance.now();
+          const newSparks = Array.from({ length: sparkCount }, (_, i) => ({
+            x: e.clientX,
+            y: e.clientY,
+            angle: (2 * Math.PI * i) / sparkCount,
+            startTime: now
+          }));
+          sparksRef.current.push(...newSparks);
+          if (animationId === null) {
+            animationId = requestAnimationFrame(draw);
+          }
+        };
+
+        window.addEventListener("click", handleClick);
+
+        return () => {
+          window.removeEventListener("resize", resize);
+          window.removeEventListener("click", handleClick);
+          if (animationId !== null) cancelAnimationFrame(animationId);
+        };
+      }, [sparkColor, sparkSize, sparkRadius, sparkCount, duration, extraScale, easeFunc, sparkOpacity, reduce]);
+
+      return (
+        <canvas
+          ref={canvasRef}
+          aria-hidden="true"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            pointerEvents: "none",
+            zIndex: 9999
+          }}
+        />
+      );
+    };
+
+    // --- THEME SWITCH WITH TRANSITION SUPPRESSION (better-ui exact recipe) ---
+    function applyThemeWithoutSmear(nextTheme) {
+      const style = document.createElement("style");
+      style.append(document.createTextNode("*,*::before,*::after{transition:none !important}"));
+      document.head.appendChild(style);
+
+      if (nextTheme === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+      }
+
+      try {
+        localStorage.setItem("jp-theme", nextTheme);
+      } catch (e) {}
+
+      void document.body.offsetHeight; // synchronous style flush
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => style.remove());
+      });
+    }
+
+    // --- EXPLICIT FINITE STATE MACHINE ENGINE & TELEMETRY REGISTRY ---
+    const MACHINE_REGISTRY = window.__APP_MACHINES__ || {};
+    const GLOBAL_HISTORY = [];
+    const GLOBAL_SUBSCRIBERS = new Set();
+    let GLOBAL_SEQ = 0;
+
+    function notifyGlobalSubscribers(record) {
+      GLOBAL_SUBSCRIBERS.forEach((fn) => {
+        try {
+          fn(record);
+        } catch (err) {
+          console.error("[FSM Registry] Subscriber error:", err);
+        }
+      });
+    }
+
+    Object.defineProperties(MACHINE_REGISTRY, {
+      __history__: { value: GLOBAL_HISTORY, enumerable: false, configurable: true },
+      getAllSnapshots: {
+        value: () => {
+          const out = {};
+          Object.keys(MACHINE_REGISTRY).forEach((k) => {
+            if (MACHINE_REGISTRY[k] && typeof MACHINE_REGISTRY[k].getSnapshot === "function") {
+              out[k] = MACHINE_REGISTRY[k].getSnapshot();
+            }
+          });
+          return out;
+        },
+        enumerable: false,
+        configurable: true
+      },
+      getHistory: {
+        value: (limit = 30) => GLOBAL_HISTORY.slice(-limit),
+        enumerable: false,
+        configurable: true
+      },
+      send: {
+        value: (machineId, event) => {
+          const target = MACHINE_REGISTRY[machineId];
+          if (!target || typeof target.send !== "function") return false;
+          target.send(event);
+          return true;
+        },
+        enumerable: false,
+        configurable: true
+      },
+      resetAll: {
+        value: () => {
+          Object.keys(MACHINE_REGISTRY).forEach((k) => {
+            if (MACHINE_REGISTRY[k] && typeof MACHINE_REGISTRY[k].reset === "function") {
+              MACHINE_REGISTRY[k].reset();
+            }
+          });
+        },
+        enumerable: false,
+        configurable: true
+      },
+      subscribe: {
+        value: (listener) => {
+          if (typeof listener !== "function") return () => {};
+          GLOBAL_SUBSCRIBERS.add(listener);
+          return () => GLOBAL_SUBSCRIBERS.delete(listener);
+        },
+        enumerable: false,
+        configurable: true
+      }
+    });
+
+    window.__APP_MACHINES__ = MACHINE_REGISTRY;
+
+    function getAvailableEvents(config, stateValue) {
+      const stateNode = config.states && config.states[stateValue];
+      const stateEvents = stateNode && stateNode.on ? Object.keys(stateNode.on) : [];
+      const rootEvents = config.on ? Object.keys(config.on) : [];
+      return Array.from(new Set([...stateEvents, ...rootEvents]));
+    }
+
+    function evaluateMachineTransition(config, current, event) {
+      const eventObj = typeof event === "string" ? { type: event } : (event || { type: "NOOP" });
+
+      if (eventObj.type === "@@RESET") {
+        const initialValue = typeof config.initial === "function" ? config.initial() : config.initial;
+        const initialContext = typeof config.context === "function" ? config.context() : (config.context || {});
+        return { value: initialValue, context: initialContext, changed: true, event: eventObj };
+      }
+
+      const stateNode = config.states && config.states[current.value];
+      const handler =
+        (stateNode && stateNode.on && stateNode.on[eventObj.type]) ||
+        (config.on && config.on[eventObj.type]);
+
+      if (!handler) {
+        return { value: current.value, context: current.context, changed: false, event: eventObj };
+      }
+
+      let nextValue = current.value;
+      let nextContext = current.context;
+
+      if (typeof handler === "string") {
+        nextValue = handler;
+      } else if (typeof handler === "function") {
+        const next = handler(current.context, eventObj, current.value);
+        if (!next) {
+          return { value: current.value, context: current.context, changed: false, event: eventObj };
+        }
+        nextValue = next.target || current.value;
+        nextContext = next.context !== undefined ? next.context : current.context;
+      } else if (typeof handler === "object") {
+        nextValue = handler.target || current.value;
+        nextContext = handler.reduce ? handler.reduce(current.context, eventObj, current.value) : current.context;
+      }
+
+      const changed = nextValue !== current.value || nextContext !== current.context;
+      return { value: nextValue, context: nextContext, changed, event: eventObj };
+    }
 
     function useMachine(config) {
-      const reducer = useCallback((current, event) => {
-        const eventObj = typeof event === "string" ? { type: event } : event;
-        const stateNode = config.states[current.value];
-        const handler =
-          (stateNode && stateNode.on && stateNode.on[eventObj.type]) ||
-          (config.on && config.on[eventObj.type]);
-
-        if (!handler) return current;
-
-        if (typeof handler === "string") {
-          return { value: handler, context: current.context };
-        }
-
-        if (typeof handler === "function") {
-          const next = handler(current.context, eventObj, current.value);
-          if (!next) return current;
-          return {
-            value: next.target || current.value,
-            context: next.context !== undefined ? next.context : current.context
-          };
-        }
-
-        const nextContext = handler.reduce
-          ? handler.reduce(current.context, eventObj)
-          : current.context;
-        return {
-          value: handler.target || current.value,
-          context: nextContext
+      const initialRef = useRef(null);
+      if (!initialRef.current) {
+        initialRef.current = {
+          value: typeof config.initial === "function" ? config.initial() : config.initial,
+          context: typeof config.context === "function" ? config.context() : (config.context || {})
         };
+      }
+
+      const stateRef = useRef(initialRef.current);
+      const historyRef = useRef([]);
+      const listenersRef = useRef(new Set());
+      const [, forceRender] = useReducer((x) => x + 1, 0);
+
+      const send = useCallback((event) => {
+        const prev = stateRef.current;
+        const result = evaluateMachineTransition(config, prev, event);
+        if (!result.changed) return stateRef.current;
+
+        const nextState = { value: result.value, context: result.context };
+        stateRef.current = nextState;
+
+        const record = {
+          seq: ++GLOBAL_SEQ,
+          id: config.id || "anonymous",
+          timestamp: new Date().toISOString(),
+          event: result.event.type,
+          from: prev.value,
+          to: nextState.value
+        };
+
+        historyRef.current = [...historyRef.current.slice(-24), record];
+        if (
+          result.event.type !== "SCROLL_UPDATE" &&
+          result.event.type !== "SCRUB_PROGRESS" &&
+          result.event.type !== "TICK"
+        ) {
+          GLOBAL_HISTORY.push(record);
+          if (GLOBAL_HISTORY.length > 60) GLOBAL_HISTORY.shift();
+        }
+
+        forceRender();
+
+        listenersRef.current.forEach((fn) => {
+          try {
+            fn(nextState, record);
+          } catch (e) {
+            console.error(e);
+          }
+        });
+        notifyGlobalSubscribers(record);
+
+        return nextState;
       }, [config]);
 
-      const [state, dispatch] = useReducer(reducer, undefined, () => ({
-        value: typeof config.initial === "function" ? config.initial() : config.initial,
-        context: typeof config.context === "function" ? config.context() : (config.context || {})
-      }));
+      const actor = useMemo(() => {
+        const controller = {
+          id: config.id,
+          states: Object.keys(config.states || {}),
+          send,
+          reset: () => send({ type: "@@RESET" }),
+          can: (eventType) => getAvailableEvents(config, stateRef.current.value).includes(eventType),
+          getSnapshot: () => ({
+            id: config.id,
+            state: stateRef.current.value,
+            context: stateRef.current.context,
+            states: Object.keys(config.states || {}),
+            availableEvents: getAvailableEvents(config, stateRef.current.value)
+          }),
+          subscribe: (fn) => {
+            if (typeof fn !== "function") return () => {};
+            listenersRef.current.add(fn);
+            return () => listenersRef.current.delete(fn);
+          }
+        };
+
+        Object.defineProperties(controller, {
+          state: { get: () => stateRef.current.value, enumerable: true },
+          context: { get: () => stateRef.current.context, enumerable: true },
+          availableEvents: { get: () => getAvailableEvents(config, stateRef.current.value), enumerable: true },
+          history: { get: () => historyRef.current.slice(), enumerable: true }
+        });
+
+        return controller;
+      }, [config, send]);
+
+      if (config.id && !MACHINE_REGISTRY[config.id]) {
+        MACHINE_REGISTRY[config.id] = actor;
+      }
 
       useEffect(() => {
         if (!config.id) return;
-        window.__APP_MACHINES__[config.id] = {
-          id: config.id,
-          state: state.value,
-          context: state.context,
-          states: Object.keys(config.states),
-          send: dispatch,
-          getSnapshot: () => ({ state: state.value, context: state.context })
-        };
+        MACHINE_REGISTRY[config.id] = actor;
         return () => {
-          delete window.__APP_MACHINES__[config.id];
+          if (MACHINE_REGISTRY[config.id] === actor) {
+            delete MACHINE_REGISTRY[config.id];
+          }
         };
-      }, [config.id, config.states, state, dispatch]);
+      }, [config.id, actor]);
 
-      return [state, dispatch];
+      return [stateRef.current, send, actor];
     }
 
-    // --- ICONS ---
-    const ArrowRight = ({ className = "w-4 h-4" }) => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
-      </svg>
-    );
-    const ArrowUpRight = ({ className = "w-5 h-5" }) => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M7 17L17 7" /><path d="M7 7h10v10" />
-      </svg>
-    );
-    const DownloadIcon = ({ className = "w-4 h-4" }) => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" />
-      </svg>
-    );
-    const MenuIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" />
-      </svg>
-    );
-    const CloseIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
-      </svg>
-    );
-    const MailIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-      </svg>
-    );
-    const LinkedinIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect width="4" height="12" x="2" y="9" /><circle cx="4" cy="4" r="2" />
-      </svg>
-    );
-    const TwitterIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5 5.96 15.6 7 12c-1.2.3-2.4.2-3.6-.1C2.5 10.6 4 9 4 9c-1.1-.3-2-.9-2.5-1.9 1-.3 2.1-.3 3.1-.1C2.3 5 4 2 4 2c1.6 2 4 4 7.4 4.5 0-1.1.5-2.2 1.5-2.9 1.4-1.1 3.5-.8 4.6.5 1.1-.2 2.1-.7 3-1.2-.4 1.1-1.1 2-2 2.7 1-.1 1.9-.4 2.8-.8Z" />
-      </svg>
-    );
-    const GithubIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" />
+    // --- ICONS (Unified 24px grid, currentColor, non-scaling stroke) ---
+    const ArrowUpRightIcon = ({ className = "w-3.5 h-3.5", strokeWidth = 1.75, tight = false }) => (
+      <svg className={className} viewBox={tight ? "5.5 5.5 13 13" : "0 0 24 24"} fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M7 17 17 7" />
+        <path vectorEffect="non-scaling-stroke" d="M7 7h10v10" />
       </svg>
     );
 
-    // Custom Technical SVG Icons for Capabilities
-    const RagArchitectureSvg = () => (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="12 2 2 7 12 12 22 7 12 2" />
-        <polyline points="2 17 12 22 22 17" />
-        <polyline points="2 12 12 17 22 12" />
-      </svg>
-    );
-    const InfraSvg = () => (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-        <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-        <line x1="6" y1="6" x2="6.01" y2="6" />
-        <line x1="6" y1="18" x2="6.01" y2="18" />
-      </svg>
-    );
-    const CloudOpsSvg = () => (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
-      </svg>
-    );
-    const SpatialSvg = () => (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-        <path d="M2 12h20" />
+    const CopyIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect vectorEffect="non-scaling-stroke" width="13" height="13" x="9" y="9" rx="2" />
+        <path vectorEffect="non-scaling-stroke" d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
       </svg>
     );
 
-    // --- LIVE LOCAL TIME HOOK (Synchronous Initial State + Dynamic CET/CEST) ---
-    const formatBydgoszczTime = () => {
+    const CheckIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <polyline vectorEffect="non-scaling-stroke" points="20 6 9 17 4 12" />
+      </svg>
+    );
+
+    const SunIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <circle vectorEffect="non-scaling-stroke" cx="12" cy="12" r="4" />
+        <path vectorEffect="non-scaling-stroke" d="M12 2v2" />
+        <path vectorEffect="non-scaling-stroke" d="M12 20v2" />
+        <path vectorEffect="non-scaling-stroke" d="m4.93 4.93 1.41 1.41" />
+        <path vectorEffect="non-scaling-stroke" d="m17.66 17.66 1.41 1.41" />
+        <path vectorEffect="non-scaling-stroke" d="M2 12h2" />
+        <path vectorEffect="non-scaling-stroke" d="M20 12h2" />
+        <path vectorEffect="non-scaling-stroke" d="m6.34 17.66-1.41 1.41" />
+        <path vectorEffect="non-scaling-stroke" d="m19.07 4.93-1.41 1.41" />
+      </svg>
+    );
+
+    const MoonIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+      </svg>
+    );
+
+    const SpeakerIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <polygon vectorEffect="non-scaling-stroke" points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+        <path vectorEffect="non-scaling-stroke" d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+        <path vectorEffect="non-scaling-stroke" d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+      </svg>
+    );
+
+    const SpeakerMutedIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <polygon vectorEffect="non-scaling-stroke" points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+        <line vectorEffect="non-scaling-stroke" x1="22" x2="16" y1="9" y2="15" />
+        <line vectorEffect="non-scaling-stroke" x1="16" x2="22" y1="9" y2="15" />
+      </svg>
+    );
+
+    const FileTextIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+        <path vectorEffect="non-scaling-stroke" d="M14 2v4a2 2 0 0 0 2 2h4" />
+        <path vectorEffect="non-scaling-stroke" d="M10 9H8" />
+        <path vectorEffect="non-scaling-stroke" d="M16 13H8" />
+        <path vectorEffect="non-scaling-stroke" d="M16 17H8" />
+      </svg>
+    );
+
+    const MailIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect vectorEffect="non-scaling-stroke" width="20" height="16" x="2" y="4" rx="2" />
+        <path vectorEffect="non-scaling-stroke" d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+      </svg>
+    );
+
+    const LinkedinIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+        <rect vectorEffect="non-scaling-stroke" width="4" height="12" x="2" y="9" />
+        <circle vectorEffect="non-scaling-stroke" cx="4" cy="4" r="2" />
+      </svg>
+    );
+
+    const TwitterIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5 5.96 15.6 7 12c-1.2.3-2.4.2-3.6-.1C2.5 10.6 4 9 4 9c-1.1-.3-2-.9-2.5-1.9 1-.3 2.1-.3 3.1-.1C2.3 5 4 2 4 2c1.6 2 4 4 7.4 4.5 0-1.1.5-2.2 1.5-2.9 1.4-1.1 3.5-.8 4.6.5 1.1-.2 2.1-.7 3-1.2-.4 1.1-1.1 2-2 2.7 1-.1 1.9-.4 2.8-.8Z" />
+      </svg>
+    );
+
+    const GithubIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+        <path vectorEffect="non-scaling-stroke" d="M9 18c-4.51 2-5-2-7-2" />
+      </svg>
+    );
+
+    // Custom Minimal Monochrome Project Marks (Charles Shin style 18px glyphs inside 38px tiles)
+    const ProjectIcon = ({ type }) => {
+      const common = {
+        className: "w-[19px] h-[19px] text-ink",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "1.6",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        "aria-hidden": "true"
+      };
+      switch (type) {
+        case "cabinet":
+          return (
+            <svg {...common}>
+              <path vectorEffect="non-scaling-stroke" d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" />
+            </svg>
+          );
+        case "wideawake":
+          return (
+            <svg {...common}>
+              <circle vectorEffect="non-scaling-stroke" cx="12" cy="12" r="3.5" />
+              <path vectorEffect="non-scaling-stroke" d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z" />
+            </svg>
+          );
+        case "ostrzolka":
+          return (
+            <svg {...common}>
+              <ellipse vectorEffect="non-scaling-stroke" cx="12" cy="5" rx="8" ry="3" />
+              <path vectorEffect="non-scaling-stroke" d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
+              <path vectorEffect="non-scaling-stroke" d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" />
+            </svg>
+          );
+        case "owewho":
+          return (
+            <svg {...common}>
+              <path vectorEffect="non-scaling-stroke" d="m16 3 4 4-4 4" />
+              <path vectorEffect="non-scaling-stroke" d="M20 7H4" />
+              <path vectorEffect="non-scaling-stroke" d="m8 21-4-4 4-4" />
+              <path vectorEffect="non-scaling-stroke" d="M4 17h16" />
+            </svg>
+          );
+        case "quotes":
+          return (
+            <svg {...common}>
+              <path vectorEffect="non-scaling-stroke" d="M10 11H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6a5 5 0 0 1-5 5" />
+              <path vectorEffect="non-scaling-stroke" d="M20 11h-4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6a5 5 0 0 1-5 5" />
+            </svg>
+          );
+        default:
+          return (
+            <svg {...common}>
+              <rect vectorEffect="non-scaling-stroke" width="18" height="18" x="3" y="3" rx="2.5" />
+              <circle vectorEffect="non-scaling-stroke" cx="9" cy="9" r="1.5" />
+              <path vectorEffect="non-scaling-stroke" d="m21 15-4.5-4.5a2 2 0 0 0-2.83 0L6 18" />
+            </svg>
+          );
+      }
+    };
+
+    // Chloé Maillot-inspired Minimal Paper Thumbnail Glyph
+    const PaperThumbnail = ({ variant = 0 }) => {
+      const patterns = [
+        [75, 55, 85, 40],
+        [60, 85, 50, 70],
+        [80, 65, 45, 75],
+        [55, 75, 80, 35],
+        [70, 50, 85, 60]
+      ];
+      const widths = patterns[variant % patterns.length];
+      return (
+        <span
+          aria-hidden="true"
+          className="paper-thumb shrink-0 w-10 h-11 rounded-[7px] p-2 flex flex-col justify-center gap-[4px]"
+        >
+          {widths.map((w, i) => (
+            <span
+              key={i}
+              className="block h-[2px] rounded-full"
+              style={{
+                width: `${w}%`,
+                backgroundColor: i === 0 ? "var(--color-ink-muted)" : "var(--color-hairline)",
+                opacity: i === 0 ? 0.55 : 1
+              }}
+            />
+          ))}
+        </span>
+      );
+    };
+
+    // --- CONTEXTUAL ICON SWAP (Single-node CSS animation: immune to AnimatePresence overlap) ---
+    const IconSwap = ({ activeKey, children }) => (
+      <span key={activeKey} className="icon-swap-in inline-flex items-center justify-center">
+        {children}
+      </span>
+    );
+
+    // --- LIVE CLOCK CHANGING-DIGIT BLUR-FADE (Fixed per-digit width keeps CET rock-solid) ---
+    const AnimatedClockDigits = ({ value }) => {
+      const prevRef = useRef(value);
+      const prev = prevRef.current;
+
+      useEffect(() => {
+        prevRef.current = value;
+      }, [value]);
+
+      return (
+        <span className="inline-flex items-baseline tabular-nums">
+          {String(value).split("").map((ch, idx) => {
+            const changed = prev !== value && prev[idx] !== ch;
+            const isDigit = ch >= "0" && ch <= "9";
+            const isColon = ch === ":";
+            const slotClass = isDigit
+              ? "w-[0.64em] text-center"
+              : isColon
+              ? "w-[0.28em] text-center"
+              : "";
+            return (
+              <span key={idx} className={`inline-block ${slotClass}`}>
+                <span
+                  key={`${idx}-${ch}`}
+                  className={`inline-block${changed ? " digit-tick-in" : ""}`}
+                >
+                  {ch}
+                </span>
+              </span>
+            );
+          })}
+        </span>
+      );
+    };
+
+    const computeBydgoszczTimeSnapshot = () => {
       try {
         const now = new Date();
         const timeFmt = new Intl.DateTimeFormat('en-GB', {
@@ -246,363 +1381,65 @@
           timeZone: 'Europe/Warsaw',
           timeZoneName: 'short'
         }).formatToParts(now);
-        const tzName = tzParts.find(p => p.type === 'timeZoneName')?.value || 'CET';
-        return `${timeFmt.format(now)} ${tzName}`;
+        const tzName = tzParts.find((p) => p.type === 'timeZoneName')?.value || 'CET';
+        return { formatted: timeFmt.format(now), timezone: tzName, ok: true };
       } catch (e) {
-        return "53°07'N 18°00'E";
+        return { formatted: "Bydgoszcz", timezone: "CET", ok: false };
+      }
+    };
+
+    const TELEMETRY_CLOCK_MACHINE = {
+      id: "telemetryClock",
+      initial: () => {
+        const snap = computeBydgoszczTimeSnapshot();
+        if (!snap.ok) return "fallback";
+        if (typeof document !== "undefined" && document.visibilityState === "hidden") return "suspended";
+        return "ticking";
+      },
+      context: () => {
+        const snap = computeBydgoszczTimeSnapshot();
+        return { formatted: snap.formatted, timezone: snap.timezone };
+      },
+      on: {
+        FREEZE: (ctx, event) => ({ target: "frozen", context: { ...ctx, formatted: event.formatted || ctx.formatted } }),
+        UNFREEZE: (ctx) => {
+          const snap = computeBydgoszczTimeSnapshot();
+          return { target: snap.ok ? "ticking" : "fallback", context: { ...ctx, formatted: snap.formatted, timezone: snap.timezone } };
+        }
+      },
+      states: {
+        ticking: {
+          on: {
+            TICK: (ctx) => {
+              const snap = computeBydgoszczTimeSnapshot();
+              if (!snap.ok) return { target: "fallback", context: { ...ctx, formatted: snap.formatted } };
+              if (snap.formatted === ctx.formatted) return null;
+              return { target: "ticking", context: { ...ctx, formatted: snap.formatted, timezone: snap.timezone } };
+            },
+            VISIBILITY_HIDDEN: "suspended"
+          }
+        },
+        suspended: {
+          on: {
+            VISIBILITY_VISIBLE: (ctx) => {
+              const snap = computeBydgoszczTimeSnapshot();
+              return { target: snap.ok ? "ticking" : "fallback", context: { ...ctx, formatted: snap.formatted, timezone: snap.timezone } };
+            }
+          }
+        },
+        frozen: {},
+        fallback: {}
       }
     };
 
     const useBydgoszczTime = () => {
-      const [time, setTime] = useState(formatBydgoszczTime);
+      const [clockState, send] = useMachine(TELEMETRY_CLOCK_MACHINE);
+
       useEffect(() => {
-        const id = setInterval(() => {
-          if (document.visibilityState === "visible") {
-            setTime(formatBydgoszczTime());
-          }
-        }, 1000);
+        if (clockState.value !== "ticking") return;
+        const id = setInterval(() => send("TICK"), 1000);
         return () => clearInterval(id);
-      }, []);
-      return time;
-    };
-
-    // --- SECTION HEADER COMPONENT ---
-    const SectionHeader = ({ index, label, title, italicTitle, subtitle, rightElement }) => (
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-12 mb-14 border-b border-dark/10">
-        <div>
-          <div className="flex items-center gap-3 mb-4">
-            <span className="font-mono text-xs font-semibold text-electric bg-electric/8 px-2.5 py-1 rounded-md border border-electric/15">
-              {index}
-            </span>
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-dark/50 font-medium">
-              {label}
-            </span>
-          </div>
-          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl text-dark leading-[1.08] tracking-[-0.02em]">
-            {title} {italicTitle && <em className="text-electric italic font-normal">{italicTitle}</em>}
-          </h2>
-        </div>
-        {rightElement ? (
-          <div className="shrink-0">{rightElement}</div>
-        ) : subtitle ? (
-          <p className="text-base md:text-lg text-dark/60 max-w-md leading-relaxed font-normal">
-            {subtitle}
-          </p>
-        ) : null}
-      </div>
-    );
-
-    // --- FLOATING NAVIGATION BAR (Explicit Navigation & Scroll-Spy State Machine) ---
-    const NAV_LINKS = [
-      { id: "about", name: "About", href: "#about" },
-      { id: "projects", name: "Projects", href: "#projects" },
-      { id: "writing", name: "Writing", href: "#writing" },
-    ];
-
-    const NAV_MACHINE_CONFIG = {
-      id: "navigation",
-      initial: "closed",
-      context: () => ({
-        elevation: typeof window !== "undefined" && window.scrollY > 30 ? "elevated" : "top",
-        activeSection: "hero"
-      }),
-      on: {
-        SCROLL_UPDATE: (ctx, event) => {
-          const nextElevation = event.scrollY > 30 ? "elevated" : "top";
-          const nextSection = event.activeSection || ctx.activeSection;
-          if (ctx.elevation === nextElevation && ctx.activeSection === nextSection) return null;
-          return {
-            context: {
-              ...ctx,
-              elevation: nextElevation,
-              activeSection: nextSection
-            }
-          };
-        },
-        NAVIGATE: (ctx, event) => ({
-          target: "closed",
-          context: {
-            ...ctx,
-            activeSection: event.section || ctx.activeSection
-          }
-        })
-      },
-      states: {
-        closed: {
-          on: {
-            TOGGLE_MENU: "open",
-            OPEN_MENU: "open"
-          }
-        },
-        open: {
-          on: {
-            TOGGLE_MENU: "closed",
-            CLOSE_MENU: "closed",
-            ESCAPE: "closed",
-            VIEWPORT_DESKTOP: "closed"
-          }
-        }
-      }
-    };
-
-    const Nav = () => {
-      const [navState, send] = useMachine(NAV_MACHINE_CONFIG);
-      const isOpen = navState.value === "open";
-      const { elevation, activeSection } = navState.context;
-      const scrolled = elevation === "elevated";
-
-      useEffect(() => {
-        const computeScrollState = () => {
-          const sections = ["writing", "projects", "about", "hero"];
-          const scrollPos = window.scrollY + 240;
-          let detected = "hero";
-          for (const secId of sections) {
-            const el = document.getElementById(secId);
-            if (el && scrollPos >= el.offsetTop) {
-              detected = secId;
-              break;
-            }
-          }
-          send({ type: "SCROLL_UPDATE", scrollY: window.scrollY, activeSection: detected });
-        };
-
-        computeScrollState();
-        window.addEventListener("scroll", computeScrollState, { passive: true });
-        return () => window.removeEventListener("scroll", computeScrollState);
-      }, [send]);
-
-      useEffect(() => {
-        if (!isOpen) return;
-        const onKeyDown = (e) => {
-          if (e.key === "Escape") send("ESCAPE");
-        };
-        const onResize = () => {
-          if (window.innerWidth >= 768) send("VIEWPORT_DESKTOP");
-        };
-        window.addEventListener("keydown", onKeyDown);
-        window.addEventListener("resize", onResize);
-        return () => {
-          window.removeEventListener("keydown", onKeyDown);
-          window.removeEventListener("resize", onResize);
-        };
-      }, [isOpen, send]);
-
-      const handleAnchorClick = (e, sectionId, href) => {
-        send({ type: "NAVIGATE", section: sectionId });
-        if (window.__LENIS__ && href && href.startsWith("#")) {
-          const targetEl = document.querySelector(href);
-          if (targetEl) {
-            e.preventDefault();
-            window.__LENIS__.scrollTo(targetEl, { offset: -20 });
-          }
-        }
-      };
-
-      return (
-        <>
-          <header
-            data-machine="navigation"
-            data-state={navState.value}
-            data-elevation={elevation}
-            data-active-section={activeSection}
-            className="fixed top-5 left-0 right-0 z-[100] px-4 sm:px-8 pointer-events-none flex justify-center"
-          >
-            <nav
-              aria-label="Primary Navigation"
-              className={`pointer-events-auto transition-all duration-500 rounded-full flex items-center justify-between px-3 py-2 border ${
-                scrolled
-                  ? "bg-white/85 backdrop-blur-xl border-dark/10 shadow-[0_12px_40px_rgba(17,24,39,0.08)]"
-                  : "bg-white/70 backdrop-blur-md border-dark/8 shadow-[0_4px_20px_rgba(17,24,39,0.03)]"
-              } w-full max-w-[780px]`}
-            >
-              <a
-                href="#hero"
-                onClick={(e) => handleAnchorClick(e, "hero", "#hero")}
-                className="flex items-center gap-2.5 pl-3 pr-4 py-1 rounded-full hover:bg-offwhite transition-colors group"
-              >
-                <span className="h-2.5 w-2.5 rounded-full bg-electric shrink-0"></span>
-                <span className="font-bold tracking-tight text-dark text-sm">Jakub Pacocha</span>
-              </a>
-
-              <div className="hidden md:flex items-center gap-1 bg-offwhite/80 p-1 rounded-full border border-dark/5">
-                {NAV_LINKS.map((l) => {
-                  const isActive = activeSection === l.id;
-                  return (
-                    <a
-                      key={l.id}
-                      href={l.href}
-                      onClick={(e) => handleAnchorClick(e, l.id, l.href)}
-                      aria-current={isActive ? "location" : undefined}
-                      data-active={isActive}
-                      className={`relative px-4 py-1.5 text-xs font-medium rounded-full transition-colors duration-200 ${
-                        isActive ? "text-white" : "text-dark/65 hover:text-dark"
-                      }`}
-                    >
-                      {isActive && (
-                        <motion.span
-                          layoutId="navIndicator"
-                          transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                          className="absolute inset-0 bg-electric rounded-full -z-10 shadow-[0_2px_10px_rgba(0,85,255,0.3)]"
-                        />
-                      )}
-                      {l.name}
-                    </a>
-                  );
-                })}
-              </div>
-
-              <div className="hidden md:flex items-center gap-2 pr-1">
-                <a
-                  href="cv.html"
-                  className="px-4 py-1.5 rounded-full text-xs font-semibold text-dark/80 hover:text-electric hover:bg-electric/5 border border-dark/10 hover:border-electric/30 transition-all flex items-center gap-1.5"
-                >
-                  <span>Full CV</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
-
-              <button
-                onClick={() => send("TOGGLE_MENU")}
-                aria-label="Toggle Menu"
-                aria-expanded={isOpen}
-                aria-controls="mobile-nav-drawer"
-                className="md:hidden p-2 rounded-full bg-offwhite border border-dark/10 text-dark hover:border-electric hover:text-electric transition-colors"
-              >
-                {isOpen ? <CloseIcon /> : <MenuIcon />}
-              </button>
-            </nav>
-          </header>
-
-          <AnimatePresence>
-            {isOpen && (
-              <>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  onClick={() => send("CLOSE_MENU")}
-                  className="fixed inset-0 z-[90] bg-dark/10 backdrop-blur-[2px] md:hidden"
-                  aria-hidden="true"
-                />
-                <motion.div
-                  id="mobile-nav-drawer"
-                  role="dialog"
-                  aria-label="Mobile Navigation Menu"
-                  initial={{ opacity: 0, y: -12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.25 }}
-                  className="fixed inset-x-4 top-20 z-[95] bg-white/95 backdrop-blur-2xl rounded-3xl border border-dark/10 shadow-2xl p-6 flex flex-col gap-3 md:hidden"
-                >
-                  {NAV_LINKS.map((l, i) => (
-                    <motion.a
-                      key={l.name}
-                      href={l.href}
-                      onClick={(e) => handleAnchorClick(e, l.id, l.href)}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      className={`px-4 py-3 rounded-2xl text-lg font-medium transition-colors flex items-center justify-between ${
-                        activeSection === l.id
-                          ? "bg-electric text-white"
-                          : "text-dark hover:bg-electric hover:text-white"
-                      }`}
-                    >
-                      <span>{l.name}</span>
-                      <ArrowRight className="w-4 h-4 opacity-60" />
-                    </motion.a>
-                  ))}
-                  <div className="h-[1px] bg-dark/10 my-1" />
-                  <div className="flex gap-3">
-                    <a
-                      href="cv.html"
-                      className="flex-1 py-3 px-4 rounded-2xl bg-electric text-white font-semibold text-sm flex items-center justify-center gap-2"
-                    >
-                      <span>Open Full CV</span>
-                      <ArrowUpRight className="w-4 h-4" />
-                    </a>
-                    <a
-                      href="assets/resume.pdf"
-                      download
-                      className="py-3 px-4 rounded-2xl bg-offwhite border border-dark/10 text-dark font-semibold text-sm flex items-center justify-center gap-2"
-                    >
-                      <DownloadIcon className="w-4 h-4" />
-                      <span>PDF</span>
-                    </a>
-                  </div>
-                </motion.div>
-              </>
-            )}
-          </AnimatePresence>
-        </>
-      );
-    };
-
-    // --- ROTATING WORDS IN HERO (Explicit Ticker State Machine) ---
-    const HERO_ROTATOR_ITEMS = [
-      { text: "HERE Technologies", tag: "Spatial & AI Engineering" },
-      { text: "the digital world", tag: "Full-Stack ML Systems" },
-      { text: "local NGOs", tag: "Civic Tech & Urban Impact" },
-      { text: "mind & soul", tag: "Philosophy & Essays" }
-    ];
-
-    const HERO_ROTATOR_MACHINE = {
-      id: "heroRotator",
-      initial: () =>
-        typeof window !== "undefined" &&
-        window.matchMedia &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches
-          ? "reducedMotion"
-          : "running",
-      context: () => ({ index: 0, total: HERO_ROTATOR_ITEMS.length }),
-      on: {
-        NEXT: (ctx) => ({
-          context: { ...ctx, index: (ctx.index + 1) % ctx.total }
-        }),
-        SELECT_INDEX: (ctx, event) => ({
-          context: { ...ctx, index: Math.abs(event.index || 0) % ctx.total }
-        })
-      },
-      states: {
-        running: {
-          on: {
-            TICK: (ctx) => ({
-              target: "running",
-              context: { ...ctx, index: (ctx.index + 1) % ctx.total }
-            }),
-            PAUSE: "paused",
-            VISIBILITY_HIDDEN: "paused",
-            REDUCED_MOTION: "reducedMotion"
-          }
-        },
-        paused: {
-          on: {
-            RESUME: "running",
-            VISIBILITY_VISIBLE: "running",
-            REDUCED_MOTION: "reducedMotion"
-          }
-        },
-        reducedMotion: {
-          on: {
-            MOTION_ALLOWED: "running"
-          }
-        }
-      }
-    };
-
-    const RotatingWords = () => {
-      const [rotator, send] = useMachine(HERO_ROTATOR_MACHINE);
-      const { index } = rotator.context;
-      const currentItem = HERO_ROTATOR_ITEMS[index];
-
-      useEffect(() => {
-        if (rotator.value !== "running") return;
-        const interval = setInterval(() => {
-          send("TICK");
-        }, 2800);
-        return () => clearInterval(interval);
-      }, [rotator.value, send]);
+      }, [clockState.value, send]);
 
       useEffect(() => {
         const onVisChange = () => {
@@ -612,1133 +1449,1367 @@
         return () => document.removeEventListener("visibilitychange", onVisChange);
       }, [send]);
 
-      return (
-        <span
-          data-machine="heroRotator"
-          data-state={rotator.value}
-          data-index={index}
-          data-tag={currentItem.tag}
-          onMouseEnter={() => send("PAUSE")}
-          onMouseLeave={() => send("RESUME")}
-          onFocus={() => send("PAUSE")}
-          onBlur={() => send("RESUME")}
-          onClick={() => send("NEXT")}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              send("NEXT");
-            }
-          }}
-          role="button"
-          tabIndex={0}
-          aria-live="polite"
-          aria-label={`${currentItem.text} — ${currentItem.tag}. Click to cycle.`}
-          title={`${currentItem.tag} (Click to cycle)`}
-          className="inline-flex flex-wrap items-baseline gap-x-4 align-baseline cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-electric/40 rounded-lg"
-        >
-          <span className="relative inline-grid overflow-hidden align-bottom py-2 -my-2" style={{ clipPath: 'inset(0 0 -0.45em 0)' }}>
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={index}
-                initial={{ y: "90%", opacity: 0, filter: "blur(4px)" }}
-                animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
-                exit={{ y: "-90%", opacity: 0, filter: "blur(4px)" }}
-                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                className="col-start-1 row-start-1 text-electric italic font-serif font-normal pr-2 pb-1"
-              >
-                {currentItem.text}
-              </motion.span>
-            </AnimatePresence>
-          </span>
-        </span>
-      );
+      return clockState;
     };
 
-    // --- HERO SECTION ---
-    const Hero = () => {
-      const localTime = useBydgoszczTime();
+    const IdentityAndBio = ({ theme, onToggleTheme, hapticsMuted, onToggleHaptics, enterItem }) => {
+      const clockState = useBydgoszczTime();
+      const [copied, setCopied] = useState(false);
 
-      const stats = [
-        { id: "01", value: "6+", label: "Years in Data & Software", detail: "Production systems & pipelines" },
-        { id: "02", value: "4+", label: "Years Building AI / ML", detail: "RAG, LLMOps & Computer Vision" },
-        { id: "03", value: "8.5k+", label: "Words Published", detail: "Phenomenology, theology & society" },
-        { id: "04", value: "🇵🇱 PL", label: "Bydgoszcz, Poland", detail: "Civic tech & NGO contributor" }
-      ];
-
-      return (
-        <section
-          id="hero"
-          className="relative min-h-screen flex flex-col justify-between pt-28 pb-16 px-6 md:px-12 lg:px-20 bg-Swiss-grid border-b border-dark/10 overflow-hidden"
-        >
-          {/* Subtle Ambient Radial Highlight */}
-          <div
-            className="pointer-events-none absolute -top-40 right-0 w-[650px] h-[650px] rounded-full opacity-40 blur-3xl"
-            style={{ background: "radial-gradient(circle, rgba(0,85,255,0.12) 0%, rgba(255,255,255,0) 70%)" }}
-          />
-
-          <div className="max-w-[1360px] w-full mx-auto relative z-10 flex-1 flex flex-col justify-between">
-            {/* Top Telemetry Bar */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="flex flex-wrap items-center justify-between gap-4 py-4 border-b border-dark/10 text-xs font-mono text-dark/55"
-            >
-              <div className="flex items-center gap-3">
-                <span className="px-2.5 py-0.5 rounded-full bg-electric/10 text-electric font-semibold uppercase tracking-wider">
-                  AI Engineer
-                </span>
-                <span className="hidden sm:inline text-dark/25">/</span>
-                <span className="hidden sm:inline">RAG Architectures • Scalable ML • Spatial Systems</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <span className="hidden md:inline text-dark/40">53°07′N 18°00′E</span>
-                <span className="px-2.5 py-0.5 rounded-md bg-offwhite border border-dark/10 text-dark/70">
-                  {localTime}
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Main Editorial Headline */}
-            <div className="my-auto py-14 md:py-20">
-              <motion.h1
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-                className="font-serif text-[2.85rem] sm:text-[4.25rem] md:text-[5.25rem] lg:text-[6.2rem] leading-[1.04] tracking-[-0.03em] text-dark max-w-5xl"
-              >
-                I architect systems for <br className="hidden sm:inline" />
-                <RotatingWords /> <br />
-                &amp; write about them.
-              </motion.h1>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.75, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-10 md:mt-14 flex flex-col lg:flex-row lg:items-end justify-between gap-8"
-              >
-                <p className="font-sans text-lg md:text-xl text-dark/65 max-w-2xl leading-relaxed font-normal">
-                  Full-stack AI engineer specializing in production <strong className="text-dark font-medium">RAG architectures</strong>,{" "}
-                  <strong className="text-dark font-medium">containerized ML infrastructure</strong>, and{" "}
-                  <strong className="text-dark font-medium">spatial intelligence</strong>. Outside the terminal, I write philosophical essays on phenomenology, theology, and society.
-                </p>
-
-                <div className="flex flex-wrap items-center gap-3.5 shrink-0">
-                  <a
-                    href="#projects"
-                    className="group px-6 py-3.5 rounded-full bg-electric text-white font-medium text-sm flex items-center gap-2.5 shadow-[0_8px_25px_rgba(0,85,255,0.28)] hover:shadow-[0_12px_32px_rgba(0,85,255,0.4)] hover:-translate-y-0.5 transition-all duration-300"
-                  >
-                    <span>Explore Side Projects</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </a>
-                  <a
-                    href="#writing"
-                    className="px-6 py-3.5 rounded-full bg-white hover:bg-offwhite text-dark border border-dark/15 hover:border-dark/30 font-medium text-sm transition-all duration-300"
-                  >
-                    Read my Blog
-                  </a>
-                  <a
-                    href="assets/resume.pdf"
-                    download
-                    className="px-5 py-3.5 rounded-full bg-offwhite hover:bg-electric/10 text-dark/75 hover:text-electric border border-dark/10 hover:border-electric/25 font-mono text-xs font-medium flex items-center gap-2 transition-all duration-300"
-                  >
-                    <DownloadIcon className="w-3.5 h-3.5" />
-                    <span>CV.pdf</span>
-                  </a>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Bottom Architectural Metrics Grid */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.25 }}
-              className="grid grid-cols-2 lg:grid-cols-4 bg-white/90 backdrop-blur-md border border-dark/10 rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(17,24,39,0.03)]"
-            >
-              {stats.map((s, idx) => (
-                <div
-                  key={s.id}
-                  className={`p-5 md:p-6 flex flex-col justify-between transition-colors hover:bg-offwhite/80 ${
-                    idx !== stats.length - 1 ? "border-b lg:border-b-0 border-r border-dark/10" : ""
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="font-mono text-[11px] text-dark/35">{s.id}</span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-electric/60"></span>
-                  </div>
-                  <div>
-                    <div className="font-serif text-3xl md:text-4xl text-dark tracking-tight mb-1">{s.value}</div>
-                    <div className="text-xs font-semibold text-dark/80 uppercase tracking-wider">{s.label}</div>
-                    <div className="text-xs text-dark/45 mt-0.5">{s.detail}</div>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-      );
-    };
-
-    // --- ABOUT & EXPERTISE SECTION ---
-    const AboutAndCapabilities = () => {
-      const skillsData = [
-        {
-          id: "01",
-          icon: <RagArchitectureSvg />,
-          title: "Generative AI & RAG",
-          desc: "Retrieval-augmented generation, embeddings, vector indexing, and LLM orchestration to build grounded AI applications.",
-          tags: ["Python", "Vector Stores", "LLMOps", "RAG"]
-        },
-        {
-          id: "02",
-          icon: <InfraSvg />,
-          title: "Full-Stack AI Infra",
-          desc: "Productizing models and pipelines via containerized microservices, streaming REST endpoints, and backend architectures.",
-          tags: ["Docker", "FastAPI", "Flask", "React", "K8s"]
-        },
-        {
-          id: "03",
-          icon: <CloudOpsSvg />,
-          title: "Cloud & DevOps",
-          desc: "Deploying and managing production systems, automated CI/CD workflows, and infrastructure monitoring on cloud providers.",
-          tags: ["AWS", "Azure", "GitHub Actions", "CI/CD"]
-        },
-        {
-          id: "04",
-          icon: <SpatialSvg />,
-          title: "Spatial & Civic Data",
-          desc: "Spatial data analysis, GIS tool development, and computer vision models applied to geomorphology and civic datasets.",
-          tags: ["GIS", "Computer Vision", "Spatial SQL", "Python"]
+      const handleCopyEmail = () => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText("pacochp@gmail.com").catch(() => {});
         }
-      ];
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 1800);
+      };
 
       return (
-        <section id="about" className="px-6 md:px-12 lg:px-20 py-24 bg-white border-b border-dark/10">
-          <div className="max-w-[1360px] mx-auto">
-            {/* Top Section Intro */}
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-12 mb-14 border-b border-dark/10">
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="font-mono text-xs font-semibold text-electric bg-electric/10 px-2.5 py-1 rounded-md border border-electric/15">
-                    01
-                  </span>
-                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-dark/50 font-medium">
-                    Profile &amp; Focus
-                  </span>
-                </div>
-                <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl text-dark leading-[1.08] tracking-[-0.02em]">
-                  Engineering systems &amp; <em className="text-electric italic font-normal">capabilities</em>.
-                </h2>
-              </div>
-              <p className="text-base md:text-lg text-dark/60 max-w-md leading-relaxed font-normal">
-                Hands-on AI and software engineering, building production-grade architectures and practical data solutions.
+        <section id="hero" aria-labelledby="identity-name">
+          {/* Quiet Identity Header Row */}
+          <motion.header
+            variants={enterItem}
+            className="flex items-start justify-between gap-4 mb-10 sm:mb-12"
+          >
+            <div className="min-w-0">
+              <h1
+                id="identity-name"
+                className="text-[1.375rem] sm:text-[1.5rem] font-semibold text-ink tracking-[-0.02em] leading-[1.3]"
+              >
+                Jakub Pacocha
+              </h1>
+              <p className="mt-0.5 text-[1.0625rem] sm:text-[1.125rem] font-medium text-ink-subtitle leading-[1.45]">
+                AI &amp; Software Engineer
+              </p>
+              <p
+                data-machine="telemetryClock"
+                data-state={clockState.value}
+                data-timezone={clockState.context.timezone}
+                className="mt-2 text-[0.9375rem] text-ink-muted tabular-nums"
+              >
+                Bydgoszcz / <AnimatedClockDigits value={clockState.context.formatted} /> {clockState.context.timezone}
               </p>
             </div>
 
-            {/* Main Content Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* Left Column: Straightforward summary */}
-              <div className="lg:col-span-5 space-y-6">
-                <div className="p-8 rounded-3xl bg-offwhite border border-dark/10 space-y-6">
-                  <div>
-                    <span className="font-mono text-xs font-semibold text-electric uppercase tracking-wider block mb-2">
-                      Background
-                    </span>
-                    <h3 className="font-serif text-2xl text-dark font-medium leading-snug">
-                      6+ years across data science, AI engineering, and spatial systems.
-                    </h3>
-                  </div>
+            {/* Compact Right Utility Bar (CV + Sound/Haptics Mute + Theme Toggle) */}
+            <div className="flex items-center gap-1 shrink-0 -me-1.5">
+              <a
+                href="cv.html"
+                className="tap-press hover-surface px-2.5 min-h-[40px] rounded-lg inline-flex items-center gap-1 text-[0.9375rem] font-medium text-ink-muted"
+              >
+                <span>CV</span>
+                <ArrowUpRightIcon className="w-3.5 h-3.5" />
+              </a>
 
-                  <p className="text-sm md:text-base text-dark/70 leading-relaxed font-normal">
-                    I currently work as an AI / Software Engineer at <strong>HERE Technologies</strong>. Previously at <strong>iQor</strong> and <strong>O-I Poland</strong>, I have built and maintained end-to-end ML and RAG services - from vector search pipelines to containerized APIs deployed on AWS and Azure.
-                  </p>
+              <a
+                href="assets/resume.pdf"
+                download
+                aria-label="Download CV as PDF"
+                title="Download CV (PDF)"
+                className="tap-press hover-surface w-[40px] h-[40px] rounded-lg inline-flex items-center justify-center text-ink-muted"
+              >
+                <FileTextIcon className="w-4 h-4" />
+              </a>
 
-                  <p className="text-sm md:text-base text-dark/70 leading-relaxed font-normal">
-                    With an academic foundation in Geoinformatics and computer vision, I have also build software utilities and civic archives with local NGOs in Bydgoszcz, and published essays on independent topics at <em>From the Cabinet</em>.
-                  </p>
+              <span aria-hidden="true" className="w-px h-4 bg-hairline mx-0.5" />
 
-                  <div className="pt-4 border-t border-dark/10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
-                    <span className="text-dark/45 uppercase tracking-wider">Current Stack</span>
-                    <span className="text-dark font-semibold">Python • RAG / LLMOps • AWS</span>
-                  </div>
-                </div>
+              <button
+                type="button"
+                onClick={onToggleHaptics}
+                aria-label={hapticsMuted ? "Unmute click feedback" : "Mute click feedback"}
+                aria-pressed={hapticsMuted}
+                title={hapticsMuted ? "Unmute feedback" : "Mute feedback"}
+                className={`tap-press hover-surface w-[40px] h-[40px] rounded-lg inline-flex items-center justify-center ${
+                  hapticsMuted ? "text-ink-muted opacity-55" : "text-ink-muted"
+                }`}
+              >
+                <IconSwap activeKey={hapticsMuted ? "muted" : "on"}>
+                  {hapticsMuted ? <SpeakerMutedIcon /> : <SpeakerIcon />}
+                </IconSwap>
+              </button>
 
-                <div className="p-6 rounded-3xl border border-dark/10 flex items-center justify-between bg-white">
-                  <div>
-                    <div className="text-sm font-semibold text-dark">Need complete job history?</div>
-                    <div className="text-xs text-dark/50 font-mono mt-0.5">Timeline, companies, education</div>
-                  </div>
-                  <a
-                    href="cv.html"
-                    className="px-4 py-2 rounded-full bg-electric text-white text-xs font-semibold hover:bg-electric/90 transition-colors flex items-center gap-1.5 shrink-0"
-                  >
-                    <span>View CV</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </div>
-
-              {/* Right Column: 4 Capability Cards in a Clean 2x2 Grid */}
-              <div id="skills" className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {skillsData.map((item) => (
-                  <div
-                    key={item.id}
-                    className="group rounded-3xl bg-white hover:bg-offwhite/50 p-7 border border-dark/10 hover:border-electric/30 transition-all duration-200 flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-5">
-                        <div className="w-11 h-11 rounded-2xl bg-offwhite group-hover:bg-electric group-hover:text-white text-electric border border-dark/10 group-hover:border-electric flex items-center justify-center transition-colors duration-200">
-                          {item.icon}
-                        </div>
-                        <span className="font-mono text-xs font-semibold text-dark/30">
-                          /{item.id}
-                        </span>
-                      </div>
-
-                      <h4 className="font-serif text-xl font-semibold text-dark mb-2 group-hover:text-electric transition-colors">
-                        {item.title}
-                      </h4>
-                      <p className="text-xs md:text-sm text-dark/65 leading-relaxed mb-6">
-                        {item.desc}
-                      </p>
-                    </div>
-
-                    <div className="flex flex-wrap gap-1.5 pt-4 border-t border-dark/8">
-                      {item.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2.5 py-0.5 rounded-md bg-offwhite border border-dark/8 text-dark/70 font-mono text-[11px]"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <button
+                type="button"
+                onClick={onToggleTheme}
+                aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                aria-pressed={theme === "dark"}
+                title={theme === "dark" ? "Light mode" : "Dark mode"}
+                className="tap-press hover-surface w-[40px] h-[40px] rounded-lg inline-flex items-center justify-center text-ink-muted"
+              >
+                <IconSwap activeKey={theme}>
+                  {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+                </IconSwap>
+              </button>
             </div>
-          </div>
+          </motion.header>
+
+          {/* Direct, Human, Minimal Bio Prose (58ch optimal reading measure) */}
+          <motion.div
+            variants={enterItem}
+            className="space-y-4 text-[1.0625rem] sm:text-[1.125rem] text-ink-secondary leading-[1.7] text-pretty max-w-[60ch]"
+          >
+            <p>
+              Currently an AI &amp; Software Engineer at{" "}
+              <strong className="text-ink font-semibold">HERE Technologies</strong>.<br/> Previously at{" "}
+              <strong className="text-ink font-semibold">iQor</strong> and{" "}
+              <strong className="text-ink font-semibold">O-I</strong>.
+            </p>
+
+            <p>
+              Building production{" "}
+              <strong className="text-ink font-semibold">RAG architectures</strong>,{" "}
+              <strong className="text-ink font-semibold">containerized ML infrastructure</strong> and{" "}
+              <strong className="text-ink font-semibold">spatial intelligence</strong> systems - from vector search pipelines to cloud services on AWS and Azure.
+            </p>
+
+            <p>
+              Outside the terminal, I collaborate with local NGOs in Bydgoszcz and write philosophical essays on phenomenology, theology and society at{" "}<br/>
+              <a
+                href="https://fromthecabinet.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="reveal-link"
+              >
+                <span className="inline-link">From the Cabinet</span>
+                <span className="reveal-slot" aria-hidden="true">
+                  <ArrowUpRightIcon tight className="reveal-glyph w-[0.5em] h-[0.5em]" strokeWidth={1.9} />
+                </span>
+              </a>
+              .
+            </p>
+
+            <p className="pt-1">
+              Reach me at{" "}
+              <button
+                type="button"
+                onClick={handleCopyEmail}
+                data-revealed={copied ? "true" : undefined}
+                aria-label={copied ? "Email copied to clipboard" : "Copy pacochp@gmail.com to clipboard"}
+                className="reveal-link tap-press inline-block p-0 m-0 bg-transparent border-0 text-inherit cursor-pointer align-baseline"
+              >
+                <span className="inline-link">pacochp@gmail.com</span>
+                <span className="reveal-slot reveal-slot-copy" aria-hidden="true">
+                  <IconSwap activeKey={copied ? "check" : "copy"}>
+                    {copied ? (
+                      <CheckIcon className="reveal-glyph reveal-glyph-copy w-[0.68em] h-[0.68em] text-ink" />
+                    ) : (
+                      <CopyIcon className="reveal-glyph reveal-glyph-copy w-[0.68em] h-[0.68em]" />
+                    )}
+                  </IconSwap>
+                </span>
+              </button>{" "}
+              or on{" "}
+              <a
+                href="https://www.linkedin.com/in/jakubpacocha/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="reveal-link"
+              >
+                <span className="inline-link">LinkedIn</span>
+                <span className="reveal-slot" aria-hidden="true">
+                  <ArrowUpRightIcon tight className="reveal-glyph w-[0.5em] h-[0.5em]" strokeWidth={1.9} />
+                </span>
+              </a>
+              ,{" "}
+              <a
+                href="https://x.com/JakubPacocha"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="reveal-link"
+              >
+                <span className="inline-link">X</span>
+                <span className="reveal-slot" aria-hidden="true">
+                  <ArrowUpRightIcon tight className="reveal-glyph w-[0.5em] h-[0.5em]" strokeWidth={1.9} />
+                </span>
+              </a>{" "}
+              and{" "}
+              <a
+                href="https://github.com/JPacoch"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="reveal-link"
+              >
+                <span className="inline-link">GitHub</span>
+                <span className="reveal-slot" aria-hidden="true">
+                  <ArrowUpRightIcon tight className="reveal-glyph w-[0.5em] h-[0.5em]" strokeWidth={1.9} />
+                </span>
+              </a>
+              .
+              <span className="sr-only" role="status" aria-live="polite">
+                {copied ? "Email address pacochp@gmail.com copied." : ""}
+              </span>
+            </p>
+          </motion.div>
         </section>
       );
     };
 
-    // --- GITHUB TELEMETRY MODULE (Explicit Fetch + Inspection State Machine) ---
+    // --- GITHUB CONTRIBUTION ACTIVITY WIDGET (Exact 0xchsh/portfolio CommitGraph fidelity) ---
+    const GITHUB_USERNAME =
+      (typeof window !== "undefined" &&
+        (window.__GITHUB_USERNAME__ ||
+          new URLSearchParams(window.location.search).get("github") ||
+          "").trim()) ||
+      "JPacoch";
+    const GITHUB_CACHE_TTL_MS = 30 * 60 * 1000;
+
     const GITHUB_TELEMETRY_MACHINE = {
       id: "githubTelemetry",
       initial: "loading",
       context: () => ({
+        username: GITHUB_USERNAME,
         data: null,
-        hoveredDay: null,
+        hoveredIndex: null,
         error: null
       }),
       states: {
         loading: {
           on: {
-            FETCH_SUCCESS: (ctx, event) => ({
-              target: "ready",
-              context: { ...ctx, data: event.data, error: null }
-            }),
-            FETCH_ERROR: (ctx, event) => ({
-              target: "error",
-              context: { ...ctx, error: event.error || "Failed to load activity" }
-            })
+            FETCH_SUCCESS: (ctx, event) => ({ target: "ready", context: { ...ctx, data: event.data, error: null } }),
+            FETCH_ERROR: (ctx, event) => ({ target: "error", context: { ...ctx, error: event.error || "Unavailable" } })
           }
         },
         ready: {
           on: {
-            INSPECT_DAY: (ctx, event) => ({
-              target: "inspecting",
-              context: { ...ctx, hoveredDay: event.day }
-            })
+            HOVER_DAY: (ctx, event) => ({ target: "inspecting", context: { ...ctx, hoveredIndex: event.index } })
           }
         },
         inspecting: {
           on: {
-            INSPECT_DAY: (ctx, event) => ({
-              target: "inspecting",
-              context: { ...ctx, hoveredDay: event.day }
-            }),
-            CLEAR_INSPECT: (ctx) => ({
-              target: "ready",
-              context: { ...ctx, hoveredDay: null }
-            })
+            HOVER_DAY: (ctx, event) => ({ target: "inspecting", context: { ...ctx, hoveredIndex: event.index } }),
+            CLEAR_HOVER: (ctx) => ({ target: "ready", context: { ...ctx, hoveredIndex: null } }),
+            ESCAPE: (ctx) => ({ target: "ready", context: { ...ctx, hoveredIndex: null } })
           }
         },
         error: {
           on: {
-            RETRY: (ctx) => ({
-              target: "loading",
-              context: { ...ctx, error: null }
-            })
+            RETRY: (ctx) => ({ target: "loading", context: { ...ctx, error: null } })
           }
         }
       }
     };
 
-    const GithubActivity = () => {
+    function commitLevelColor(count, max) {
+      if (count === 0) return "var(--contrib-0)";
+      const ratio = count / max;
+      if (ratio <= 0.25) return "var(--contrib-1)";
+      if (ratio <= 0.5) return "var(--contrib-2)";
+      if (ratio <= 0.75) return "var(--contrib-3)";
+      return "var(--contrib-4)";
+    }
+
+    function formatCommitDate(dateStr) {
+      try {
+        const d = new Date(dateStr + "T12:00:00");
+        return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      } catch (e) {
+        return dateStr;
+      }
+    }
+
+    const CommitGraph = ({ days, hovered, onEnter, onLeave, onSelect, isLoading, isError }) => {
+      const reduce = useReducedMotionSafe();
+      const [mounted, setMounted] = useState(false);
+      const containerRef = useRef(null);
+      const barRefs = useRef([]);
+      const tooltipRefs = useRef([]);
+      const [offsets, setOffsets] = useState([]);
+      const [rovingIdx, setRovingIdx] = useState(29);
+
+      const max = useMemo(() => Math.max(...days.map((d) => d.count), 1), [days]);
+
+      useEffect(() => {
+        if (isLoading || isError) {
+          setMounted(false);
+          return;
+        }
+        const id = requestAnimationFrame(() => setMounted(true));
+        return () => cancelAnimationFrame(id);
+      }, [isLoading, isError, days]);
+
+      // Clamp edge tooltips inside the container (exact CommitGraph.tsx logic)
+      useLayoutEffect(() => {
+        if (!mounted) return;
+        const compute = () => {
+          const container = containerRef.current;
+          if (!container) return;
+          const cw = container.getBoundingClientRect().width;
+          const next = days.map((_, i) => {
+            const tip = tooltipRefs.current[i];
+            const slot = container.children[i];
+            if (!tip || !slot) return 0;
+            const tipW = tip.offsetWidth;
+            const barCenter = slot.offsetLeft + slot.offsetWidth / 2;
+            const left = barCenter - tipW / 2;
+            const right = barCenter + tipW / 2;
+            if (left < 0) return -left;
+            if (right > cw) return cw - right;
+            return 0;
+          });
+          setOffsets(next);
+        };
+        compute();
+        window.addEventListener("resize", compute);
+        return () => window.removeEventListener("resize", compute);
+      }, [mounted, days]);
+
+      const handleKeyDown = (e, i) => {
+        if (e.key === "ArrowRight") {
+          e.preventDefault();
+          const next = Math.min(days.length - 1, i + 1);
+          setRovingIdx(next);
+          if (barRefs.current[next]) barRefs.current[next].focus();
+        } else if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          const prev = Math.max(0, i - 1);
+          setRovingIdx(prev);
+          if (barRefs.current[prev]) barRefs.current[prev].focus();
+        } else if (e.key === "Escape") {
+          e.preventDefault();
+          onLeave(true);
+        }
+      };
+
+      return (
+        <div
+          ref={containerRef}
+          role="group"
+          aria-label="Last 30 days of GitHub contributions"
+          className="relative flex gap-[3px] min-[500px]:gap-[6px] sm:gap-[9px]"
+        >
+          {days.map((day, i) => {
+            if (isLoading || isError) {
+              return (
+                <div key={day.date} className="relative flex-1 h-[22px] min-[500px]:h-[28px] sm:h-[34px] flex items-center">
+                  <div
+                    aria-hidden="true"
+                    className={`w-full h-full rounded-[3.5px] min-[500px]:rounded-[4px] sm:rounded-[5px] ${isLoading ? "motion-safe:animate-pulse" : "opacity-50"}`}
+                    style={{ backgroundColor: "var(--contrib-0)" }}
+                  />
+                </div>
+              );
+            }
+
+            const isHovered = hovered === i;
+            const isNeighbor = hovered !== null && (hovered === i - 1 || hovered === i + 1);
+            const offset = offsets[i] ?? 0;
+            const barHeight = reduce ? "100%" : isHovered ? "60%" : isNeighbor ? "80%" : "100%";
+
+            return (
+              <div
+                key={day.date}
+                className="relative flex-1 h-[22px] min-[500px]:h-[28px] sm:h-[34px] flex items-center"
+                onMouseEnter={() => onEnter(i)}
+                onMouseLeave={() => onLeave(false)}
+              >
+                <button
+                  ref={(el) => { barRefs.current[i] = el; }}
+                  type="button"
+                  tabIndex={rovingIdx === i ? 0 : -1}
+                  aria-label={`${formatCommitDate(day.date)}: ${day.count > 0 ? `${day.count} contribution${day.count !== 1 ? "s" : ""}` : "No contributions"}`}
+                  onFocus={() => {
+                    setRovingIdx(i);
+                    onEnter(i, false);
+                  }}
+                  onBlur={() => onLeave(true)}
+                  onClick={() => {
+                    setRovingIdx(i);
+                    onSelect(i);
+                  }}
+                  onKeyDown={(e) => handleKeyDown(e, i)}
+                  className="w-full p-0 border-0 rounded-[3.5px] min-[500px]:rounded-[4px] sm:rounded-[5px] cursor-pointer block"
+                  style={{
+                    backgroundColor: commitLevelColor(day.count, max),
+                    height: barHeight,
+                    transform: mounted || reduce ? "scaleY(1)" : "scaleY(0)",
+                    opacity: mounted || reduce ? 1 : 0,
+                    transition:
+                      mounted && !reduce
+                        ? `transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 20}ms, opacity 300ms ease ${i * 20}ms, height ${
+                            isHovered || isNeighbor ? "150ms cubic-bezier(0.215, 0.61, 0.355, 1)" : "100ms ease"
+                          }`
+                        : "opacity 150ms ease",
+                    transformOrigin: "bottom"
+                  }}
+                />
+
+                {/* Always-mounted tooltip animated via opacity + translateY */}
+                <div
+                  ref={(el) => { tooltipRefs.current[i] = el; }}
+                  role="tooltip"
+                  aria-hidden={!isHovered}
+                  className="absolute bottom-full left-1/2 mb-2 z-50 pointer-events-none"
+                  style={{
+                    transform: `translateX(calc(-50% + ${offset}px)) translateY(${isHovered || reduce ? "0px" : "4px"})`,
+                    opacity: isHovered ? 1 : 0,
+                    transition: reduce
+                      ? "opacity 100ms ease"
+                      : isHovered
+                      ? "opacity 150ms cubic-bezier(0.215, 0.61, 0.355, 1), transform 150ms cubic-bezier(0.215, 0.61, 0.355, 1)"
+                      : "opacity 100ms ease, transform 100ms ease"
+                  }}
+                >
+                  <div className="bg-[#26262a] text-white text-[13px] rounded-md px-2.5 py-1.5 whitespace-nowrap shadow-lg">
+                    <p className="font-medium leading-tight">{formatCommitDate(day.date)}</p>
+                    {day.count > 0 ? (
+                      <p className="text-[#d4d4d8] text-xs tabular-nums leading-tight mt-0.5">
+                        {day.count} contribution{day.count !== 1 ? "s" : ""}
+                      </p>
+                    ) : (
+                      <p className="text-[#a1a1aa] text-xs leading-tight mt-0.5">
+                        No contributions
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      );
+    };
+
+    const ActivityStrip = ({ enterItem }) => {
       const [telemetry, send] = useMachine(GITHUB_TELEMETRY_MACHINE);
-      const { data, hoveredDay } = telemetry.context;
+      const { username, data, hoveredIndex } = telemetry.context;
       const isLoading = telemetry.value === "loading";
       const isError = telemetry.value === "error";
+      const leaveTimeoutRef = useRef(null);
 
       useEffect(() => {
         if (telemetry.value !== "loading") return;
         let cancelled = false;
+        const cacheKey = `jp-gh-contrib-v1:${username}`;
 
-        fetch('https://github-contributions-api.jogruber.de/v4/JPacoch?y=last')
-          .then(res => {
+        try {
+          const cachedRaw = sessionStorage.getItem(cacheKey);
+          if (cachedRaw) {
+            const cached = JSON.parse(cachedRaw);
+            if (cached && cached.ts && Date.now() - cached.ts < GITHUB_CACHE_TTL_MS && cached.payload) {
+              send({ type: "FETCH_SUCCESS", data: cached.payload });
+              return;
+            }
+          }
+        } catch (e) {}
+
+        const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+        const timeoutId = setTimeout(() => {
+          if (controller) controller.abort();
+        }, 8000);
+
+        fetch(
+          `https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(username)}?y=last`,
+          controller ? { signal: controller.signal } : undefined
+        )
+          .then((res) => {
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             return res.json();
           })
-          .then(json => {
+          .then((json) => {
             if (cancelled) return;
-            const today = new Date().toISOString().split('T')[0];
-            const sorted = json.contributions.sort((a, b) => new Date(a.date) - new Date(b.date));
-            const filtered = sorted.filter(c => c.date <= today);
-            const lastYear = filtered.slice(-364);
+            const rawList = Array.isArray(json.contributions) ? json.contributions : [];
+            if (!rawList.length) throw new Error("Empty dataset");
 
-            const firstDay = new Date(lastYear[0].date);
-            const firstDayOfWeek = firstDay.getDay();
-            const offset = (firstDayOfWeek + 6) % 7;
+            const now = new Date();
+            const today = now.toISOString().slice(0, 10);
+            const firstDay = new Date(`${today}T00:00:00.000Z`);
+            firstDay.setUTCDate(firstDay.getUTCDate() - 29);
+            const yearStart = `${now.getUTCFullYear()}-01-01`;
 
-            const contributions = [
-              ...Array(offset).fill(null),
-              ...lastYear
-            ];
+            const contributionsByDay = new Map();
+            for (let i = 0; i < 30; i++) {
+              const d = new Date(firstDay);
+              d.setUTCDate(firstDay.getUTCDate() + i);
+              contributionsByDay.set(d.toISOString().slice(0, 10), 0);
+            }
 
-            send({
-              type: "FETCH_SUCCESS",
-              data: {
-                total: json.total.lastYear || json.total[new Date().getFullYear()] || 'Many',
-                contributions
+            let yearToDateContributions = 0;
+            for (const item of rawList) {
+              if (!item || !item.date) continue;
+              const count = Number(item.count) || 0;
+              if (item.date >= yearStart && item.date <= today) {
+                yearToDateContributions += count;
               }
-            });
+              if (contributionsByDay.has(item.date)) {
+                contributionsByDay.set(item.date, count);
+              }
+            }
+
+            const days = Array.from(contributionsByDay, ([date, count]) => ({ date, count }));
+            const totalCommits = days.reduce((sum, d) => sum + d.count, 0);
+            const payload = { days, totalCommits, yearToDateContributions };
+
+            try {
+              sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), payload }));
+            } catch (e) {}
+
+            send({ type: "FETCH_SUCCESS", data: payload });
           })
-          .catch(err => {
+          .catch((err) => {
             if (cancelled) return;
-            console.error('Error fetching github data:', err);
             send({ type: "FETCH_ERROR", error: err.message });
-          });
+          })
+          .finally(() => clearTimeout(timeoutId));
 
         return () => {
           cancelled = true;
+          clearTimeout(timeoutId);
+          if (controller) controller.abort();
         };
-      }, [telemetry.value, send]);
+      }, [telemetry.value, username, send]);
 
-      const weeks = useMemo(() => {
-        if (!data) {
-          return Array.from({ length: 52 }, () => Array.from({ length: 7 }, () => null));
-        }
-        const result = [];
-        for (let i = 0; i < data.contributions.length; i += 7) {
-          result.push(data.contributions.slice(i, i + 7));
-        }
-        return result;
-      }, [data]);
+      useEffect(() => {
+        return () => {
+          if (leaveTimeoutRef.current) clearTimeout(leaveTimeoutRef.current);
+        };
+      }, []);
 
-      const levelColors = [
-        '#F3F4F6',
-        '#D1E0FF',
-        '#80AAFF',
-        '#3377FF',
-        '#0055FF'
-      ];
+      const handleEnter = useCallback(
+        (i, withSound = true) => {
+          if (leaveTimeoutRef.current) clearTimeout(leaveTimeoutRef.current);
+          send({ type: "HOVER_DAY", index: i });
+          if (withSound) playTick();
+        },
+        [send]
+      );
 
-      const getCalculatedLevel = (count) => {
-        if (count === 0) return 0;
-        if (count <= 3) return 1;
-        if (count <= 6) return 2;
-        if (count <= 9) return 3;
-        return 4;
-      };
+      const handleLeave = useCallback(
+        (immediate = false) => {
+          if (leaveTimeoutRef.current) clearTimeout(leaveTimeoutRef.current);
+          if (immediate) {
+            send("CLEAR_HOVER");
+            return;
+          }
+          leaveTimeoutRef.current = setTimeout(() => {
+            send("CLEAR_HOVER");
+          }, 80);
+        },
+        [send]
+      );
+
+      const handleSelect = useCallback(
+        (i) => {
+          if (leaveTimeoutRef.current) clearTimeout(leaveTimeoutRef.current);
+          if (hoveredIndex === i) {
+            send("CLEAR_HOVER");
+          } else {
+            send({ type: "HOVER_DAY", index: i });
+          }
+        },
+        [hoveredIndex, send]
+      );
+
+      const placeholderDays = useMemo(
+        () => Array.from({ length: 30 }, (_, i) => ({ date: `placeholder-${i}`, count: 0 })),
+        []
+      );
+      const displayDays = data && data.days ? data.days : placeholderDays;
+      const activeDay = hoveredIndex !== null && displayDays[hoveredIndex] ? displayDays[hoveredIndex] : null;
 
       return (
-        <section
+        <motion.section
           id="github"
+          variants={enterItem}
           data-machine="githubTelemetry"
           data-state={telemetry.value}
-          data-total-commits={data ? data.total : undefined}
-          data-inspected-date={hoveredDay ? hoveredDay.date : undefined}
-          className="px-6 md:px-12 lg:px-20 py-16 bg-offwhite border-b border-dark/10"
+          data-github-username={username}
+          data-total-commits={data ? data.yearToDateContributions : undefined}
+          data-inspected-date={activeDay ? activeDay.date : undefined}
+          aria-label="GitHub contribution activity"
+          className="flex flex-col gap-3 w-full"
         >
-          <div className="max-w-[1360px] mx-auto">
-            <div className="bg-white rounded-3xl border border-dark/10 p-6 sm:p-8 md:p-10 shadow-[0_4px_20px_rgba(17,24,39,0.02)]">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 mb-6 border-b border-dark/10">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-electric/10 text-electric flex items-center justify-center">
-                    <GithubIcon />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2.5">
-                      <h3 className="font-serif text-2xl text-dark font-semibold">Code <em className="text-electric italic font-normal">Pulse</em></h3>
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-electric/10 text-electric font-mono text-[11px] font-semibold">
-                        <span className="w-1.5 h-1.5 rounded-full bg-electric animate-pulse"></span>
-                        {isLoading ? "Syncing..." : isError ? "Offline" : `${data.total} commits (12m)`}
-                      </span>
-                    </div>
-                    <p className="text-xs font-mono text-dark/50 mt-0.5" aria-live="polite">
-                      {hoveredDay
-                        ? `${hoveredDay.count} contribution${hoveredDay.count === 1 ? '' : 's'} on ${hoveredDay.date}`
-                        : isError
-                        ? "Telemetry temporarily unavailable — view directly on GitHub"
-                        : "Rolling 52-week open-source & engineering activity"}
-                    </p>
-                  </div>
-                </div>
+          <CommitGraph
+            days={displayDays}
+            hovered={hoveredIndex}
+            onEnter={handleEnter}
+            onLeave={handleLeave}
+            onSelect={handleSelect}
+            isLoading={isLoading}
+            isError={isError}
+          />
 
-                <div className="flex items-center gap-2 self-start md:self-auto">
-                  {isError && (
-                    <button
-                      onClick={() => send("RETRY")}
-                      className="px-3.5 py-2 rounded-full bg-electric/10 hover:bg-electric text-electric hover:text-white text-xs font-mono font-medium transition-colors"
-                    >
-                      Retry
-                    </button>
-                  )}
-                  <a
-                    href="https://github.com/JPacoch"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2 rounded-full bg-offwhite hover:bg-electric hover:text-white border border-dark/10 hover:border-electric text-xs font-mono font-medium text-dark transition-all flex items-center gap-2"
-                  >
-                    <span>github.com/JPacoch</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </div>
-
-              <div className="overflow-x-auto pb-2 custom-scrollbar-minimal">
-                <div className="flex gap-[3.5px] min-w-max">
-                  {weeks.map((week, i) => (
-                    <div key={i} className="flex flex-col gap-[3.5px]">
-                      {week.map((day, j) => {
-                        if (isLoading || isError) {
-                          return (
-                            <div
-                              key={`skeleton-${i}-${j}`}
-                              className={`w-3.5 h-3.5 rounded-[3px] bg-offwhite ${isLoading ? "animate-pulse" : "opacity-50"}`}
-                            />
-                          );
-                        }
-
-                        if (!day) return <div key={`empty-${i}-${j}`} className="w-3.5 h-3.5" />;
-
-                        const activeLevel = (day.level === 0 && day.count > 0)
-                          ? getCalculatedLevel(day.count)
-                          : day.level;
-
-                        return (
-                          <div
-                            key={day.date}
-                            tabIndex={0}
-                            role="gridcell"
-                            aria-label={`${day.count} contributions on ${day.date}`}
-                            onMouseEnter={() => send({ type: "INSPECT_DAY", day })}
-                            onMouseLeave={() => send("CLEAR_INSPECT")}
-                            onFocus={() => send({ type: "INSPECT_DAY", day })}
-                            onBlur={() => send("CLEAR_INSPECT")}
-                            className="w-3.5 h-3.5 rounded-[3px] transition-transform duration-150 hover:scale-125 focus:scale-125 focus:outline-none focus:ring-1 focus:ring-electric cursor-pointer"
-                            style={{ backgroundColor: levelColors[activeLevel] }}
-                            title={`${day.count} contributions on ${day.date}`}
-                          />
-                        );
-                      })}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-4 pt-4 border-t border-dark/5 flex flex-wrap items-center justify-between gap-4 text-[11px] font-mono text-dark/45">
-                <span>Hover or focus any cell to inspect daily commit telemetry</span>
-                <div className="flex items-center gap-2">
-                  <span>Less</span>
-                  <div className="flex gap-1">
-                    {levelColors.map(c => (
-                      <div key={c} className="w-2.5 h-2.5 rounded-[2px]" style={{ backgroundColor: c }} />
-                    ))}
-                  </div>
-                  <span>More</span>
-                </div>
-              </div>
-            </div>
+          <div className="flex items-center justify-between gap-4 text-[0.9375rem]">
+            <span className="text-ink-muted">Last 30 days</span>
+            {isError ? (
+              <button
+                type="button"
+                onClick={() => send("RETRY")}
+                className="inline-link text-[0.9375rem] bg-transparent border-0 p-0 cursor-pointer"
+              >
+                Retry
+              </button>
+            ) : (
+              <span className="text-[0.9375rem] text-ink-secondary tabular-nums">
+                {isLoading ? "Syncing…" : `${data.totalCommits} contributions`}
+              </span>
+            )}
           </div>
-        </section>
+
+          <div className="border-t border-dotted border-hairline" />
+
+          <div className="flex items-center justify-between gap-4 text-[0.9375rem]">
+            <span className="text-ink-muted">Year to date</span>
+            <a
+              href={`https://github.com/${encodeURIComponent(username)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[0.9375rem] text-ink-secondary hover-ink tabular-nums inline-flex items-center gap-1 transition-colors duration-150 ease-out"
+            >
+              <span>
+                {isLoading ? "—" : isError ? `github.com/${username}` : `${data.yearToDateContributions} contributions`}
+              </span>
+              <ArrowUpRightIcon className="w-3.5 h-3.5 text-ink-muted" />
+            </a>
+          </div>
+
+          <span className="sr-only" role="status" aria-live="polite">
+            {activeDay
+              ? `${formatCommitDate(activeDay.date)}: ${activeDay.count} ${activeDay.count === 1 ? "contribution" : "contributions"}`
+              : ""}
+          </span>
+        </motion.section>
       );
     };
 
-    // --- SELECTED PROJECTS SECTION (Explicit Category Filter + Layout Sync State Machine) ---
+    // --- PROJECTS SECTION (Charles Shin + Ashish Kashyap minimal icon rows & subtle inline filter) ---
     const PROJECTS_DATA = [
       {
         id: "01",
+        icon: "cabinet",
         title: "From the Cabinet",
-        subtitle: "Philosophical & Theological Publication",
-        desc: "An independent digital publication and essay archive exploring phenomenology, epistemology, existentialism, and systematic theology.",
+        desc: "Philosophical & theological essay archive",
+        type: "Publication",
         url: "https://fromthecabinet.com/",
-        domain: "fromthecabinet.com",
-        category: "Thought & Publishing",
-        tags: ["Editorial", "Philosophy", "Web Platform"],
-        featured: true,
-        metric: "8.5k+ Words Published"
+        category: "Publishing"
       },
       {
         id: "02",
+        icon: "wideawake",
         title: "WideAwake",
-        subtitle: "Windows System & Kernel Utility",
-        desc: "Lightweight native Windows desktop utility that prevents system sleep and maintains active presence using low-level kernel ping intervals.",
+        desc: "Zero-dependency Windows keep-awake utility",
+        type: "C# / .NET",
         url: "https://wideawake.jakubpacocha.com/",
-        domain: "wideawake.jakubpacocha.com",
-        category: "Engineering",
-        tags: ["C#", ".NET", "Windows API", "System Utility"],
-        featured: true,
-        metric: "Zero-dependency native binary"
+        category: "Engineering"
       },
       {
         id: "03",
+        icon: "ostrzolka",
         title: "Ostrzółka",
-        subtitle: "Historical Archive & NGO Database",
-        desc: "Civic heritage database built in collaboration with local NGOs to preserve, index, and make searchable historical records of Bydgoszcz.",
+        desc: "Municipal heritage database for NGOs",
+        type: "Civic data",
         url: "https://ostrzolka.vercel.app/",
-        domain: "ostrzolka.vercel.app",
-        category: "Civic & Data",
-        tags: ["Database", "Civic Tech", "NGO", "Bydgoszcz"],
-        featured: false,
-        metric: "Municipal Heritage Archive"
+        category: "Civic"
       },
       {
         id: "04",
+        icon: "owewho",
         title: "OweWho",
-        subtitle: "Group Expense & Settlement Engine",
-        desc: "Streamlined financial web application designed for travelers and groups to track multi-person expenses and compute minimal settlement transfers.",
+        desc: "Group expense & travel debt settlement",
+        type: "Web app",
         url: "https://owewho.jakubpacocha.com/",
-        domain: "owewho.jakubpacocha.com",
-        category: "Engineering",
-        tags: ["Web App", "Algorithms", "FinTech Utility"],
-        featured: false,
-        metric: "Real-time debt graph simplification"
+        category: "Engineering"
       },
       {
         id: "05",
+        icon: "quotes",
         title: "Cabinet Quotes",
-        subtitle: "Contemplative Commonplace Book",
-        desc: "A distraction-free dark-mode reader curating philosophical aphorisms, theological excerpts, and literary passages for daily reflection.",
+        desc: "Distraction-free literary commonplace book",
+        type: "Reader",
         url: "https://quotes.fromthecabinet.com/",
-        domain: "quotes.fromthecabinet.com",
-        category: "Thought & Publishing",
-        tags: ["React", "Digital Garden", "Minimal UI"],
-        featured: false,
-        metric: "Curated literary archive"
+        category: "Publishing"
       },
       {
         id: "06",
+        icon: "gallery",
         title: "Gallery",
-        subtitle: "Minimalist Visual Exhibition",
-        desc: "A curated digital photography space presenting architectural geometry, quiet landscapes, and observational street frames.",
+        desc: "Gallery of private photographs ",
+        type: "Photography",
         url: "https://gallery.jakubpacocha.com/",
-        domain: "gallery.jakubpacocha.com",
-        category: "Civic & Data",
-        tags: ["Photography", "Visual Arts", "Exhibition"],
-        featured: false,
-        metric: "High-resolution visual archive"
+        category: "Civic"
       }
     ];
 
-    const PROJECT_CATEGORIES = ["All", "Engineering", "Thought & Publishing", "Civic & Data"];
+    const PROJECT_CATEGORIES = ["All", "Engineering", "Publishing", "Civic"];
 
     const PROJECT_FILTER_MACHINE = {
       id: "projectFilter",
       initial: "idle",
-      context: () => ({
-        category: "All"
-      }),
+      context: () => ({ category: "All", hoveredProjectId: null }),
       on: {
         SELECT_CATEGORY: (ctx, event) => {
           const nextCat = PROJECT_CATEGORIES.includes(event.category) ? event.category : "All";
           if (nextCat === ctx.category) return null;
-          return {
-            target: "transitioning",
-            context: { ...ctx, category: nextCat }
-          };
-        }
+          return { target: "transitioning", context: { ...ctx, category: nextCat } };
+        },
+        RESET_FILTER: (ctx) => {
+          if (ctx.category === "All") return null;
+          return { target: "transitioning", context: { ...ctx, category: "All" } };
+        },
+        INSPECT_PROJECT: (ctx, event) => ({ context: { ...ctx, hoveredProjectId: event.id || null } }),
+        LEAVE_PROJECT: (ctx) => ({ context: { ...ctx, hoveredProjectId: null } })
       },
       states: {
         idle: {},
-        transitioning: {
-          on: {
-            TRANSITION_COMPLETE: "idle"
-          }
-        }
+        transitioning: { on: { TRANSITION_COMPLETE: "idle" } }
       }
     };
 
-    const Projects = () => {
+    const Projects = ({ enterItem }) => {
       const [filterState, send] = useMachine(PROJECT_FILTER_MACHINE);
-      const activeCategory = filterState.context.category;
+      const reduce = useReducedMotionSafe();
+      const { category: activeCategory, hoveredProjectId } = filterState.context;
+      const tabRefs = useRef([]);
 
       const filteredProjects = useMemo(() => {
         if (activeCategory === "All") return PROJECTS_DATA;
-        return PROJECTS_DATA.filter(p => p.category === activeCategory);
+        return PROJECTS_DATA.filter((p) => p.category === activeCategory);
       }, [activeCategory]);
-
-      const categoryCounts = useMemo(() => {
-        const counts = { All: PROJECTS_DATA.length };
-        for (const cat of PROJECT_CATEGORIES.slice(1)) {
-          counts[cat] = PROJECTS_DATA.filter(p => p.category === cat).length;
-        }
-        return counts;
-      }, []);
 
       const completeTransition = useCallback(() => {
         send("TRANSITION_COMPLETE");
-        if (window.ScrollTrigger) {
-          window.ScrollTrigger.refresh();
-        }
+        if (window.ScrollTrigger) window.ScrollTrigger.refresh();
       }, [send]);
 
       useEffect(() => {
         if (filterState.value !== "transitioning") return;
-        const timer = setTimeout(completeTransition, 280);
+        const timer = setTimeout(completeTransition, 240);
         return () => clearTimeout(timer);
       }, [filterState.value, activeCategory, completeTransition]);
 
+      const handleTabKeyDown = (e, idx) => {
+        let nextIdx = null;
+        if (e.key === "ArrowRight") nextIdx = (idx + 1) % PROJECT_CATEGORIES.length;
+        else if (e.key === "ArrowLeft") nextIdx = (idx - 1 + PROJECT_CATEGORIES.length) % PROJECT_CATEGORIES.length;
+        else if (e.key === "Home") nextIdx = 0;
+        else if (e.key === "End") nextIdx = PROJECT_CATEGORIES.length - 1;
+        if (nextIdx === null) return;
+        e.preventDefault();
+        send({ type: "SELECT_CATEGORY", category: PROJECT_CATEGORIES[nextIdx] });
+        if (tabRefs.current[nextIdx]) tabRefs.current[nextIdx].focus();
+      };
+
       return (
-        <section
+        <motion.section
           id="projects"
+          variants={enterItem}
           data-machine="projectFilter"
           data-state={filterState.value}
           data-category={activeCategory}
           data-visible-count={filteredProjects.length}
-          className="px-6 md:px-12 lg:px-20 py-28 bg-white border-b border-dark/10"
+          data-hovered-project={hoveredProjectId || undefined}
+          aria-labelledby="projects-heading"
+          className="tracking-normal"
         >
-          <div className="max-w-[1360px] mx-auto">
-            <SectionHeader
-              index="02"
-              label="Side Projects"
-              title="Engineered tools &"
-              italicTitle="digital artifacts."
-              rightElement={
-                <div
-                  role="tablist"
-                  aria-label="Filter projects by category"
-                  className="flex flex-wrap gap-1.5 bg-offwhite p-1.5 rounded-2xl border border-dark/10"
-                >
-                  {PROJECT_CATEGORIES.map((cat) => {
-                    const isSelected = activeCategory === cat;
-                    return (
-                      <button
-                        key={cat}
-                        role="tab"
-                        aria-selected={isSelected}
-                        data-category={cat}
-                        onClick={() => send({ type: "SELECT_CATEGORY", category: cat })}
-                        className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 ${
-                          isSelected
-                            ? "bg-electric text-white shadow-sm"
-                            : "text-dark/60 hover:text-dark"
-                        }`}
-                      >
-                        <span>{cat}</span>
-                        <span className={`font-mono text-[10px] ${isSelected ? "text-white/80" : "text-dark/35"}`}>
-                          {categoryCounts[cat]}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              }
-            />
+          {/* Minimal Section Header + Inline Underline Filter */}
+          <div className="flex flex-wrap items-baseline justify-between gap-3 pb-4 mb-4 border-b border-hairline">
+            <h2
+              id="projects-heading"
+              className="text-base sm:text-[1.0625rem] font-semibold text-ink tracking-normal"
+            >
+              Projects
+            </h2>
 
-            <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <AnimatePresence mode="popLayout" onExitComplete={completeTransition}>
-                {filteredProjects.map((proj) => (
-                  <motion.a
-                    layout
-                    key={proj.id}
-                    href={proj.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    initial={{ opacity: 0, scale: 0.96 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.96 }}
-                    transition={{ duration: 0.25 }}
-                    className={`group relative rounded-3xl p-7 md:p-8 bg-offwhite/60 hover:bg-white border border-dark/10 hover:border-electric transition-all duration-300 flex flex-col justify-between hover:shadow-[0_20px_50px_rgba(0,85,255,0.08)] ${
-                      proj.featured && activeCategory === "All" ? "md:col-span-1 lg:col-span-1" : ""
+            <div
+              role="tablist"
+              aria-label="Filter projects by category"
+              className="flex flex-wrap items-center gap-5"
+            >
+              {PROJECT_CATEGORIES.map((cat, idx) => {
+                const isSelected = activeCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    ref={(el) => { tabRefs.current[idx] = el; }}
+                    type="button"
+                    role="tab"
+                    aria-selected={isSelected}
+                    aria-controls="projects-tabpanel"
+                    tabIndex={isSelected ? 0 : -1}
+                    onClick={() => send({ type: "SELECT_CATEGORY", category: cat })}
+                    onKeyDown={(e) => handleTabKeyDown(e, idx)}
+                    className={`relative pt-1 pb-1.5 text-[0.9375rem] font-medium tracking-[0.005em] transition-colors duration-150 ease-out ${
+                      isSelected ? "text-ink" : "text-ink-muted hover-ink"
                     }`}
                   >
-                    {/* Top Metadata Bar */}
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-6">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs font-semibold text-electric bg-electric/10 px-2.5 py-1 rounded-md">
-                            {proj.id}
-                          </span>
-                          <span className="font-mono text-[11px] text-dark/45 truncate max-w-[180px]">
-                            {proj.domain}
-                          </span>
-                        </div>
-                        <div className="w-9 h-9 rounded-full bg-white border border-dark/10 group-hover:bg-electric group-hover:border-electric group-hover:text-white text-dark/60 flex items-center justify-center transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-                          <ArrowUpRight className="w-4 h-4" />
-                        </div>
-                      </div>
-
-                      <div className="font-mono text-[11px] uppercase tracking-wider text-electric font-medium mb-1.5">
-                        {proj.subtitle}
-                      </div>
-                      <h3 className="font-serif text-3xl text-dark font-semibold mb-3 group-hover:text-electric transition-colors">
-                        {proj.title}
-                      </h3>
-                      <p className="text-sm text-dark/65 leading-relaxed mb-8">
-                        {proj.desc}
-                      </p>
-                    </div>
-
-                    {/* Footer of Card */}
-                    <div className="pt-5 border-t border-dark/8">
-                      <div className="flex items-center justify-between text-xs font-mono text-dark/50 mb-3">
-                        <span>HIGHLIGHT</span>
-                        <span className="text-dark/80 font-medium">{proj.metric}</span>
-                      </div>
-                      <div className="flex flex-wrap gap-1.5">
-                        {proj.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-2.5 py-1 rounded-md bg-white border border-dark/10 text-dark/70 font-mono text-[11px]"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </motion.a>
-                ))}
-              </AnimatePresence>
-            </motion.div>
+                    {cat}
+                    {isSelected && (
+                      <motion.span
+                        layoutId="projectFilterLine"
+                        transition={reduce ? { duration: 0.1 } : { type: "spring", duration: 0.3, bounce: 0 }}
+                        className="absolute inset-x-0 bottom-0 h-[1.5px] bg-ink rounded-full"
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </section>
+
+          {/* Smooth Cross-Fading & Micro-Staggered Project List (Zero layout/CSS transform collision) */}
+          <div
+            id="projects-tabpanel"
+            role="tabpanel"
+            aria-label={`${activeCategory} projects`}
+            className="-mx-3.5 sm:-mx-4"
+          >
+            <AnimatePresence initial={false} mode="wait" onExitComplete={completeTransition}>
+              <motion.div
+                key={activeCategory}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0.12, ease: "easeOut" } }}
+                transition={{ duration: 0.16, ease: "easeOut" }}
+                className="focus-list flex flex-col gap-1.5 sm:gap-2"
+              >
+                {filteredProjects.map((proj, idx) => (
+                  <motion.div
+                    key={proj.id}
+                    initial={reduce ? { opacity: 0 } : { opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.22,
+                      delay: reduce ? 0 : idx * 0.03,
+                      ease: [0.2, 0, 0, 1]
+                    }}
+                  >
+                    <a
+                      href={proj.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onMouseEnter={() => send({ type: "INSPECT_PROJECT", id: proj.id })}
+                      onMouseLeave={() => send("LEAVE_PROJECT")}
+                      onFocus={() => send({ type: "INSPECT_PROJECT", id: proj.id })}
+                      onBlur={() => send("LEAVE_PROJECT")}
+                      className="focus-list-item tap-press flex items-center justify-between gap-4 sm:gap-6 px-3.5 sm:px-4 py-4 sm:py-[1.125rem] rounded-xl transition-[opacity,background-color,transform] duration-150 ease-out min-w-0"
+                    >
+                      <div className="flex items-center gap-4 sm:gap-5 min-w-0">
+                        <span className="icon-tile shrink-0 w-11 h-11 rounded-[11px] inline-flex items-center justify-center">
+                          <ProjectIcon type={proj.icon} />
+                        </span>
+                        <div className="min-w-0">
+                          <div className="text-[1.0625rem] sm:text-[1.125rem] font-semibold text-ink leading-[1.35] tracking-normal truncate">
+                            {proj.title}
+                          </div>
+                          <div className="mt-1 text-base text-ink-muted leading-[1.45] truncate">
+                            {proj.desc}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2.5 shrink-0">
+                        <span className="hidden sm:inline text-[0.9375rem] text-ink-muted">
+                          {proj.type}
+                        </span>
+                        <ArrowUpRightIcon className="row-arrow w-4 h-4 text-ink-muted opacity-60 sm:opacity-0 transition-[opacity,transform] duration-150 ease-out" />
+                      </div>
+                    </a>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </motion.section>
       );
     };
 
-    // --- WRITING / ESSAYS SECTION ---
-    const Writing = () => {
-      const essays = [
-        {
-          id: "01",
-          title: "Timon, on authenticity",
-          category: "Dialogue",
-          desc: "What if you could take the journey of your dreams, see everything you ever wanted to see, and experience it all exactly as you wished but no one could ever know you had been there? Would the journey still be worth the same?",
-          date: "Sep 2026",
-          read: "5 min read",
-          link: "https://fromthecabinet.com/text.html?slug=dialogue1-on-socmed",
-          featured: true
-        },
-        {
-          id: "02",
-          title: "The Phenomenology and Certainty",
-          category: "Epistemology",
-          desc: "Science produces precise but constrained abstractions of experience, while metaphysics investigates the conditions that make experience possible; both contribute to understanding, but only within a cycle that returns them to the Life-World.",
-          date: "Apr 2026",
-          read: "5 min read",
-          link: "https://fromthecabinet.com/texts/phenomenology-certainty.html"
-        },
-        {
-          id: "03",
-          title: "The Wall and Nausea",
-          category: "Existentialism",
-          desc: "Being truly conscious means existing in a painful superposition between a social system and the honest, dull silence of the 'In-Itself' and reality.",
-          date: "Apr 2026",
-          read: "3 min read",
-          link: "https://fromthecabinet.com/text.html?slug=the-wall-and-nausea"
-        },
-        {
-          id: "04",
-          title: "The Sartrean Trap",
-          category: "Metaphysics",
-          desc: "When the method becomes a prison — on how Sartre misused phenomenology. 'And if phenomenology refuses to step outside of itself, then isn't it becoming the very thing it was meant to battle?'",
-          date: "Feb 2026",
-          read: "10 min read",
-          link: "https://fromthecabinet.com/text.html?slug=sartrean-trap"
-        },
-        {
-          id: "05",
-          title: "Christocentric Determinism",
-          category: "Theology",
-          desc: "On bridging the theological tension between Arminianism and Calvinism. Creating a doctrine that might be both true to the gospel and intellectually satisfying.",
-          date: "Jan 2026",
-          read: "9 min read",
-          link: "https://fromthecabinet.com/text.html?slug=christocentric-determinism"
-        }
-      ];
+    // --- WRITING / NOTES SECTION (Chloé Maillot-inspired rows with NEW pill + mini paper sheet) ---
+    const ESSAYS_DATA = [
+      {
+        id: "01",
+        title: "Timon, on authenticity",
+        category: "Dialogue",
+        date: "Sep 2026",
+        isNew: true,
+        link: "https://fromthecabinet.com/text.html?slug=dialogue1-on-socmed"
+      },
+      {
+        id: "02",
+        title: "The Phenomenology and Certainty",
+        category: "Epistemology",
+        date: "Apr 2026",
+        link: "https://fromthecabinet.com/texts/phenomenology-certainty.html"
+      },
+      {
+        id: "03",
+        title: "The Wall and Nausea",
+        category: "Existentialism",
+        date: "Apr 2026",
+        link: "https://fromthecabinet.com/text.html?slug=the-wall-and-nausea"
+      },
+      {
+        id: "04",
+        title: "The Sartrean Trap",
+        category: "Metaphysics",
+        date: "Feb 2026",
+        link: "https://fromthecabinet.com/text.html?slug=sartrean-trap"
+      },
+      {
+        id: "05",
+        title: "Christocentric Determinism",
+        category: "Theology",
+        date: "Jan 2026",
+        link: "https://fromthecabinet.com/text.html?slug=christocentric-determinism"
+      }
+    ];
 
-      const featuredEssay = essays[0];
-      const archiveEssays = essays.slice(1);
+    const WRITING_CATALOG_MACHINE = {
+      id: "writingCatalog",
+      initial: "defaultSpotlight",
+      context: () => ({ spotlightId: "01", hoveredEssayId: null }),
+      on: {
+        HOVER_ESSAY: (ctx, event) => ({ context: { ...ctx, hoveredEssayId: event.id || null } }),
+        LEAVE_ESSAY: (ctx) => ({ context: { ...ctx, hoveredEssayId: null } })
+      },
+      states: { defaultSpotlight: {} }
+    };
+
+    const Writing = ({ enterItem }) => {
+      const [writingState, sendWriting] = useMachine(WRITING_CATALOG_MACHINE);
+      const { hoveredEssayId } = writingState.context;
 
       return (
-        <section id="writing" className="px-6 md:px-12 lg:px-20 py-28 bg-offwhite border-b border-dark/10">
-          <div className="max-w-[1360px] mx-auto">
-            <SectionHeader
-              index="03"
-              label="From The Cabinet"
-              title="Philosophical"
-              italicTitle="essays & dialogues."
-              rightElement={
-                <a
-                  href="https://fromthecabinet.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-electric hover:text-white text-dark border border-dark/10 hover:border-electric text-xs font-mono font-medium transition-all"
-                >
-                  <span>Visit Publication</span>
-                  <ArrowUpRight className="w-4 h-4" />
-                </a>
-              }
-            />
+        <motion.section
+          id="writing"
+          variants={enterItem}
+          data-machine="writingCatalog"
+          data-state={writingState.value}
+          data-hovered-essay={hoveredEssayId || undefined}
+          aria-labelledby="writing-heading"
+          className="tracking-normal"
+        >
+          <div className="flex items-baseline justify-between gap-4 pb-4 mb-4 border-b border-hairline">
+            <h2
+              id="writing-heading"
+              className="text-base sm:text-[1.0625rem] font-semibold text-ink tracking-normal"
+            >
+              Writing
+            </h2>
+            <a
+              href="https://fromthecabinet.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="muted-link text-[0.9375rem] font-medium tracking-normal"
+            >
+              View all
+            </a>
+          </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-              {/* Featured Latest Essay Card */}
+          <div className="focus-list -mx-3.5 sm:-mx-4 flex flex-col gap-1.5 sm:gap-2">
+            {ESSAYS_DATA.map((essay, idx) => (
               <a
-                href={featuredEssay.link}
+                key={essay.id}
+                href={essay.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="lg:col-span-5 group rounded-3xl bg-dark text-white p-8 md:p-10 flex flex-col justify-between relative overflow-hidden shadow-[0_16px_40px_rgba(17,24,39,0.12)]"
+                onMouseEnter={() => sendWriting({ type: "HOVER_ESSAY", id: essay.id })}
+                onMouseLeave={() => sendWriting("LEAVE_ESSAY")}
+                onFocus={() => sendWriting({ type: "HOVER_ESSAY", id: essay.id })}
+                onBlur={() => sendWriting("LEAVE_ESSAY")}
+                className="focus-list-item tap-press flex items-center justify-between gap-5 sm:gap-6 px-3.5 sm:px-4 py-4 sm:py-[1.125rem] rounded-xl transition-[opacity,background-color,transform] duration-150 ease-out min-w-0"
               >
-                <div
-                  className="pointer-events-none absolute -bottom-24 -right-24 w-72 h-72 rounded-full opacity-35 blur-2xl group-hover:opacity-60 transition-opacity duration-500"
-                  style={{ background: "radial-gradient(circle, #0055FF 0%, transparent 70%)" }}
-                />
-
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-8">
-                    <span className="px-3 py-1 rounded-full bg-electric text-white font-mono text-[11px] font-semibold uppercase tracking-wider">
-                      Latest Essay • {featuredEssay.category}
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+                    <span className="text-[1.0625rem] sm:text-[1.125rem] font-semibold text-ink leading-[1.35] tracking-normal">
+                      {essay.title}
                     </span>
-                    <span className="font-mono text-xs text-white/50">
-                      {featuredEssay.date}
-                    </span>
+                    {essay.isNew && (
+                      <span className="inline-flex items-center justify-center h-6 px-2.5 rounded-full bg-badge-bg text-badge-text text-[0.6875rem] leading-none font-semibold tracking-[0.06em] uppercase">
+                        New
+                      </span>
+                    )}
                   </div>
-
-                  <h3 className="font-serif text-3xl md:text-4xl text-white leading-tight mb-5 group-hover:text-electric transition-colors">
-                    {featuredEssay.title}
-                  </h3>
-
-                  <p className="text-white/75 text-base leading-relaxed mb-8">
-                    “{featuredEssay.desc}”
-                  </p>
+                  <div className="mt-1.5 text-[0.9375rem] text-ink-muted leading-[1.45]">
+                    {essay.category}
+                  </div>
                 </div>
 
-                <div className="pt-6 border-t border-white/15 flex items-center justify-between">
-                  <span className="font-mono text-xs text-white/60">{featuredEssay.read}</span>
-                  <span className="inline-flex items-center gap-2 text-sm font-medium text-white group-hover:text-electric transition-colors">
-                    <span>Read full dialogue</span>
-                    <ArrowUpRight className="w-4 h-4" />
+                <div className="flex items-center gap-4 sm:gap-5 shrink-0">
+                  <span className="text-[0.9375rem] text-ink-muted tabular-nums">
+                    {essay.date}
                   </span>
+                  <PaperThumbnail variant={idx} />
                 </div>
               </a>
+            ))}
+          </div>
+        </motion.section>
+      );
+    };
 
-              {/* Editorial Index List */}
-              <div className="lg:col-span-7 bg-white rounded-3xl border border-dark/10 divide-y divide-dark/10 overflow-hidden flex flex-col justify-between">
-                {archiveEssays.map((essay) => (
+    const FOCUS_ITEMS = [
+      { id: "01", area: "Generative AI & RAG", stack: "RAG / LLMOps / Vector Stores / Agents" },
+      { id: "02", area: "Full-Stack AI Infra", stack: "Docker / K8s / FastAPI / React" },
+      { id: "03", area: "Programming", stack: "Python / SQL / TS / R" },
+      { id: "04", area: "Cloud & DevOps", stack: "AWS / Azure / CI/CD" },
+      { id: "05", area: "Spatial & Civic Data", stack: "GIS / Computer Vision" }
+    ];
+
+    const FocusIndex = ({ enterItem }) => (
+      <motion.section id="about" variants={enterItem} aria-labelledby="focus-heading" className="tracking-normal">
+        <div className="flex items-baseline justify-between gap-4 pb-4 mb-2 border-b border-hairline">
+          <h2 id="focus-heading" className="text-base sm:text-[1.0625rem] font-semibold text-ink tracking-normal">
+            Focus
+          </h2>
+          <a href="cv.html" className="muted-link text-[0.9375rem] font-medium tracking-normal">
+            Full CV
+          </a>
+        </div>
+
+        <dl className="divide-y divide-hairline">
+          {FOCUS_ITEMS.map((item) => (
+            <div
+              key={item.id}
+              className="py-4 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1.5 sm:gap-4"
+            >
+              <dt className="text-[1.0625rem] sm:text-[1.125rem] font-semibold text-ink tracking-normal">
+                {item.area}
+              </dt>
+              <dd className="text-[0.9375rem] text-ink-muted">
+                {item.stack}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </motion.section>
+    );
+
+    // --- SCROLL ENGINE & FOOTER CURTAIN MACHINES ---
+    const SCROLL_ENGINE_MACHINE = {
+      id: "scrollEngine",
+      initial: () =>
+        typeof window !== "undefined" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "reducedMotion"
+          : "idle",
+      context: () => ({ direction: "down" }),
+      on: {
+        VISIBILITY_HIDDEN: "suspended",
+        VISIBILITY_VISIBLE: "idle"
+      },
+      states: {
+        idle: {
+          on: {
+            SCROLL_ACTIVE: (ctx, event) => ({ target: "scrolling", context: { ...ctx, direction: event.direction || ctx.direction } })
+          }
+        },
+        scrolling: {
+          on: {
+            SCROLL_ACTIVE: (ctx, event) => {
+              if (event.direction === ctx.direction) return null;
+              return { target: "scrolling", context: { ...ctx, direction: event.direction } };
+            },
+            SCROLL_IDLE: "idle"
+          }
+        },
+        suspended: {},
+        reducedMotion: {}
+      }
+    };
+
+    const FOOTER_CURTAIN_MACHINE = {
+      id: "footerCurtain",
+      initial: "hidden",
+      context: () => ({ progress: 0, activeChannel: null }),
+      on: {
+        SCRUB_PROGRESS: (ctx, event, currentState) => {
+          const p = Math.max(0, Math.min(1, Number(event.progress) || 0));
+          const nextState = p <= 0.02 ? "hidden" : p >= 0.95 ? "revealed" : "revealing";
+          if (nextState === currentState && Math.abs(ctx.progress - p) < 0.02) return null;
+          return { target: nextState, context: { ...ctx, progress: Number(p.toFixed(3)) } };
+        },
+        REVEAL: (ctx) => ({ target: "revealed", context: { ...ctx, progress: 1 } }),
+        FOCUS_CHANNEL: (ctx, event) => ({ context: { ...ctx, activeChannel: event.channel || null } }),
+        BLUR_CHANNEL: (ctx) => ({ context: { ...ctx, activeChannel: null } })
+      },
+      states: { hidden: {}, revealing: {}, revealed: {} }
+    };
+
+    const EmergingFooter = ({ curtainState, sendCurtain, reduce }) => {
+      const handleFooterLinkFocus = (channel) => {
+        sendCurtain({ type: "FOCUS_CHANNEL", channel });
+        if (!reduce && curtainState.value !== "revealed") {
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: "smooth"
+          });
+        }
+      };
+
+      const channels = [
+        { id: "email", label: "Email", href: "mailto:pacochp@gmail.com", icon: <MailIcon />, external: false },
+        { id: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/in/jakubpacocha/", icon: <LinkedinIcon />, external: true },
+        { id: "twitter", label: "X / Twitter", href: "https://x.com/JakubPacocha", icon: <TwitterIcon />, external: true },
+        { id: "github", label: "GitHub", href: "https://github.com/JPacoch", icon: <GithubIcon />, external: true }
+      ];
+
+      return (
+        <footer
+          id="footer-container"
+          data-machine="footerCurtain"
+          data-state={curtainState.value}
+          data-progress={curtainState.context.progress}
+          data-active-channel={curtainState.context.activeChannel || undefined}
+          className={`${
+            reduce
+              ? "relative z-10 w-full bg-footer-bg text-footer-ink"
+              : "fixed bottom-0 inset-x-0 z-0 h-[74dvh] min-h-[480px] sm:h-[64dvh] sm:min-h-[500px] w-full bg-footer-bg text-footer-ink overflow-hidden"
+          } font-sans flex flex-col justify-between`}
+        >
+          <div
+            id="footer-container-inner"
+            className="w-full h-full max-w-[768px] mx-auto px-5 sm:px-8 pt-14 sm:pt-20 safe-bottom flex flex-col justify-between text-start"
+          >
+            <div className="my-auto">
+
+
+              <h2 className="text-4xl sm:text-7xl font-semibold leading-[1.08] tracking-[-0.03em] text-footer-ink text-balance mb-4">
+                Let’s build something{" "}
+                <span className="text-footer-muted font-medium italic">together.</span>
+              </h2>
+
+              <p className="text-base sm:text-[1.0625rem] text-footer-secondary leading-[1.6] text-pretty max-w-[42ch] mb-8">
+                Open to conversations about AI systems, spatial engineering, civic tech and philosophy.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2.5">
+                {channels.map((ch) => (
                   <a
-                    key={essay.id}
-                    href={essay.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group p-6 md:p-7 hover:bg-offwhite/70 transition-all duration-300 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative"
+                    key={ch.id}
+                    href={ch.href}
+                    target={ch.external ? "_blank" : undefined}
+                    rel={ch.external ? "noopener noreferrer" : undefined}
+                    onFocus={() => handleFooterLinkFocus(ch.id)}
+                    onBlur={() => sendCurtain("BLUR_CHANNEL")}
+                    onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: ch.id })}
+                    onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
+                    className="focus-ring-light tap-press hover-light-pill min-h-[42px] ps-3.5 pe-4 py-2 rounded-full bg-white/10 border border-white/15 text-footer-ink text-[0.9375rem] font-medium inline-flex items-center gap-2"
                   >
-                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-electric scale-y-0 group-hover:scale-y-100 transition-transform origin-center duration-300" />
-                    <div className="space-y-2 max-w-xl pl-1">
-                      <div className="flex items-center gap-3 text-xs font-mono">
-                        <span className="text-electric font-semibold">{essay.id}</span>
-                        <span className="uppercase tracking-wider text-dark/50 font-medium">{essay.category}</span>
-                        <span className="text-dark/25">•</span>
-                        <span className="text-dark/45">{essay.date}</span>
-                      </div>
-                      <h4 className="font-serif text-2xl text-dark font-semibold group-hover:text-electric transition-colors">
-                        {essay.title}
-                      </h4>
-                      <p className="text-sm text-dark/60 line-clamp-2 leading-relaxed">
-                        {essay.desc}
-                      </p>
-                    </div>
-
-                    <div className="flex sm:flex-col items-center sm:items-end justify-between shrink-0 gap-3">
-                      <span className="font-mono text-[11px] px-2.5 py-1 rounded-md bg-offwhite border border-dark/8 text-dark/60">
-                        {essay.read}
-                      </span>
-                      <div className="w-9 h-9 rounded-full border border-dark/10 group-hover:bg-electric group-hover:border-electric group-hover:text-white text-dark/50 flex items-center justify-center transition-all">
-                        <ArrowUpRight className="w-4 h-4" />
-                      </div>
-                    </div>
+                    {ch.icon}
+                    <span>{ch.label}</span>
                   </a>
                 ))}
               </div>
             </div>
+
+            <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-base text-footer-muted">
+              <span>© 2026 <span className="font-semibold text-footer-ink">Jakub Pacocha</span>. All rights reserved.</span>
+              <span>Bydgoszcz, Poland</span>
+            </div>
           </div>
-        </section>
+        </footer>
       );
     };
 
-    // --- MAIN APP WITH PRESERVED FOOTER REVEAL (Explicit Curtain Lifecycle State Machine) ---
-    const FOOTER_CURTAIN_MACHINE = {
-      id: "footerCurtain",
-      initial: "hidden",
-      context: () => ({ progress: 0 }),
-      on: {
-        SCRUB_PROGRESS: (ctx, event, currentState) => {
-          const p = Math.max(0, Math.min(1, Number(event.progress) || 0));
-          const nextState = p <= 0.01 ? "hidden" : p >= 0.98 ? "revealed" : "revealing";
-          if (nextState === currentState && Math.abs(ctx.progress - p) < 0.02) {
-            return null;
-          }
-          return {
-            target: nextState,
-            context: { progress: Number(p.toFixed(3)) }
-          };
-        }
-      },
-      states: {
-        hidden: {},
-        revealing: {},
-        revealed: {}
-      }
-    };
-
+    // --- ROOT APPLICATION ---
     const App = () => {
+      const [scrollEngine, sendScrollEngine] = useMachine(SCROLL_ENGINE_MACHINE);
       const [curtainState, sendCurtain] = useMachine(FOOTER_CURTAIN_MACHINE);
-      const isFooterHidden = curtainState.value === "hidden";
+      const reduce = useReducedMotionSafe();
+      const mainRef = useRef(null);
+
+      const [theme, setTheme] = useState(() =>
+        typeof document !== "undefined" && document.documentElement.getAttribute("data-theme") === "dark"
+          ? "dark"
+          : "light"
+      );
+
+      const [hapticsMuted, setHapticsMuted] = useState(() => isHapticsMuted());
+
+      const handleToggleHaptics = useCallback(() => {
+        setHapticsMuted((prev) => {
+          const next = !prev;
+          try {
+            localStorage.setItem("haptics-muted", String(next));
+          } catch (e) {}
+          window.dispatchEvent(new Event("haptics-muted-change"));
+          return next;
+        });
+      }, []);
+
+      const handleToggleTheme = useCallback(() => {
+        setTheme((prev) => {
+          const next = prev === "dark" ? "light" : "dark";
+          applyThemeWithoutSmear(next);
+          return next;
+        });
+      }, []);
+
+      useEffect(() => {
+        let lastY = window.scrollY;
+        let idleTimer = null;
+
+        const onScroll = () => {
+          const currentY = window.scrollY;
+          const direction = currentY >= lastY ? "down" : "up";
+          lastY = currentY;
+          sendScrollEngine({ type: "SCROLL_ACTIVE", direction });
+          clearTimeout(idleTimer);
+          idleTimer = setTimeout(() => sendScrollEngine("SCROLL_IDLE"), 160);
+        };
+
+        const onVisChange = () => {
+          sendScrollEngine(document.visibilityState === "visible" ? "VISIBILITY_VISIBLE" : "VISIBILITY_HIDDEN");
+        };
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        document.addEventListener("visibilitychange", onVisChange);
+        return () => {
+          clearTimeout(idleTimer);
+          window.removeEventListener("scroll", onScroll);
+          document.removeEventListener("visibilitychange", onVisChange);
+        };
+      }, [sendScrollEngine]);
 
       useLayoutEffect(() => {
-        const lenis = new Lenis({
-          duration: 1.15,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
-        });
-        window.__LENIS__ = lenis;
-
-        gsap.registerPlugin(ScrollTrigger);
-        lenis.on("scroll", ScrollTrigger.update);
-
-        let rafId = null;
-        function raf(time) {
-          lenis.raf(time);
-          rafId = requestAnimationFrame(raf);
+        if (reduce || !window.gsap || !window.ScrollTrigger) {
+          sendCurtain("REVEAL");
+          return;
         }
-        rafId = requestAnimationFrame(raf);
 
-        const initScrollTrigger = () => {
-          ScrollTrigger.create({
-            trigger: "#footer-spacer",
+        const { gsap, ScrollTrigger } = window;
+        gsap.registerPlugin(ScrollTrigger);
+
+        let st = null;
+        let tl = null;
+        let resizeObserver = null;
+
+        const initCurtain = () => {
+          const spacer = document.getElementById("footer-spacer");
+          const mainEl = document.getElementById("main-content");
+          const footerBackdrop = document.getElementById("footer-backdrop");
+          const footerInner = document.getElementById("footer-container-inner");
+          if (!spacer || !mainEl || !footerInner) return;
+
+          const getCornerRadius = () => (window.innerWidth < 640 ? "26px" : "36px");
+
+          tl = gsap.timeline()
+            .to(footerBackdrop, { opacity: 1, duration: 0.06, ease: "none" }, 0)
+            .to(
+              mainEl,
+              {
+                scale: 0.96,
+                borderBottomLeftRadius: getCornerRadius,
+                borderBottomRightRadius: getCornerRadius,
+                ease: "none"
+              },
+              0
+            )
+            .fromTo(
+              footerInner,
+              { y: "14%", opacity: 0.25 },
+              { y: "0%", opacity: 1, ease: "none" },
+              0
+            );
+
+          st = ScrollTrigger.create({
+            trigger: spacer,
             start: "top bottom",
             end: "bottom bottom",
             scrub: true,
+            invalidateOnRefresh: true,
             onUpdate: (self) => {
               sendCurtain({ type: "SCRUB_PROGRESS", progress: self.progress });
             },
-            animation: gsap.timeline()
-              .to(["#footer-container", "#blue-bg"], { autoAlpha: 1, duration: 0.05, ease: "none" }, 0)
-              .to("#main-content", {
-                scale: 0.96,
-                borderBottomLeftRadius: "48px",
-                borderBottomRightRadius: "48px",
-                ease: "none"
-              }, 0)
-              .fromTo("#footer-container-inner", { y: "15%" }, { y: "0%", ease: "none" }, 0)
+            animation: tl
           });
+
+          ScrollTrigger.refresh();
         };
 
-        const initTimer = setTimeout(() => {
-          initScrollTrigger();
-          ScrollTrigger.refresh();
-        }, 100);
+        const initTimer = window.setTimeout(initCurtain, 60);
 
-        const resizeObserver = new ResizeObserver(() => ScrollTrigger.refresh());
-        resizeObserver.observe(document.body);
+        if (typeof ResizeObserver !== "undefined" && mainRef.current) {
+          resizeObserver = new ResizeObserver(() => ScrollTrigger.refresh());
+          resizeObserver.observe(mainRef.current);
+        }
 
         return () => {
-          clearTimeout(initTimer);
-          if (rafId !== null) cancelAnimationFrame(rafId);
-          delete window.__LENIS__;
-          lenis.destroy();
-          ScrollTrigger.getAll().forEach(t => t.kill());
-          resizeObserver.disconnect();
+          window.clearTimeout(initTimer);
+          if (resizeObserver) resizeObserver.disconnect();
+          if (st) st.kill();
+          if (tl) tl.kill();
+          gsap.set(["#main-content", "#footer-backdrop", "#footer-container-inner"], { clearProps: "all" });
         };
-      }, [sendCurtain]);
+      }, [reduce, sendCurtain]);
+
+      const enterItem = {
+        hidden: reduce ? { opacity: 0 } : { opacity: 0, y: 10, filter: "blur(4px)" },
+        visible: {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          transition: { duration: 0.3, ease: "easeOut" }
+        }
+      };
 
       return (
-        <div className="bg-white min-h-screen font-sans text-dark selection:bg-electric selection:text-white">
-          <div id="blue-bg" className="fixed inset-0 bg-electric z-0 opacity-0 invisible pointer-events-none"></div>
-          <Nav />
-
-          <main
-            id="main-content"
-            className="bg-white w-full relative z-10 shadow-[0_20px_60px_rgba(0,0,0,0.1)] origin-[50%_100%] overflow-hidden"
-            style={{ willChange: "transform, border-radius" }}
+        <MotionConfig reducedMotion="user">
+          <div
+            id="app-shell"
+            data-machine="scrollEngine"
+            data-state={scrollEngine.value}
+            data-scroll-direction={scrollEngine.context.direction}
+            className="bg-canvas min-h-[100dvh] font-sans text-ink"
           >
-            <Hero />
-            <AboutAndCapabilities />
-            <GithubActivity />
-            <Projects />
-            <Writing />
-          </main>
+            <GlobalHaptics />
+            <ClickSpark />
 
-          <div id="footer-spacer" className="min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] w-full pointer-events-none"></div>
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-[200] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-ink focus:text-canvas focus:text-sm focus:font-medium"
+            >
+              Skip to content
+            </a>
 
-          <footer
-            id="footer-container"
-            data-machine="footerCurtain"
-            data-state={curtainState.value}
-            data-progress={curtainState.context.progress}
-            aria-hidden={isFooterHidden}
-            className="fixed bottom-0 left-0 w-full min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] z-0 flex flex-col justify-end bg-electric text-white overflow-hidden opacity-0 invisible"
-          >
-            <div id="footer-container-inner" className="w-full h-full px-6 md:px-12 lg:px-24 py-16 flex flex-col justify-between">
-              <div className="max-w-[1400px] w-full mx-auto flex flex-col h-full justify-between">
-                <div className="pt-8">
-                  <div id="contact" className="text-white/60 font-semibold uppercase tracking-widest text-sm mb-4">Contact</div>
-                  <h2 className="font-serif text-5xl md:text-7xl leading-tight mb-8">
-                    Let's do <br /> something <em className="italic font-light">together</em>
-                  </h2>
-                  <p className="text-xl text-white/80 mb-12">Want to say hello? Hit me up:</p>
+            {!reduce && (
+              <div
+                id="footer-backdrop"
+                aria-hidden="true"
+                className="fixed inset-0 z-0 bg-footer-bg opacity-0 pointer-events-none"
+              />
+            )}
 
-                  <div className="flex flex-wrap gap-4">
-                    <a
-                      href="mailto:pacochp@gmail.com"
-                      tabIndex={isFooterHidden ? -1 : 0}
-                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
-                    >
-                      <MailIcon /> Email
-                    </a>
-                    <a
-                      href="https://www.linkedin.com/in/jakubpacocha/"
-                      tabIndex={isFooterHidden ? -1 : 0}
-                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
-                    >
-                      <LinkedinIcon /> LinkedIn
-                    </a>
-                    <a
-                      href="https://x.com/JakubPacocha"
-                      tabIndex={isFooterHidden ? -1 : 0}
-                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
-                    >
-                      <TwitterIcon /> Twitter / X
-                    </a>
-                    <a
-                      href="https://github.com/JPacoch"
-                      tabIndex={isFooterHidden ? -1 : 0}
-                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
-                    >
-                      <GithubIcon /> GitHub
-                    </a>
-                  </div>
-                </div>
+            <main
+              id="main-content"
+              ref={mainRef}
+              className="relative z-10 main-curtain-surface w-full origin-[50%_100%]"
+            >
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={{ visible: { transition: { staggerChildren: reduce ? 0 : 0.08 } } }}
+                className="max-w-[768px] mx-auto px-5 sm:px-8 safe-top pb-24 sm:pb-28 space-y-16 sm:space-y-20"
+              >
+                <IdentityAndBio
+                  theme={theme}
+                  onToggleTheme={handleToggleTheme}
+                  hapticsMuted={hapticsMuted}
+                  onToggleHaptics={handleToggleHaptics}
+                  enterItem={enterItem}
+                />
+                <ActivityStrip enterItem={enterItem} />
+                <Projects enterItem={enterItem} />
+                <Writing enterItem={enterItem} />
+                <FocusIndex enterItem={enterItem} />
+              </motion.div>
+            </main>
 
-                <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-white/50 text-sm mt-12">
-                  <div>© 2026 <span className="font-semibold text-white">Jakub Pacocha</span> All rights reserved.</div>
-                  <div>Bydgoszcz, Poland</div>
-                </div>
-              </div>
-            </div>
-          </footer>
-        </div>
+            {!reduce && (
+              <div
+                id="footer-spacer"
+                aria-hidden="true"
+                className="h-[74dvh] min-h-[480px] sm:h-[64dvh] sm:min-h-[500px] w-full pointer-events-none"
+              />
+            )}
+
+            <EmergingFooter
+              curtainState={curtainState}
+              sendCurtain={sendCurtain}
+              reduce={reduce}
+            />
+          </div>
+        </MotionConfig>
       );
     };
 

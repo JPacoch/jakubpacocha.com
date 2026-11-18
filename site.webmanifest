@@ -1,0 +1,21 @@
+{
+  "id": "/",
+  "name": "Jakub Pacocha — AI & Software Engineer, Writer",
+  "short_name": "Jakub Pacocha",
+  "description": "Personal portfolio and curriculum vitae of Jakub Pacocha — AI & Software Engineer building production RAG architectures, containerized ML infrastructure, and spatial intelligence systems.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fcfcfc",
+  "theme_color": "#fcfcfc",
+  "lang": "en",
+  "categories": ["portfolio", "technology"],
+  "icons": [
+    {
+      "src": "assets/favicon.png",
+      "sizes": "64x64",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

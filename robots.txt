@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Disallow internal tooling and repository metadata if statically served
+Disallow: /scripts/
+Disallow: /node_modules/
+Disallow: /package.json
+Disallow: /bun.lock
+
+Sitemap: https://jakubpacocha.com/sitemap.xml

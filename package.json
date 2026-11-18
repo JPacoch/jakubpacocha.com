@@ -1,7 +1,7 @@
 {
   "name": "jakubpacocha-portfolio",
   "scripts": {
-    "generate-pdf": "LD_LIBRARY_PATH=./.libs/usr/lib/x86_64-linux-gnu node generate-pdf.js"
+    "generate-pdf": "LD_LIBRARY_PATH=./.libs/usr/lib/x86_64-linux-gnu node scripts/generate-pdf.js"
   },
   "dependencies": {
     "puppeteer": "^25.16.0"

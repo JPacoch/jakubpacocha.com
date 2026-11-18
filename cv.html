@@ -1,33 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Jakub Pacocha — Curriculum Vitae</title>
-  <link rel="icon" type="image/x-icon" href="assets/favicon.png">
+  <meta name="description" content="Curriculum Vitae of Jakub Pacocha — Lead AI Engineer with 6+ years of experience across production data systems, RAG architectures, containerized ML infrastructure, AWS/Azure and geoinformatics." />
+  <meta name="author" content="Jakub Pacocha" />
+  <meta name="keywords" content="Jakub Pacocha CV, Resume, Lead AI Engineer, Data Scientist, RAG, LLMOps, MLOps, FastAPI, Python, AWS, Azure, Geoinformatics, HERE Technologies, iQor, O-I" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#fcfcfc" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#141414" media="(prefers-color-scheme: dark)" />
+  <link rel="canonical" href="https://jakubpacocha.com/cv.html" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/favicon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+  <link rel="author" href="humans.txt" />
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="sitemap.xml" />
+  <link rel="preload" href="assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin />
+
+  <!-- Open Graph / Social -->
+  <meta property="og:type" content="profile" />
+  <meta property="og:site_name" content="Jakub Pacocha" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://jakubpacocha.com/cv.html" />
+  <meta property="og:title" content="Jakub Pacocha — Curriculum Vitae" />
+  <meta property="og:description" content="Lead AI Engineer with 6+ years of experience building production data systems, RAG architectures, containerized ML infrastructure and spatial analytics." />
+  <meta property="og:image" content="https://jakubpacocha.com/assets/og-image.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:alt" content="Jakub Pacocha — Curriculum Vitae" />
+  <meta property="og:image:width" content="1376" />
+  <meta property="og:image:height" content="768" />
+  <meta property="profile:first_name" content="Jakub" />
+  <meta property="profile:last_name" content="Pacocha" />
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@JakubPacocha" />
+  <meta name="twitter:creator" content="@JakubPacocha" />
+  <meta name="twitter:title" content="Jakub Pacocha — Curriculum Vitae" />
+  <meta name="twitter:description" content="Lead AI Engineer with 6+ years of experience across RAG architectures, containerized ML infrastructure, AWS/Azure and geoinformatics." />
+  <meta name="twitter:image" content="https://jakubpacocha.com/assets/og-image.jpg" />
+  <meta name="twitter:image:alt" content="Jakub Pacocha — Curriculum Vitae" />
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "ProfilePage",
+          "@id": "https://jakubpacocha.com/cv.html#profilepage",
+          "url": "https://jakubpacocha.com/cv.html",
+          "name": "Jakub Pacocha — Curriculum Vitae",
+          "isPartOf": { "@id": "https://jakubpacocha.com/#website" },
+          "mainEntity": { "@id": "https://jakubpacocha.com/#person" },
+          "inLanguage": "en"
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Portfolio",
+              "item": "https://jakubpacocha.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Curriculum Vitae",
+              "item": "https://jakubpacocha.com/cv.html"
+            }
+          ]
+        },
+        {
+          "@type": "DigitalDocument",
+          "name": "Jakub Pacocha Resume (PDF)",
+          "url": "https://jakubpacocha.com/assets/resume.pdf",
+          "encodingFormat": "application/pdf",
+          "author": { "@id": "https://jakubpacocha.com/#person" }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://jakubpacocha.com/#person",
+          "name": "Jakub Pacocha",
+          "url": "https://jakubpacocha.com/",
+          "email": "mailto:pacochp@gmail.com",
+          "jobTitle": "Lead AI Engineer",
+          "worksFor": {
+            "@type": "Organization",
+            "name": "HERE Technologies"
+          },
+          "alumniOf": [
+            {
+              "@type": "CollegeOrUniversity",
+              "name": "Adam Mickiewicz University in Poznań"
+            },
+            {
+              "@type": "CollegeOrUniversity",
+              "name": "Eötvös Loránd University (ELTE)"
+            }
+          ],
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Bydgoszcz",
+            "addressCountry": "PL"
+          },
+          "sameAs": [
+            "https://github.com/JPacoch",
+            "https://www.linkedin.com/in/jakubpacocha/",
+            "https://x.com/JakubPacocha",
+            "https://fromthecabinet.com/"
+          ]
+        }
+      ]
+    }
+  </script>
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('jp-theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            electric: '#0055FF',
-            dark: '#111827',
-            offwhite: '#F9FAFB',
+            canvas: 'var(--color-canvas)',
+            surface: 'var(--color-surface)',
+            ink: 'var(--color-ink)',
+            'ink-subtitle': 'var(--color-ink-subtitle)',
+            'ink-secondary': 'var(--color-ink-secondary)',
+            'ink-muted': 'var(--color-ink-muted)',
+            hairline: 'var(--color-hairline)',
+            'badge-bg': 'var(--color-badge-bg)',
+            'badge-text': 'var(--color-badge-text)',
+            'footer-bg': 'var(--color-footer-bg)',
+            'footer-ink': 'var(--color-footer-ink)',
+            'footer-secondary': 'var(--color-footer-secondary)',
+            'footer-muted': 'var(--color-footer-muted)',
           },
           fontFamily: {
-            serif: ['Playfair Display', 'Georgia', 'serif'],
-            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          }
-        }
-      }
-    }
+            sans: ['"Geist"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            mono: ['"Geist"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
   </script>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
-    rel="stylesheet">
 
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -35,686 +166,2062 @@
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 
   <style>
-    body,
+    @font-face {
+      font-family: "Geist";
+      src: url("assets/fonts/Geist-Variable.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      /* Light Mode Palette — Soft Charcoal Ink, No Pure Black (Verified WCAG AA/AAA) */
+      --color-canvas: #fcfcfc;
+      --color-surface: #f4f4f5;
+      --color-ink: #26262a;
+      --color-ink-subtitle: #45454c;
+      --color-ink-secondary: #6b6b73;
+      --color-ink-muted: #71717a;
+      --color-hairline: rgba(38, 38, 42, 0.08);
+      --color-underline: rgba(38, 38, 42, 0.34);
+      --color-underline-hover: #26262a;
+
+      /* Brand Accent System (Burgundy / Rose) */
+      --color-accent: #881337;
+      --color-selection-bg: rgba(190, 62, 92, 0.2);
+      --color-selection-text: #6b0f2b;
+
+      --color-badge-bg: #fae8ec;
+      --color-badge-text: #881337;
+
+      /* Emerging Curtain Footer (Deep Charcoal, Not Pure Black) */
+      --color-footer-bg: #1c1c1f;
+      --color-footer-ink: #fafafa;
+      --color-footer-secondary: #d4d4d8;
+      --color-footer-muted: #a1a1aa;
+
+      --shadow-main-curtain: 0px 24px 64px rgba(24, 24, 28, 0.22);
+      --main-edge-ring: transparent;
+    }
+
+    html[data-theme="dark"] {
+      /* Dark Mode Palette (#141414) — Verified WCAG AA/AAA */
+      --color-canvas: #141414;
+      --color-surface: #1e1e20;
+      --color-ink: #f2f2f2;
+      --color-ink-subtitle: #c8c8cf;
+      --color-ink-secondary: #a1a1aa;
+      --color-ink-muted: #8a8a94;
+      --color-hairline: rgba(255, 255, 255, 0.09);
+      --color-underline: rgba(255, 255, 255, 0.38);
+      --color-underline-hover: #f2f2f2;
+
+      /* Brand Accent System (Burgundy / Rose — Dark) */
+      --color-accent: #e57389;
+      --color-selection-bg: #e57389;
+      --color-selection-text: #260710;
+
+      --color-badge-bg: #3d1522;
+      --color-badge-text: #f29aac;
+
+      /* Emerging Curtain Footer (Deeper Obsidian under #141414) */
+      --color-footer-bg: #0c0c0e;
+      --color-footer-ink: #f2f2f2;
+      --color-footer-secondary: #d4d4d8;
+      --color-footer-muted: #9a9aa4;
+
+      --shadow-main-curtain: 0px 24px 64px rgba(0, 0, 0, 0.55);
+      --main-edge-ring: rgba(255, 255, 255, 0.07);
+    }
+
     html {
-      margin: 0;
-      padding: 0;
-      background-color: #ffffff;
-      color: #111827;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
+      background-color: var(--color-canvas);
+      color: var(--color-ink);
+      scroll-padding-block-start: 2rem;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      text-size-adjust: 100%;
     }
 
-    ::-webkit-scrollbar {
-      width: 8px;
+    @media (prefers-reduced-motion: no-preference) {
+      html {
+        scroll-behavior: smooth;
+      }
     }
 
-    ::-webkit-scrollbar-track {
-      background: #0055FF;
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--color-canvas);
+      color: var(--color-ink);
+      font-family: "Geist", Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 26px;
+      font-weight: 400;
+      letter-spacing: -0.011em;
+      overflow-x: clip;
     }
 
-    ::-webkit-scrollbar-thumb {
-      background: #ffffff;
-      border-radius: 4px;
+    /* Tactile monochrome film grain in dark mode only */
+    html[data-theme="dark"] body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      opacity: 0.088;
+      background-repeat: repeat;
+      background-size: 160px 160px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='2.6' intercept='-0.8'/%3E%3CfeFuncG type='linear' slope='2.6' intercept='-0.8'/%3E%3CfeFuncB type='linear' slope='2.6' intercept='-0.8'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
-    .bg-Swiss-grid {
-      background-size: 48px 48px;
-      background-image: 
-        linear-gradient(to right, rgba(17, 24, 39, 0.035) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(17, 24, 39, 0.035) 1px, transparent 1px);
+    button,
+    input,
+    textarea,
+    select {
+      font-family: inherit;
+    }
+
+    ::selection {
+      background-color: var(--color-selection-bg);
+      color: var(--color-selection-text);
+    }
+
+    #footer-container ::selection {
+      background-color: #e57389;
+      color: #260710;
+    }
+
+    .text-balance {
+      text-wrap: balance;
+    }
+
+    .text-pretty {
+      text-wrap: pretty;
+    }
+
+    /* Crisp Apple-style dotted underlines */
+    .inline-link {
+      color: var(--color-ink);
+      font-weight: 600;
+      text-decoration-line: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-color: var(--color-underline);
+      transition-property: color, text-decoration-color;
+      transition-duration: 150ms;
+      transition-timing-function: ease-out;
+    }
+
+    /* Smooth hover/focus trailing icon reveal (nudges following text smoothly) */
+    .reveal-link {
+      text-decoration: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .reveal-link .reveal-slot {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      vertical-align: 0.04em;
+      max-width: 0;
+      margin-inline-start: 0;
+      opacity: 0;
+      color: var(--color-ink-muted);
+      transition:
+        max-width 400ms cubic-bezier(0.22, 1, 0.36, 1),
+        margin-inline-start 400ms cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 220ms ease-out,
+        color 240ms ease-out;
+    }
+
+    .reveal-link .reveal-slot-copy {
+      vertical-align: -0.08em;
+    }
+
+    .reveal-link .reveal-glyph {
+      flex-shrink: 0;
+      transform: translate(-3px, 3px) scale(0.7);
+      transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal-link .reveal-glyph-copy {
+      transform: scale(0.7);
+    }
+
+    .reveal-link:focus-visible .inline-link,
+    .reveal-link[data-revealed="true"] .inline-link {
+      color: var(--color-ink);
+      text-decoration-color: var(--color-underline-hover);
+    }
+
+    .reveal-link:focus-visible .reveal-slot,
+    .reveal-link[data-revealed="true"] .reveal-slot {
+      max-width: 0.68em;
+      margin-inline-start: 0.14em;
+      opacity: 1;
+      transition:
+        max-width 480ms cubic-bezier(0.22, 1, 0.36, 1),
+        margin-inline-start 480ms cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 320ms ease-out 90ms,
+        color 240ms ease-out;
+    }
+
+    .reveal-link:focus-visible .reveal-slot-copy,
+    .reveal-link[data-revealed="true"] .reveal-slot-copy {
+      max-width: 0.84em;
+      margin-inline-start: 0.18em;
+    }
+
+    .reveal-link:focus-visible .reveal-glyph,
+    .reveal-link[data-revealed="true"] .reveal-glyph {
+      transform: translate(0, 0) scale(1);
+      transition: transform 460ms cubic-bezier(0.22, 1, 0.36, 1) 50ms;
+    }
+
+    @media (hover: hover) {
+      .reveal-link:hover .inline-link {
+        color: var(--color-ink);
+        text-decoration-color: var(--color-underline-hover);
+      }
+
+      .reveal-link:hover .reveal-slot {
+        max-width: 0.68em;
+        margin-inline-start: 0.14em;
+        opacity: 1;
+        color: var(--color-ink);
+        transition:
+          max-width 480ms cubic-bezier(0.22, 1, 0.36, 1),
+          margin-inline-start 480ms cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 320ms ease-out 90ms,
+          color 240ms ease-out;
+      }
+
+      .reveal-link:hover .reveal-slot-copy {
+        max-width: 0.84em;
+        margin-inline-start: 0.18em;
+      }
+
+      .reveal-link:hover .reveal-glyph {
+        transform: translate(0, 0) scale(1);
+        transition: transform 460ms cubic-bezier(0.22, 1, 0.36, 1) 50ms;
+      }
+    }
+
+    @keyframes icon-swap-in {
+      0% {
+        opacity: 0;
+        transform: scale(0.6);
+        filter: blur(3px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0px);
+      }
+    }
+
+    .icon-swap-in {
+      animation: icon-swap-in 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes tag-pill-in {
+      0% {
+        opacity: 0;
+        transform: scale(0.92);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .tag-pill-in {
+      animation: tag-pill-in 150ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .icon-swap-in,
+      .tag-pill-in {
+        animation: none;
+      }
+      .reveal-link .reveal-slot,
+      .reveal-link .reveal-glyph {
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+      }
+    }
+
+    .muted-link {
+      color: var(--color-ink-muted);
+      text-decoration-line: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      text-decoration-color: var(--color-underline);
+      transition-property: color, text-decoration-color;
+      transition-duration: 150ms;
+      transition-timing-function: ease-out;
+    }
+
+    :where(a, button, [tabindex]):focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
+    .focus-ring-light:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
+    }
+
+    .tap-press {
+      -webkit-tap-highlight-color: transparent;
+      transition-property: transform, background-color, color, opacity, border-color;
+      transition-duration: 150ms;
+      transition-timing-function: ease-out;
+    }
+
+    .tap-press:not(:disabled):active {
+      transform: scale(0.96);
+    }
+
+    .main-curtain-surface {
+      background-color: var(--color-canvas);
+      box-shadow: 0 0 0 1px var(--main-edge-ring), var(--shadow-main-curtain);
+    }
+
+    @media (hover: hover) {
+      .inline-link:hover,
+      .muted-link:hover {
+        color: var(--color-ink);
+        text-decoration-color: var(--color-underline-hover);
+      }
+
+      .hover-surface:hover {
+        background-color: var(--color-surface);
+        color: var(--color-ink);
+      }
+
+      .hover-ink:hover {
+        color: var(--color-ink);
+      }
+
+      .back-link:hover .back-arrow {
+        transform: translateX(-2px);
+      }
+
+      .hover-light-pill:hover {
+        background-color: rgba(255, 255, 255, 0.16);
+        border-color: rgba(255, 255, 255, 0.28);
+      }
+    }
+
+    .safe-top {
+      padding-block-start: max(3.5rem, calc(env(safe-area-inset-top) + 2.5rem));
+    }
+
+    .safe-bottom {
+      padding-block-end: max(2rem, env(safe-area-inset-bottom));
+    }
+
+    @media print {
+      html,
+      body {
+        background: #ffffff !important;
+        color: #26262a !important;
+      }
+      #footer-spacer,
+      #footer-container,
+      #footer-backdrop,
+      .no-print,
+      html[data-theme="dark"] body::after {
+        display: none !important;
+      }
+      #main-content {
+        box-shadow: none !important;
+        transform: none !important;
+        border-radius: 0 !important;
+      }
     }
   </style>
 </head>
 
 <body>
   <div id="root"></div>
+  <noscript>
+    <main style="max-width:768px;margin:0 auto;padding:48px 24px;font-family:'Geist',Inter,system-ui,sans-serif;line-height:1.6;">
+      <h1>Jakub Pacocha — Curriculum Vitae</h1>
+      <p>Full-stack AI engineer with 6+ years of experience building production data systems, RAG architectures and containerized ML infrastructure. Based in Bydgoszcz, Poland.</p>
+      <p><a href="index.html">Portfolio</a> · <a href="assets/resume.pdf">Download PDF</a> · <a href="mailto:pacochp@gmail.com">pacochp@gmail.com</a> · <a href="https://github.com/JPacoch">GitHub</a> · <a href="https://www.linkedin.com/in/jakubpacocha/">LinkedIn</a></p>
+      <h2>Experience</h2>
+      <ul>
+        <li><strong>Lead AI Engineer</strong>, HERE Technologies (Nov 2026 – Present)</li>
+        <li><strong>AI Engineer / Data Scientist</strong>, iQor (Mar 2023 – Oct 2026)</li>
+        <li><strong>Data Scientist</strong>, O-I (Jul 2021 – Feb 2023)</li>
+        <li><strong>Spatial Data Analyst</strong>, Heksagon Research (Apr 2021 – Jan 2022)</li>
+      </ul>
+      <h2>Education</h2>
+      <ul>
+        <li>M.Sc. in Geoinformatics — Adam Mickiewicz University in Poznań (2022 – 2023)</li>
+        <li>B.Eng. in Geoinformation — Adam Mickiewicz University in Poznań (2018 – 2022)</li>
+        <li>Erasmus+ Exchange — Eötvös Loránd University (ELTE), Budapest (2019 – 2020)</li>
+      </ul>
+    </main>
+  </noscript>
+
   <script>
     Babel.registerPreset('my-react', {
       presets: [[Babel.availablePresets['react'], { runtime: 'classic' }]]
     });
   </script>
-  <script type="text/babel" data-presets="my-react,env" data-type="module">
-    const { useState, useEffect, useLayoutEffect, useReducer, useCallback } = React;
-    const { motion, AnimatePresence } = window.Motion;
 
-    // --- EXPLICIT FINITE STATE MACHINE ENGINE (DX + AX + UX) ---
-    window.__APP_MACHINES__ = window.__APP_MACHINES__ || {};
+  <script type="text/babel" data-presets="my-react,env" data-type="module">
+    const {
+      useState,
+      useEffect,
+      useLayoutEffect,
+      useRef,
+      useMemo,
+      useReducer,
+      useCallback
+    } = React;
+
+    const MotionLib = window.Motion || {};
+    const motion = MotionLib.motion;
+    const AnimatePresence = MotionLib.AnimatePresence;
+    const MotionConfig = MotionLib.MotionConfig || (({ children }) => children);
+    const useFramerReducedMotion = MotionLib.useReducedMotion;
+
+    function useReducedMotionSafe() {
+      const framerPref = typeof useFramerReducedMotion === "function" ? useFramerReducedMotion() : null;
+      const [mediaPref, setMediaPref] = useState(() =>
+        typeof window !== "undefined" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      );
+
+      useEffect(() => {
+        if (!window.matchMedia) return;
+        const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const onChange = (e) => setMediaPref(e.matches);
+        if (mql.addEventListener) mql.addEventListener("change", onChange);
+        return () => {
+          if (mql.removeEventListener) mql.removeEventListener("change", onChange);
+        };
+      }, []);
+
+      return Boolean(framerPref ?? mediaPref);
+    }
+
+    // --- GLOBAL SOUND & HAPTICS ENGINE (Reproduces 0xchsh/portfolio GlobalHaptics + useHaptics) ---
+    let SHARED_AUDIO_CTX = null;
+    function getSharedAudioContext() {
+      if (typeof window === "undefined") return null;
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return null;
+      if (!SHARED_AUDIO_CTX) {
+        try {
+          SHARED_AUDIO_CTX = new AudioCtx();
+        } catch (e) {
+          return null;
+        }
+      }
+      if (SHARED_AUDIO_CTX.state === "suspended") {
+        SHARED_AUDIO_CTX.resume().catch(() => {});
+      }
+      return SHARED_AUDIO_CTX;
+    }
+
+    function isHapticsMuted() {
+      try {
+        return localStorage.getItem("haptics-muted") === "true";
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function playHapticClick() {
+      if (isHapticsMuted()) return;
+      const ctx = getSharedAudioContext();
+      if (ctx) {
+        try {
+          const now = ctx.currentTime;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          const filter = ctx.createBiquadFilter();
+
+          // Subtle tactile "toggle" click matching cuelume's toggle preset
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(620, now);
+          osc.frequency.exponentialRampToValueAtTime(220, now + 0.02);
+          filter.type = "lowpass";
+          filter.frequency.setValueAtTime(2200, now);
+          gain.gain.setValueAtTime(0.055, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.022);
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.024);
+        } catch (e) {}
+      }
+      if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
+        try {
+          navigator.vibrate(8);
+        } catch (e) {}
+      }
+    }
+
+    function useGlobalHaptics() {
+      useEffect(() => {
+        function handleClick() {
+          if (!isHapticsMuted()) {
+            playHapticClick();
+          }
+        }
+        document.addEventListener("click", handleClick, true);
+        return () => {
+          document.removeEventListener("click", handleClick, true);
+        };
+      }, []);
+    }
+
+    const GlobalHaptics = () => {
+      useGlobalHaptics();
+      return null;
+    };
+
+    // --- GLOBAL CLICK SPARK CANVAS OVERLAY (Exact 0xchsh/portfolio ClickSpark.tsx mechanics) ---
+    const ClickSpark = ({
+      sparkColor = "currentColor",
+      sparkOpacity = 0.3,
+      sparkSize = 6,
+      sparkRadius = 12,
+      sparkCount = 6,
+      duration = 300,
+      easing = "ease-out",
+      extraScale = 1.0
+    }) => {
+      const canvasRef = useRef(null);
+      const sparksRef = useRef([]);
+      const mutedRef = useRef(false);
+      const reduce = useReducedMotionSafe();
+
+      useEffect(() => {
+        mutedRef.current = isHapticsMuted();
+        const onMutedChange = () => {
+          mutedRef.current = isHapticsMuted();
+        };
+        window.addEventListener("storage", onMutedChange);
+        window.addEventListener("haptics-muted-change", onMutedChange);
+        return () => {
+          window.removeEventListener("storage", onMutedChange);
+          window.removeEventListener("haptics-muted-change", onMutedChange);
+        };
+      }, []);
+
+      const easeFunc = useCallback(
+        (t) => {
+          switch (easing) {
+            case "linear":
+              return t;
+            case "ease-in":
+              return t * t;
+            case "ease-in-out":
+              return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+            default:
+              return t * (2 - t);
+          }
+        },
+        [easing]
+      );
+
+      useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        const resize = () => {
+          const dpr = window.devicePixelRatio || 1;
+          canvas.width = window.innerWidth * dpr;
+          canvas.height = window.innerHeight * dpr;
+          canvas.style.width = `${window.innerWidth}px`;
+          canvas.style.height = `${window.innerHeight}px`;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        };
+        resize();
+        window.addEventListener("resize", resize);
+
+        let animationId = null;
+
+        const draw = (timestamp) => {
+          ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+          ctx.globalAlpha = sparkOpacity;
+          const resolvedColor =
+            sparkColor === "currentColor" ? getComputedStyle(canvas).color : sparkColor;
+
+          sparksRef.current = sparksRef.current.filter((spark) => {
+            const elapsed = timestamp - spark.startTime;
+            if (elapsed >= duration) return false;
+            const progress = elapsed / duration;
+            const eased = easeFunc(progress);
+            const distance = eased * sparkRadius * extraScale;
+            const lineLength = sparkSize * (1 - eased);
+            const x1 = spark.x + distance * Math.cos(spark.angle);
+            const y1 = spark.y + distance * Math.sin(spark.angle);
+            const x2 = spark.x + (distance + lineLength) * Math.cos(spark.angle);
+            const y2 = spark.y + (distance + lineLength) * Math.sin(spark.angle);
+            ctx.strokeStyle = resolvedColor;
+            ctx.lineWidth = 1.5;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            return true;
+          });
+
+          if (sparksRef.current.length > 0) {
+            animationId = requestAnimationFrame(draw);
+          } else {
+            animationId = null;
+          }
+        };
+
+        const handleClick = (e) => {
+          if (mutedRef.current || reduce) return;
+          if (e.clientX === 0 && e.clientY === 0 && e.detail === 0) return;
+          const now = performance.now();
+          const newSparks = Array.from({ length: sparkCount }, (_, i) => ({
+            x: e.clientX,
+            y: e.clientY,
+            angle: (2 * Math.PI * i) / sparkCount,
+            startTime: now
+          }));
+          sparksRef.current.push(...newSparks);
+          if (animationId === null) {
+            animationId = requestAnimationFrame(draw);
+          }
+        };
+
+        window.addEventListener("click", handleClick);
+
+        return () => {
+          window.removeEventListener("resize", resize);
+          window.removeEventListener("click", handleClick);
+          if (animationId !== null) cancelAnimationFrame(animationId);
+        };
+      }, [sparkColor, sparkSize, sparkRadius, sparkCount, duration, extraScale, easeFunc, sparkOpacity, reduce]);
+
+      return (
+        <canvas
+          ref={canvasRef}
+          aria-hidden="true"
+          className="no-print"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            pointerEvents: "none",
+            zIndex: 9999
+          }}
+        />
+      );
+    };
+
+    // --- THEME SWITCH WITH TRANSITION SUPPRESSION ---
+    function applyThemeWithoutSmear(nextTheme) {
+      const style = document.createElement("style");
+      style.append(document.createTextNode("*,*::before,*::after{transition:none !important}"));
+      document.head.appendChild(style);
+
+      if (nextTheme === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+      }
+
+      try {
+        localStorage.setItem("jp-theme", nextTheme);
+      } catch (e) {}
+
+      void document.body.offsetHeight;
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => style.remove());
+      });
+    }
+
+    const MACHINE_REGISTRY = window.__APP_MACHINES__ || {};
+    const GLOBAL_HISTORY = [];
+    const GLOBAL_SUBSCRIBERS = new Set();
+    let GLOBAL_SEQ = 0;
+
+    function notifyGlobalSubscribers(record) {
+      GLOBAL_SUBSCRIBERS.forEach((fn) => {
+        try {
+          fn(record);
+        } catch (err) {
+          console.error("[FSM Registry] Subscriber error:", err);
+        }
+      });
+    }
+
+    Object.defineProperties(MACHINE_REGISTRY, {
+      __history__: { value: GLOBAL_HISTORY, enumerable: false, configurable: true },
+      getAllSnapshots: {
+        value: () => {
+          const out = {};
+          Object.keys(MACHINE_REGISTRY).forEach((k) => {
+            if (MACHINE_REGISTRY[k] && typeof MACHINE_REGISTRY[k].getSnapshot === "function") {
+              out[k] = MACHINE_REGISTRY[k].getSnapshot();
+            }
+          });
+          return out;
+        },
+        enumerable: false,
+        configurable: true
+      },
+      getHistory: {
+        value: (limit = 30) => GLOBAL_HISTORY.slice(-limit),
+        enumerable: false,
+        configurable: true
+      },
+      send: {
+        value: (machineId, event) => {
+          const target = MACHINE_REGISTRY[machineId];
+          if (!target || typeof target.send !== "function") return false;
+          target.send(event);
+          return true;
+        },
+        enumerable: false,
+        configurable: true
+      },
+      resetAll: {
+        value: () => {
+          Object.keys(MACHINE_REGISTRY).forEach((k) => {
+            if (MACHINE_REGISTRY[k] && typeof MACHINE_REGISTRY[k].reset === "function") {
+              MACHINE_REGISTRY[k].reset();
+            }
+          });
+        },
+        enumerable: false,
+        configurable: true
+      },
+      subscribe: {
+        value: (listener) => {
+          if (typeof listener !== "function") return () => {};
+          GLOBAL_SUBSCRIBERS.add(listener);
+          return () => GLOBAL_SUBSCRIBERS.delete(listener);
+        },
+        enumerable: false,
+        configurable: true
+      }
+    });
+
+    window.__APP_MACHINES__ = MACHINE_REGISTRY;
+
+    function getAvailableEvents(config, stateValue) {
+      const stateNode = config.states && config.states[stateValue];
+      const stateEvents = stateNode && stateNode.on ? Object.keys(stateNode.on) : [];
+      const rootEvents = config.on ? Object.keys(config.on) : [];
+      return Array.from(new Set([...stateEvents, ...rootEvents]));
+    }
+
+    function evaluateMachineTransition(config, current, event) {
+      const eventObj = typeof event === "string" ? { type: event } : (event || { type: "NOOP" });
+
+      if (eventObj.type === "@@RESET") {
+        const initialValue = typeof config.initial === "function" ? config.initial() : config.initial;
+        const initialContext = typeof config.context === "function" ? config.context() : (config.context || {});
+        return { value: initialValue, context: initialContext, changed: true, event: eventObj };
+      }
+
+      const stateNode = config.states && config.states[current.value];
+      const handler =
+        (stateNode && stateNode.on && stateNode.on[eventObj.type]) ||
+        (config.on && config.on[eventObj.type]);
+
+      if (!handler) {
+        return { value: current.value, context: current.context, changed: false, event: eventObj };
+      }
+
+      let nextValue = current.value;
+      let nextContext = current.context;
+
+      if (typeof handler === "string") {
+        nextValue = handler;
+      } else if (typeof handler === "function") {
+        const next = handler(current.context, eventObj, current.value);
+        if (!next) {
+          return { value: current.value, context: current.context, changed: false, event: eventObj };
+        }
+        nextValue = next.target || current.value;
+        nextContext = next.context !== undefined ? next.context : current.context;
+      } else if (typeof handler === "object") {
+        nextValue = handler.target || current.value;
+        nextContext = handler.reduce ? handler.reduce(current.context, eventObj, current.value) : current.context;
+      }
+
+      const changed = nextValue !== current.value || nextContext !== current.context;
+      return { value: nextValue, context: nextContext, changed, event: eventObj };
+    }
 
     function useMachine(config) {
-      const reducer = useCallback((current, event) => {
-        const eventObj = typeof event === "string" ? { type: event } : event;
-        const stateNode = config.states[current.value];
-        const handler =
-          (stateNode && stateNode.on && stateNode.on[eventObj.type]) ||
-          (config.on && config.on[eventObj.type]);
-
-        if (!handler) return current;
-
-        if (typeof handler === "string") {
-          return { value: handler, context: current.context };
-        }
-
-        if (typeof handler === "function") {
-          const next = handler(current.context, eventObj, current.value);
-          if (!next) return current;
-          return {
-            value: next.target || current.value,
-            context: next.context !== undefined ? next.context : current.context
-          };
-        }
-
-        const nextContext = handler.reduce
-          ? handler.reduce(current.context, eventObj)
-          : current.context;
-        return {
-          value: handler.target || current.value,
-          context: nextContext
+      const initialRef = useRef(null);
+      if (!initialRef.current) {
+        initialRef.current = {
+          value: typeof config.initial === "function" ? config.initial() : config.initial,
+          context: typeof config.context === "function" ? config.context() : (config.context || {})
         };
+      }
+
+      const stateRef = useRef(initialRef.current);
+      const historyRef = useRef([]);
+      const listenersRef = useRef(new Set());
+      const [, forceRender] = useReducer((x) => x + 1, 0);
+
+      const send = useCallback((event) => {
+        const prev = stateRef.current;
+        const result = evaluateMachineTransition(config, prev, event);
+        if (!result.changed) return stateRef.current;
+
+        const nextState = { value: result.value, context: result.context };
+        stateRef.current = nextState;
+
+        const record = {
+          seq: ++GLOBAL_SEQ,
+          id: config.id || "anonymous",
+          timestamp: new Date().toISOString(),
+          event: result.event.type,
+          from: prev.value,
+          to: nextState.value
+        };
+
+        historyRef.current = [...historyRef.current.slice(-24), record];
+        if (result.event.type !== "SCROLL_UPDATE" && result.event.type !== "SCRUB_PROGRESS") {
+          GLOBAL_HISTORY.push(record);
+          if (GLOBAL_HISTORY.length > 60) GLOBAL_HISTORY.shift();
+        }
+
+        forceRender();
+
+        listenersRef.current.forEach((fn) => {
+          try {
+            fn(nextState, record);
+          } catch (e) {
+            console.error(e);
+          }
+        });
+        notifyGlobalSubscribers(record);
+
+        return nextState;
       }, [config]);
 
-      const [state, dispatch] = useReducer(reducer, undefined, () => ({
-        value: typeof config.initial === "function" ? config.initial() : config.initial,
-        context: typeof config.context === "function" ? config.context() : (config.context || {})
-      }));
+      const actor = useMemo(() => {
+        const controller = {
+          id: config.id,
+          states: Object.keys(config.states || {}),
+          send,
+          reset: () => send({ type: "@@RESET" }),
+          can: (eventType) => getAvailableEvents(config, stateRef.current.value).includes(eventType),
+          getSnapshot: () => ({
+            id: config.id,
+            state: stateRef.current.value,
+            context: stateRef.current.context,
+            states: Object.keys(config.states || {}),
+            availableEvents: getAvailableEvents(config, stateRef.current.value)
+          }),
+          subscribe: (fn) => {
+            if (typeof fn !== "function") return () => {};
+            listenersRef.current.add(fn);
+            return () => listenersRef.current.delete(fn);
+          }
+        };
+
+        Object.defineProperties(controller, {
+          state: { get: () => stateRef.current.value, enumerable: true },
+          context: { get: () => stateRef.current.context, enumerable: true },
+          availableEvents: { get: () => getAvailableEvents(config, stateRef.current.value), enumerable: true },
+          history: { get: () => historyRef.current.slice(), enumerable: true }
+        });
+
+        return controller;
+      }, [config, send]);
+
+      if (config.id && !MACHINE_REGISTRY[config.id]) {
+        MACHINE_REGISTRY[config.id] = actor;
+      }
 
       useEffect(() => {
         if (!config.id) return;
-        window.__APP_MACHINES__[config.id] = {
-          id: config.id,
-          state: state.value,
-          context: state.context,
-          states: Object.keys(config.states),
-          send: dispatch,
-          getSnapshot: () => ({ state: state.value, context: state.context })
-        };
+        MACHINE_REGISTRY[config.id] = actor;
         return () => {
-          delete window.__APP_MACHINES__[config.id];
+          if (MACHINE_REGISTRY[config.id] === actor) {
+            delete MACHINE_REGISTRY[config.id];
+          }
         };
-      }, [config.id, config.states, state, dispatch]);
+      }, [config.id, actor]);
 
-      return [state, dispatch];
+      return [stateRef.current, send, actor];
     }
 
     // --- ICONS ---
-    const ArrowLeft = ({ className = "w-4 h-4" }) => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M19 12H5" /><path d="m12 19-7-7 7-7" />
-      </svg>
-    );
-    const ArrowUpRight = ({ className = "w-5 h-5" }) => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M7 17L17 7" /><path d="M7 7h10v10" />
-      </svg>
-    );
-    const DownloadIcon = ({ className = "w-4 h-4" }) => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" />
-      </svg>
-    );
-    const MailIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-      </svg>
-    );
-    const LinkedinIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect width="4" height="12" x="2" y="9" /><circle cx="4" cy="4" r="2" />
-      </svg>
-    );
-    const TwitterIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5 5.96 15.6 7 12c-1.2.3-2.4.2-3.6-.1C2.5 10.6 4 9 4 9c-1.1-.3-2-.9-2.5-1.9 1-.3 2.1-.3 3.1-.1C2.3 5 4 2 4 2c1.6 2 4 4 7.4 4.5 0-1.1.5-2.2 1.5-2.9 1.4-1.1 3.5-.8 4.6.5 1.1-.2 2.1-.7 3-1.2-.4 1.1-1.1 2-2 2.7 1-.1 1.9-.4 2.8-.8Z" />
-      </svg>
-    );
-    const GithubIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" />
+    const ArrowUpRightIcon = ({ className = "w-3.5 h-3.5", strokeWidth = 1.75, tight = false }) => (
+      <svg className={className} viewBox={tight ? "5.5 5.5 13 13" : "0 0 24 24"} fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M7 17 17 7" />
+        <path vectorEffect="non-scaling-stroke" d="M7 7h10v10" />
       </svg>
     );
 
-    // --- CV NAVIGATION & SCROLL-SPY STATE MACHINE ---
-    const CV_NAV_SECTIONS = [
-      { id: "experience", label: "Experience", href: "#experience" },
-      { id: "skills", label: "Stack", href: "#skills" },
-      { id: "education", label: "Education", href: "#education" }
-    ];
+    const ArrowLeftIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={`rtl:-scale-x-100 ${className}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M19 12H5" />
+        <path vectorEffect="non-scaling-stroke" d="m12 19-7-7 7-7" />
+      </svg>
+    );
 
-    const CV_NAV_MACHINE = {
-      id: "cvNavigation",
-      initial: () => (typeof window !== "undefined" && window.scrollY > 30 ? "elevated" : "top"),
+    const DownloadIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline vectorEffect="non-scaling-stroke" points="7 10 12 15 17 10" />
+        <line vectorEffect="non-scaling-stroke" x1="12" x2="12" y1="15" y2="3" />
+      </svg>
+    );
+
+    const CopyIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect vectorEffect="non-scaling-stroke" width="13" height="13" x="9" y="9" rx="2" />
+        <path vectorEffect="non-scaling-stroke" d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+      </svg>
+    );
+
+    const CheckIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <polyline vectorEffect="non-scaling-stroke" points="20 6 9 17 4 12" />
+      </svg>
+    );
+
+    const SunIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <circle vectorEffect="non-scaling-stroke" cx="12" cy="12" r="4" />
+        <path vectorEffect="non-scaling-stroke" d="M12 2v2" />
+        <path vectorEffect="non-scaling-stroke" d="M12 20v2" />
+        <path vectorEffect="non-scaling-stroke" d="m4.93 4.93 1.41 1.41" />
+        <path vectorEffect="non-scaling-stroke" d="m17.66 17.66 1.41 1.41" />
+        <path vectorEffect="non-scaling-stroke" d="M2 12h2" />
+        <path vectorEffect="non-scaling-stroke" d="M20 12h2" />
+        <path vectorEffect="non-scaling-stroke" d="m6.34 17.66-1.41 1.41" />
+        <path vectorEffect="non-scaling-stroke" d="m19.07 4.93-1.41 1.41" />
+      </svg>
+    );
+
+    const MoonIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+      </svg>
+    );
+
+    const SpeakerIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <polygon vectorEffect="non-scaling-stroke" points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+        <path vectorEffect="non-scaling-stroke" d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+        <path vectorEffect="non-scaling-stroke" d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+      </svg>
+    );
+
+    const SpeakerMutedIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <polygon vectorEffect="non-scaling-stroke" points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+        <line vectorEffect="non-scaling-stroke" x1="22" x2="16" y1="9" y2="15" />
+        <line vectorEffect="non-scaling-stroke" x1="16" x2="22" y1="9" y2="15" />
+      </svg>
+    );
+
+    const MailIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect vectorEffect="non-scaling-stroke" width="20" height="16" x="2" y="4" rx="2" />
+        <path vectorEffect="non-scaling-stroke" d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+      </svg>
+    );
+
+    const LinkedinIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+        <rect vectorEffect="non-scaling-stroke" width="4" height="12" x="2" y="9" />
+        <circle vectorEffect="non-scaling-stroke" cx="4" cy="4" r="2" />
+      </svg>
+    );
+
+    const TwitterIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5 5.96 15.6 7 12c-1.2.3-2.4.2-3.6-.1C2.5 10.6 4 9 4 9c-1.1-.3-2-.9-2.5-1.9 1-.3 2.1-.3 3.1-.1C2.3 5 4 2 4 2c1.6 2 4 4 7.4 4.5 0-1.1.5-2.2 1.5-2.9 1.4-1.1 3.5-.8 4.6.5 1.1-.2 2.1-.7 3-1.2-.4 1.1-1.1 2-2 2.7 1-.1 1.9-.4 2.8-.8Z" />
+      </svg>
+    );
+
+    const GithubIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+        <path vectorEffect="non-scaling-stroke" d="M9 18c-4.51 2-5-2-7-2" />
+      </svg>
+    );
+
+    const ChevronDownIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="m6 9 6 6 6-6" />
+      </svg>
+    );
+
+    // --- SMOOTH COLLAPSIBLE PANEL PRIMITIVE ---
+    const CollapsiblePanel = ({ id, isOpen, children }) => {
+      const reduce = useReducedMotionSafe();
+      const refreshCurtain = useCallback(() => {
+        if (window.ScrollTrigger) {
+          window.ScrollTrigger.refresh();
+        }
+      }, []);
+
+      return (
+        <AnimatePresence initial={false}>
+          {isOpen && (
+            <motion.div
+              id={id}
+              initial={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
+              animate={reduce ? { opacity: 1 } : { height: "auto", opacity: 1 }}
+              exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
+              transition={{ duration: reduce ? 0.12 : 0.24, ease: [0.2, 0, 0, 1] }}
+              onAnimationComplete={refreshCurtain}
+              style={{ overflow: "hidden" }}
+            >
+              {children}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      );
+    };
+
+    // --- CONTEXTUAL ICON SWAP (Single-node CSS animation: immune to AnimatePresence overlap) ---
+    const IconSwap = ({ activeKey, children }) => (
+      <span key={activeKey} className="icon-swap-in inline-flex items-center justify-center">
+        {children}
+      </span>
+    );
+
+    // --- CV CREDENTIAL, COLLAPSE & TAG EXPLORER MACHINE ---
+    const DEFAULT_COLLAPSED_IDS = {
+      "exp-iqor": true,
+      "exp-oi": true,
+      "exp-heksagon": true,
+      "edu-beng": true,
+      "edu-elte": true
+    };
+
+    const CV_EXPLORER_MACHINE = {
+      id: "cvExplorer",
+      initial: "overview",
       context: () => ({
-        activeSection: "experience"
+        selectedTag: null,
+        hoveredRole: null,
+        collapsedIds: { ...DEFAULT_COLLAPSED_IDS }
       }),
       on: {
-        SCROLL_UPDATE: (ctx, event, currentState) => {
-          const nextState = event.scrollY > 30 ? "elevated" : "top";
-          const nextSection = event.activeSection || ctx.activeSection;
-          if (nextState === currentState && nextSection === ctx.activeSection) return null;
+        TOGGLE_TAG: (ctx, event) => {
+          const nextTag = ctx.selectedTag === event.tag ? null : event.tag;
           return {
-            target: nextState,
-            context: { ...ctx, activeSection: nextSection }
+            target: nextTag ? "filteringByTag" : "overview",
+            context: { ...ctx, selectedTag: nextTag }
           };
         },
-        SELECT_SECTION: (ctx, event, currentState) => ({
-          target: currentState,
-          context: { ...ctx, activeSection: event.section || ctx.activeSection }
+        CLEAR_TAG: (ctx) => ({
+          target: "overview",
+          context: { ...ctx, selectedTag: null }
+        }),
+        TOGGLE_ITEM: (ctx, event) => {
+          const next = { ...ctx.collapsedIds };
+          if (next[event.id]) delete next[event.id];
+          else next[event.id] = true;
+          return { context: { ...ctx, collapsedIds: next } };
+        },
+        SET_GROUP_COLLAPSED: (ctx, event) => {
+          const next = { ...ctx.collapsedIds };
+          (event.ids || []).forEach((id) => {
+            if (event.collapsed) next[id] = true;
+            else delete next[id];
+          });
+          return { context: { ...ctx, collapsedIds: next } };
+        },
+        EXPAND_ALL: (ctx) => ({
+          context: { ...ctx, collapsedIds: {} }
+        }),
+        HOVER_ROLE: (ctx, event) => ({
+          context: { ...ctx, hoveredRole: event.company || null }
+        }),
+        LEAVE_ROLE: (ctx) => ({
+          context: { ...ctx, hoveredRole: null }
         })
       },
       states: {
-        top: {},
-        elevated: {}
+        overview: {},
+        filteringByTag: {
+          on: {
+            ESCAPE: (ctx) => ({
+              target: "overview",
+              context: { ...ctx, selectedTag: null }
+            })
+          }
+        }
       }
     };
 
-    const Nav = () => {
-      const [navState, send] = useMachine(CV_NAV_MACHINE);
-      const scrolled = navState.value === "elevated";
-      const { activeSection } = navState.context;
+    const EXPERIENCE_DATA = [
+      {
+        id: "exp-here",
+        period: "Nov 2026 – Present",
+        role: "Lead AI Engineer",
+        company: "HERE Technologies",
+        domain: "AI Systems",
+        bullets: [
+          "Architecting scalable AI data services for analytical and intelligence workflows.",
+          "Building resilient production pipelines and containerized microservices with modern cloud infrastructure."
+        ],
+        tags: ["Python", "AI Engineering", "AWS", "SQL", "LLMOps", "RAG"],
+        current: true
+      },
+      {
+        id: "exp-iqor",
+        period: "Mar 2023 – Oct 2026",
+        role: "AI Engineer / Data Scientist",
+        company: "iQor",
+        domain: "AI Systems",
+        bullets: [
+          "Architected production-grade Retrieval-Augmented Generation (RAG) systems and optimized high-throughput vector search performance.",
+          "Led the architectural transition toward agentic LLM workflows, containerized APIs (FastAPI) and AWS cloud deployment.",
+          "Built and maintained custom Model Context Protocol (MCP) servers, MCP-powered applications and autonomous agent workflows to standardize enterprise tool integrations.",
+          "Executed end-to-end data enrichment, analysis and executive dashboarding pipelines to drive data-informed operational decisions.",
+          "Conducted market research on emerging AI tooling and shaped the strategic vision and internal policies for AI adoption."
+        ],
+        tags: ["Python", "AWS", "LLMOps", "RAG", "Vector Databases", "FastAPI"]
+      },
+      {
+        id: "exp-oi",
+        period: "Jul 2021 – Feb 2023",
+        role: "Data Scientist",
+        company: "O-I",
+        domain: "Predictive Analytics & MLOps",
+        bullets: [
+          "Developed, deployed and maintained automated machine learning pipelines for internal global stakeholders on large-scale tabular sales and cost datasets.",
+          "Streamlined feature engineering and model lifecycle monitoring on Microsoft Azure."
+        ],
+        tags: ["Python", "Azure", "MLOps", "SQL"]
+      },
+      {
+        id: "exp-heksagon",
+        period: "Apr 2021 – Jan 2022",
+        role: "Spatial Data Analyst",
+        company: "Heksagon Research",
+        domain: "Civic & Municipal Geoinformatics",
+        bullets: [
+          "Analyzed complex spatial and demographic datasets, producing high-precision visualizations and analytical reports for private, civic and municipal clients."
+        ],
+        tags: ["Python", "GIS", "SQL", "Spatial Statistics"]
+      }
+    ];
+
+    const SKILL_MATRIX = [
+      {
+        id: "skill-ai",
+        category: "AI & Machine Learning",
+        items: ["LLM Orchestration & RAG", "Vector Stores & Embeddings", "Agentic Workflows", "Prompt Engineering", "Computer Vision (CNNs)", "Classical ML"]
+      },
+      {
+        id: "skill-backend",
+        category: "Backend & Infrastructure",
+        items: ["Python (FastAPI, Flask)", "Docker & Containerization", "REST API", "SQL & relational databases", "C# / .NET utilities", "React & modern web"]
+      },
+      {
+        id: "skill-cloud",
+        category: "Cloud & DevOps",
+        items: ["Amazon Web Services (AWS)", "Microsoft Azure", "Linux administration", "MLOps & telemetry"]
+      },
+      {
+        id: "skill-spatial",
+        category: "Spatial & Civic Systems",
+        items: ["GIS & Geocomputation", "Network Analysis", "Municipal Data Systems", "Geomorphological Vision Models"]
+      }
+    ];
+
+    const EDUCATION_DATA = [
+      {
+        id: "edu-msc",
+        year: "2022 – 2023",
+        degree: "Master of Science in Geoinformatics",
+        institution: "Adam Mickiewicz University in Poznań",
+        thesis: "Master’s thesis focused on Deep Learning and Computer Vision (CNNs) applied to geomorphology and Earth sciences; awarded funding under the ID-UB Study@research program.",
+        tags: ["Computer Vision", "CNN", "Python", "GIS"]
+      },
+      {
+        id: "edu-beng",
+        year: "2018 – 2022",
+        degree: "Bachelor of Engineering in Geoinformation",
+        institution: "Adam Mickiewicz University in Poznań",
+        thesis: "Engineering thesis focused on creating a Python-based spatial network analysis tool for public transport.",
+        tags: ["Python", "GIS", "Network Analysis"]
+      },
+      {
+        id: "edu-elte",
+        year: "2019 – 2020",
+        degree: "Engineering in Geoinformation (Erasmus+ Exchange)",
+        institution: "Eötvös Loránd University (ELTE), Budapest",
+        thesis: "International coursework in spatial data modeling, cartography and geocomputation.",
+        tags: ["Python", "GIS", "International Exchange"]
+      }
+    ];
+
+    // --- CV DOCUMENT ---
+    const CVDocument = ({ theme, onToggleTheme, hapticsMuted, onToggleHaptics, enterItem }) => {
+      const [explorerState, sendExplorer] = useMachine(CV_EXPLORER_MACHINE);
+      const reduce = useReducedMotionSafe();
+      const { selectedTag, hoveredRole, collapsedIds } = explorerState.context;
+      const [copied, setCopied] = useState(false);
 
       useEffect(() => {
-        const computeScrollState = () => {
-          const ordered = ["education", "skills", "experience"];
-          const scrollPos = window.scrollY + 260;
-          let detected = "experience";
-          for (const id of ordered) {
-            const el = document.getElementById(id);
-            if (el && scrollPos >= el.offsetTop) {
-              detected = id;
-              break;
-            }
-          }
-          send({ type: "SCROLL_UPDATE", scrollY: window.scrollY, activeSection: detected });
+        const onBeforePrint = () => sendExplorer("EXPAND_ALL");
+        window.addEventListener("beforeprint", onBeforePrint);
+        return () => window.removeEventListener("beforeprint", onBeforePrint);
+      }, [sendExplorer]);
+
+      useEffect(() => {
+        if (!selectedTag) return;
+        const onKeyDown = (e) => {
+          if (e.key === "Escape") sendExplorer("ESCAPE");
         };
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+      }, [selectedTag, sendExplorer]);
 
-        computeScrollState();
-        window.addEventListener("scroll", computeScrollState, { passive: true });
-        return () => window.removeEventListener("scroll", computeScrollState);
-      }, [send]);
-
-      const handleAnchorClick = (e, id, href) => {
-        send({ type: "SELECT_SECTION", section: id });
-        if (window.__LENIS__ && href.startsWith("#")) {
-          const targetEl = document.querySelector(href);
-          if (targetEl) {
-            e.preventDefault();
-            window.__LENIS__.scrollTo(targetEl, { offset: -96 });
-          }
+      const handleCopyEmail = () => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText("pacochp@gmail.com").catch(() => {});
         }
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 1800);
       };
 
-      return (
-        <header
-          data-machine="cvNavigation"
-          data-state={navState.value}
-          data-active-section={activeSection}
-          className="fixed top-5 left-0 right-0 z-[100] px-4 sm:px-8 pointer-events-none flex justify-center"
-        >
-          <nav
-            aria-label="CV Navigation"
-            className={`pointer-events-auto transition-all duration-500 rounded-full flex items-center justify-between px-3 py-2 border ${
-              scrolled
-                ? "bg-white/85 backdrop-blur-xl border-dark/10 shadow-[0_12px_40px_rgba(17,24,39,0.08)]"
-                : "bg-white/75 backdrop-blur-md border-dark/8 shadow-[0_4px_20px_rgba(17,24,39,0.03)]"
-            } w-full max-w-[780px]`}
-          >
-            <a
-              href="index.html"
-              className="flex items-center gap-2.5 pl-3 pr-4 py-1.5 rounded-full hover:bg-offwhite text-dark font-medium text-xs transition-colors"
-            >
-              <ArrowLeft className="w-3.5 h-3.5 text-electric" />
-              <span>Back to Portfolio</span>
-            </a>
+      const isOpen = (id) => !collapsedIds[id];
+      const allExpOpen = EXPERIENCE_DATA.every((e) => !collapsedIds[e.id]);
+      const allSkillsOpen = SKILL_MATRIX.every((s) => !collapsedIds[s.id]);
+      const allEduOpen = EDUCATION_DATA.every((ed) => !collapsedIds[ed.id]);
 
-            <div className="hidden sm:flex items-center gap-4 text-xs font-mono text-dark/60">
-              {CV_NAV_SECTIONS.map((sec, idx) => {
-                const isActive = activeSection === sec.id;
+      return (
+        <motion.div
+          initial="hidden"
+          animate="visible"
+          variants={{ visible: { transition: { staggerChildren: reduce ? 0 : 0.08 } } }}
+          data-machine="cvExplorer"
+          data-state={explorerState.value}
+          data-selected-tag={selectedTag || undefined}
+          data-hovered-role={hoveredRole || undefined}
+          className="max-w-[768px] mx-auto px-5 sm:px-8 safe-top pb-24 sm:pb-28 space-y-16 sm:space-y-20"
+        >
+          {/* CV Header */}
+          <motion.div variants={enterItem}>
+            {/* Top Utility Row (Hidden in PDF print) */}
+            <nav
+              aria-label="CV Navigation"
+              className="no-print flex flex-wrap items-center justify-between gap-3 mb-10 sm:mb-12"
+            >
+              <a
+                href="index.html"
+                className="back-link tap-press hover-surface -ms-2.5 px-2.5 min-h-[40px] rounded-lg inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-ink-muted"
+              >
+                <ArrowLeftIcon className="back-arrow w-3.5 h-3.5 transition-transform duration-150 ease-out" />
+                <span>Portfolio</span>
+              </a>
+
+              <div className="flex items-center gap-1 -me-1.5">
+                <a
+                  href="#experience"
+                  className="hidden sm:inline-flex tap-press hover-surface px-2.5 min-h-[38px] rounded-lg items-center text-[0.9375rem] text-ink-muted"
+                >
+                  Experience
+                </a>
+                <a
+                  href="#skills"
+                  className="hidden sm:inline-flex tap-press hover-surface px-2.5 min-h-[38px] rounded-lg items-center text-[0.9375rem] text-ink-muted"
+                >
+                  Stack
+                </a>
+                <a
+                  href="#education"
+                  className="hidden sm:inline-flex tap-press hover-surface px-2.5 min-h-[38px] rounded-lg items-center text-[0.9375rem] text-ink-muted"
+                >
+                  Education
+                </a>
+
+                <span aria-hidden="true" className="hidden sm:inline-block w-px h-4 bg-hairline mx-1" />
+
+                <a
+                  href="assets/resume.pdf"
+                  download
+                  className="tap-press hover-surface px-2.5 min-h-[40px] rounded-lg inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-ink"
+                >
+                  <DownloadIcon className="w-3.5 h-3.5" />
+                  <span>PDF</span>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={onToggleHaptics}
+                  aria-label={hapticsMuted ? "Unmute click feedback" : "Mute click feedback"}
+                  aria-pressed={hapticsMuted}
+                  title={hapticsMuted ? "Unmute feedback" : "Mute feedback"}
+                  className={`tap-press hover-surface w-[40px] h-[40px] rounded-lg inline-flex items-center justify-center ${
+                    hapticsMuted ? "text-ink-muted opacity-55" : "text-ink-muted"
+                  }`}
+                >
+                  <IconSwap activeKey={hapticsMuted ? "muted" : "on"}>
+                    {hapticsMuted ? <SpeakerMutedIcon /> : <SpeakerIcon />}
+                  </IconSwap>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={onToggleTheme}
+                  aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                  aria-pressed={theme === "dark"}
+                  title={theme === "dark" ? "Light mode" : "Dark mode"}
+                  className="tap-press hover-surface w-[40px] h-[40px] rounded-lg inline-flex items-center justify-center text-ink-muted"
+                >
+                  <IconSwap activeKey={theme}>
+                    {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+                  </IconSwap>
+                </button>
+              </div>
+            </nav>
+
+            {/* Identity & Summary */}
+            <header className="space-y-4">
+              <div>
+                <h1 className="text-[1.375rem] sm:text-[1.5rem] font-semibold text-ink tracking-[-0.02em] leading-[1.3]">
+                  Jakub Pacocha
+                </h1>
+                <p className="mt-0.5 text-[1.0625rem] sm:text-[1.125rem] font-medium text-ink-subtitle leading-[1.45]">
+                  Curriculum Vitae / Bydgoszcz, Poland
+                </p>
+              </div>
+
+              <p className="text-[1.0625rem] sm:text-[1.125rem] text-ink-secondary leading-[1.7] text-pretty max-w-[60ch]">
+                Full-stack AI engineer with 6+ years of experience building production data systems, RAG architectures and containerized ML infrastructure. Author of philosophical blog at{" "}
+                <a
+                  href="https://fromthecabinet.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="reveal-link"
+                >
+                  <span className="inline-link">From the Cabinet</span>
+                  <span className="reveal-slot" aria-hidden="true">
+                    <ArrowUpRightIcon tight className="reveal-glyph w-[0.5em] h-[0.5em]" strokeWidth={1.9} />
+                  </span>
+                </a>
+                .
+              </p>
+
+              {/* Unified Email + Hover-Reveal Copy Icon, plus Hover-Reveal Arrows */}
+              <p className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[1.0625rem] sm:text-[1.125rem] text-ink-secondary">
+                <button
+                  type="button"
+                  onClick={handleCopyEmail}
+                  data-revealed={copied ? "true" : undefined}
+                  aria-label={copied ? "Email copied to clipboard" : "Copy pacochp@gmail.com to clipboard"}
+                  className="reveal-link tap-press inline-block p-0 m-0 bg-transparent border-0 text-inherit cursor-pointer align-baseline"
+                >
+                  <span className="inline-link">pacochp@gmail.com</span>
+                  <span className="no-print reveal-slot reveal-slot-copy" aria-hidden="true">
+                    <IconSwap activeKey={copied ? "check" : "copy"}>
+                      {copied ? (
+                        <CheckIcon className="reveal-glyph reveal-glyph-copy w-[0.68em] h-[0.68em] text-ink" />
+                      ) : (
+                        <CopyIcon className="reveal-glyph reveal-glyph-copy w-[0.68em] h-[0.68em]" />
+                      )}
+                    </IconSwap>
+                  </span>
+                </button>
+
+                <span aria-hidden="true" className="text-ink-muted">/</span>
+                <a
+                  href="https://github.com/JPacoch"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="reveal-link"
+                >
+                  <span className="inline-link">github.com/JPacoch</span>
+                  <span className="no-print reveal-slot" aria-hidden="true">
+                    <ArrowUpRightIcon tight className="reveal-glyph w-[0.5em] h-[0.5em]" strokeWidth={1.9} />
+                  </span>
+                </a>
+                <span aria-hidden="true" className="text-ink-muted">/</span>
+                <a
+                  href="https://www.linkedin.com/in/jakubpacocha/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="reveal-link"
+                >
+                  <span className="inline-link">LinkedIn</span>
+                  <span className="no-print reveal-slot" aria-hidden="true">
+                    <ArrowUpRightIcon tight className="reveal-glyph w-[0.5em] h-[0.5em]" strokeWidth={1.9} />
+                  </span>
+                </a>
+                <span className="sr-only" role="status" aria-live="polite">
+                  {copied ? "Email address pacochp@gmail.com copied." : ""}
+                </span>
+              </p>
+            </header>
+          </motion.div>
+
+          {/* Experience Section (Most recent open by default; rest click-to-open) */}
+          <motion.section id="experience" variants={enterItem} aria-labelledby="experience-heading" className="tracking-normal">
+            <span className="sr-only" role="status" aria-live="polite">
+              {selectedTag ? `Filtered by tag ${selectedTag}.` : "Tag filter cleared."}
+            </span>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-3 border-b border-hairline">
+              <h2 id="experience-heading" className="text-base sm:text-[1.0625rem] font-semibold text-ink tracking-normal">
+                Experience
+              </h2>
+
+              <div className="flex items-center gap-3 h-7">
+                {selectedTag && (
+                  <button
+                    key={selectedTag}
+                    type="button"
+                    onClick={() => sendExplorer("CLEAR_TAG")}
+                    aria-label={`Clear ${selectedTag} filter`}
+                    className="tag-pill-in no-print inline-flex items-center gap-1 h-7 px-2.5 rounded-md bg-ink text-canvas text-[0.875rem] leading-none font-medium cursor-pointer border-0 active:scale-[0.96] transition-transform duration-150 ease-out"
+                  >
+                    <span>{selectedTag}</span>
+                    <span aria-hidden="true">×</span>
+                  </button>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    sendExplorer({
+                      type: "SET_GROUP_COLLAPSED",
+                      ids: EXPERIENCE_DATA.map((e) => e.id),
+                      collapsed: allExpOpen
+                    })
+                  }
+                  className="no-print inline-flex items-center h-7 text-[0.9375rem] leading-none text-ink-muted hover-ink transition-colors duration-150 ease-out"
+                >
+                  {allExpOpen ? "Collapse all" : "Expand all"}
+                </button>
+              </div>
+            </div>
+
+            <div className="divide-y divide-hairline">
+              {EXPERIENCE_DATA.map((exp) => {
+                const matchesTag = !selectedTag || exp.tags.includes(selectedTag);
+                const open = isOpen(exp.id);
+                const panelId = `${exp.id}-panel`;
                 return (
-                  <React.Fragment key={sec.id}>
-                    {idx > 0 && <span className="text-dark/25">/</span>}
-                    <a
-                      href={sec.href}
-                      onClick={(e) => handleAnchorClick(e, sec.id, sec.href)}
-                      aria-current={isActive ? "location" : undefined}
-                      data-active={isActive}
-                      className={`transition-colors ${
-                        isActive ? "text-electric font-semibold" : "hover:text-electric"
-                      }`}
+                  <article
+                    key={exp.id}
+                    onMouseEnter={() => sendExplorer({ type: "HOVER_ROLE", company: exp.company })}
+                    onMouseLeave={() => sendExplorer("LEAVE_ROLE")}
+                    className={`py-4 sm:py-5 transition-opacity duration-150 ease-out ${
+                      selectedTag && !matchesTag ? "opacity-35" : ""
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      aria-expanded={open}
+                      aria-controls={panelId}
+                      onClick={() => sendExplorer({ type: "TOGGLE_ITEM", id: exp.id })}
+                      className="tap-press hover-surface w-[calc(100%+1.75rem)] sm:w-[calc(100%+2rem)] text-start -mx-3.5 sm:-mx-4 px-3.5 sm:px-4 py-3 rounded-xl flex items-start justify-between gap-4 cursor-pointer bg-transparent border-0"
                     >
-                      {sec.label}
-                    </a>
-                  </React.Fragment>
+                      <div className="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5 sm:gap-4">
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5">
+                            <h3 className="text-[1.0625rem] sm:text-[1.125rem] font-semibold text-ink tracking-normal leading-[1.35]">
+                              {exp.role}
+                            </h3>
+                            {exp.current && (
+                              <span className="inline-flex items-center justify-center h-6 px-2.5 rounded-full bg-badge-bg text-badge-text text-[0.6875rem] leading-none font-semibold tracking-[0.06em] uppercase">
+                                Current
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-1.5 text-base text-ink-muted">
+                            <span className="text-ink font-semibold">{exp.company}</span>
+                            {" / "}
+                            <span>{exp.domain}</span>
+                          </p>
+                        </div>
+
+                        <span className="text-[0.9375rem] text-ink-muted tabular-nums shrink-0">
+                          {exp.period}
+                        </span>
+                      </div>
+
+                      <ChevronDownIcon
+                        className={`no-print w-4 h-4 text-ink-muted shrink-0 mt-1 transition-transform duration-200 ease-[cubic-bezier(0.2,0,0,1)] ${
+                          open ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+
+                    <CollapsiblePanel id={panelId} isOpen={open}>
+                      <div className="pt-3.5 pb-2">
+                        <ul className="space-y-3 mb-5 text-base text-ink-secondary leading-[1.65] text-pretty list-none p-0 max-w-[60ch]">
+                          {exp.bullets.map((b, idx) => (
+                            <li key={idx} className="flex items-start gap-2.5">
+                              <span aria-hidden="true" className="text-ink-muted select-none mt-px">–</span>
+                              <span>{b}</span>
+                            </li>
+                          ))}
+                        </ul>
+
+                        <div className="flex flex-wrap gap-2">
+                          {exp.tags.map((tag) => {
+                            const isTagSelected = selectedTag === tag;
+                            return (
+                              <button
+                                key={tag}
+                                type="button"
+                                aria-pressed={isTagSelected}
+                                onClick={() => sendExplorer({ type: "TOGGLE_TAG", tag })}
+                                className={`tap-press px-2.5 py-1 min-h-[30px] rounded-md text-[0.875rem] font-medium transition-colors duration-150 ease-out ${
+                                  isTagSelected
+                                    ? "bg-ink text-canvas"
+                                    : "bg-surface text-ink-secondary hover-ink"
+                                }`}
+                              >
+                                {tag}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </CollapsiblePanel>
+                  </article>
                 );
               })}
             </div>
+          </motion.section>
 
-            <a
-              href="assets/resume.pdf"
-              download
-              className="px-4 py-1.5 rounded-full bg-electric text-white hover:bg-electric/90 text-xs font-mono font-medium transition-all flex items-center gap-1.5 shadow-[0_4px_14px_rgba(0,85,255,0.25)]"
-            >
-              <DownloadIcon className="w-3.5 h-3.5" />
-              <span>Download PDF</span>
-            </a>
-          </nav>
-        </header>
+          {/* Technical Capabilities Section (Pure Editorial Text-Based, Togglable Hairline Rows) */}
+          <motion.section id="skills" variants={enterItem} aria-labelledby="skills-heading" className="tracking-normal">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-3 border-b border-hairline">
+              <h2 id="skills-heading" className="text-base sm:text-[1.0625rem] font-semibold text-ink tracking-normal">
+                Technical Capabilities
+              </h2>
+              <button
+                type="button"
+                onClick={() =>
+                  sendExplorer({
+                    type: "SET_GROUP_COLLAPSED",
+                    ids: SKILL_MATRIX.map((s) => s.id),
+                    collapsed: allSkillsOpen
+                  })
+                }
+                className="no-print inline-flex items-center h-7 text-[0.9375rem] leading-none text-ink-muted hover-ink transition-colors duration-150 ease-out"
+              >
+                {allSkillsOpen ? "Collapse all" : "Expand all"}
+              </button>
+            </div>
+
+            <div className="divide-y divide-hairline">
+              {SKILL_MATRIX.map((group) => {
+                const open = isOpen(group.id);
+                const panelId = `${group.id}-panel`;
+                return (
+                  <div key={group.id} className="py-4 sm:py-[1.125rem]">
+                    <button
+                      type="button"
+                      aria-expanded={open}
+                      aria-controls={panelId}
+                      onClick={() => sendExplorer({ type: "TOGGLE_ITEM", id: group.id })}
+                      className="tap-press hover-surface w-[calc(100%+1.75rem)] sm:w-[calc(100%+2rem)] text-start -mx-3.5 sm:-mx-4 px-3.5 sm:px-4 py-2.5 rounded-xl flex items-baseline justify-between gap-4 cursor-pointer bg-transparent border-0"
+                    >
+                      <h3 className="text-[1.0625rem] sm:text-[1.125rem] font-semibold text-ink tracking-normal">
+                        {group.category}
+                      </h3>
+
+                      <div className="flex items-center gap-2.5 shrink-0">
+                        <span className="text-[0.9375rem] text-ink-muted tabular-nums">
+                          {group.items.length}
+                        </span>
+                        <ChevronDownIcon
+                          className={`no-print w-4 h-4 text-ink-muted transition-transform duration-200 ease-[cubic-bezier(0.2,0,0,1)] ${
+                            open ? "rotate-180" : ""
+                          }`}
+                        />
+                      </div>
+                    </button>
+
+                    <CollapsiblePanel id={panelId} isOpen={open}>
+                      <ul className="pt-3 pb-2 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5 list-none m-0">
+                        {group.items.map((item) => {
+                          const isMatched = Boolean(
+                            selectedTag && item.toLowerCase().includes(selectedTag.toLowerCase())
+                          );
+                          return (
+                            <li
+                              key={item}
+                              className={`flex items-baseline gap-2.5 text-base leading-[1.55] transition-colors duration-150 ease-out ${
+                                isMatched
+                                  ? "text-ink font-semibold underline decoration-dotted underline-offset-[3px]"
+                                  : "text-ink-secondary"
+                              }`}
+                            >
+                              <span aria-hidden="true" className="text-ink-muted select-none">–</span>
+                              <span>{item}</span>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </CollapsiblePanel>
+                  </div>
+                );
+              })}
+            </div>
+          </motion.section>
+
+          {/* Education Section (Most recent open by default; rest click-to-open) */}
+          <motion.section id="education" variants={enterItem} aria-labelledby="education-heading" className="tracking-normal">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-3 border-b border-hairline">
+              <h2 id="education-heading" className="text-base sm:text-[1.0625rem] font-semibold text-ink tracking-normal">
+                Education
+              </h2>
+              <button
+                type="button"
+                onClick={() =>
+                  sendExplorer({
+                    type: "SET_GROUP_COLLAPSED",
+                    ids: EDUCATION_DATA.map((ed) => ed.id),
+                    collapsed: allEduOpen
+                  })
+                }
+                className="no-print inline-flex items-center h-7 text-[0.9375rem] leading-none text-ink-muted hover-ink transition-colors duration-150 ease-out"
+              >
+                {allEduOpen ? "Collapse all" : "Expand all"}
+              </button>
+            </div>
+
+            <div className="divide-y divide-hairline">
+              {EDUCATION_DATA.map((edu) => {
+                const matchesTag = !selectedTag || edu.tags.includes(selectedTag);
+                const open = isOpen(edu.id);
+                const panelId = `${edu.id}-panel`;
+                return (
+                  <article
+                    key={edu.id}
+                    className={`py-4 sm:py-5 transition-opacity duration-150 ease-out ${
+                      selectedTag && !matchesTag ? "opacity-35" : ""
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      aria-expanded={open}
+                      aria-controls={panelId}
+                      onClick={() => sendExplorer({ type: "TOGGLE_ITEM", id: edu.id })}
+                      className="tap-press hover-surface w-[calc(100%+1.75rem)] sm:w-[calc(100%+2rem)] text-start -mx-3.5 sm:-mx-4 px-3.5 sm:px-4 py-3 rounded-xl flex items-start justify-between gap-4 cursor-pointer bg-transparent border-0"
+                    >
+                      <div className="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1.5 sm:gap-4">
+                        <div className="min-w-0">
+                          <h3 className="text-[1.0625rem] sm:text-[1.125rem] font-semibold text-ink tracking-normal leading-[1.35]">
+                            {edu.degree}
+                          </h3>
+                          <p className="mt-1.5 text-base text-ink-muted">
+                            {edu.institution}
+                          </p>
+                        </div>
+
+                        <span className="text-[0.9375rem] text-ink-muted tabular-nums shrink-0">
+                          {edu.year}
+                        </span>
+                      </div>
+
+                      <ChevronDownIcon
+                        className={`no-print w-4 h-4 text-ink-muted shrink-0 mt-1 transition-transform duration-200 ease-[cubic-bezier(0.2,0,0,1)] ${
+                          open ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+
+                    <CollapsiblePanel id={panelId} isOpen={open}>
+                      <div className="pt-3 pb-2">
+                        <p className="text-base text-ink-secondary leading-[1.65] text-pretty mb-5 max-w-[60ch]">
+                          {edu.thesis}
+                        </p>
+
+                        <div className="flex flex-wrap gap-2">
+                          {edu.tags.map((tag) => {
+                            const isTagSelected = selectedTag === tag;
+                            return (
+                              <button
+                                key={tag}
+                                type="button"
+                                aria-pressed={isTagSelected}
+                                onClick={() => sendExplorer({ type: "TOGGLE_TAG", tag })}
+                                className={`tap-press px-2.5 py-1 min-h-[30px] rounded-md text-[0.875rem] font-medium transition-colors duration-150 ease-out ${
+                                  isTagSelected
+                                    ? "bg-ink text-canvas"
+                                    : "bg-surface text-ink-secondary hover-ink"
+                                }`}
+                              >
+                                {tag}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </CollapsiblePanel>
+                  </article>
+                );
+              })}
+            </div>
+          </motion.section>
+        </motion.div>
       );
     };
 
-    const CVDocument = () => {
-      const experience = [
-        {
-          period: "Nov 2026 - Present",
-          role: "Lead AI Engineer",
-          company: "HERE Technologies",
-          domain: "AI Systems",
-          bullets: [
-            "Architecting scalable AI and location-aware data services for global mapping and spatial intelligence workflows.",
-            "Building resilient production pipelines and containerized microservices with modern cloud infrastructure."
-          ],
-          tags: ["Python", "AI Engineering", "AWS"],
-          current: true
+    // --- SCROLL ENGINE & FOOTER CURTAIN MACHINES ---
+    const SCROLL_ENGINE_MACHINE = {
+      id: "scrollEngine",
+      initial: () =>
+        typeof window !== "undefined" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "reducedMotion"
+          : "idle",
+      context: () => ({ direction: "down" }),
+      on: {
+        VISIBILITY_HIDDEN: "suspended",
+        VISIBILITY_VISIBLE: "idle"
+      },
+      states: {
+        idle: {
+          on: {
+            SCROLL_ACTIVE: (ctx, event) => ({ target: "scrolling", context: { ...ctx, direction: event.direction || ctx.direction } })
+          }
         },
-        {
-          period: "Mar 2023 - Oct 2026",
-          role: "AI Engineer / Data Scientist",
-          company: "iQor",
-          domain: "Enterprise Generative AI & LLMOps",
-          bullets: [
-            "Architected production-grade Retrieval-Augmented Generation (RAG) systems and optimized high-throughput vector search performance.",
-            "Led the architectural transition toward agentic LLM workflows, containerized APIs (FastAPI / Docker), and AWS cloud deployment."
-          ],
-          tags: ["Python", "AWS", "LLMOps", "RAG", "Vector Databases", "FastAPI"]
+        scrolling: {
+          on: {
+            SCROLL_ACTIVE: (ctx, event) => {
+              if (event.direction === ctx.direction) return null;
+              return { target: "scrolling", context: { ...ctx, direction: event.direction } };
+            },
+            SCROLL_IDLE: "idle"
+          }
         },
-        {
-          period: "Jul 2021 - Feb 2023",
-          role: "Data Scientist",
-          company: "O-I Poland",
-          domain: "Predictive Analytics & MLOps",
-          bullets: [
-            "Developed, deployed, and maintained automated machine learning pipelines for internal global stakeholders on large-scale tabular sales and cost datasets.",
-            "Streamlined feature engineering and model lifecycle monitoring on Microsoft Azure."
-          ],
-          tags: ["Python", "Azure", "MLOps", "Tabular ML", "SQL"]
-        },
-        {
-          period: "Apr 2021 - Jan 2022",
-          role: "Spatial Data Analyst",
-          company: "Heksagon Research",
-          domain: "Civic & Municipal Geoinformatics",
-          bullets: [
-            "Analyzed complex spatial and demographic datasets, producing high-precision visualizations and analytical reports for private, civic, and municipal clients."
-          ],
-          tags: ["Python", "GIS", "SQL", "Spatial Statistics"]
-        }
-      ];
-
-      const skillMatrix = [
-        {
-          category: "AI & Machine Learning",
-          items: ["LLM Orchestration & RAG", "Vector Stores & Embeddings", "Agentic Workflows", "Prompt Engineering", "Computer Vision (CNNs)", "Classical ML"]
-        },
-        {
-          category: "Backend & Infrastructure",
-          items: ["Python (FastAPI, Flask)", "Docker & Containerization", "REST API Architecture", "SQL & Relational Databases", "C# / .NET Utilities", "React & Modern Web"]
-        },
-        {
-          category: "Cloud & DevOps",
-          items: ["Amazon Web Services (AWS)", "Microsoft Azure", "GitHub Actions CI/CD", "Linux Administration", "MLOps & Telemetry"]
-        },
-        {
-          category: "Spatial & Civic Systems",
-          items: ["GIS & Geocomputation", "Transport Network Analysis", "Municipal Data Systems", "Geomorphological Vision Models"]
-        }
-      ];
-
-      const education = [
-        {
-          year: "2022 - 2023",
-          degree: "Master of Science in Geoinformatics",
-          institution: "Adam Mickiewicz University in Poznań",
-          thesis: "Master's thesis focused on Deep Learning and Computer Vision (CNNs) applied to geomorphology and Earth sciences.",
-          tags: ["Computer Vision", "CNN", "Python"]
-        },
-        {
-          year: "2018 - 2022",
-          degree: "Bachelor of Engineering in Geoinformation",
-          institution: "Adam Mickiewicz University in Poznań",
-          thesis: "Engineering thesis focused on creating a Python-based spatial network analysis tool for public transport.",
-          tags: ["Python", "GIS", "Network Analysis"]
-        },
-        {
-          year: "2019 - 2020",
-          degree: "Engineering in Geoinformation (Erasmus+ Exchange)",
-          institution: "Eötvös Loránd University (ELTE), Budapest",
-          thesis: "International coursework in spatial data modeling, cartography, and geocomputation.",
-          tags: ["Python", "GIS", "International Exchange"]
-        }
-      ];
-
-      return (
-        <div className="pt-28 pb-24 px-6 md:px-12 lg:px-20 bg-Swiss-grid">
-          <div className="max-w-[1160px] mx-auto">
-            {/* CV Header Sheet */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="rounded-3xl bg-white border border-dark/10 p-8 md:p-12 shadow-[0_8px_30px_rgba(17,24,39,0.03)] mb-10"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-4 pb-8 mb-8 border-b border-dark/10">
-                <div className="flex items-center gap-3">
-                  <span className="px-3 py-1 rounded-full bg-electric/10 text-electric font-mono text-xs font-semibold uppercase tracking-wider">
-                    Curriculum Vitae
-                  </span>
-                  <span className="font-mono text-xs text-dark/45">Bydgoszcz, Poland</span>
-                </div>
-                <div className="flex items-center gap-3 font-mono text-xs">
-                  <a href="mailto:pacochp@gmail.com" className="text-dark/70 hover:text-electric transition-colors">
-                    pacochp@gmail.com
-                  </a>
-                  <span className="text-dark/20">•</span>
-                  <a href="https://github.com/JPacoch" target="_blank" rel="noopener noreferrer" className="text-dark/70 hover:text-electric transition-colors">
-                    github.com/JPacoch
-                  </a>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-                <div className="lg:col-span-8">
-                  <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl text-dark tracking-tight leading-[1.05] mb-6">
-                    Jakub <em className="text-electric italic font-normal">Pacocha</em>
-                  </h1>
-                  <p className="text-lg md:text-xl text-dark/65 leading-relaxed max-w-2xl">
-                    Full-stack AI engineer with 6+ years of experience building production data systems, RAG architectures, and containerized ML infrastructure. Author of philosophical essays at <em className="font-serif italic text-dark">From the Cabinet</em>.
-                  </p>
-                </div>
-                <div className="lg:col-span-4 flex flex-wrap lg:justify-end gap-3">
-                  <a
-                    href="mailto:pacochp@gmail.com"
-                    className="px-6 py-3.5 rounded-full bg-electric text-white font-medium text-sm flex items-center gap-2 shadow-[0_8px_25px_rgba(0,85,255,0.28)] hover:bg-electric/90 transition-all"
-                  >
-                    <MailIcon />
-                    <span>Contact Direct</span>
-                  </a>
-                  <a
-                    href="assets/resume.pdf"
-                    download
-                    className="px-6 py-3.5 rounded-full bg-offwhite hover:bg-dark hover:text-white text-dark border border-dark/10 font-mono text-xs font-medium flex items-center gap-2 transition-all"
-                  >
-                    <DownloadIcon className="w-4 h-4" />
-                    <span>Save PDF</span>
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Experience Section */}
-            <section id="experience" className="mb-12">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="font-mono text-xs font-semibold text-electric bg-electric/10 px-2.5 py-1 rounded-md">01</span>
-                <h2 className="font-serif text-3xl text-dark font-semibold">Professional Experience</h2>
-              </div>
-
-              <div className="bg-white rounded-3xl border border-dark/10 divide-y divide-dark/10 overflow-hidden shadow-[0_4px_20px_rgba(17,24,39,0.02)]">
-                {experience.map((exp, i) => (
-                  <div key={i} className="p-7 md:p-9 hover:bg-offwhite/50 transition-colors grid grid-cols-1 md:grid-cols-12 gap-6">
-                    <div className="md:col-span-4">
-                      <span className={`inline-block font-mono text-xs font-semibold px-3 py-1 rounded-full mb-3 ${
-                        exp.current ? "bg-electric text-white" : "bg-offwhite border border-dark/10 text-dark/65"
-                      }`}>
-                        {exp.period}
-                      </span>
-                      <div className="text-lg font-semibold text-dark">{exp.company}</div>
-                      <div className="font-mono text-xs text-dark/45 mt-0.5">{exp.domain}</div>
-                    </div>
-
-                    <div className="md:col-span-8">
-                      <h3 className="font-serif text-2xl md:text-3xl text-dark font-semibold mb-4">
-                        {exp.role}
-                      </h3>
-                      <ul className="space-y-2.5 mb-6 text-dark/70 text-sm md:text-base leading-relaxed">
-                        {exp.bullets.map((b, idx) => (
-                          <li key={idx} className="flex items-start gap-3">
-                            <span className="w-1.5 h-1.5 rounded-full bg-electric mt-2 shrink-0" />
-                            <span>{b}</span>
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="flex flex-wrap gap-1.5">
-                        {exp.tags.map(tag => (
-                          <span key={tag} className="px-2.5 py-1 rounded-md bg-offwhite border border-dark/10 font-mono text-[11px] text-dark/70">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Technical Stack Section */}
-            <section id="skills" className="mb-12">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="font-mono text-xs font-semibold text-electric bg-electric/10 px-2.5 py-1 rounded-md">02</span>
-                <h2 className="font-serif text-3xl text-dark font-semibold">Technical Capabilities</h2>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                {skillMatrix.map((group, idx) => (
-                  <div key={idx} className="bg-white rounded-3xl border border-dark/10 p-6 shadow-[0_4px_20px_rgba(17,24,39,0.02)]">
-                    <div className="font-mono text-xs uppercase tracking-wider text-electric font-semibold mb-4 pb-3 border-b border-dark/10">
-                      {group.category}
-                    </div>
-                    <ul className="space-y-2.5">
-                      {group.items.map((item) => (
-                        <li key={item} className="text-sm text-dark/75 flex items-center gap-2.5">
-                          <span className="w-1.5 h-1.5 rounded-full bg-electric/60" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Education Section */}
-            <section id="education">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="font-mono text-xs font-semibold text-electric bg-electric/10 px-2.5 py-1 rounded-md">03</span>
-                <h2 className="font-serif text-3xl text-dark font-semibold">Academic Education</h2>
-              </div>
-
-              <div className="bg-white rounded-3xl border border-dark/10 divide-y divide-dark/10 overflow-hidden shadow-[0_4px_20px_rgba(17,24,39,0.02)]">
-                {education.map((edu, idx) => (
-                  <div key={idx} className="p-7 md:p-8 hover:bg-offwhite/50 transition-colors grid grid-cols-1 md:grid-cols-12 gap-6">
-                    <div className="md:col-span-4">
-                      <span className="font-mono text-xs font-semibold text-electric">{edu.year}</span>
-                      <div className="text-sm font-medium text-dark/65 mt-1">{edu.institution}</div>
-                    </div>
-                    <div className="md:col-span-8">
-                      <h3 className="font-serif text-2xl text-dark font-semibold mb-2">{edu.degree}</h3>
-                      <p className="text-sm md:text-base text-dark/65 leading-relaxed mb-4">{edu.thesis}</p>
-                      <div className="flex flex-wrap gap-1.5">
-                        {edu.tags.map(t => (
-                          <span key={t} className="px-2.5 py-0.5 rounded-md bg-offwhite border border-dark/10 font-mono text-[11px] text-dark/65">
-                            {t}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          </div>
-        </div>
-      );
+        suspended: {},
+        reducedMotion: {}
+      }
     };
 
     const FOOTER_CURTAIN_MACHINE = {
       id: "footerCurtain",
       initial: "hidden",
-      context: () => ({ progress: 0 }),
+      context: () => ({ progress: 0, activeChannel: null }),
       on: {
         SCRUB_PROGRESS: (ctx, event, currentState) => {
           const p = Math.max(0, Math.min(1, Number(event.progress) || 0));
-          const nextState = p <= 0.01 ? "hidden" : p >= 0.98 ? "revealed" : "revealing";
-          if (nextState === currentState && Math.abs(ctx.progress - p) < 0.02) {
-            return null;
-          }
-          return {
-            target: nextState,
-            context: { progress: Number(p.toFixed(3)) }
-          };
-        }
+          const nextState = p <= 0.02 ? "hidden" : p >= 0.95 ? "revealed" : "revealing";
+          if (nextState === currentState && Math.abs(ctx.progress - p) < 0.02) return null;
+          return { target: nextState, context: { ...ctx, progress: Number(p.toFixed(3)) } };
+        },
+        REVEAL: (ctx) => ({ target: "revealed", context: { ...ctx, progress: 1 } }),
+        FOCUS_CHANNEL: (ctx, event) => ({ context: { ...ctx, activeChannel: event.channel || null } }),
+        BLUR_CHANNEL: (ctx) => ({ context: { ...ctx, activeChannel: null } })
       },
-      states: {
-        hidden: {},
-        revealing: {},
-        revealed: {}
-      }
+      states: { hidden: {}, revealing: {}, revealed: {} }
     };
 
+    // --- FULL-BLEED EMERGING CURTAIN FOOTER ---
+    const EmergingFooter = ({ curtainState, sendCurtain, reduce }) => {
+      const handleFooterLinkFocus = (channel) => {
+        sendCurtain({ type: "FOCUS_CHANNEL", channel });
+        if (!reduce && curtainState.value !== "revealed") {
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: "smooth"
+          });
+        }
+      };
+
+      const channels = [
+        { id: "email", label: "Email", href: "mailto:pacochp@gmail.com", icon: <MailIcon />, external: false },
+        { id: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/in/jakubpacocha/", icon: <LinkedinIcon />, external: true },
+        { id: "twitter", label: "X / Twitter", href: "https://x.com/JakubPacocha", icon: <TwitterIcon />, external: true },
+        { id: "github", label: "GitHub", href: "https://github.com/JPacoch", icon: <GithubIcon />, external: true }
+      ];
+
+      return (
+        <footer
+          id="footer-container"
+          data-machine="footerCurtain"
+          data-state={curtainState.value}
+          data-progress={curtainState.context.progress}
+          data-active-channel={curtainState.context.activeChannel || undefined}
+          className={`${
+            reduce
+              ? "relative z-10 w-full bg-footer-bg text-footer-ink"
+              : "fixed bottom-0 inset-x-0 z-0 h-[74dvh] min-h-[480px] sm:h-[64dvh] sm:min-h-[500px] w-full bg-footer-bg text-footer-ink overflow-hidden"
+          } font-sans flex flex-col justify-between`}
+        >
+          <div
+            id="footer-container-inner"
+            className="w-full h-full max-w-[768px] mx-auto px-5 sm:px-8 pt-14 sm:pt-20 safe-bottom flex flex-col justify-between text-start"
+          >
+            <div className="my-auto">
+
+
+              <h2 className="text-4xl sm:text-7xl font-semibold leading-[1.08] tracking-[-0.03em] text-footer-ink text-balance mb-4">
+                Open for{" "}
+                <span className="text-footer-muted font-medium italic">collaboration.</span>
+              </h2>
+
+              <p className="text-base sm:text-[1.0625rem] text-footer-secondary leading-[1.6] text-pretty max-w-[42ch] mb-8">
+                Want to discuss AI engineering, data systems or a potential role?
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2.5">
+                {channels.map((ch) => (
+                  <a
+                    key={ch.id}
+                    href={ch.href}
+                    target={ch.external ? "_blank" : undefined}
+                    rel={ch.external ? "noopener noreferrer" : undefined}
+                    onFocus={() => handleFooterLinkFocus(ch.id)}
+                    onBlur={() => sendCurtain("BLUR_CHANNEL")}
+                    onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: ch.id })}
+                    onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
+                    className="focus-ring-light tap-press hover-light-pill min-h-[42px] ps-3.5 pe-4 py-2 rounded-full bg-white/10 border border-white/15 text-footer-ink text-[0.9375rem] font-medium inline-flex items-center gap-2"
+                  >
+                    {ch.icon}
+                    <span>{ch.label}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-base text-footer-muted">
+              <span>© 2026 <span className="font-semibold text-footer-ink">Jakub Pacocha</span>. All rights reserved.</span>
+              <span>Bydgoszcz, Poland</span>
+            </div>
+          </div>
+        </footer>
+      );
+    };
+
+    // --- ROOT APPLICATION ---
     const App = () => {
+      const [scrollEngine, sendScrollEngine] = useMachine(SCROLL_ENGINE_MACHINE);
       const [curtainState, sendCurtain] = useMachine(FOOTER_CURTAIN_MACHINE);
-      const isFooterHidden = curtainState.value === "hidden";
+      const reduce = useReducedMotionSafe();
+      const mainRef = useRef(null);
+
+      const [theme, setTheme] = useState(() =>
+        typeof document !== "undefined" && document.documentElement.getAttribute("data-theme") === "dark"
+          ? "dark"
+          : "light"
+      );
+
+      const [hapticsMuted, setHapticsMuted] = useState(() => isHapticsMuted());
+
+      const handleToggleHaptics = useCallback(() => {
+        setHapticsMuted((prev) => {
+          const next = !prev;
+          try {
+            localStorage.setItem("haptics-muted", String(next));
+          } catch (e) {}
+          window.dispatchEvent(new Event("haptics-muted-change"));
+          return next;
+        });
+      }, []);
+
+      const handleToggleTheme = useCallback(() => {
+        setTheme((prev) => {
+          const next = prev === "dark" ? "light" : "dark";
+          applyThemeWithoutSmear(next);
+          return next;
+        });
+      }, []);
+
+      useEffect(() => {
+        let lastY = window.scrollY;
+        let idleTimer = null;
+
+        const onScroll = () => {
+          const currentY = window.scrollY;
+          const direction = currentY >= lastY ? "down" : "up";
+          lastY = currentY;
+          sendScrollEngine({ type: "SCROLL_ACTIVE", direction });
+          clearTimeout(idleTimer);
+          idleTimer = setTimeout(() => sendScrollEngine("SCROLL_IDLE"), 160);
+        };
+
+        const onVisChange = () => {
+          sendScrollEngine(document.visibilityState === "visible" ? "VISIBILITY_VISIBLE" : "VISIBILITY_HIDDEN");
+        };
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        document.addEventListener("visibilitychange", onVisChange);
+        return () => {
+          clearTimeout(idleTimer);
+          window.removeEventListener("scroll", onScroll);
+          document.removeEventListener("visibilitychange", onVisChange);
+        };
+      }, [sendScrollEngine]);
 
       useLayoutEffect(() => {
-        const lenis = new Lenis({
-          duration: 1.15,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
-        });
-        window.__LENIS__ = lenis;
-
-        gsap.registerPlugin(ScrollTrigger);
-        lenis.on("scroll", ScrollTrigger.update);
-
-        let rafId = null;
-        function raf(time) {
-          lenis.raf(time);
-          rafId = requestAnimationFrame(raf);
+        if (reduce || !window.gsap || !window.ScrollTrigger) {
+          sendCurtain("REVEAL");
+          return;
         }
-        rafId = requestAnimationFrame(raf);
 
-        const initScrollTrigger = () => {
-          ScrollTrigger.create({
-            trigger: "#footer-spacer",
+        const { gsap, ScrollTrigger } = window;
+        gsap.registerPlugin(ScrollTrigger);
+
+        let st = null;
+        let tl = null;
+        let resizeObserver = null;
+
+        const initCurtain = () => {
+          const spacer = document.getElementById("footer-spacer");
+          const mainEl = document.getElementById("main-content");
+          const footerBackdrop = document.getElementById("footer-backdrop");
+          const footerInner = document.getElementById("footer-container-inner");
+          if (!spacer || !mainEl || !footerInner) return;
+
+          const getCornerRadius = () => (window.innerWidth < 640 ? "26px" : "36px");
+
+          tl = gsap.timeline()
+            .to(footerBackdrop, { opacity: 1, duration: 0.06, ease: "none" }, 0)
+            .to(
+              mainEl,
+              {
+                scale: 0.96,
+                borderBottomLeftRadius: getCornerRadius,
+                borderBottomRightRadius: getCornerRadius,
+                ease: "none"
+              },
+              0
+            )
+            .fromTo(
+              footerInner,
+              { y: "14%", opacity: 0.25 },
+              { y: "0%", opacity: 1, ease: "none" },
+              0
+            );
+
+          st = ScrollTrigger.create({
+            trigger: spacer,
             start: "top bottom",
             end: "bottom bottom",
             scrub: true,
+            invalidateOnRefresh: true,
             onUpdate: (self) => {
               sendCurtain({ type: "SCRUB_PROGRESS", progress: self.progress });
             },
-            animation: gsap.timeline()
-              .to(["#footer-container", "#blue-bg"], { autoAlpha: 1, duration: 0.05, ease: "none" }, 0)
-              .to("#main-content", {
-                scale: 0.96,
-                borderBottomLeftRadius: "48px",
-                borderBottomRightRadius: "48px",
-                ease: "none"
-              }, 0)
-              .fromTo("#footer-container-inner", { y: "15%" }, { y: "0%", ease: "none" }, 0)
+            animation: tl
           });
+
+          ScrollTrigger.refresh();
         };
 
-        const initTimer = setTimeout(() => {
-          initScrollTrigger();
-          ScrollTrigger.refresh();
-        }, 100);
+        const initTimer = window.setTimeout(initCurtain, 60);
 
-        const resizeObserver = new ResizeObserver(() => ScrollTrigger.refresh());
-        resizeObserver.observe(document.body);
+        if (typeof ResizeObserver !== "undefined" && mainRef.current) {
+          resizeObserver = new ResizeObserver(() => ScrollTrigger.refresh());
+          resizeObserver.observe(mainRef.current);
+        }
 
         return () => {
-          clearTimeout(initTimer);
-          if (rafId !== null) cancelAnimationFrame(rafId);
-          delete window.__LENIS__;
-          lenis.destroy();
-          ScrollTrigger.getAll().forEach(t => t.kill());
-          resizeObserver.disconnect();
+          window.clearTimeout(initTimer);
+          if (resizeObserver) resizeObserver.disconnect();
+          if (st) st.kill();
+          if (tl) tl.kill();
+          gsap.set(["#main-content", "#footer-backdrop", "#footer-container-inner"], { clearProps: "all" });
         };
-      }, [sendCurtain]);
+      }, [reduce, sendCurtain]);
+
+      const enterItem = {
+        hidden: reduce ? { opacity: 0 } : { opacity: 0, y: 10, filter: "blur(4px)" },
+        visible: {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          transition: { duration: 0.3, ease: "easeOut" }
+        }
+      };
 
       return (
-        <div className="bg-white min-h-screen font-sans text-dark selection:bg-electric selection:text-white">
-          <div id="blue-bg" className="fixed inset-0 bg-electric z-0 opacity-0 invisible pointer-events-none"></div>
-          <Nav />
-
-          <main
-            id="main-content"
-            className="bg-white w-full relative z-10 shadow-[0_20px_60px_rgba(0,0,0,0.1)] origin-[50%_100%] overflow-hidden"
-            style={{ willChange: "transform, border-radius" }}
+        <MotionConfig reducedMotion="user">
+          <div
+            id="app-shell"
+            data-machine="scrollEngine"
+            data-state={scrollEngine.value}
+            data-scroll-direction={scrollEngine.context.direction}
+            className="bg-canvas min-h-[100dvh] font-sans text-ink"
           >
-            <CVDocument />
-          </main>
+            <GlobalHaptics />
+            <ClickSpark />
 
-          <div id="footer-spacer" className="min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] w-full pointer-events-none"></div>
+            <a
+              href="#main-content"
+              className="no-print sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-[200] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-ink focus:text-canvas focus:text-sm focus:font-medium"
+            >
+              Skip to content
+            </a>
 
-          <footer
-            id="footer-container"
-            data-machine="footerCurtain"
-            data-state={curtainState.value}
-            data-progress={curtainState.context.progress}
-            aria-hidden={isFooterHidden}
-            className="fixed bottom-0 left-0 w-full min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] z-0 flex flex-col justify-end bg-electric text-white overflow-hidden opacity-0 invisible"
-          >
-            <div id="footer-container-inner" className="w-full h-full px-6 md:px-12 lg:px-24 py-16 flex flex-col justify-between">
-              <div className="max-w-[1400px] w-full mx-auto flex flex-col h-full justify-between">
-                <div className="pt-8">
-                  <div id="contact" className="text-white/60 font-semibold uppercase tracking-widest text-sm mb-4">Contact</div>
-                  <h2 className="font-serif text-5xl md:text-7xl leading-tight mb-8">
-                    Open for <br /> <em className="italic font-light">Collaboration</em>.
-                  </h2>
-                  <p className="text-xl text-white/80 mb-12">Want to say hello? Hit me up:</p>
+            {!reduce && (
+              <div
+                id="footer-backdrop"
+                aria-hidden="true"
+                className="fixed inset-0 z-0 bg-footer-bg opacity-0 pointer-events-none"
+              />
+            )}
 
-                  <div className="flex flex-wrap gap-4">
-                    <a
-                      href="mailto:pacochp@gmail.com"
-                      tabIndex={isFooterHidden ? -1 : 0}
-                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
-                    >
-                      <MailIcon /> Email
-                    </a>
-                    <a
-                      href="https://www.linkedin.com/in/jakubpacocha/"
-                      tabIndex={isFooterHidden ? -1 : 0}
-                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
-                    >
-                      <LinkedinIcon /> LinkedIn
-                    </a>
-                    <a
-                      href="https://x.com/JakubPacocha"
-                      tabIndex={isFooterHidden ? -1 : 0}
-                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
-                    >
-                      <TwitterIcon /> Twitter / X
-                    </a>
-                    <a
-                      href="https://github.com/JPacoch"
-                      tabIndex={isFooterHidden ? -1 : 0}
-                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
-                    >
-                      <GithubIcon /> GitHub
-                    </a>
-                  </div>
-                </div>
+            <main
+              id="main-content"
+              ref={mainRef}
+              className="relative z-10 main-curtain-surface w-full origin-[50%_100%]"
+            >
+              <CVDocument
+                theme={theme}
+                onToggleTheme={handleToggleTheme}
+                hapticsMuted={hapticsMuted}
+                onToggleHaptics={handleToggleHaptics}
+                enterItem={enterItem}
+              />
+            </main>
 
-                <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-white/50 text-sm mt-12">
-                  <div>© 2026 <span className="font-semibold text-white">Jakub Pacocha</span> All rights reserved.</div>
-                  <div>Bydgoszcz, Poland</div>
-                </div>
-              </div>
-            </div>
-          </footer>
-        </div>
+            {!reduce && (
+              <div
+                id="footer-spacer"
+                aria-hidden="true"
+                className="h-[74dvh] min-h-[480px] sm:h-[64dvh] sm:min-h-[500px] w-full pointer-events-none"
+              />
+            )}
+
+            <EmergingFooter
+              curtainState={curtainState}
+              sendCurtain={sendCurtain}
+              reduce={reduce}
+            />
+          </div>
+        </MotionConfig>
       );
     };
 

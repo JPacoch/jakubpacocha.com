@@ -9,12 +9,14 @@ dist/
 build/
 out/
 .parcel-cache/
+.pnp.*
 
 # Logs & diagnostics
 *.log
 npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
+bun-debug.log*
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Environment & local secrets
@@ -22,10 +24,12 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 .env.*
 !.env.example
 
-# Temporary & test artifacts
+# Temporary, test & scratch artifacts
+babel-local.js
 test*.js
 test*.pdf
 *.tmp
+*.bak
 scratch/
 
 # OS metadata
@@ -40,3 +44,8 @@ ehthumbs.db
 .idea/
 *.swp
 *.swo
+*~
+
+# Agent local config
+.agents/
+skills-lock.json
