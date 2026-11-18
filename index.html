@@ -21,13 +21,6 @@
     })();
   </script>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap"
-    rel="stylesheet"
-  />
-
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -49,7 +42,8 @@
             'footer-muted': 'var(--color-footer-muted)',
           },
           fontFamily: {
-            sans: ['Geist', 'Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
+            sans: ['"Open Runde"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            mono: ['"Open Runde"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
           },
         },
       },
@@ -64,17 +58,49 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   <style>
+    @font-face {
+      font-family: "Open Runde";
+      src: url("assets/fonts/OpenRunde-Regular.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Open Runde";
+      src: url("assets/fonts/OpenRunde-Medium.woff2") format("woff2");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Open Runde";
+      src: url("assets/fonts/OpenRunde-Semibold.woff2") format("woff2");
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Open Runde";
+      src: url("assets/fonts/OpenRunde-Bold.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root {
       /* Light Mode Palette — Verified WCAG AA */
       --color-canvas: #fcfcfc;
       --color-surface: #f4f4f5;
       --color-surface-hover: #ececef;
-      --color-ink: #111113;
-      --color-ink-secondary: #4a4a52;
-      --color-ink-muted: #63636d;
-      --color-hairline: rgba(17, 17, 19, 0.08);
-      --color-underline: rgba(17, 17, 19, 0.38);
-      --color-underline-hover: #111113;
+      --color-ink: #171717;
+      --color-ink-secondary: #6b6b73;
+      --color-ink-muted: #71717a;
+      --color-hairline: rgba(23, 23, 23, 0.08);
+      --color-underline: rgba(23, 23, 23, 0.34);
+      --color-underline-hover: #171717;
 
       --color-badge-bg: #fce7f3;
       --color-badge-text: #9d174d;
@@ -85,12 +111,12 @@
       --color-footer-secondary: #d4d4d8;
       --color-footer-muted: #a1a1aa;
 
-      /* Contribution Scale (Light) */
-      --contrib-0: #e7e7ea;
-      --contrib-1: #bbf7d0;
-      --contrib-2: #4ade80;
+      /* Contribution Scale — Matches 0xchsh/portfolio CommitGraph (Light) */
+      --contrib-0: #e5e5e5;
+      --contrib-1: #86efac;
+      --contrib-2: #22c55e;
       --contrib-3: #16a34a;
-      --contrib-4: #15803d;
+      --contrib-4: #166534;
 
       /* Paper Thumbnail & Icon Tile Shadows (better-ui) */
       --shadow-tile:
@@ -109,8 +135,8 @@
       --color-surface: #353538;
       --color-surface-hover: #3e3e42;
       --color-ink: #f5f5f5;
-      --color-ink-secondary: #d4d4d8;
-      --color-ink-muted: #b4b4bc;
+      --color-ink-secondary: #a8a8b2;
+      --color-ink-muted: #9696a0;
       --color-hairline: rgba(255, 255, 255, 0.1);
       --color-underline: rgba(255, 255, 255, 0.42);
       --color-underline-hover: #f5f5f5;
@@ -124,11 +150,11 @@
       --color-footer-secondary: #d4d4d8;
       --color-footer-muted: #a8a8b2;
 
-      /* Contribution Scale (Off-Black Dark) */
-      --contrib-0: #3a3a3e;
-      --contrib-1: #1f5e3b;
-      --contrib-2: #22804b;
-      --contrib-3: #22a858;
+      /* Contribution Scale — Matches 0xchsh/portfolio CommitGraph (Dark) */
+      --contrib-0: #3d3d42;
+      --contrib-1: #14532d;
+      --contrib-2: #15803d;
+      --contrib-3: #22c55e;
       --contrib-4: #4ade80;
 
       --shadow-tile: 0px 0px 0px 1px oklch(1 0 0 / 0.1);
@@ -157,7 +183,19 @@
       padding: 0;
       background-color: var(--color-canvas);
       color: var(--color-ink);
+      font-family: "Open Runde", Inter, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
       overflow-x: clip;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font-family: inherit;
     }
 
     .text-balance {
@@ -171,7 +209,7 @@
     /* Crisp Apple-style dotted underlines */
     .inline-link {
       color: var(--color-ink);
-      font-weight: 500;
+      font-weight: 600;
       text-decoration-line: underline;
       text-decoration-style: dotted;
       text-underline-offset: 3px;
@@ -180,6 +218,47 @@
       transition-property: color, text-decoration-color;
       transition-duration: 150ms;
       transition-timing-function: ease-out;
+    }
+
+    @keyframes icon-swap-in {
+      0% {
+        opacity: 0;
+        transform: scale(0.6);
+        filter: blur(3px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0px);
+      }
+    }
+
+    .icon-swap-in {
+      animation: icon-swap-in 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes digit-tick-in {
+      0% {
+        opacity: 0;
+        transform: translateY(3px);
+        filter: blur(2.5px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0px);
+      }
+    }
+
+    .digit-tick-in {
+      animation: digit-tick-in 200ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .icon-swap-in,
+      .digit-tick-in {
+        animation: none;
+      }
     }
 
     .muted-link {
@@ -284,10 +363,6 @@
         background-color: rgba(255, 255, 255, 0.16);
         border-color: rgba(255, 255, 255, 0.28);
       }
-
-      .contrib-pill:hover {
-        transform: scaleY(1.18);
-      }
     }
 
     .safe-top {
@@ -346,6 +421,247 @@
 
       return Boolean(framerPref ?? mediaPref);
     }
+
+    // --- GLOBAL SOUND & HAPTICS ENGINE (Reproduces 0xchsh/portfolio GlobalHaptics + useHaptics + tick) ---
+    let SHARED_AUDIO_CTX = null;
+    function getSharedAudioContext() {
+      if (typeof window === "undefined") return null;
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return null;
+      if (!SHARED_AUDIO_CTX) {
+        try {
+          SHARED_AUDIO_CTX = new AudioCtx();
+        } catch (e) {
+          return null;
+        }
+      }
+      if (SHARED_AUDIO_CTX.state === "suspended") {
+        SHARED_AUDIO_CTX.resume().catch(() => {});
+      }
+      return SHARED_AUDIO_CTX;
+    }
+
+    function isHapticsMuted() {
+      try {
+        return localStorage.getItem("haptics-muted") === "true";
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function playSoundPreset(preset) {
+      if (isHapticsMuted()) return;
+      const ctx = getSharedAudioContext();
+      if (!ctx) return;
+      try {
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
+
+        if (preset === "tick") {
+          osc.type = "triangle";
+          osc.frequency.setValueAtTime(1180, now);
+          osc.frequency.exponentialRampToValueAtTime(640, now + 0.011);
+          filter.type = "bandpass";
+          filter.frequency.setValueAtTime(1600, now);
+          filter.Q.setValueAtTime(1.4, now);
+          gain.gain.setValueAtTime(0.032, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.012);
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.014);
+        } else {
+          // Subtle tactile "toggle" click matching cuelume's toggle preset
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(620, now);
+          osc.frequency.exponentialRampToValueAtTime(220, now + 0.02);
+          filter.type = "lowpass";
+          filter.frequency.setValueAtTime(2200, now);
+          gain.gain.setValueAtTime(0.055, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.022);
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.024);
+        }
+      } catch (e) {}
+    }
+
+    function playHapticClick() {
+      playSoundPreset("toggle");
+      if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
+        try {
+          navigator.vibrate(8);
+        } catch (e) {}
+      }
+    }
+
+    function playTick() {
+      playSoundPreset("tick");
+    }
+
+    function useGlobalHaptics() {
+      useEffect(() => {
+        function handleClick() {
+          if (!isHapticsMuted()) {
+            playHapticClick();
+          }
+        }
+        document.addEventListener("click", handleClick, true);
+        return () => {
+          document.removeEventListener("click", handleClick, true);
+        };
+      }, []);
+    }
+
+    const GlobalHaptics = () => {
+      useGlobalHaptics();
+      return null;
+    };
+
+    // --- GLOBAL CLICK SPARK CANVAS OVERLAY (Exact 0xchsh/portfolio ClickSpark.tsx mechanics) ---
+    const ClickSpark = ({
+      sparkColor = "currentColor",
+      sparkOpacity = 0.3,
+      sparkSize = 6,
+      sparkRadius = 12,
+      sparkCount = 6,
+      duration = 300,
+      easing = "ease-out",
+      extraScale = 1.0
+    }) => {
+      const canvasRef = useRef(null);
+      const sparksRef = useRef([]);
+      const mutedRef = useRef(false);
+      const reduce = useReducedMotionSafe();
+
+      useEffect(() => {
+        mutedRef.current = isHapticsMuted();
+        const onMutedChange = () => {
+          mutedRef.current = isHapticsMuted();
+        };
+        window.addEventListener("storage", onMutedChange);
+        window.addEventListener("haptics-muted-change", onMutedChange);
+        return () => {
+          window.removeEventListener("storage", onMutedChange);
+          window.removeEventListener("haptics-muted-change", onMutedChange);
+        };
+      }, []);
+
+      const easeFunc = useCallback(
+        (t) => {
+          switch (easing) {
+            case "linear":
+              return t;
+            case "ease-in":
+              return t * t;
+            case "ease-in-out":
+              return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+            default:
+              return t * (2 - t);
+          }
+        },
+        [easing]
+      );
+
+      useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) return;
+
+        const resize = () => {
+          const dpr = window.devicePixelRatio || 1;
+          canvas.width = window.innerWidth * dpr;
+          canvas.height = window.innerHeight * dpr;
+          canvas.style.width = `${window.innerWidth}px`;
+          canvas.style.height = `${window.innerHeight}px`;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        };
+        resize();
+        window.addEventListener("resize", resize);
+
+        let animationId = null;
+
+        const draw = (timestamp) => {
+          ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+          ctx.globalAlpha = sparkOpacity;
+          const resolvedColor =
+            sparkColor === "currentColor" ? getComputedStyle(canvas).color : sparkColor;
+
+          sparksRef.current = sparksRef.current.filter((spark) => {
+            const elapsed = timestamp - spark.startTime;
+            if (elapsed >= duration) return false;
+            const progress = elapsed / duration;
+            const eased = easeFunc(progress);
+            const distance = eased * sparkRadius * extraScale;
+            const lineLength = sparkSize * (1 - eased);
+            const x1 = spark.x + distance * Math.cos(spark.angle);
+            const y1 = spark.y + distance * Math.sin(spark.angle);
+            const x2 = spark.x + (distance + lineLength) * Math.cos(spark.angle);
+            const y2 = spark.y + (distance + lineLength) * Math.sin(spark.angle);
+            ctx.strokeStyle = resolvedColor;
+            ctx.lineWidth = 1.5;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            return true;
+          });
+
+          if (sparksRef.current.length > 0) {
+            animationId = requestAnimationFrame(draw);
+          } else {
+            animationId = null;
+          }
+        };
+
+        const handleClick = (e) => {
+          if (mutedRef.current || reduce) return;
+          if (e.clientX === 0 && e.clientY === 0 && e.detail === 0) return;
+          const now = performance.now();
+          const newSparks = Array.from({ length: sparkCount }, (_, i) => ({
+            x: e.clientX,
+            y: e.clientY,
+            angle: (2 * Math.PI * i) / sparkCount,
+            startTime: now
+          }));
+          sparksRef.current.push(...newSparks);
+          if (animationId === null) {
+            animationId = requestAnimationFrame(draw);
+          }
+        };
+
+        window.addEventListener("click", handleClick);
+
+        return () => {
+          window.removeEventListener("resize", resize);
+          window.removeEventListener("click", handleClick);
+          if (animationId !== null) cancelAnimationFrame(animationId);
+        };
+      }, [sparkColor, sparkSize, sparkRadius, sparkCount, duration, extraScale, easeFunc, sparkOpacity, reduce]);
+
+      return (
+        <canvas
+          ref={canvasRef}
+          aria-hidden="true"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            pointerEvents: "none",
+            zIndex: 9999
+          }}
+        />
+      );
+    };
 
     // --- THEME SWITCH WITH TRANSITION SUPPRESSION (better-ui exact recipe) ---
     function applyThemeWithoutSmear(nextTheme) {
@@ -641,6 +957,22 @@
       </svg>
     );
 
+    const SpeakerIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <polygon vectorEffect="non-scaling-stroke" points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+        <path vectorEffect="non-scaling-stroke" d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+        <path vectorEffect="non-scaling-stroke" d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+      </svg>
+    );
+
+    const SpeakerMutedIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <polygon vectorEffect="non-scaling-stroke" points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+        <line vectorEffect="non-scaling-stroke" x1="22" x2="16" y1="9" y2="15" />
+        <line vectorEffect="non-scaling-stroke" x1="16" x2="22" y1="9" y2="15" />
+      </svg>
+    );
+
     const FileTextIcon = ({ className = "w-4 h-4" }) => (
       <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
         <path vectorEffect="non-scaling-stroke" d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
@@ -770,26 +1102,35 @@
       );
     };
 
-    // --- CONTEXTUAL ICON CROSS-FADE (exact values: scale 0.25->1, opacity 0->1, blur 4px->0, spring 0.3 bounce 0) ---
-    const IconSwap = ({ activeKey, children }) => {
-      const reduce = useReducedMotionSafe();
-      const hidden = reduce ? { opacity: 0 } : { opacity: 0, scale: 0.25, filter: "blur(4px)" };
-      const shown = reduce ? { opacity: 1 } : { opacity: 1, scale: 1, filter: "blur(0px)" };
+    // --- CONTEXTUAL ICON SWAP (Single-node CSS animation: immune to AnimatePresence overlap) ---
+    const IconSwap = ({ activeKey, children }) => (
+      <span key={activeKey} className="icon-swap-in inline-flex items-center justify-center">
+        {children}
+      </span>
+    );
+
+    // --- LIVE CLOCK CHANGING-DIGIT BLUR-FADE ---
+    const AnimatedClockDigits = ({ value }) => {
+      const prevRef = useRef(value);
+      const prev = prevRef.current;
+
+      useEffect(() => {
+        prevRef.current = value;
+      }, [value]);
 
       return (
-        <span className="relative inline-grid place-items-center">
-          <AnimatePresence initial={false} mode="popLayout">
-            <motion.span
-              key={activeKey}
-              initial={hidden}
-              animate={shown}
-              exit={hidden}
-              transition={{ type: "spring", duration: 0.3, bounce: 0 }}
-              className="col-start-1 row-start-1 inline-flex items-center justify-center"
-            >
-              {children}
-            </motion.span>
-          </AnimatePresence>
+        <span className="inline-flex items-baseline tabular-nums">
+          {String(value).split("").map((ch, idx) => {
+            const changed = prev !== value && prev[idx] !== ch;
+            return (
+              <span
+                key={`${idx}-${ch}`}
+                className={`inline-block${changed ? " digit-tick-in" : ""}`}
+              >
+                {ch}
+              </span>
+            );
+          })}
         </span>
       );
     };
@@ -879,7 +1220,7 @@
       return clockState;
     };
 
-    const IdentityAndBio = ({ theme, onToggleTheme, enterItem }) => {
+    const IdentityAndBio = ({ theme, onToggleTheme, hapticsMuted, onToggleHaptics, enterItem }) => {
       const clockState = useBydgoszczTime();
       const [copied, setCopied] = useState(false);
 
@@ -901,7 +1242,7 @@
             <div className="min-w-0">
               <h1
                 id="identity-name"
-                className="text-xl sm:text-[1.375rem] font-medium text-ink tracking-[-0.02em] leading-[1.3]"
+                className="text-xl sm:text-[1.375rem] font-semibold text-ink tracking-[-0.02em] leading-[1.3]"
               >
                 Jakub Pacocha
               </h1>
@@ -912,13 +1253,13 @@
                 data-machine="telemetryClock"
                 data-state={clockState.value}
                 data-timezone={clockState.context.timezone}
-                className="mt-2 text-[0.8125rem] text-ink-muted tabular-nums"
+                className="mt-2 text-[0.875rem] text-ink-muted tabular-nums"
               >
-                Bydgoszcz / {clockState.context.formatted} {clockState.context.timezone}
+                Bydgoszcz / <AnimatedClockDigits value={clockState.context.formatted} /> {clockState.context.timezone}
               </p>
             </div>
 
-            {/* Compact Right Utility Bar (CV + Theme Toggle) */}
+            {/* Compact Right Utility Bar (CV + Sound/Haptics Mute + Theme Toggle) */}
             <div className="flex items-center gap-1 shrink-0 -me-1.5">
               <a
                 href="cv.html"
@@ -942,9 +1283,25 @@
 
               <button
                 type="button"
+                onClick={onToggleHaptics}
+                aria-label={hapticsMuted ? "Unmute click feedback" : "Mute click feedback"}
+                aria-pressed={hapticsMuted}
+                title={hapticsMuted ? "Unmute feedback" : "Mute feedback"}
+                className={`tap-press hover-surface w-[40px] h-[40px] rounded-lg inline-flex items-center justify-center ${
+                  hapticsMuted ? "text-ink-muted opacity-55" : "text-ink-muted"
+                }`}
+              >
+                <IconSwap activeKey={hapticsMuted ? "muted" : "on"}>
+                  {hapticsMuted ? <SpeakerMutedIcon /> : <SpeakerIcon />}
+                </IconSwap>
+              </button>
+
+              <button
+                type="button"
                 onClick={onToggleTheme}
                 aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
                 aria-pressed={theme === "dark"}
+                title={theme === "dark" ? "Light mode" : "Dark mode"}
                 className="tap-press hover-surface w-[40px] h-[40px] rounded-lg inline-flex items-center justify-center text-ink-muted"
               >
                 <IconSwap activeKey={theme}>
@@ -961,20 +1318,20 @@
           >
             <p>
               Currently an AI &amp; Software Engineer at{" "}
-              <strong className="text-ink font-medium">HERE Technologies</strong>. Previously at{" "}
-              <strong className="text-ink font-medium">iQor</strong> and{" "}
-              <strong className="text-ink font-medium">O-I</strong>.
+              <strong className="text-ink font-semibold">HERE Technologies</strong>. Previously at{" "}
+              <strong className="text-ink font-semibold">iQor</strong> and{" "}
+              <strong className="text-ink font-semibold">O-I</strong>.
             </p>
 
             <p>
               Building production{" "}
-              <strong className="text-ink font-medium">RAG architectures</strong>,{" "}
-              <strong className="text-ink font-medium">containerized ML infrastructure</strong>, and{" "}
-              <strong className="text-ink font-medium">spatial intelligence</strong> systems - from vector search pipelines to cloud services on AWS and Azure.
+              <strong className="text-ink font-semibold">RAG architectures</strong>,{" "}
+              <strong className="text-ink font-semibold">containerized ML infrastructure</strong>, and{" "}
+              <strong className="text-ink font-semibold">spatial intelligence</strong> systems - from vector search pipelines to cloud services on AWS and Azure.
             </p>
 
             <p>
-              Outside the terminal, I collaborate with local NGOs in Bydgoszcz and write philosophical essays on phenomenology, theology and society at{" "}
+              Outside the terminal, I collaborate with local NGOs in Bydgoszcz and write philosophical essays on phenomenology, theology and society at{" "}<br/>
               <a
                 href="https://fromthecabinet.com/"
                 target="_blank"
@@ -1038,48 +1395,41 @@
       );
     };
 
+    // --- GITHUB CONTRIBUTION ACTIVITY WIDGET (Exact 0xchsh/portfolio CommitGraph fidelity) ---
+    const GITHUB_USERNAME =
+      (typeof window !== "undefined" &&
+        (window.__GITHUB_USERNAME__ ||
+          new URLSearchParams(window.location.search).get("github") ||
+          "").trim()) ||
+      "JPacoch";
+    const GITHUB_CACHE_TTL_MS = 30 * 60 * 1000;
+
     const GITHUB_TELEMETRY_MACHINE = {
       id: "githubTelemetry",
       initial: "loading",
       context: () => ({
+        username: GITHUB_USERNAME,
         data: null,
-        hoveredDay: null,
-        pinnedDay: null,
+        hoveredIndex: null,
         error: null
       }),
       states: {
         loading: {
           on: {
             FETCH_SUCCESS: (ctx, event) => ({ target: "ready", context: { ...ctx, data: event.data, error: null } }),
-            FETCH_ERROR: (ctx, event) => ({ target: "error", context: { ...ctx, error: event.error || "Failed" } })
+            FETCH_ERROR: (ctx, event) => ({ target: "error", context: { ...ctx, error: event.error || "Unavailable" } })
           }
         },
         ready: {
           on: {
-            INSPECT_DAY: (ctx, event) => ({ target: "inspecting", context: { ...ctx, hoveredDay: event.day } }),
-            TOGGLE_PIN_DAY: (ctx, event) => ({ target: "pinned", context: { ...ctx, pinnedDay: event.day, hoveredDay: event.day } })
+            HOVER_DAY: (ctx, event) => ({ target: "inspecting", context: { ...ctx, hoveredIndex: event.index } })
           }
         },
         inspecting: {
           on: {
-            INSPECT_DAY: (ctx, event) => ({ target: "inspecting", context: { ...ctx, hoveredDay: event.day } }),
-            CLEAR_INSPECT: (ctx) => ({ target: "ready", context: { ...ctx, hoveredDay: null } }),
-            TOGGLE_PIN_DAY: (ctx, event) => ({ target: "pinned", context: { ...ctx, pinnedDay: event.day, hoveredDay: event.day } }),
-            ESCAPE: (ctx) => ({ target: "ready", context: { ...ctx, hoveredDay: null } })
-          }
-        },
-        pinned: {
-          on: {
-            INSPECT_DAY: (ctx, event) => ({ target: "pinned", context: { ...ctx, hoveredDay: event.day } }),
-            CLEAR_INSPECT: (ctx) => ({ target: "pinned", context: { ...ctx, hoveredDay: null } }),
-            TOGGLE_PIN_DAY: (ctx, event) => {
-              if (ctx.pinnedDay && event.day && ctx.pinnedDay.date === event.day.date) {
-                return { target: "ready", context: { ...ctx, pinnedDay: null, hoveredDay: null } };
-              }
-              return { target: "pinned", context: { ...ctx, pinnedDay: event.day, hoveredDay: event.day } };
-            },
-            UNPIN_DAY: (ctx) => ({ target: "ready", context: { ...ctx, pinnedDay: null, hoveredDay: null } }),
-            ESCAPE: (ctx) => ({ target: "ready", context: { ...ctx, pinnedDay: null, hoveredDay: null } })
+            HOVER_DAY: (ctx, event) => ({ target: "inspecting", context: { ...ctx, hoveredIndex: event.index } }),
+            CLEAR_HOVER: (ctx) => ({ target: "ready", context: { ...ctx, hoveredIndex: null } }),
+            ESCAPE: (ctx) => ({ target: "ready", context: { ...ctx, hoveredIndex: null } })
           }
         },
         error: {
@@ -1090,26 +1440,218 @@
       }
     };
 
+    function commitLevelColor(count, max) {
+      if (count === 0) return "var(--contrib-0)";
+      const ratio = count / max;
+      if (ratio <= 0.25) return "var(--contrib-1)";
+      if (ratio <= 0.5) return "var(--contrib-2)";
+      if (ratio <= 0.75) return "var(--contrib-3)";
+      return "var(--contrib-4)";
+    }
+
+    function formatCommitDate(dateStr) {
+      try {
+        const d = new Date(dateStr + "T12:00:00");
+        return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+      } catch (e) {
+        return dateStr;
+      }
+    }
+
+    const CommitGraph = ({ days, hovered, onEnter, onLeave, onSelect, isLoading, isError }) => {
+      const reduce = useReducedMotionSafe();
+      const [mounted, setMounted] = useState(false);
+      const containerRef = useRef(null);
+      const barRefs = useRef([]);
+      const tooltipRefs = useRef([]);
+      const [offsets, setOffsets] = useState([]);
+      const [rovingIdx, setRovingIdx] = useState(29);
+
+      const max = useMemo(() => Math.max(...days.map((d) => d.count), 1), [days]);
+
+      useEffect(() => {
+        if (isLoading || isError) {
+          setMounted(false);
+          return;
+        }
+        const id = requestAnimationFrame(() => setMounted(true));
+        return () => cancelAnimationFrame(id);
+      }, [isLoading, isError, days]);
+
+      // Clamp edge tooltips inside the container (exact CommitGraph.tsx logic)
+      useLayoutEffect(() => {
+        if (!mounted) return;
+        const compute = () => {
+          const container = containerRef.current;
+          if (!container) return;
+          const cw = container.getBoundingClientRect().width;
+          const next = days.map((_, i) => {
+            const tip = tooltipRefs.current[i];
+            const slot = container.children[i];
+            if (!tip || !slot) return 0;
+            const tipW = tip.offsetWidth;
+            const barCenter = slot.offsetLeft + slot.offsetWidth / 2;
+            const left = barCenter - tipW / 2;
+            const right = barCenter + tipW / 2;
+            if (left < 0) return -left;
+            if (right > cw) return cw - right;
+            return 0;
+          });
+          setOffsets(next);
+        };
+        compute();
+        window.addEventListener("resize", compute);
+        return () => window.removeEventListener("resize", compute);
+      }, [mounted, days]);
+
+      const handleKeyDown = (e, i) => {
+        if (e.key === "ArrowRight") {
+          e.preventDefault();
+          const next = Math.min(days.length - 1, i + 1);
+          setRovingIdx(next);
+          if (barRefs.current[next]) barRefs.current[next].focus();
+        } else if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          const prev = Math.max(0, i - 1);
+          setRovingIdx(prev);
+          if (barRefs.current[prev]) barRefs.current[prev].focus();
+        } else if (e.key === "Escape") {
+          e.preventDefault();
+          onLeave(true);
+        }
+      };
+
+      return (
+        <div
+          ref={containerRef}
+          role="group"
+          aria-label="Last 30 days of GitHub contributions"
+          className="relative flex gap-[3px] min-[500px]:gap-[6px] sm:gap-[9px]"
+        >
+          {days.map((day, i) => {
+            if (isLoading || isError) {
+              return (
+                <div key={day.date} className="relative flex-1 h-[22px] min-[500px]:h-[28px] sm:h-[34px] flex items-center">
+                  <div
+                    aria-hidden="true"
+                    className={`w-full h-full rounded-[3.5px] min-[500px]:rounded-[4px] sm:rounded-[5px] ${isLoading ? "motion-safe:animate-pulse" : "opacity-50"}`}
+                    style={{ backgroundColor: "var(--contrib-0)" }}
+                  />
+                </div>
+              );
+            }
+
+            const isHovered = hovered === i;
+            const isNeighbor = hovered !== null && (hovered === i - 1 || hovered === i + 1);
+            const offset = offsets[i] ?? 0;
+            const barHeight = reduce ? "100%" : isHovered ? "60%" : isNeighbor ? "80%" : "100%";
+
+            return (
+              <div
+                key={day.date}
+                className="relative flex-1 h-[22px] min-[500px]:h-[28px] sm:h-[34px] flex items-center"
+                onMouseEnter={() => onEnter(i)}
+                onMouseLeave={() => onLeave(false)}
+              >
+                <button
+                  ref={(el) => { barRefs.current[i] = el; }}
+                  type="button"
+                  tabIndex={rovingIdx === i ? 0 : -1}
+                  aria-label={`${formatCommitDate(day.date)}: ${day.count > 0 ? `${day.count} contribution${day.count !== 1 ? "s" : ""}` : "No contributions"}`}
+                  onFocus={() => {
+                    setRovingIdx(i);
+                    onEnter(i, false);
+                  }}
+                  onBlur={() => onLeave(true)}
+                  onClick={() => {
+                    setRovingIdx(i);
+                    onSelect(i);
+                  }}
+                  onKeyDown={(e) => handleKeyDown(e, i)}
+                  className="w-full p-0 border-0 rounded-[3.5px] min-[500px]:rounded-[4px] sm:rounded-[5px] cursor-pointer block"
+                  style={{
+                    backgroundColor: commitLevelColor(day.count, max),
+                    height: barHeight,
+                    transform: mounted || reduce ? "scaleY(1)" : "scaleY(0)",
+                    opacity: mounted || reduce ? 1 : 0,
+                    transition:
+                      mounted && !reduce
+                        ? `transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 20}ms, opacity 300ms ease ${i * 20}ms, height ${
+                            isHovered || isNeighbor ? "150ms cubic-bezier(0.215, 0.61, 0.355, 1)" : "100ms ease"
+                          }`
+                        : "opacity 150ms ease",
+                    transformOrigin: "bottom"
+                  }}
+                />
+
+                {/* Always-mounted tooltip animated via opacity + translateY */}
+                <div
+                  ref={(el) => { tooltipRefs.current[i] = el; }}
+                  role="tooltip"
+                  aria-hidden={!isHovered}
+                  className="absolute bottom-full left-1/2 mb-2 z-50 pointer-events-none"
+                  style={{
+                    transform: `translateX(calc(-50% + ${offset}px)) translateY(${isHovered || reduce ? "0px" : "4px"})`,
+                    opacity: isHovered ? 1 : 0,
+                    transition: reduce
+                      ? "opacity 100ms ease"
+                      : isHovered
+                      ? "opacity 150ms cubic-bezier(0.215, 0.61, 0.355, 1), transform 150ms cubic-bezier(0.215, 0.61, 0.355, 1)"
+                      : "opacity 100ms ease, transform 100ms ease"
+                  }}
+                >
+                  <div className="bg-[#171717] text-white text-xs rounded-md px-2.5 py-1.5 whitespace-nowrap shadow-lg">
+                    <p className="font-medium leading-tight">{formatCommitDate(day.date)}</p>
+                    {day.count > 0 ? (
+                      <p className="text-[#d4d4d8] text-[11px] tabular-nums leading-tight mt-0.5">
+                        {day.count} contribution{day.count !== 1 ? "s" : ""}
+                      </p>
+                    ) : (
+                      <p className="text-[#a1a1aa] text-[11px] leading-tight mt-0.5">
+                        No contributions
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      );
+    };
+
     const ActivityStrip = ({ enterItem }) => {
       const [telemetry, send] = useMachine(GITHUB_TELEMETRY_MACHINE);
-      const reduce = useReducedMotionSafe();
-      const { data, hoveredDay, pinnedDay } = telemetry.context;
-      const activeDay = hoveredDay || pinnedDay;
+      const { username, data, hoveredIndex } = telemetry.context;
       const isLoading = telemetry.value === "loading";
       const isError = telemetry.value === "error";
-      const isPinned = telemetry.value === "pinned";
-      const barRefs = useRef([]);
-      const [rovingIdx, setRovingIdx] = useState(29);
+      const leaveTimeoutRef = useRef(null);
 
       useEffect(() => {
         if (telemetry.value !== "loading") return;
         let cancelled = false;
+        const cacheKey = `jp-gh-contrib-v1:${username}`;
+
+        try {
+          const cachedRaw = sessionStorage.getItem(cacheKey);
+          if (cachedRaw) {
+            const cached = JSON.parse(cachedRaw);
+            if (cached && cached.ts && Date.now() - cached.ts < GITHUB_CACHE_TTL_MS && cached.payload) {
+              send({ type: "FETCH_SUCCESS", data: cached.payload });
+              return;
+            }
+          }
+        } catch (e) {}
+
         const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
         const timeoutId = setTimeout(() => {
           if (controller) controller.abort();
         }, 8000);
 
-        fetch('https://github-contributions-api.jogruber.de/v4/JPacoch?y=last', controller ? { signal: controller.signal } : undefined)
+        fetch(
+          `https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(username)}?y=last`,
+          controller ? { signal: controller.signal } : undefined
+        )
           .then((res) => {
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             return res.json();
@@ -1119,20 +1661,40 @@
             const rawList = Array.isArray(json.contributions) ? json.contributions : [];
             if (!rawList.length) throw new Error("Empty dataset");
 
-            const today = new Date().toISOString().split('T')[0];
-            const sorted = rawList.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
-            const filtered = sorted.filter((c) => c.date <= today);
-            const sourceDays = filtered.length > 0 ? filtered : sorted;
-            const last30 = sourceDays.slice(-30);
-            const last30Total = last30.reduce((sum, d) => sum + (Number(d.count) || 0), 0);
-            const yearTotal =
-              (json.total && (json.total.lastYear || json.total[new Date().getFullYear()])) ||
-              sourceDays.reduce((sum, d) => sum + (Number(d.count) || 0), 0);
+            const now = new Date();
+            const today = now.toISOString().slice(0, 10);
+            const firstDay = new Date(`${today}T00:00:00.000Z`);
+            firstDay.setUTCDate(firstDay.getUTCDate() - 29);
+            const yearStart = `${now.getUTCFullYear()}-01-01`;
 
-            send({
-              type: "FETCH_SUCCESS",
-              data: { last30, last30Total, yearTotal }
-            });
+            const contributionsByDay = new Map();
+            for (let i = 0; i < 30; i++) {
+              const d = new Date(firstDay);
+              d.setUTCDate(firstDay.getUTCDate() + i);
+              contributionsByDay.set(d.toISOString().slice(0, 10), 0);
+            }
+
+            let yearToDateContributions = 0;
+            for (const item of rawList) {
+              if (!item || !item.date) continue;
+              const count = Number(item.count) || 0;
+              if (item.date >= yearStart && item.date <= today) {
+                yearToDateContributions += count;
+              }
+              if (contributionsByDay.has(item.date)) {
+                contributionsByDay.set(item.date, count);
+              }
+            }
+
+            const days = Array.from(contributionsByDay, ([date, count]) => ({ date, count }));
+            const totalCommits = days.reduce((sum, d) => sum + d.count, 0);
+            const payload = { days, totalCommits, yearToDateContributions };
+
+            try {
+              sessionStorage.setItem(cacheKey, JSON.stringify({ ts: Date.now(), payload }));
+            } catch (e) {}
+
+            send({ type: "FETCH_SUCCESS", data: payload });
           })
           .catch((err) => {
             if (cancelled) return;
@@ -1145,49 +1707,55 @@
           clearTimeout(timeoutId);
           if (controller) controller.abort();
         };
-      }, [telemetry.value, send]);
+      }, [telemetry.value, username, send]);
 
-      const bars = useMemo(() => {
-        if (data && data.last30) return data.last30;
-        return Array.from({ length: 30 }, (_, i) => ({ date: `placeholder-${i}`, count: 0, level: 0, placeholder: true }));
-      }, [data]);
+      useEffect(() => {
+        return () => {
+          if (leaveTimeoutRef.current) clearTimeout(leaveTimeoutRef.current);
+        };
+      }, []);
 
-      const getLevelVar = (day) => {
-        if (day.placeholder) return "var(--contrib-0)";
-        let lvl = day.level || 0;
-        if (lvl === 0 && day.count > 0) {
-          lvl = day.count <= 2 ? 1 : day.count <= 5 ? 2 : day.count <= 8 ? 3 : 4;
-        }
-        return `var(--contrib-${Math.min(4, Math.max(0, lvl))})`;
-      };
+      const handleEnter = useCallback(
+        (i, withSound = true) => {
+          if (leaveTimeoutRef.current) clearTimeout(leaveTimeoutRef.current);
+          send({ type: "HOVER_DAY", index: i });
+          if (withSound) playTick();
+        },
+        [send]
+      );
 
-      const formatShortDate = (iso) => {
-        try {
-          return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(new Date(iso + "T00:00:00"));
-        } catch (e) {
-          return iso;
-        }
-      };
+      const handleLeave = useCallback(
+        (immediate = false) => {
+          if (leaveTimeoutRef.current) clearTimeout(leaveTimeoutRef.current);
+          if (immediate) {
+            send("CLEAR_HOVER");
+            return;
+          }
+          leaveTimeoutRef.current = setTimeout(() => {
+            send("CLEAR_HOVER");
+          }, 80);
+        },
+        [send]
+      );
 
-      const handleKeyDown = (e, idx, day) => {
-        if (e.key === "ArrowRight") {
-          e.preventDefault();
-          const next = Math.min(bars.length - 1, idx + 1);
-          setRovingIdx(next);
-          if (barRefs.current[next]) barRefs.current[next].focus();
-        } else if (e.key === "ArrowLeft") {
-          e.preventDefault();
-          const prev = Math.max(0, idx - 1);
-          setRovingIdx(prev);
-          if (barRefs.current[prev]) barRefs.current[prev].focus();
-        } else if (e.key === "Escape") {
-          e.preventDefault();
-          send("ESCAPE");
-        } else if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          send({ type: "TOGGLE_PIN_DAY", day });
-        }
-      };
+      const handleSelect = useCallback(
+        (i) => {
+          if (leaveTimeoutRef.current) clearTimeout(leaveTimeoutRef.current);
+          if (hoveredIndex === i) {
+            send("CLEAR_HOVER");
+          } else {
+            send({ type: "HOVER_DAY", index: i });
+          }
+        },
+        [hoveredIndex, send]
+      );
+
+      const placeholderDays = useMemo(
+        () => Array.from({ length: 30 }, (_, i) => ({ date: `placeholder-${i}`, count: 0 })),
+        []
+      );
+      const displayDays = data && data.days ? data.days : placeholderDays;
+      const activeDay = hoveredIndex !== null && displayDays[hoveredIndex] ? displayDays[hoveredIndex] : null;
 
       return (
         <motion.section
@@ -1195,112 +1763,61 @@
           variants={enterItem}
           data-machine="githubTelemetry"
           data-state={telemetry.value}
-          data-total-commits={data ? data.yearTotal : undefined}
+          data-github-username={username}
+          data-total-commits={data ? data.yearToDateContributions : undefined}
           data-inspected-date={activeDay ? activeDay.date : undefined}
-          data-pinned-date={pinnedDay ? pinnedDay.date : undefined}
           aria-label="GitHub contribution activity"
+          className="flex flex-col gap-3 w-full"
         >
-          <div
-            role="group"
-            aria-label="Last 30 days of GitHub contributions"
-            className="grid grid-cols-[repeat(30,minmax(0,1fr))] gap-[3px] sm:gap-[6px] items-end h-7 mb-4"
-          >
-            {bars.map((day, idx) => {
-              const isDayPinned = Boolean(pinnedDay && pinnedDay.date === day.date);
-              if (day.placeholder) {
-                return (
-                  <span
-                    key={day.date}
-                    aria-hidden="true"
-                    className={`block w-full max-w-[10px] mx-auto h-6 rounded-full ${isLoading ? "motion-safe:animate-pulse" : "opacity-50"}`}
-                    style={{ backgroundColor: "var(--contrib-0)" }}
-                  />
-                );
-              }
-              return (
-                <motion.button
-                  key={day.date}
-                  ref={(el) => { barRefs.current[idx] = el; }}
-                  type="button"
-                  tabIndex={rovingIdx === idx ? 0 : -1}
-                  aria-pressed={isDayPinned}
-                  aria-label={`${day.count} ${day.count === 1 ? "contribution" : "contributions"} on ${formatShortDate(day.date)}`}
-                  initial={reduce ? { opacity: 1 } : { scaleY: 0.25, opacity: 0 }}
-                  animate={{ scaleY: 1, opacity: 1 }}
-                  transition={{ duration: 0.26, delay: reduce ? 0 : idx * 0.012, ease: "easeOut" }}
-                  onMouseEnter={() => send({ type: "INSPECT_DAY", day })}
-                  onMouseLeave={() => send("CLEAR_INSPECT")}
-                  onFocus={() => {
-                    setRovingIdx(idx);
-                    send({ type: "INSPECT_DAY", day });
-                  }}
-                  onBlur={() => send("CLEAR_INSPECT")}
-                  onClick={() => {
-                    setRovingIdx(idx);
-                    send({ type: "TOGGLE_PIN_DAY", day });
-                  }}
-                  onKeyDown={(e) => handleKeyDown(e, idx, day)}
-                  className={`contrib-pill origin-bottom w-full max-w-[10px] mx-auto h-6 p-0 border-0 rounded-full cursor-pointer transition-transform duration-150 ease-out ${
-                    isDayPinned ? "ring-2 ring-ink ring-offset-1 ring-offset-canvas scale-y-[1.15]" : ""
-                  }`}
-                  style={{ backgroundColor: getLevelVar(day) }}
-                  title={`${day.count} ${day.count === 1 ? "contribution" : "contributions"} on ${formatShortDate(day.date)}`}
-                />
-              );
-            })}
-          </div>
+          <CommitGraph
+            days={displayDays}
+            hovered={hoveredIndex}
+            onEnter={handleEnter}
+            onLeave={handleLeave}
+            onSelect={handleSelect}
+            isLoading={isLoading}
+            isError={isError}
+          />
 
-          {/* Two clean hairline metric rows (Charles Shin layout) */}
-          <div className="divide-y divide-hairline border-t border-hairline text-[0.9375rem]">
-            <div className="py-3 flex items-center justify-between gap-4">
-              <span className="text-ink-muted" role="status" aria-live="polite">
-                {activeDay
-                  ? `${formatShortDate(activeDay.date)}${isPinned && pinnedDay && pinnedDay.date === activeDay.date ? " (pinned)" : ""}`
-                  : "Last 30 days"}
-              </span>
-              <div className="flex items-center gap-2.5">
-                {isPinned && (
-                  <button
-                    type="button"
-                    onClick={() => send("UNPIN_DAY")}
-                    className="muted-link text-[0.875rem] bg-transparent border-0 p-0 cursor-pointer"
-                  >
-                    Clear
-                  </button>
-                )}
-                {isError ? (
-                  <button
-                    type="button"
-                    onClick={() => send("RETRY")}
-                    className="inline-link text-[0.875rem] bg-transparent border-0 p-0 cursor-pointer"
-                  >
-                    Retry
-                  </button>
-                ) : (
-                  <span className="text-[0.875rem] text-ink-secondary tabular-nums">
-                    {isLoading
-                      ? "Syncing…"
-                      : activeDay
-                      ? `${activeDay.count} ${activeDay.count === 1 ? "contribution" : "contributions"}`
-                      : `${data.last30Total} contributions`}
-                  </span>
-                )}
-              </div>
-            </div>
-
-            <div className="py-3 flex items-center justify-between gap-4">
-              <span className="text-ink-muted">Last 12 months</span>
-              <a
-                href="https://github.com/JPacoch"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[0.875rem] text-ink-secondary hover-ink tabular-nums inline-flex items-center gap-1 transition-colors duration-150 ease-out"
+          <div className="flex items-center justify-between gap-4 text-[0.875rem]">
+            <span className="text-ink-muted">Last 30 days</span>
+            {isError ? (
+              <button
+                type="button"
+                onClick={() => send("RETRY")}
+                className="inline-link text-[0.875rem] bg-transparent border-0 p-0 cursor-pointer"
               >
-                <span>{isLoading ? "—" : isError ? "github.com/JPacoch" : `${data.yearTotal} contributions`}</span>
-                <ArrowUpRightIcon className="w-3.5 h-3.5 text-ink-muted" />
-              </a>
-            </div>
+                Retry
+              </button>
+            ) : (
+              <span className="text-[0.875rem] text-ink-secondary tabular-nums">
+                {isLoading ? "Syncing…" : `${data.totalCommits} contributions`}
+              </span>
+            )}
           </div>
+
+          <div className="border-t border-dotted border-hairline" />
+
+          <div className="flex items-center justify-between gap-4 text-[0.875rem]">
+            <span className="text-ink-muted">Year to date</span>
+            <a
+              href={`https://github.com/${encodeURIComponent(username)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[0.875rem] text-ink-secondary hover-ink tabular-nums inline-flex items-center gap-1 transition-colors duration-150 ease-out"
+            >
+              <span>
+                {isLoading ? "—" : isError ? `github.com/${username}` : `${data.yearToDateContributions} contributions`}
+              </span>
+              <ArrowUpRightIcon className="w-3.5 h-3.5 text-ink-muted" />
+            </a>
+          </div>
+
+          <span className="sr-only" role="status" aria-live="polite">
+            {activeDay
+              ? `${formatCommitDate(activeDay.date)}: ${activeDay.count} ${activeDay.count === 1 ? "contribution" : "contributions"}`
+              : ""}
+          </span>
         </motion.section>
       );
     };
@@ -1432,12 +1949,13 @@
           data-visible-count={filteredProjects.length}
           data-hovered-project={hoveredProjectId || undefined}
           aria-labelledby="projects-heading"
+          className="tracking-normal"
         >
           {/* Minimal Section Header + Inline Underline Filter */}
           <div className="flex flex-wrap items-baseline justify-between gap-3 pb-3.5 mb-3 border-b border-hairline">
             <h2
               id="projects-heading"
-              className="text-[0.9375rem] font-medium text-ink tracking-[-0.01em]"
+              className="text-[0.9375rem] font-semibold text-ink tracking-normal"
             >
               Projects
             </h2>
@@ -1445,7 +1963,7 @@
             <div
               role="tablist"
               aria-label="Filter projects by category"
-              className="flex flex-wrap items-center gap-4"
+              className="flex flex-wrap items-center gap-5"
             >
               {PROJECT_CATEGORIES.map((cat, idx) => {
                 const isSelected = activeCategory === cat;
@@ -1460,7 +1978,7 @@
                     tabIndex={isSelected ? 0 : -1}
                     onClick={() => send({ type: "SELECT_CATEGORY", category: cat })}
                     onKeyDown={(e) => handleTabKeyDown(e, idx)}
-                    className={`relative py-1 text-[0.8125rem] font-medium transition-colors duration-150 ease-out ${
+                    className={`relative pt-1 pb-1.5 text-[0.875rem] font-medium tracking-[0.005em] transition-colors duration-150 ease-out ${
                       isSelected ? "text-ink" : "text-ink-muted hover-ink"
                     }`}
                   >
@@ -1469,7 +1987,7 @@
                       <motion.span
                         layoutId="projectFilterLine"
                         transition={reduce ? { duration: 0.1 } : { type: "spring", duration: 0.3, bounce: 0 }}
-                        className="absolute inset-x-0 -bottom-px h-[1.5px] bg-ink rounded-full"
+                        className="absolute inset-x-0 bottom-0 h-[1.5px] bg-ink rounded-full"
                       />
                     )}
                   </button>
@@ -1520,7 +2038,7 @@
                           <ProjectIcon type={proj.icon} />
                         </span>
                         <div className="min-w-0">
-                          <div className="text-base font-medium text-ink leading-[1.35] tracking-[-0.015em] truncate">
+                          <div className="text-base font-semibold text-ink leading-[1.35] tracking-normal truncate">
                             {proj.title}
                           </div>
                           <div className="text-[0.9375rem] text-ink-muted leading-[1.45] truncate">
@@ -1608,11 +2126,12 @@
           data-state={writingState.value}
           data-hovered-essay={hoveredEssayId || undefined}
           aria-labelledby="writing-heading"
+          className="tracking-normal"
         >
           <div className="flex items-baseline justify-between gap-4 pb-3.5 mb-3 border-b border-hairline">
             <h2
               id="writing-heading"
-              className="text-[0.9375rem] font-medium text-ink tracking-[-0.01em]"
+              className="text-[0.9375rem] font-semibold text-ink tracking-normal"
             >
               Writing
             </h2>
@@ -1620,7 +2139,7 @@
               href="https://fromthecabinet.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="muted-link text-[0.8125rem] font-medium"
+              className="muted-link text-[0.875rem] font-medium tracking-normal"
             >
               View all
             </a>
@@ -1641,7 +2160,7 @@
               >
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-base font-medium text-ink leading-[1.35] tracking-[-0.015em]">
+                    <span className="text-base font-semibold text-ink leading-[1.35] tracking-normal">
                       {essay.title}
                     </span>
                     {essay.isNew && (
@@ -1677,12 +2196,12 @@
     ];
 
     const FocusIndex = ({ enterItem }) => (
-      <motion.section id="about" variants={enterItem} aria-labelledby="focus-heading">
+      <motion.section id="about" variants={enterItem} aria-labelledby="focus-heading" className="tracking-normal">
         <div className="flex items-baseline justify-between gap-4 pb-3.5 mb-1 border-b border-hairline">
-          <h2 id="focus-heading" className="text-[0.9375rem] font-medium text-ink tracking-[-0.01em]">
+          <h2 id="focus-heading" className="text-[0.9375rem] font-semibold text-ink tracking-normal">
             Focus
           </h2>
-          <a href="cv.html" className="muted-link text-[0.875rem] font-medium">
+          <a href="cv.html" className="muted-link text-[0.875rem] font-medium tracking-normal">
             Full CV
           </a>
         </div>
@@ -1693,7 +2212,7 @@
               key={item.id}
               className="py-3.5 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4"
             >
-              <dt className="text-base font-medium text-ink tracking-[-0.015em]">
+              <dt className="text-base font-semibold text-ink tracking-normal">
                 {item.area}
               </dt>
               <dd className="text-[0.875rem] text-ink-muted">
@@ -1786,7 +2305,7 @@
             reduce
               ? "relative z-10 w-full bg-footer-bg text-footer-ink"
               : "fixed bottom-0 inset-x-0 z-0 h-[74dvh] min-h-[480px] sm:h-[64dvh] sm:min-h-[500px] w-full bg-footer-bg text-footer-ink overflow-hidden"
-          } flex flex-col justify-between`}
+          } font-sans flex flex-col justify-between`}
         >
           <div
             id="footer-container-inner"
@@ -1795,14 +2314,14 @@
             <div className="my-auto">
               <p
                 id="contact"
-                className="font-medium text-xs uppercase tracking-[0.08em] text-footer-muted mb-4"
+                className="font-semibold text-xs uppercase tracking-[0.08em] text-footer-muted mb-4"
               >
                 Contact
               </p>
 
-              <h2 className="text-3xl sm:text-5xl font-medium leading-[1.08] tracking-[-0.035em] text-footer-ink text-balance mb-4">
+              <h2 className="text-3xl sm:text-5xl font-semibold leading-[1.08] tracking-[-0.03em] text-footer-ink text-balance mb-4">
                 Let’s build something{" "}
-                <span className="text-footer-muted font-normal">together.</span>
+                <span className="text-footer-muted font-medium">together.</span>
               </h2>
 
               <p className="text-[0.9375rem] sm:text-base text-footer-secondary leading-[1.6] text-pretty max-w-[42ch] mb-8">
@@ -1850,6 +2369,19 @@
           ? "dark"
           : "light"
       );
+
+      const [hapticsMuted, setHapticsMuted] = useState(() => isHapticsMuted());
+
+      const handleToggleHaptics = useCallback(() => {
+        setHapticsMuted((prev) => {
+          const next = !prev;
+          try {
+            localStorage.setItem("haptics-muted", String(next));
+          } catch (e) {}
+          window.dispatchEvent(new Event("haptics-muted-change"));
+          return next;
+        });
+      }, []);
 
       const handleToggleTheme = useCallback(() => {
         setTheme((prev) => {
@@ -1976,6 +2508,9 @@
             data-scroll-direction={scrollEngine.context.direction}
             className="bg-canvas min-h-[100dvh] font-sans text-ink selection:bg-ink selection:text-canvas"
           >
+            <GlobalHaptics />
+            <ClickSpark />
+
             <a
               href="#main-content"
               className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-[200] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-ink focus:text-canvas focus:text-sm focus:font-medium"
@@ -2005,6 +2540,8 @@
                 <IdentityAndBio
                   theme={theme}
                   onToggleTheme={handleToggleTheme}
+                  hapticsMuted={hapticsMuted}
+                  onToggleHaptics={handleToggleHaptics}
                   enterItem={enterItem}
                 />
                 <ActivityStrip enterItem={enterItem} />
