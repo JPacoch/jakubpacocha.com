@@ -137,7 +137,6 @@
           colors: {
             canvas: 'var(--color-canvas)',
             surface: 'var(--color-surface)',
-            'surface-hover': 'var(--color-surface-hover)',
             ink: 'var(--color-ink)',
             'ink-subtitle': 'var(--color-ink-subtitle)',
             'ink-secondary': 'var(--color-ink-secondary)',
@@ -179,7 +178,6 @@
       /* Light Mode Palette — Soft Charcoal Ink, No Pure Black (Verified WCAG AA/AAA) */
       --color-canvas: #fcfcfc;
       --color-surface: #f4f4f5;
-      --color-surface-hover: #ececef;
       --color-ink: #26262a;
       --color-ink-subtitle: #45454c;
       --color-ink-secondary: #6b6b73;
@@ -190,7 +188,6 @@
 
       /* Brand Accent System (Burgundy / Rose) */
       --color-accent: #881337;
-      --color-accent-strong: #6b0f2b;
       --color-selection-bg: rgba(190, 62, 92, 0.2);
       --color-selection-text: #6b0f2b;
 
@@ -225,7 +222,6 @@
       /* Dark Mode Palette (#141414) — Verified WCAG AA/AAA */
       --color-canvas: #141414;
       --color-surface: #1e1e20;
-      --color-surface-hover: #27272a;
       --color-ink: #f2f2f2;
       --color-ink-subtitle: #c8c8cf;
       --color-ink-secondary: #a1a1aa;
@@ -236,8 +232,6 @@
 
       /* Brand Accent System (Burgundy / Rose — Dark) */
       --color-accent: #e57389;
-      --color-accent-strong: #f29aac;
-      --color-on-accent: #260710;
       --color-selection-bg: #e57389;
       --color-selection-text: #260710;
 
@@ -991,16 +985,6 @@
         },
         enumerable: false,
         configurable: true
-      },
-      inspect: {
-        value: () => {
-          if (MACHINE_REGISTRY.machineInspector) {
-            MACHINE_REGISTRY.machineInspector.send("TOGGLE");
-          }
-          return MACHINE_REGISTRY.getAllSnapshots();
-        },
-        enumerable: false,
-        configurable: true
       }
     });
 
@@ -1085,7 +1069,6 @@
 
         historyRef.current = [...historyRef.current.slice(-24), record];
         if (
-          config.id !== "machineInspector" &&
           result.event.type !== "SCROLL_UPDATE" &&
           result.event.type !== "SCRUB_PROGRESS" &&
           result.event.type !== "TICK"

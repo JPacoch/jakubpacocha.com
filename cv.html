@@ -139,7 +139,6 @@
           colors: {
             canvas: 'var(--color-canvas)',
             surface: 'var(--color-surface)',
-            'surface-hover': 'var(--color-surface-hover)',
             ink: 'var(--color-ink)',
             'ink-subtitle': 'var(--color-ink-subtitle)',
             'ink-secondary': 'var(--color-ink-secondary)',
@@ -181,7 +180,6 @@
       /* Light Mode Palette — Soft Charcoal Ink, No Pure Black (Verified WCAG AA/AAA) */
       --color-canvas: #fcfcfc;
       --color-surface: #f4f4f5;
-      --color-surface-hover: #ececef;
       --color-ink: #26262a;
       --color-ink-subtitle: #45454c;
       --color-ink-secondary: #6b6b73;
@@ -192,7 +190,6 @@
 
       /* Brand Accent System (Burgundy / Rose) */
       --color-accent: #881337;
-      --color-accent-strong: #6b0f2b;
       --color-selection-bg: rgba(190, 62, 92, 0.2);
       --color-selection-text: #6b0f2b;
 
@@ -205,10 +202,6 @@
       --color-footer-secondary: #d4d4d8;
       --color-footer-muted: #a1a1aa;
 
-      --shadow-tile:
-        0px 0px 0px 1px oklch(0 0 0 / 0.06),
-        0px 1px 2px 0px oklch(0 0 0 / 0.035);
-      --shadow-chip: 0px 0px 0px 1px oklch(0 0 0 / 0.07);
       --shadow-main-curtain: 0px 24px 64px rgba(24, 24, 28, 0.22);
       --main-edge-ring: transparent;
     }
@@ -217,7 +210,6 @@
       /* Dark Mode Palette (#141414) — Verified WCAG AA/AAA */
       --color-canvas: #141414;
       --color-surface: #1e1e20;
-      --color-surface-hover: #27272a;
       --color-ink: #f2f2f2;
       --color-ink-subtitle: #c8c8cf;
       --color-ink-secondary: #a1a1aa;
@@ -228,8 +220,6 @@
 
       /* Brand Accent System (Burgundy / Rose — Dark) */
       --color-accent: #e57389;
-      --color-accent-strong: #f29aac;
-      --color-on-accent: #260710;
       --color-selection-bg: #e57389;
       --color-selection-text: #260710;
 
@@ -242,8 +232,6 @@
       --color-footer-secondary: #d4d4d8;
       --color-footer-muted: #9a9aa4;
 
-      --shadow-tile: 0px 0px 0px 1px oklch(1 0 0 / 0.08);
-      --shadow-chip: 0px 0px 0px 1px oklch(1 0 0 / 0.09);
       --shadow-main-curtain: 0px 24px 64px rgba(0, 0, 0, 0.55);
       --main-edge-ring: rgba(255, 255, 255, 0.07);
     }
@@ -657,31 +645,16 @@
       }
     }
 
-    function playSoundPreset(preset) {
+    function playHapticClick() {
       if (isHapticsMuted()) return;
       const ctx = getSharedAudioContext();
-      if (!ctx) return;
-      try {
-        const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        const filter = ctx.createBiquadFilter();
+      if (ctx) {
+        try {
+          const now = ctx.currentTime;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          const filter = ctx.createBiquadFilter();
 
-        if (preset === "tick") {
-          osc.type = "triangle";
-          osc.frequency.setValueAtTime(1180, now);
-          osc.frequency.exponentialRampToValueAtTime(640, now + 0.011);
-          filter.type = "bandpass";
-          filter.frequency.setValueAtTime(1600, now);
-          filter.Q.setValueAtTime(1.4, now);
-          gain.gain.setValueAtTime(0.032, now);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.012);
-          osc.connect(filter);
-          filter.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(now);
-          osc.stop(now + 0.014);
-        } else {
           // Subtle tactile "toggle" click matching cuelume's toggle preset
           osc.type = "sine";
           osc.frequency.setValueAtTime(620, now);
@@ -695,12 +668,8 @@
           gain.connect(ctx.destination);
           osc.start(now);
           osc.stop(now + 0.024);
-        }
-      } catch (e) {}
-    }
-
-    function playHapticClick() {
-      playSoundPreset("toggle");
+        } catch (e) {}
+      }
       if (typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
         try {
           navigator.vibrate(8);
@@ -1369,25 +1338,21 @@
     const SKILL_MATRIX = [
       {
         id: "skill-ai",
-        icon: "ai",
         category: "AI & Machine Learning",
         items: ["LLM Orchestration & RAG", "Vector Stores & Embeddings", "Agentic Workflows", "Prompt Engineering", "Computer Vision (CNNs)", "Classical ML"]
       },
       {
         id: "skill-backend",
-        icon: "backend",
         category: "Backend & Infrastructure",
         items: ["Python (FastAPI, Flask)", "Docker & Containerization", "REST API", "SQL & relational databases", "C# / .NET utilities", "React & modern web"]
       },
       {
         id: "skill-cloud",
-        icon: "cloud",
         category: "Cloud & DevOps",
         items: ["Amazon Web Services (AWS)", "Microsoft Azure", "Linux administration", "MLOps & telemetry"]
       },
       {
         id: "skill-spatial",
-        icon: "spatial",
         category: "Spatial & Civic Systems",
         items: ["GIS & Geocomputation", "Network Analysis", "Municipal Data Systems", "Geomorphological Vision Models"]
       }
