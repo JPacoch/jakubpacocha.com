@@ -1,33 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jakub Pacocha — AI Engineer & Writer</title>
-  <link rel="icon" type="image/x-icon" href="assets/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Jakub Pacocha - AI Engineer &amp; Writer</title>
+  <meta name="description" content="Jakub Pacocha — AI & Software Engineer at HERE Technologies. Building RAG architectures, containerized ML infrastructure, spatial intelligence, and writing essays." />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+
+
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('jp-theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            electric: '#0055FF',
-            dark: '#111827',
-            offwhite: '#F9FAFB',
+            canvas: 'var(--color-canvas)',
+            surface: 'var(--color-surface)',
+            'surface-hover': 'var(--color-surface-hover)',
+            ink: 'var(--color-ink)',
+            'ink-secondary': 'var(--color-ink-secondary)',
+            'ink-muted': 'var(--color-ink-muted)',
+            hairline: 'var(--color-hairline)',
+            'badge-bg': 'var(--color-badge-bg)',
+            'badge-text': 'var(--color-badge-text)',
+            'footer-bg': 'var(--color-footer-bg)',
+            'footer-ink': 'var(--color-footer-ink)',
+            'footer-secondary': 'var(--color-footer-secondary)',
+            'footer-muted': 'var(--color-footer-muted)',
           },
           fontFamily: {
-            serif: ['Playfair Display', 'Georgia', 'serif'],
-            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          }
-        }
-      }
-    }
+            sans: ['Geist', 'Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
+            mono: ['"Geist Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+          },
+        },
+      },
+    };
   </script>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
-    rel="stylesheet">
 
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
@@ -35,70 +63,313 @@
   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 
   <style>
-    body,
+    :root {
+      /* Light Mode Palette — Verified WCAG AA */
+      --color-canvas: #fcfcfc;
+      --color-surface: #f4f4f5;
+      --color-surface-hover: #ececef;
+      --color-ink: #111113;
+      --color-ink-secondary: #4a4a52;
+      --color-ink-muted: #63636d;
+      --color-hairline: rgba(17, 17, 19, 0.08);
+      --color-underline: rgba(17, 17, 19, 0.24);
+      --color-underline-hover: #111113;
+
+      --color-badge-bg: #fce7f3;
+      --color-badge-text: #9d174d;
+
+      /* Emerging Curtain Footer */
+      --color-footer-bg: #0a0a0c;
+      --color-footer-ink: #fafafa;
+      --color-footer-secondary: #d4d4d8;
+      --color-footer-muted: #a1a1aa;
+
+      /* Contribution Scale (Light) */
+      --contrib-0: #e7e7ea;
+      --contrib-1: #bbf7d0;
+      --contrib-2: #4ade80;
+      --contrib-3: #16a34a;
+      --contrib-4: #15803d;
+
+      /* Paper Thumbnail & Icon Tile Shadows (better-ui) */
+      --shadow-tile:
+        0px 0px 0px 1px oklch(0 0 0 / 0.06),
+        0px 1px 2px 0px oklch(0 0 0 / 0.04);
+      --shadow-paper:
+        0px 0px 0px 1px oklch(0 0 0 / 0.08),
+        0px 2px 5px -1px oklch(0 0 0 / 0.06);
+      --shadow-main-curtain: 0px 24px 64px rgba(10, 10, 12, 0.22);
+      --main-edge-ring: transparent;
+    }
+
+    html[data-theme="dark"] {
+      /* Dark Mode Palette — Verified WCAG AA */
+      --color-canvas: #0c0c0e;
+      --color-surface: #16161a;
+      --color-surface-hover: #1e1e24;
+      --color-ink: #fafafa;
+      --color-ink-secondary: #b4b4be;
+      --color-ink-muted: #9494a0;
+      --color-hairline: rgba(250, 250, 250, 0.09);
+      --color-underline: rgba(250, 250, 250, 0.28);
+      --color-underline-hover: #fafafa;
+
+      --color-badge-bg: #3b1226;
+      --color-badge-text: #f9a8d4;
+
+      /* Emerging Curtain Footer (Elevated Charcoal in Dark Mode) */
+      --color-footer-bg: #141418;
+      --color-footer-ink: #fafafa;
+      --color-footer-secondary: #d4d4d8;
+      --color-footer-muted: #a1a1aa;
+
+      /* Contribution Scale (Dark) */
+      --contrib-0: #222228;
+      --contrib-1: #14532d;
+      --contrib-2: #166534;
+      --contrib-3: #16a34a;
+      --contrib-4: #22c55e;
+
+      --shadow-tile: 0px 0px 0px 1px oklch(1 0 0 / 0.09);
+      --shadow-paper: 0px 0px 0px 1px oklch(1 0 0 / 0.11);
+      --shadow-main-curtain: 0px 24px 64px rgba(0, 0, 0, 0.6);
+      --main-edge-ring: rgba(255, 255, 255, 0.08);
+    }
+
     html {
-      margin: 0;
-      padding: 0;
-      background-color: #ffffff;
-      color: #111827;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
+      background-color: var(--color-canvas);
+      color: var(--color-ink);
+      scroll-padding-block-start: 2rem;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
+      text-size-adjust: 100%;
     }
 
-    ::-webkit-scrollbar {
-      width: 8px;
+    @media (prefers-reduced-motion: no-preference) {
+      html {
+        scroll-behavior: smooth;
+      }
     }
 
-    ::-webkit-scrollbar-track {
-      background: #0055FF;
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--color-canvas);
+      color: var(--color-ink);
+      overflow-x: clip;
     }
 
-    ::-webkit-scrollbar-thumb {
-      background: #ffffff;
-      border-radius: 4px;
+    .text-balance {
+      text-wrap: balance;
     }
 
-    /* Subtle architectural dot/grid background */
-    .bg-Swiss-grid {
-      background-size: 48px 48px;
-      background-image: 
-        linear-gradient(to right, rgba(17, 24, 39, 0.035) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(17, 24, 39, 0.035) 1px, transparent 1px);
+    .text-pretty {
+      text-wrap: pretty;
     }
 
-    .custom-scrollbar-minimal::-webkit-scrollbar {
-      height: 4px;
-      width: 4px;
+    /* Crisp inline editorial links */
+    .inline-link {
+      color: var(--color-ink);
+      font-weight: 500;
+      text-decoration: underline;
+      text-underline-position: from-font;
+      text-decoration-thickness: from-font;
+      text-decoration-color: var(--color-underline);
+      transition-property: color, text-decoration-color;
+      transition-duration: 150ms;
+      transition-timing-function: ease-out;
     }
-    .custom-scrollbar-minimal::-webkit-scrollbar-track {
-      background: #F9FAFB;
+
+    .muted-link {
+      color: var(--color-ink-muted);
+      text-decoration: underline;
+      text-underline-position: from-font;
+      text-decoration-thickness: from-font;
+      text-decoration-color: var(--color-underline);
+      transition-property: color, text-decoration-color;
+      transition-duration: 150ms;
+      transition-timing-function: ease-out;
     }
-    .custom-scrollbar-minimal::-webkit-scrollbar-thumb {
-      background: rgba(17, 24, 39, 0.15);
-      border-radius: 9999px;
+
+    /* Accessible focus rings */
+    :where(a, button, [tabindex]):focus-visible {
+      outline: 2px solid var(--color-ink);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
+    .focus-ring-light:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
+    }
+
+    /* Tactile press feedback: exact scale(0.96) over 150ms ease-out */
+    .tap-press {
+      -webkit-tap-highlight-color: transparent;
+      transition-property: transform, background-color, color, opacity, border-color;
+      transition-duration: 150ms;
+      transition-timing-function: ease-out;
+    }
+
+    .tap-press:not(:disabled):active {
+      transform: scale(0.96);
+    }
+
+    .icon-tile {
+      background-color: var(--color-surface);
+      border: 1px solid transparent;
+      box-shadow: var(--shadow-tile);
+      transition-property: transform, background-color, box-shadow;
+      transition-duration: 180ms;
+      transition-timing-function: ease-out;
+    }
+
+    .paper-thumb {
+      background-color: var(--color-canvas);
+      border: 1px solid transparent;
+      box-shadow: var(--shadow-paper);
+      transition-property: transform, box-shadow;
+      transition-duration: 200ms;
+      transition-timing-function: ease-out;
+    }
+
+    .main-curtain-surface {
+      background-color: var(--color-canvas);
+      box-shadow: 0 0 0 1px var(--main-edge-ring), var(--shadow-main-curtain);
+    }
+
+    /* Hover effects strictly gated behind hover-capable pointers (better-ui) */
+    @media (hover: hover) {
+      .inline-link:hover,
+      .muted-link:hover {
+        color: var(--color-ink);
+        text-decoration-color: var(--color-underline-hover);
+      }
+
+      /* Rauno/Linear-style sibling dimming on list hover */
+      .focus-list:hover .focus-list-item:not(:hover) {
+        opacity: 0.45;
+      }
+
+      .focus-list-item:hover {
+        background-color: var(--color-surface);
+      }
+
+      .focus-list-item:hover .row-arrow {
+        opacity: 1;
+        transform: translate(2px, -2px);
+      }
+
+      .focus-list-item:hover .icon-tile {
+        transform: scale(1.04);
+      }
+
+      .focus-list-item:hover .paper-thumb {
+        transform: translateY(-2px) rotate(-3deg);
+      }
+
+      .hover-surface:hover {
+        background-color: var(--color-surface);
+        color: var(--color-ink);
+      }
+
+      .hover-ink:hover {
+        color: var(--color-ink);
+      }
+
+      .hover-light-pill:hover {
+        background-color: rgba(255, 255, 255, 0.16);
+        border-color: rgba(255, 255, 255, 0.28);
+      }
+
+      .contrib-pill:hover {
+        transform: scaleY(1.18);
+      }
+    }
+
+    .safe-top {
+      padding-block-start: max(3.5rem, calc(env(safe-area-inset-top) + 2.5rem));
+    }
+
+    .safe-bottom {
+      padding-block-end: max(2rem, env(safe-area-inset-bottom));
     }
   </style>
 </head>
 
 <body>
   <div id="root"></div>
+
   <script>
     Babel.registerPreset('my-react', {
       presets: [[Babel.availablePresets['react'], { runtime: 'classic' }]]
     });
   </script>
-  <script type="text/babel" data-presets="my-react,env" data-type="module">
-    const { useState, useEffect, useLayoutEffect, useRef, useMemo, useReducer, useCallback } = React;
-    const { motion, AnimatePresence } = window.Motion;
 
-    // --- EXPLICIT FINITE STATE MACHINE ENGINE & AGENT/DEV TELEMETRY REGISTRY (UX + DX + AX) ---
-    // Deterministic state transitions, synchronous snapshot consistency, bounded transition history,
-    // event capability introspection, and live pub/sub on window.__APP_MACHINES__.
+  <script type="text/babel" data-presets="my-react,env" data-type="module">
+    const {
+      useState,
+      useEffect,
+      useLayoutEffect,
+      useRef,
+      useMemo,
+      useReducer,
+      useCallback
+    } = React;
+
+    const MotionLib = window.Motion || {};
+    const motion = MotionLib.motion;
+    const AnimatePresence = MotionLib.AnimatePresence;
+    const MotionConfig = MotionLib.MotionConfig || (({ children }) => children);
+    const useFramerReducedMotion = MotionLib.useReducedMotion;
+
+    function useReducedMotionSafe() {
+      const framerPref = typeof useFramerReducedMotion === "function" ? useFramerReducedMotion() : null;
+      const [mediaPref, setMediaPref] = useState(() =>
+        typeof window !== "undefined" &&
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      );
+
+      useEffect(() => {
+        if (!window.matchMedia) return;
+        const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const onChange = (e) => setMediaPref(e.matches);
+        if (mql.addEventListener) mql.addEventListener("change", onChange);
+        return () => {
+          if (mql.removeEventListener) mql.removeEventListener("change", onChange);
+        };
+      }, []);
+
+      return Boolean(framerPref ?? mediaPref);
+    }
+
+    // --- THEME SWITCH WITH TRANSITION SUPPRESSION (better-ui exact recipe) ---
+    function applyThemeWithoutSmear(nextTheme) {
+      const style = document.createElement("style");
+      style.append(document.createTextNode("*,*::before,*::after{transition:none !important}"));
+      document.head.appendChild(style);
+
+      if (nextTheme === "dark") {
+        document.documentElement.setAttribute("data-theme", "dark");
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+      }
+
+      try {
+        localStorage.setItem("jp-theme", nextTheme);
+      } catch (e) {}
+
+      void document.body.offsetHeight; // synchronous style flush
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => style.remove());
+      });
+    }
+
+    // --- EXPLICIT FINITE STATE MACHINE ENGINE & TELEMETRY REGISTRY ---
     const MACHINE_REGISTRY = window.__APP_MACHINES__ || {};
     const GLOBAL_HISTORY = [];
     const GLOBAL_SUBSCRIBERS = new Set();
@@ -168,7 +439,6 @@
         value: () => {
           if (MACHINE_REGISTRY.machineInspector) {
             MACHINE_REGISTRY.machineInspector.send("TOGGLE");
-            return MACHINE_REGISTRY.getAllSnapshots();
           }
           return MACHINE_REGISTRY.getAllSnapshots();
         },
@@ -192,12 +462,7 @@
       if (eventObj.type === "@@RESET") {
         const initialValue = typeof config.initial === "function" ? config.initial() : config.initial;
         const initialContext = typeof config.context === "function" ? config.context() : (config.context || {});
-        return {
-          value: initialValue,
-          context: initialContext,
-          changed: true,
-          event: eventObj
-        };
+        return { value: initialValue, context: initialContext, changed: true, event: eventObj };
       }
 
       const stateNode = config.states && config.states[current.value];
@@ -223,9 +488,7 @@
         nextContext = next.context !== undefined ? next.context : current.context;
       } else if (typeof handler === "object") {
         nextValue = handler.target || current.value;
-        nextContext = handler.reduce
-          ? handler.reduce(current.context, eventObj, current.value)
-          : current.context;
+        nextContext = handler.reduce ? handler.reduce(current.context, eventObj, current.value) : current.context;
       }
 
       const changed = nextValue !== current.value || nextContext !== current.context;
@@ -264,7 +527,12 @@
         };
 
         historyRef.current = [...historyRef.current.slice(-24), record];
-        if (config.id !== "machineInspector" && result.event.type !== "SCROLL_UPDATE" && result.event.type !== "SCRUB_PROGRESS" && result.event.type !== "TICK") {
+        if (
+          config.id !== "machineInspector" &&
+          result.event.type !== "SCROLL_UPDATE" &&
+          result.event.type !== "SCRUB_PROGRESS" &&
+          result.event.type !== "TICK"
+        ) {
           GLOBAL_HISTORY.push(record);
           if (GLOBAL_HISTORY.length > 60) GLOBAL_HISTORY.shift();
         }
@@ -305,22 +573,10 @@
         };
 
         Object.defineProperties(controller, {
-          state: {
-            get: () => stateRef.current.value,
-            enumerable: true
-          },
-          context: {
-            get: () => stateRef.current.context,
-            enumerable: true
-          },
-          availableEvents: {
-            get: () => getAvailableEvents(config, stateRef.current.value),
-            enumerable: true
-          },
-          history: {
-            get: () => historyRef.current.slice(),
-            enumerable: true
-          }
+          state: { get: () => stateRef.current.value, enumerable: true },
+          context: { get: () => stateRef.current.context, enumerable: true },
+          availableEvents: { get: () => getAvailableEvents(config, stateRef.current.value), enumerable: true },
+          history: { get: () => historyRef.current.slice(), enumerable: true }
         });
 
         return controller;
@@ -343,127 +599,200 @@
       return [stateRef.current, send, actor];
     }
 
-    // --- UNIFIED SECTION & HASH NAVIGATION HELPER ---
-    function triggerSectionNavigation(e, sectionId, href) {
-      const targetHref = href || `#${sectionId}`;
-      const isContact = sectionId === "contact" || targetHref === "#contact";
-      const targetEl = isContact
-        ? document.getElementById("footer-spacer")
-        : document.querySelector(targetHref);
+    // --- ICONS (Unified 24px grid, currentColor, non-scaling stroke) ---
+    const ArrowUpRightIcon = ({ className = "w-3.5 h-3.5", strokeWidth = 1.75 }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M7 17 17 7" />
+        <path vectorEffect="non-scaling-stroke" d="M7 7h10v10" />
+      </svg>
+    );
 
-      if (!targetEl) return;
-      if (e && typeof e.preventDefault === "function") {
-        e.preventDefault();
+    const CopyIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect vectorEffect="non-scaling-stroke" width="13" height="13" x="9" y="9" rx="2" />
+        <path vectorEffect="non-scaling-stroke" d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+      </svg>
+    );
+
+    const CheckIcon = ({ className = "w-3.5 h-3.5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <polyline vectorEffect="non-scaling-stroke" points="20 6 9 17 4 12" />
+      </svg>
+    );
+
+    const SunIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <circle vectorEffect="non-scaling-stroke" cx="12" cy="12" r="4" />
+        <path vectorEffect="non-scaling-stroke" d="M12 2v2" />
+        <path vectorEffect="non-scaling-stroke" d="M12 20v2" />
+        <path vectorEffect="non-scaling-stroke" d="m4.93 4.93 1.41 1.41" />
+        <path vectorEffect="non-scaling-stroke" d="m17.66 17.66 1.41 1.41" />
+        <path vectorEffect="non-scaling-stroke" d="M2 12h2" />
+        <path vectorEffect="non-scaling-stroke" d="M20 12h2" />
+        <path vectorEffect="non-scaling-stroke" d="m6.34 17.66-1.41 1.41" />
+        <path vectorEffect="non-scaling-stroke" d="m19.07 4.93-1.41 1.41" />
+      </svg>
+    );
+
+    const MoonIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+      </svg>
+    );
+
+    const FileTextIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+        <path vectorEffect="non-scaling-stroke" d="M14 2v4a2 2 0 0 0 2 2h4" />
+        <path vectorEffect="non-scaling-stroke" d="M10 9H8" />
+        <path vectorEffect="non-scaling-stroke" d="M16 13H8" />
+        <path vectorEffect="non-scaling-stroke" d="M16 17H8" />
+      </svg>
+    );
+
+    const MailIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect vectorEffect="non-scaling-stroke" width="20" height="16" x="2" y="4" rx="2" />
+        <path vectorEffect="non-scaling-stroke" d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+      </svg>
+    );
+
+    const LinkedinIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+        <rect vectorEffect="non-scaling-stroke" width="4" height="12" x="2" y="9" />
+        <circle vectorEffect="non-scaling-stroke" cx="4" cy="4" r="2" />
+      </svg>
+    );
+
+    const TwitterIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5 5.96 15.6 7 12c-1.2.3-2.4.2-3.6-.1C2.5 10.6 4 9 4 9c-1.1-.3-2-.9-2.5-1.9 1-.3 2.1-.3 3.1-.1C2.3 5 4 2 4 2c1.6 2 4 4 7.4 4.5 0-1.1.5-2.2 1.5-2.9 1.4-1.1 3.5-.8 4.6.5 1.1-.2 2.1-.7 3-1.2-.4 1.1-1.1 2-2 2.7 1-.1 1.9-.4 2.8-.8Z" />
+      </svg>
+    );
+
+    const GithubIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+        <path vectorEffect="non-scaling-stroke" d="M9 18c-4.51 2-5-2-7-2" />
+      </svg>
+    );
+
+    // Custom Minimal Monochrome Project Marks (Charles Shin style 18px glyphs inside 38px tiles)
+    const ProjectIcon = ({ type }) => {
+      const common = {
+        className: "w-[18px] h-[18px] text-ink",
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "1.6",
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+        "aria-hidden": "true"
+      };
+      switch (type) {
+        case "cabinet":
+          return (
+            <svg {...common}>
+              <path vectorEffect="non-scaling-stroke" d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" />
+            </svg>
+          );
+        case "wideawake":
+          return (
+            <svg {...common}>
+              <circle vectorEffect="non-scaling-stroke" cx="12" cy="12" r="3.5" />
+              <path vectorEffect="non-scaling-stroke" d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z" />
+            </svg>
+          );
+        case "ostrzolka":
+          return (
+            <svg {...common}>
+              <ellipse vectorEffect="non-scaling-stroke" cx="12" cy="5" rx="8" ry="3" />
+              <path vectorEffect="non-scaling-stroke" d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
+              <path vectorEffect="non-scaling-stroke" d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" />
+            </svg>
+          );
+        case "owewho":
+          return (
+            <svg {...common}>
+              <path vectorEffect="non-scaling-stroke" d="m16 3 4 4-4 4" />
+              <path vectorEffect="non-scaling-stroke" d="M20 7H4" />
+              <path vectorEffect="non-scaling-stroke" d="m8 21-4-4 4-4" />
+              <path vectorEffect="non-scaling-stroke" d="M4 17h16" />
+            </svg>
+          );
+        case "quotes":
+          return (
+            <svg {...common}>
+              <path vectorEffect="non-scaling-stroke" d="M10 11H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6a5 5 0 0 1-5 5" />
+              <path vectorEffect="non-scaling-stroke" d="M20 11h-4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6a5 5 0 0 1-5 5" />
+            </svg>
+          );
+        default:
+          return (
+            <svg {...common}>
+              <rect vectorEffect="non-scaling-stroke" width="18" height="18" x="3" y="3" rx="2.5" />
+              <circle vectorEffect="non-scaling-stroke" cx="9" cy="9" r="1.5" />
+              <path vectorEffect="non-scaling-stroke" d="m21 15-4.5-4.5a2 2 0 0 0-2.83 0L6 18" />
+            </svg>
+          );
       }
+    };
 
-      if (MACHINE_REGISTRY.navigation) {
-        MACHINE_REGISTRY.navigation.send({ type: "NAVIGATE", section: isContact ? "writing" : sectionId });
-      }
-      if (MACHINE_REGISTRY.scrollEngine) {
-        MACHINE_REGISTRY.scrollEngine.send({ type: "PROGRAMMATIC_START", target: sectionId });
-      }
-      if (isContact && MACHINE_REGISTRY.footerCurtain) {
-        MACHINE_REGISTRY.footerCurtain.send("REVEAL");
-      }
+    // Chloé Maillot-inspired Minimal Paper Thumbnail Glyph
+    const PaperThumbnail = ({ variant = 0 }) => {
+      const patterns = [
+        [75, 55, 85, 40],
+        [60, 85, 50, 70],
+        [80, 65, 45, 75],
+        [55, 75, 80, 35],
+        [70, 50, 85, 60]
+      ];
+      const widths = patterns[variant % patterns.length];
+      return (
+        <span
+          aria-hidden="true"
+          className="paper-thumb shrink-0 w-9 h-10 rounded-[7px] p-2 flex flex-col justify-center gap-[3.5px]"
+        >
+          {widths.map((w, i) => (
+            <span
+              key={i}
+              className="block h-[2px] rounded-full"
+              style={{
+                width: `${w}%`,
+                backgroundColor: i === 0 ? "var(--color-ink-muted)" : "var(--color-hairline)",
+                opacity: i === 0 ? 0.55 : 1
+              }}
+            />
+          ))}
+        </span>
+      );
+    };
 
-      if (window.history && window.history.replaceState) {
-        window.history.replaceState(null, "", targetHref);
-      }
+    // --- CONTEXTUAL ICON CROSS-FADE (exact values: scale 0.25->1, opacity 0->1, blur 4px->0, spring 0.3 bounce 0) ---
+    const IconSwap = ({ activeKey, children }) => {
+      const reduce = useReducedMotionSafe();
+      const hidden = reduce ? { opacity: 0 } : { opacity: 0, scale: 0.25, filter: "blur(4px)" };
+      const shown = reduce ? { opacity: 1 } : { opacity: 1, scale: 1, filter: "blur(0px)" };
 
-      if (window.__LENIS__) {
-        window.__LENIS__.scrollTo(isContact ? document.body.scrollHeight : targetEl, {
-          offset: isContact ? 0 : -20,
-          onComplete: () => {
-            if (MACHINE_REGISTRY.navigation) {
-              MACHINE_REGISTRY.navigation.send("NAVIGATE_COMPLETE");
-            }
-            if (MACHINE_REGISTRY.scrollEngine) {
-              MACHINE_REGISTRY.scrollEngine.send("PROGRAMMATIC_END");
-            }
-          }
-        });
-      } else {
-        targetEl.scrollIntoView({ behavior: "smooth" });
-      }
-    }
+      return (
+        <span className="relative inline-grid place-items-center">
+          <AnimatePresence initial={false} mode="popLayout">
+            <motion.span
+              key={activeKey}
+              initial={hidden}
+              animate={shown}
+              exit={hidden}
+              transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+              className="col-start-1 row-start-1 inline-flex items-center justify-center"
+            >
+              {children}
+            </motion.span>
+          </AnimatePresence>
+        </span>
+      );
+    };
 
-    // --- ICONS ---
-    const ArrowRight = ({ className = "w-4 h-4" }) => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
-      </svg>
-    );
-    const ArrowUpRight = ({ className = "w-5 h-5" }) => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M7 17L17 7" /><path d="M7 7h10v10" />
-      </svg>
-    );
-    const DownloadIcon = ({ className = "w-4 h-4" }) => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" />
-      </svg>
-    );
-    const MenuIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" />
-      </svg>
-    );
-    const CloseIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
-      </svg>
-    );
-    const MailIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-      </svg>
-    );
-    const LinkedinIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect width="4" height="12" x="2" y="9" /><circle cx="4" cy="4" r="2" />
-      </svg>
-    );
-    const TwitterIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5 5.96 15.6 7 12c-1.2.3-2.4.2-3.6-.1C2.5 10.6 4 9 4 9c-1.1-.3-2-.9-2.5-1.9 1-.3 2.1-.3 3.1-.1C2.3 5 4 2 4 2c1.6 2 4 4 7.4 4.5 0-1.1.5-2.2 1.5-2.9 1.4-1.1 3.5-.8 4.6.5 1.1-.2 2.1-.7 3-1.2-.4 1.1-1.1 2-2 2.7 1-.1 1.9-.4 2.8-.8Z" />
-      </svg>
-    );
-    const GithubIcon = () => (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" /><path d="M9 18c-4.51 2-5-2-7-2" />
-      </svg>
-    );
-
-    // Custom Technical SVG Icons for Capabilities
-    const RagArchitectureSvg = () => (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <polygon points="12 2 2 7 12 12 22 7 12 2" />
-        <polyline points="2 17 12 22 22 17" />
-        <polyline points="2 12 12 17 22 12" />
-      </svg>
-    );
-    const InfraSvg = () => (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-        <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-        <line x1="6" y1="6" x2="6.01" y2="6" />
-        <line x1="6" y1="18" x2="6.01" y2="18" />
-      </svg>
-    );
-    const CloudOpsSvg = () => (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z" />
-      </svg>
-    );
-    const SpatialSvg = () => (
-      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-        <path d="M2 12h20" />
-      </svg>
-    );
-
-    // --- LIVE LOCAL TIME TELEMETRY MACHINE (Explicit Visibility & Deterministic Freeze State Machine) ---
     const computeBydgoszczTimeSnapshot = () => {
       try {
         const now = new Date();
@@ -478,18 +807,10 @@
           timeZone: 'Europe/Warsaw',
           timeZoneName: 'short'
         }).formatToParts(now);
-        const tzName = tzParts.find(p => p.type === 'timeZoneName')?.value || 'CET';
-        return {
-          formatted: `${timeFmt.format(now)} ${tzName}`,
-          timezone: tzName,
-          ok: true
-        };
+        const tzName = tzParts.find((p) => p.type === 'timeZoneName')?.value || 'CET';
+        return { formatted: timeFmt.format(now), timezone: tzName, ok: true };
       } catch (e) {
-        return {
-          formatted: "53°07'N 18°00'E",
-          timezone: "UTC+1",
-          ok: false
-        };
+        return { formatted: "Bydgoszcz", timezone: "CET", ok: false };
       }
     };
 
@@ -503,30 +824,13 @@
       },
       context: () => {
         const snap = computeBydgoszczTimeSnapshot();
-        return {
-          formatted: snap.formatted,
-          timezone: snap.timezone,
-          coordinates: "53°07′N 18°00′E"
-        };
+        return { formatted: snap.formatted, timezone: snap.timezone };
       },
       on: {
-        FREEZE: (ctx, event) => ({
-          target: "frozen",
-          context: {
-            ...ctx,
-            formatted: event.formatted || ctx.formatted
-          }
-        }),
+        FREEZE: (ctx, event) => ({ target: "frozen", context: { ...ctx, formatted: event.formatted || ctx.formatted } }),
         UNFREEZE: (ctx) => {
           const snap = computeBydgoszczTimeSnapshot();
-          return {
-            target: snap.ok ? "ticking" : "fallback",
-            context: {
-              ...ctx,
-              formatted: snap.formatted,
-              timezone: snap.timezone
-            }
-          };
+          return { target: snap.ok ? "ticking" : "fallback", context: { ...ctx, formatted: snap.formatted, timezone: snap.timezone } };
         }
       },
       states: {
@@ -534,14 +838,9 @@
           on: {
             TICK: (ctx) => {
               const snap = computeBydgoszczTimeSnapshot();
-              if (!snap.ok) {
-                return { target: "fallback", context: { ...ctx, formatted: snap.formatted } };
-              }
+              if (!snap.ok) return { target: "fallback", context: { ...ctx, formatted: snap.formatted } };
               if (snap.formatted === ctx.formatted) return null;
-              return {
-                target: "ticking",
-                context: { ...ctx, formatted: snap.formatted, timezone: snap.timezone }
-              };
+              return { target: "ticking", context: { ...ctx, formatted: snap.formatted, timezone: snap.timezone } };
             },
             VISIBILITY_HIDDEN: "suspended"
           }
@@ -550,10 +849,7 @@
           on: {
             VISIBILITY_VISIBLE: (ctx) => {
               const snap = computeBydgoszczTimeSnapshot();
-              return {
-                target: snap.ok ? "ticking" : "fallback",
-                context: { ...ctx, formatted: snap.formatted, timezone: snap.timezone }
-              };
+              return { target: snap.ok ? "ticking" : "fallback", context: { ...ctx, formatted: snap.formatted, timezone: snap.timezone } };
             }
           }
         },
@@ -567,9 +863,7 @@
 
       useEffect(() => {
         if (clockState.value !== "ticking") return;
-        const id = setInterval(() => {
-          send("TICK");
-        }, 1000);
+        const id = setInterval(() => send("TICK"), 1000);
         return () => clearInterval(id);
       }, [clockState.value, send]);
 
@@ -584,940 +878,166 @@
       return clockState;
     };
 
-    // --- SECTION HEADER COMPONENT ---
-    const SectionHeader = ({ index, label, title, italicTitle, subtitle, rightElement }) => (
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-12 mb-14 border-b border-dark/10">
-        <div>
-          <div className="flex items-center gap-3 mb-4">
-            <span className="font-mono text-xs font-semibold text-electric bg-electric/8 px-2.5 py-1 rounded-md border border-electric/15">
-              {index}
-            </span>
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-dark/50 font-medium">
-              {label}
-            </span>
-          </div>
-          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl text-dark leading-[1.08] tracking-[-0.02em]">
-            {title} {italicTitle && <em className="text-electric italic font-normal">{italicTitle}</em>}
-          </h2>
-        </div>
-        {rightElement ? (
-          <div className="shrink-0">{rightElement}</div>
-        ) : subtitle ? (
-          <p className="text-base md:text-lg text-dark/60 max-w-md leading-relaxed font-normal">
-            {subtitle}
-          </p>
-        ) : null}
-      </div>
-    );
+    const IdentityAndBio = ({ theme, onToggleTheme, enterItem }) => {
+      const clockState = useBydgoszczTime();
+      const [copied, setCopied] = useState(false);
 
-    // --- FLOATING NAVIGATION BAR (Explicit Drawer + Elevation + Programmatic/Spy State Machine) ---
-    const NAV_LINKS = [
-      { id: "about", name: "About", href: "#about" },
-      { id: "projects", name: "Projects", href: "#projects" },
-      { id: "writing", name: "Writing", href: "#writing" },
-    ];
-
-    const NAV_MACHINE_CONFIG = {
-      id: "navigation",
-      initial: "closed",
-      context: () => ({
-        elevation: typeof window !== "undefined" && window.scrollY > 30 ? "elevated" : "top",
-        activeSection: "hero",
-        detectedRegion: "hero",
-        scrollMode: "spy",
-        targetSection: null
-      }),
-      on: {
-        SCROLL_UPDATE: (ctx, event) => {
-          const nextElevation = event.scrollY > 30 ? "elevated" : "top";
-          const nextRegion = event.detectedRegion || event.activeSection || ctx.detectedRegion;
-          let nextSection = event.activeSection || ctx.activeSection;
-          let nextScrollMode = ctx.scrollMode;
-          let nextTarget = ctx.targetSection;
-
-          if (ctx.scrollMode === "programmatic" && ctx.targetSection) {
-            if (event.activeSection === ctx.targetSection) {
-              nextScrollMode = "spy";
-              nextTarget = null;
-              nextSection = ctx.targetSection;
-            } else {
-              nextSection = ctx.targetSection;
-            }
-          }
-
-          if (
-            ctx.elevation === nextElevation &&
-            ctx.activeSection === nextSection &&
-            ctx.detectedRegion === nextRegion &&
-            ctx.scrollMode === nextScrollMode
-          ) {
-            return null;
-          }
-
-          return {
-            context: {
-              ...ctx,
-              elevation: nextElevation,
-              activeSection: nextSection,
-              detectedRegion: nextRegion,
-              scrollMode: nextScrollMode,
-              targetSection: nextTarget
-            }
-          };
-        },
-        NAVIGATE: (ctx, event) => {
-          const targetSec = event.section || ctx.activeSection;
-          return {
-            target: "closed",
-            context: {
-              ...ctx,
-              activeSection: targetSec,
-              targetSection: targetSec,
-              scrollMode: "programmatic"
-            }
-          };
-        },
-        NAVIGATE_COMPLETE: (ctx) => {
-          if (ctx.scrollMode === "spy" && !ctx.targetSection) return null;
-          return {
-            context: {
-              ...ctx,
-              scrollMode: "spy",
-              targetSection: null
-            }
-          };
+      const handleCopyEmail = () => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText("pacochp@gmail.com").catch(() => {});
         }
-      },
-      states: {
-        closed: {
-          on: {
-            TOGGLE_MENU: "open",
-            OPEN_MENU: "open"
-          }
-        },
-        open: {
-          on: {
-            TOGGLE_MENU: "closed",
-            CLOSE_MENU: "closed",
-            ESCAPE: "closed",
-            VIEWPORT_DESKTOP: "closed"
-          }
-        }
-      }
-    };
-
-    const Nav = () => {
-      const [navState, send] = useMachine(NAV_MACHINE_CONFIG);
-      const isOpen = navState.value === "open";
-      const { elevation, activeSection, detectedRegion, scrollMode } = navState.context;
-      const scrolled = elevation === "elevated";
-
-      useEffect(() => {
-        if (MACHINE_REGISTRY.scrollEngine) {
-          MACHINE_REGISTRY.scrollEngine.send(
-            isOpen ? { type: "LOCK", reason: "mobile-nav" } : { type: "UNLOCK" }
-          );
-        }
-      }, [isOpen]);
-
-      useEffect(() => {
-        let programmaticTimer = null;
-
-        const computeScrollState = () => {
-          const navSections = ["writing", "projects", "about", "hero"];
-          const allRegions = ["writing", "projects", "github", "skills", "about", "hero"];
-          const scrollPos = window.scrollY + 240;
-
-          let detectedSec = "hero";
-          for (const secId of navSections) {
-            const el = document.getElementById(secId);
-            if (el && scrollPos >= el.offsetTop) {
-              detectedSec = secId;
-              break;
-            }
-          }
-
-          let region = detectedSec;
-          for (const regId of allRegions) {
-            const el = document.getElementById(regId);
-            if (el && scrollPos >= el.offsetTop) {
-              region = regId;
-              break;
-            }
-          }
-
-          const footerSpacer = document.getElementById("footer-spacer");
-          if (footerSpacer && window.scrollY + window.innerHeight >= footerSpacer.offsetTop + 180) {
-            region = "contact";
-          }
-
-          send({
-            type: "SCROLL_UPDATE",
-            scrollY: window.scrollY,
-            activeSection: detectedSec,
-            detectedRegion: region
-          });
-        };
-
-        const cancelProgrammaticOnUserInput = () => {
-          if (MACHINE_REGISTRY.navigation && MACHINE_REGISTRY.navigation.context.scrollMode === "programmatic") {
-            clearTimeout(programmaticTimer);
-            programmaticTimer = setTimeout(() => {
-              send("NAVIGATE_COMPLETE");
-            }, 150);
-          }
-        };
-
-        computeScrollState();
-
-        if (window.location.hash && window.location.hash.length > 1) {
-          const initialHashId = window.location.hash.slice(1);
-          if (["about", "projects", "writing", "contact"].includes(initialHashId)) {
-            setTimeout(() => {
-              triggerSectionNavigation(null, initialHashId, `#${initialHashId}`);
-            }, 120);
-          }
-        }
-
-        window.addEventListener("scroll", computeScrollState, { passive: true });
-        window.addEventListener("wheel", cancelProgrammaticOnUserInput, { passive: true });
-        window.addEventListener("touchmove", cancelProgrammaticOnUserInput, { passive: true });
-        return () => {
-          clearTimeout(programmaticTimer);
-          window.removeEventListener("scroll", computeScrollState);
-          window.removeEventListener("wheel", cancelProgrammaticOnUserInput);
-          window.removeEventListener("touchmove", cancelProgrammaticOnUserInput);
-        };
-      }, [send]);
-
-      useEffect(() => {
-        if (!isOpen) return;
-        const onKeyDown = (e) => {
-          if (e.key === "Escape") send("ESCAPE");
-        };
-        const onResize = () => {
-          if (window.innerWidth >= 768) send("VIEWPORT_DESKTOP");
-        };
-        window.addEventListener("keydown", onKeyDown);
-        window.addEventListener("resize", onResize);
-        return () => {
-          window.removeEventListener("keydown", onKeyDown);
-          window.removeEventListener("resize", onResize);
-        };
-      }, [isOpen, send]);
-
-      const handleAnchorClick = (e, sectionId, href) => {
-        triggerSectionNavigation(e, sectionId, href);
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 1800);
       };
 
       return (
-        <>
-          <header
-            data-machine="navigation"
-            data-state={navState.value}
-            data-elevation={elevation}
-            data-active-section={activeSection}
-            data-detected-region={detectedRegion}
-            data-scroll-mode={scrollMode}
-            className="fixed top-5 left-0 right-0 z-[100] px-4 sm:px-8 pointer-events-none flex justify-center"
+        <section id="hero" aria-labelledby="identity-name">
+          {/* Quiet Identity Header Row */}
+          <motion.header
+            variants={enterItem}
+            className="flex items-start justify-between gap-4 mb-10 sm:mb-12"
           >
-            <nav
-              aria-label="Primary Navigation"
-              className={`pointer-events-auto transition-all duration-500 rounded-full flex items-center justify-between px-3 py-2 border ${
-                scrolled
-                  ? "bg-white/85 backdrop-blur-xl border-dark/10 shadow-[0_12px_40px_rgba(17,24,39,0.08)]"
-                  : "bg-white/70 backdrop-blur-md border-dark/8 shadow-[0_4px_20px_rgba(17,24,39,0.03)]"
-              } w-full max-w-[780px]`}
-            >
-              <a
-                href="#hero"
-                onClick={(e) => handleAnchorClick(e, "hero", "#hero")}
-                className="flex items-center gap-2.5 pl-3 pr-4 py-1 rounded-full hover:bg-offwhite transition-colors group"
+            <div className="min-w-0">
+              <h1
+                id="identity-name"
+                className="text-[1.05rem] font-medium text-ink tracking-[-0.015em] leading-[1.35]"
               >
-                <span className="h-2.5 w-2.5 rounded-full bg-electric shrink-0"></span>
-                <span className="font-bold tracking-tight text-dark text-sm">Jakub Pacocha</span>
-              </a>
-
-              <div className="hidden md:flex items-center gap-1 bg-offwhite/80 p-1 rounded-full border border-dark/5">
-                {NAV_LINKS.map((l) => {
-                  const isActive = activeSection === l.id;
-                  return (
-                    <a
-                      key={l.id}
-                      href={l.href}
-                      onClick={(e) => handleAnchorClick(e, l.id, l.href)}
-                      aria-current={isActive ? "location" : undefined}
-                      data-active={isActive}
-                      className={`relative px-4 py-1.5 text-xs font-medium rounded-full transition-colors duration-200 ${
-                        isActive ? "text-white" : "text-dark/65 hover:text-dark"
-                      }`}
-                    >
-                      {isActive && (
-                        <motion.span
-                          layoutId="navIndicator"
-                          transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                          className="absolute inset-0 bg-electric rounded-full -z-10 shadow-[0_2px_10px_rgba(0,85,255,0.3)]"
-                        />
-                      )}
-                      {l.name}
-                    </a>
-                  );
-                })}
-              </div>
-
-              <div className="hidden md:flex items-center gap-2 pr-1">
-                <a
-                  href="cv.html"
-                  className="px-4 py-1.5 rounded-full text-xs font-semibold text-dark/80 hover:text-electric hover:bg-electric/5 border border-dark/10 hover:border-electric/30 transition-all flex items-center gap-1.5"
-                >
-                  <span>Full CV</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
-
-              <button
-                onClick={() => send("TOGGLE_MENU")}
-                aria-label="Toggle Menu"
-                aria-expanded={isOpen}
-                aria-controls="mobile-nav-drawer"
-                className="md:hidden p-2 rounded-full bg-offwhite border border-dark/10 text-dark hover:border-electric hover:text-electric transition-colors"
-              >
-                {isOpen ? <CloseIcon /> : <MenuIcon />}
-              </button>
-            </nav>
-          </header>
-
-          <AnimatePresence>
-            {isOpen && (
-              <>
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  onClick={() => send("CLOSE_MENU")}
-                  className="fixed inset-0 z-[90] bg-dark/10 backdrop-blur-[2px] md:hidden"
-                  aria-hidden="true"
-                />
-                <motion.div
-                  id="mobile-nav-drawer"
-                  role="dialog"
-                  aria-modal="true"
-                  aria-label="Mobile Navigation Menu"
-                  initial={{ opacity: 0, y: -12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.25 }}
-                  className="fixed inset-x-4 top-20 z-[95] bg-white/95 backdrop-blur-2xl rounded-3xl border border-dark/10 shadow-2xl p-6 flex flex-col gap-3 md:hidden"
-                >
-                  {NAV_LINKS.map((l, i) => (
-                    <motion.a
-                      key={l.name}
-                      href={l.href}
-                      onClick={(e) => handleAnchorClick(e, l.id, l.href)}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: i * 0.05 }}
-                      className={`px-4 py-3 rounded-2xl text-lg font-medium transition-colors flex items-center justify-between ${
-                        activeSection === l.id
-                          ? "bg-electric text-white"
-                          : "text-dark hover:bg-electric hover:text-white"
-                      }`}
-                    >
-                      <span>{l.name}</span>
-                      <ArrowRight className="w-4 h-4 opacity-60" />
-                    </motion.a>
-                  ))}
-                  <div className="h-[1px] bg-dark/10 my-1" />
-                  <div className="flex gap-3">
-                    <a
-                      href="cv.html"
-                      className="flex-1 py-3 px-4 rounded-2xl bg-electric text-white font-semibold text-sm flex items-center justify-center gap-2"
-                    >
-                      <span>Open Full CV</span>
-                      <ArrowUpRight className="w-4 h-4" />
-                    </a>
-                    <a
-                      href="assets/resume.pdf"
-                      download
-                      className="py-3 px-4 rounded-2xl bg-offwhite border border-dark/10 text-dark font-semibold text-sm flex items-center justify-center gap-2"
-                    >
-                      <DownloadIcon className="w-4 h-4" />
-                      <span>PDF</span>
-                    </a>
-                  </div>
-                </motion.div>
-              </>
-            )}
-          </AnimatePresence>
-        </>
-      );
-    };
-
-    // --- ROTATING WORDS IN HERO (Explicit Ticker + Dual-Source Pause + Timer Reset State Machine) ---
-    const HERO_ROTATOR_ITEMS = [
-      { text: "HERE Technologies", tag: "Spatial & AI Engineering" },
-      { text: "the digital world", tag: "Full-Stack ML Systems" },
-      { text: "local NGOs", tag: "Civic Tech & Urban Impact" },
-      { text: "mind & soul", tag: "Philosophy & Essays" }
-    ];
-
-    const HERO_ROTATOR_MACHINE = {
-      id: "heroRotator",
-      initial: () =>
-        typeof window !== "undefined" &&
-        window.matchMedia &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches
-          ? "reducedMotion"
-          : "running",
-      context: () => ({
-        index: 0,
-        total: HERO_ROTATOR_ITEMS.length,
-        interactionPaused: false,
-        visibilityPaused: false,
-        cycleKey: 0
-      }),
-      on: {
-        NEXT: (ctx, _event, currentState) => ({
-          target: currentState,
-          context: {
-            ...ctx,
-            index: (ctx.index + 1) % ctx.total,
-            cycleKey: ctx.cycleKey + 1
-          }
-        }),
-        PREV: (ctx, _event, currentState) => ({
-          target: currentState,
-          context: {
-            ...ctx,
-            index: (ctx.index - 1 + ctx.total) % ctx.total,
-            cycleKey: ctx.cycleKey + 1
-          }
-        }),
-        SELECT_INDEX: (ctx, event, currentState) => ({
-          target: currentState,
-          context: {
-            ...ctx,
-            index: Math.abs(Number(event.index) || 0) % ctx.total,
-            cycleKey: ctx.cycleKey + 1
-          }
-        })
-      },
-      states: {
-        running: {
-          on: {
-            TICK: (ctx) => ({
-              target: "running",
-              context: { ...ctx, index: (ctx.index + 1) % ctx.total }
-            }),
-            PAUSE: (ctx) => ({
-              target: "paused",
-              context: { ...ctx, interactionPaused: true }
-            }),
-            VISIBILITY_HIDDEN: (ctx) => ({
-              target: "paused",
-              context: { ...ctx, visibilityPaused: true }
-            }),
-            REDUCED_MOTION: "reducedMotion"
-          }
-        },
-        paused: {
-          on: {
-            PAUSE: (ctx) => ({
-              target: "paused",
-              context: { ...ctx, interactionPaused: true }
-            }),
-            VISIBILITY_HIDDEN: (ctx) => ({
-              target: "paused",
-              context: { ...ctx, visibilityPaused: true }
-            }),
-            RESUME: (ctx) => {
-              const nextCtx = { ...ctx, interactionPaused: false };
-              return {
-                target: nextCtx.visibilityPaused ? "paused" : "running",
-                context: nextCtx
-              };
-            },
-            VISIBILITY_VISIBLE: (ctx) => {
-              const nextCtx = { ...ctx, visibilityPaused: false };
-              return {
-                target: nextCtx.interactionPaused ? "paused" : "running",
-                context: nextCtx
-              };
-            },
-            REDUCED_MOTION: "reducedMotion"
-          }
-        },
-        reducedMotion: {
-          on: {
-            MOTION_ALLOWED: (ctx) => ({
-              target: ctx.interactionPaused || ctx.visibilityPaused ? "paused" : "running",
-              context: ctx
-            })
-          }
-        }
-      }
-    };
-
-    const RotatingWords = () => {
-      const [rotator, send] = useMachine(HERO_ROTATOR_MACHINE);
-      const { index, cycleKey } = rotator.context;
-      const currentItem = HERO_ROTATOR_ITEMS[index];
-
-      useEffect(() => {
-        if (rotator.value !== "running") return;
-        const interval = setInterval(() => {
-          send("TICK");
-        }, 2800);
-        return () => clearInterval(interval);
-      }, [rotator.value, cycleKey, send]);
-
-      useEffect(() => {
-        const onVisChange = () => {
-          send(document.visibilityState === "visible" ? "VISIBILITY_VISIBLE" : "VISIBILITY_HIDDEN");
-        };
-        document.addEventListener("visibilitychange", onVisChange);
-
-        const mql = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
-        const onMotionChange = (e) => {
-          send(e.matches ? "REDUCED_MOTION" : "MOTION_ALLOWED");
-        };
-        if (mql && mql.addEventListener) {
-          mql.addEventListener("change", onMotionChange);
-        }
-
-        return () => {
-          document.removeEventListener("visibilitychange", onVisChange);
-          if (mql && mql.removeEventListener) {
-            mql.removeEventListener("change", onMotionChange);
-          }
-        };
-      }, [send]);
-
-      return (
-        <span
-          data-machine="heroRotator"
-          data-state={rotator.value}
-          data-index={index}
-          data-tag={currentItem.tag}
-          onMouseEnter={() => send("PAUSE")}
-          onMouseLeave={() => send("RESUME")}
-          onFocus={() => send("PAUSE")}
-          onBlur={() => send("RESUME")}
-          onClick={() => send("NEXT")}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " " || e.key === "ArrowRight") {
-              e.preventDefault();
-              send("NEXT");
-            } else if (e.key === "ArrowLeft") {
-              e.preventDefault();
-              send("PREV");
-            }
-          }}
-          role="button"
-          tabIndex={0}
-          aria-live="polite"
-          aria-label={`${currentItem.text} — ${currentItem.tag}. Click or use arrow keys to cycle.`}
-          title={`${currentItem.tag} (Click or use arrow keys to cycle)`}
-          className="inline-flex flex-wrap items-baseline gap-x-4 align-baseline cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-electric/40 rounded-lg"
-        >
-          <span className="relative inline-grid overflow-hidden align-bottom py-2 -my-2" style={{ clipPath: 'inset(0 0 -0.45em 0)' }}>
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={index}
-                initial={{ y: "90%", opacity: 0, filter: "blur(4px)" }}
-                animate={{ y: "0%", opacity: 1, filter: "blur(0px)" }}
-                exit={{ y: "-90%", opacity: 0, filter: "blur(4px)" }}
-                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                className="col-start-1 row-start-1 text-electric italic font-serif font-normal pr-2 pb-1"
-              >
-                {currentItem.text}
-              </motion.span>
-            </AnimatePresence>
-          </span>
-        </span>
-      );
-    };
-
-    // --- HERO SECTION ---
-    const Hero = () => {
-      const clockState = useBydgoszczTime();
-      const localTime = clockState.context.formatted;
-
-      const stats = [
-        { id: "01", value: "6+", label: "Years in Data & Software", detail: "Production systems & pipelines" },
-        { id: "02", value: "4+", label: "Years Building AI / ML", detail: "RAG, LLMOps & Computer Vision" },
-        { id: "03", value: "8.5k+", label: "Words Published", detail: "Phenomenology, theology & society" },
-        { id: "04", value: "🇵🇱 PL", label: "Bydgoszcz, Poland", detail: "Civic tech & NGO contributor" }
-      ];
-
-      return (
-        <section
-          id="hero"
-          className="relative min-h-screen flex flex-col justify-between pt-28 pb-16 px-6 md:px-12 lg:px-20 bg-Swiss-grid border-b border-dark/10 overflow-hidden"
-        >
-          {/* Subtle Ambient Radial Highlight */}
-          <div
-            className="pointer-events-none absolute -top-40 right-0 w-[650px] h-[650px] rounded-full opacity-40 blur-3xl"
-            style={{ background: "radial-gradient(circle, rgba(0,85,255,0.12) 0%, rgba(255,255,255,0) 70%)" }}
-          />
-
-          <div className="max-w-[1360px] w-full mx-auto relative z-10 flex-1 flex flex-col justify-between">
-            {/* Top Telemetry Bar */}
-            <motion.div
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="flex flex-wrap items-center justify-between gap-4 py-4 border-b border-dark/10 text-xs font-mono text-dark/55"
-            >
-              <div className="flex items-center gap-3">
-                <span className="px-2.5 py-0.5 rounded-full bg-electric/10 text-electric font-semibold uppercase tracking-wider">
-                  AI Engineer
-                </span>
-                <span className="hidden sm:inline text-dark/25">/</span>
-                <span className="hidden sm:inline">RAG Architectures • Scalable ML • Spatial Systems</span>
-              </div>
-              <div
+                Jakub Pacocha
+              </h1>
+              <p className="text-[0.9375rem] text-ink-muted leading-[1.4]">
+                AI &amp; Software Engineer
+              </p>
+              <p
                 data-machine="telemetryClock"
                 data-state={clockState.value}
                 data-timezone={clockState.context.timezone}
-                className="flex items-center gap-4"
+                className="mt-2 font-mono text-xs text-ink-muted tabular-nums"
               >
-                <span className="hidden md:inline text-dark/40">{clockState.context.coordinates}</span>
-                <span className="px-2.5 py-0.5 rounded-md bg-offwhite border border-dark/10 text-dark/70">
-                  {localTime}
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Main Editorial Headline */}
-            <div className="my-auto py-14 md:py-20">
-              <motion.h1
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
-                className="font-serif text-[2.85rem] sm:text-[4.25rem] md:text-[5.25rem] lg:text-[6.2rem] leading-[1.04] tracking-[-0.03em] text-dark max-w-5xl"
-              >
-                I build systems for <br className="hidden sm:inline" />
-                <RotatingWords /> <br />
-                &amp; write about them.
-              </motion.h1>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.75, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-                className="mt-10 md:mt-14 flex flex-col lg:flex-row lg:items-end justify-between gap-8"
-              >
-                <p className="font-sans text-lg md:text-xl text-dark/65 max-w-2xl leading-relaxed font-normal">
-                  Full-stack AI engineer specializing in production <strong className="text-dark font-medium">RAG architectures</strong>,{" "}
-                  <strong className="text-dark font-medium">containerized ML infrastructure</strong>, and{" "}
-                  <strong className="text-dark font-medium">spatial intelligence</strong>. Outside the terminal, I write philosophical essays on phenomenology, theology, and society.
-                </p>
-
-                <div className="flex flex-wrap items-center gap-3.5 shrink-0">
-                  <a
-                    href="#projects"
-                    onClick={(e) => triggerSectionNavigation(e, "projects", "#projects")}
-                    className="group px-6 py-3.5 rounded-full bg-electric text-white font-medium text-sm flex items-center gap-2.5 shadow-[0_8px_25px_rgba(0,85,255,0.28)] hover:shadow-[0_12px_32px_rgba(0,85,255,0.4)] hover:-translate-y-0.5 transition-all duration-300"
-                  >
-                    <span>Explore Side Projects</span>
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </a>
-                  <a
-                    href="#writing"
-                    onClick={(e) => triggerSectionNavigation(e, "writing", "#writing")}
-                    className="px-6 py-3.5 rounded-full bg-white hover:bg-offwhite text-dark border border-dark/15 hover:border-dark/30 font-medium text-sm transition-all duration-300"
-                  >
-                    Read my Blog
-                  </a>
-                  <a
-                    href="assets/resume.pdf"
-                    download
-                    className="px-5 py-3.5 rounded-full bg-offwhite hover:bg-electric/10 text-dark/75 hover:text-electric border border-dark/10 hover:border-electric/25 font-mono text-xs font-medium flex items-center gap-2 transition-all duration-300"
-                  >
-                    <DownloadIcon className="w-3.5 h-3.5" />
-                    <span>CV.pdf</span>
-                  </a>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Bottom Architectural Metrics Grid */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.25 }}
-              className="grid grid-cols-2 lg:grid-cols-4 bg-white/90 backdrop-blur-md border border-dark/10 rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(17,24,39,0.03)]"
-            >
-              {stats.map((s, idx) => (
-                <div
-                  key={s.id}
-                  className={`p-5 md:p-6 flex flex-col justify-between transition-colors hover:bg-offwhite/80 ${
-                    idx !== stats.length - 1 ? "border-b lg:border-b-0 border-r border-dark/10" : ""
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="font-mono text-[11px] text-dark/35">{s.id}</span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-electric/60"></span>
-                  </div>
-                  <div>
-                    <div className="font-serif text-3xl md:text-4xl text-dark tracking-tight mb-1">{s.value}</div>
-                    <div className="text-xs font-semibold text-dark/80 uppercase tracking-wider">{s.label}</div>
-                    <div className="text-xs text-dark/45 mt-0.5">{s.detail}</div>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-      );
-    };
-
-    // --- ABOUT & EXPERTISE SECTION (Explicit Capability & Stack Inspector State Machine) ---
-    const CAPABILITIES_MACHINE = {
-      id: "capabilitiesInspector",
-      initial: "idle",
-      context: () => ({
-        activeCardId: null,
-        selectedTag: null
-      }),
-      on: {
-        TOGGLE_TAG: (ctx, event) => {
-          const nextTag = ctx.selectedTag === event.tag ? null : event.tag;
-          return {
-            target: nextTag ? "filteredByTag" : (ctx.activeCardId ? "inspecting" : "idle"),
-            context: { ...ctx, selectedTag: nextTag }
-          };
-        },
-        CLEAR_TAG: (ctx) => ({
-          target: ctx.activeCardId ? "inspecting" : "idle",
-          context: { ...ctx, selectedTag: null }
-        })
-      },
-      states: {
-        idle: {
-          on: {
-            INSPECT_CARD: (ctx, event) => ({
-              target: "inspecting",
-              context: { ...ctx, activeCardId: event.id }
-            })
-          }
-        },
-        inspecting: {
-          on: {
-            INSPECT_CARD: (ctx, event) => ({
-              target: "inspecting",
-              context: { ...ctx, activeCardId: event.id }
-            }),
-            LEAVE_CARD: (ctx) => ({
-              target: ctx.selectedTag ? "filteredByTag" : "idle",
-              context: { ...ctx, activeCardId: null }
-            })
-          }
-        },
-        filteredByTag: {
-          on: {
-            INSPECT_CARD: (ctx, event) => ({
-              target: "filteredByTag",
-              context: { ...ctx, activeCardId: event.id }
-            }),
-            LEAVE_CARD: (ctx) => ({
-              target: "filteredByTag",
-              context: { ...ctx, activeCardId: null }
-            })
-          }
-        }
-      }
-    };
-
-    const AboutAndCapabilities = () => {
-      const [capState, sendCap] = useMachine(CAPABILITIES_MACHINE);
-      const { activeCardId, selectedTag } = capState.context;
-
-      const skillsData = [
-        {
-          id: "01",
-          icon: <RagArchitectureSvg />,
-          title: "Generative AI & RAG",
-          desc: "Retrieval-augmented generation, embeddings, vector indexing, and LLM orchestration to build grounded AI applications.",
-          tags: ["Python", "Vector Stores", "LLMOps", "RAG"]
-        },
-        {
-          id: "02",
-          icon: <InfraSvg />,
-          title: "Full-Stack AI Infra",
-          desc: "Productizing models and pipelines via containerized microservices, streaming REST endpoints, and backend architectures.",
-          tags: ["Docker", "FastAPI", "Flask", "React", "K8s"]
-        },
-        {
-          id: "03",
-          icon: <CloudOpsSvg />,
-          title: "Cloud & DevOps",
-          desc: "Deploying and managing production systems, automated CI/CD workflows, and infrastructure monitoring on cloud providers.",
-          tags: ["AWS", "Azure", "GitHub Actions", "CI/CD"]
-        },
-        {
-          id: "04",
-          icon: <SpatialSvg />,
-          title: "Spatial & Civic Data",
-          desc: "Spatial data analysis, GIS tool development, and computer vision models applied to geomorphology and civic datasets.",
-          tags: ["GIS", "Computer Vision", "Spatial SQL", "Python"]
-        }
-      ];
-
-      return (
-        <section
-          id="about"
-          data-machine="capabilitiesInspector"
-          data-state={capState.value}
-          data-active-card={activeCardId || undefined}
-          data-selected-tag={selectedTag || undefined}
-          className="px-6 md:px-12 lg:px-20 py-24 bg-white border-b border-dark/10"
-        >
-          <div className="max-w-[1360px] mx-auto">
-            {/* Top Section Intro */}
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-12 mb-14 border-b border-dark/10">
-              <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="font-mono text-xs font-semibold text-electric bg-electric/10 px-2.5 py-1 rounded-md border border-electric/15">
-                    01
-                  </span>
-                  <span className="font-mono text-xs uppercase tracking-[0.2em] text-dark/50 font-medium">
-                    Profile &amp; Focus
-                  </span>
-                </div>
-                <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl text-dark leading-[1.08] tracking-[-0.02em]">
-                  Engineering systems &amp; <em className="text-electric italic font-normal">capabilities</em>.
-                </h2>
-              </div>
-              <p className="text-base md:text-lg text-dark/60 max-w-md leading-relaxed font-normal">
-                Hands-on AI and software engineering, building production-grade architectures and practical data solutions.
+                Bydgoszcz / {clockState.context.formatted} {clockState.context.timezone}
               </p>
             </div>
 
-            {/* Main Content Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              {/* Left Column: Straightforward summary */}
-              <div className="lg:col-span-5 space-y-6">
-                <div className="p-8 rounded-3xl bg-offwhite border border-dark/10 space-y-6">
-                  <div>
-                    <span className="font-mono text-xs font-semibold text-electric uppercase tracking-wider block mb-2">
-                      Background
-                    </span>
-                    <h3 className="font-serif text-2xl text-dark font-medium leading-snug">
-                      6+ years across data science, AI engineering, and spatial systems.
-                    </h3>
-                  </div>
+            {/* Compact Right Utility Bar (CV + Theme Toggle) */}
+            <div className="flex items-center gap-1 shrink-0 -me-1.5">
+              <a
+                href="cv.html"
+                className="tap-press hover-surface px-2.5 min-h-[38px] rounded-lg inline-flex items-center gap-1 text-xs font-mono font-medium text-ink-muted"
+              >
+                <span>CV</span>
+                <ArrowUpRightIcon className="w-3 h-3" />
+              </a>
 
-                  <p className="text-sm md:text-base text-dark/70 leading-relaxed font-normal">
-                    I currently work as an AI / Software Engineer at <strong>HERE Technologies</strong>. Previously at <strong>iQor</strong> and <strong>O-I Poland</strong>, I have built and maintained end-to-end ML and RAG services - from vector search pipelines to containerized APIs deployed on AWS and Azure.
-                  </p>
+              <a
+                href="assets/resume.pdf"
+                download
+                aria-label="Download CV as PDF"
+                title="Download CV (PDF)"
+                className="tap-press hover-surface w-[38px] h-[38px] rounded-lg inline-flex items-center justify-center text-ink-muted"
+              >
+                <FileTextIcon className="w-4 h-4" />
+              </a>
 
-                  <p className="text-sm md:text-base text-dark/70 leading-relaxed font-normal">
-                    With an academic foundation in Geoinformatics and computer vision, I have also build software utilities and civic archives with local NGOs in Bydgoszcz, and published essays on independent topics at <em>From the Cabinet</em>.
-                  </p>
+              <span aria-hidden="true" className="w-px h-4 bg-hairline mx-0.5" />
 
-                  <div className="pt-4 border-t border-dark/10 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
-                    <span className="text-dark/45 uppercase tracking-wider">Current Stack</span>
-                    <span className="text-dark font-semibold">Python • RAG / LLMOps • AWS</span>
-                  </div>
-                </div>
-
-                <div className="p-6 rounded-3xl border border-dark/10 flex items-center justify-between bg-white">
-                  <div>
-                    <div className="text-sm font-semibold text-dark">Need complete job history?</div>
-                    <div className="text-xs text-dark/50 font-mono mt-0.5">Timeline, companies, education</div>
-                  </div>
-                  <a
-                    href="cv.html"
-                    className="px-4 py-2 rounded-full bg-electric text-white text-xs font-semibold hover:bg-electric/90 transition-colors flex items-center gap-1.5 shrink-0"
-                  >
-                    <span>View CV</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </div>
-
-              {/* Right Column: 4 Capability Cards in a Clean 2x2 Grid */}
-              <div id="skills" className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
-                {skillsData.map((item) => {
-                  const matchesSelectedTag = !selectedTag || item.tags.includes(selectedTag);
-                  const isHighlighted = activeCardId === item.id || (selectedTag && matchesSelectedTag);
-                  return (
-                    <div
-                      key={item.id}
-                      tabIndex={0}
-                      data-card-id={item.id}
-                      data-highlighted={isHighlighted ? "true" : "false"}
-                      onMouseEnter={() => sendCap({ type: "INSPECT_CARD", id: item.id })}
-                      onMouseLeave={() => sendCap("LEAVE_CARD")}
-                      onFocus={() => sendCap({ type: "INSPECT_CARD", id: item.id })}
-                      onBlur={() => sendCap("LEAVE_CARD")}
-                      className={`group rounded-3xl bg-white hover:bg-offwhite/50 p-7 border transition-all duration-200 flex flex-col justify-between focus:outline-none focus-visible:ring-2 focus-visible:ring-electric/40 ${
-                        selectedTag && matchesSelectedTag
-                          ? "border-electric shadow-[0_12px_30px_rgba(0,85,255,0.07)]"
-                          : selectedTag && !matchesSelectedTag
-                          ? "border-dark/8 opacity-55"
-                          : "border-dark/10 hover:border-electric/30"
-                      }`}
-                    >
-                      <div>
-                        <div className="flex items-center justify-between mb-5">
-                          <div className={`w-11 h-11 rounded-2xl border flex items-center justify-center transition-colors duration-200 ${
-                            selectedTag && matchesSelectedTag
-                              ? "bg-electric text-white border-electric"
-                              : "bg-offwhite group-hover:bg-electric group-hover:text-white text-electric border-dark/10 group-hover:border-electric"
-                          }`}>
-                            {item.icon}
-                          </div>
-                          <span className="font-mono text-xs font-semibold text-dark/30">
-                            /{item.id}
-                          </span>
-                        </div>
-
-                        <h4 className="font-serif text-xl font-semibold text-dark mb-2 group-hover:text-electric transition-colors">
-                          {item.title}
-                        </h4>
-                        <p className="text-xs md:text-sm text-dark/65 leading-relaxed mb-6">
-                          {item.desc}
-                        </p>
-                      </div>
-
-                      <div className="flex flex-wrap gap-1.5 pt-4 border-t border-dark/8">
-                        {item.tags.map((tag) => {
-                          const isTagActive = selectedTag === tag;
-                          return (
-                            <button
-                              key={tag}
-                              type="button"
-                              aria-pressed={isTagActive}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                sendCap({ type: "TOGGLE_TAG", tag });
-                              }}
-                              className={`px-2.5 py-0.5 rounded-md border font-mono text-[11px] transition-colors ${
-                                isTagActive
-                                  ? "bg-electric text-white border-electric"
-                                  : "bg-offwhite hover:bg-electric/10 border-dark/8 text-dark/70 hover:text-electric"
-                              }`}
-                            >
-                              {tag}
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <button
+                type="button"
+                onClick={onToggleTheme}
+                aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                aria-pressed={theme === "dark"}
+                className="tap-press hover-surface w-[38px] h-[38px] rounded-lg inline-flex items-center justify-center text-ink-muted"
+              >
+                <IconSwap activeKey={theme}>
+                  {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+                </IconSwap>
+              </button>
             </div>
-          </div>
+          </motion.header>
+
+          {/* Direct, Human, Minimal Bio Prose */}
+          <motion.div
+            variants={enterItem}
+            className="space-y-4 text-[0.96875rem] sm:text-base text-ink-secondary leading-[1.68] text-pretty"
+          >
+            <p>
+              Currently an AI &amp; Software Engineer at{" "}
+              <strong className="text-ink font-medium">HERE Technologies</strong>. Previously at{" "}
+              <strong className="text-ink font-medium">iQor</strong> and{" "}
+              <strong className="text-ink font-medium">O-I</strong>.
+            </p>
+
+            <p>
+              Building production{" "}
+              <strong className="text-ink font-medium">RAG architectures</strong>,{" "}
+              <strong className="text-ink font-medium">containerized ML infrastructure</strong>, and{" "}
+              <strong className="text-ink font-medium">spatial intelligence</strong> systems - from vector search pipelines to cloud services on AWS and Azure.
+            </p>
+
+            <p>
+              Outside the terminal, I collaborate with local NGOs in Bydgoszcz and write philosophical essays on phenomenology, theology and society at{" "}
+              <a
+                href="https://fromthecabinet.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-link"
+              >
+                From the Cabinet
+              </a>
+              .
+            </p>
+
+            <p className="pt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1">
+              <span>Reach me at</span>
+              <a href="mailto:pacochp@gmail.com" className="inline-link">
+                pacochp@gmail.com
+              </a>
+              <button
+                type="button"
+                onClick={handleCopyEmail}
+                aria-label={copied ? "Email copied" : "Copy email address"}
+                title={copied ? "Copied" : "Copy email"}
+                className="tap-press hover-surface relative inline-flex items-center justify-center w-7 h-7 -my-1 rounded-md text-ink-muted after:content-[''] after:absolute after:-inset-2"
+              >
+                <IconSwap activeKey={copied ? "check" : "copy"}>
+                  {copied ? <CheckIcon className="w-3.5 h-3.5 text-ink" /> : <CopyIcon />}
+                </IconSwap>
+              </button>
+              <span>or on</span>
+              <a
+                href="https://www.linkedin.com/in/jakubpacocha/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-link"
+              >
+                LinkedIn
+              </a>
+              <span>,</span>
+              <a
+                href="https://x.com/JakubPacocha"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-link"
+              >
+                X
+              </a>
+              <span>, and</span>
+              <a
+                href="https://github.com/JPacoch"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-link"
+              >
+                GitHub
+              </a>
+              <span>.</span>
+              <span className="sr-only" role="status" aria-live="polite">
+                {copied ? "Email address pacochp@gmail.com copied." : ""}
+              </span>
+            </p>
+          </motion.div>
         </section>
       );
     };
 
-    // --- GITHUB TELEMETRY MODULE (Explicit Fetch + Inspect + Pin State Machine) ---
     const GITHUB_TELEMETRY_MACHINE = {
       id: "githubTelemetry",
       initial: "loading",
@@ -1530,99 +1050,56 @@
       states: {
         loading: {
           on: {
-            FETCH_SUCCESS: (ctx, event) => ({
-              target: "ready",
-              context: { ...ctx, data: event.data, error: null }
-            }),
-            FETCH_ERROR: (ctx, event) => ({
-              target: "error",
-              context: { ...ctx, error: event.error || "Failed to load activity" }
-            })
+            FETCH_SUCCESS: (ctx, event) => ({ target: "ready", context: { ...ctx, data: event.data, error: null } }),
+            FETCH_ERROR: (ctx, event) => ({ target: "error", context: { ...ctx, error: event.error || "Failed" } })
           }
         },
         ready: {
           on: {
-            INSPECT_DAY: (ctx, event) => ({
-              target: "inspecting",
-              context: { ...ctx, hoveredDay: event.day }
-            }),
-            TOGGLE_PIN_DAY: (ctx, event) => ({
-              target: "pinned",
-              context: { ...ctx, pinnedDay: event.day, hoveredDay: event.day }
-            })
+            INSPECT_DAY: (ctx, event) => ({ target: "inspecting", context: { ...ctx, hoveredDay: event.day } }),
+            TOGGLE_PIN_DAY: (ctx, event) => ({ target: "pinned", context: { ...ctx, pinnedDay: event.day, hoveredDay: event.day } })
           }
         },
         inspecting: {
           on: {
-            INSPECT_DAY: (ctx, event) => ({
-              target: "inspecting",
-              context: { ...ctx, hoveredDay: event.day }
-            }),
-            CLEAR_INSPECT: (ctx) => ({
-              target: "ready",
-              context: { ...ctx, hoveredDay: null }
-            }),
-            TOGGLE_PIN_DAY: (ctx, event) => ({
-              target: "pinned",
-              context: { ...ctx, pinnedDay: event.day, hoveredDay: event.day }
-            }),
-            ESCAPE: (ctx) => ({
-              target: "ready",
-              context: { ...ctx, hoveredDay: null }
-            })
+            INSPECT_DAY: (ctx, event) => ({ target: "inspecting", context: { ...ctx, hoveredDay: event.day } }),
+            CLEAR_INSPECT: (ctx) => ({ target: "ready", context: { ...ctx, hoveredDay: null } }),
+            TOGGLE_PIN_DAY: (ctx, event) => ({ target: "pinned", context: { ...ctx, pinnedDay: event.day, hoveredDay: event.day } }),
+            ESCAPE: (ctx) => ({ target: "ready", context: { ...ctx, hoveredDay: null } })
           }
         },
         pinned: {
           on: {
-            INSPECT_DAY: (ctx, event) => ({
-              target: "pinned",
-              context: { ...ctx, hoveredDay: event.day }
-            }),
-            CLEAR_INSPECT: (ctx) => ({
-              target: "pinned",
-              context: { ...ctx, hoveredDay: null }
-            }),
+            INSPECT_DAY: (ctx, event) => ({ target: "pinned", context: { ...ctx, hoveredDay: event.day } }),
+            CLEAR_INSPECT: (ctx) => ({ target: "pinned", context: { ...ctx, hoveredDay: null } }),
             TOGGLE_PIN_DAY: (ctx, event) => {
               if (ctx.pinnedDay && event.day && ctx.pinnedDay.date === event.day.date) {
-                return {
-                  target: "ready",
-                  context: { ...ctx, pinnedDay: null, hoveredDay: null }
-                };
+                return { target: "ready", context: { ...ctx, pinnedDay: null, hoveredDay: null } };
               }
-              return {
-                target: "pinned",
-                context: { ...ctx, pinnedDay: event.day, hoveredDay: event.day }
-              };
+              return { target: "pinned", context: { ...ctx, pinnedDay: event.day, hoveredDay: event.day } };
             },
-            UNPIN_DAY: (ctx) => ({
-              target: "ready",
-              context: { ...ctx, pinnedDay: null, hoveredDay: null }
-            }),
-            ESCAPE: (ctx) => ({
-              target: "ready",
-              context: { ...ctx, pinnedDay: null, hoveredDay: null }
-            })
+            UNPIN_DAY: (ctx) => ({ target: "ready", context: { ...ctx, pinnedDay: null, hoveredDay: null } }),
+            ESCAPE: (ctx) => ({ target: "ready", context: { ...ctx, pinnedDay: null, hoveredDay: null } })
           }
         },
         error: {
           on: {
-            RETRY: (ctx) => ({
-              target: "loading",
-              context: { ...ctx, error: null }
-            })
+            RETRY: (ctx) => ({ target: "loading", context: { ...ctx, error: null } })
           }
         }
       }
     };
 
-    const GithubActivity = () => {
+    const ActivityStrip = ({ enterItem }) => {
       const [telemetry, send] = useMachine(GITHUB_TELEMETRY_MACHINE);
+      const reduce = useReducedMotionSafe();
       const { data, hoveredDay, pinnedDay } = telemetry.context;
       const activeDay = hoveredDay || pinnedDay;
       const isLoading = telemetry.value === "loading";
       const isError = telemetry.value === "error";
       const isPinned = telemetry.value === "pinned";
-      const gridRef = useRef(null);
+      const barRefs = useRef([]);
+      const [rovingIdx, setRovingIdx] = useState(29);
 
       useEffect(() => {
         if (telemetry.value !== "loading") return;
@@ -1633,46 +1110,35 @@
         }, 8000);
 
         fetch('https://github-contributions-api.jogruber.de/v4/JPacoch?y=last', controller ? { signal: controller.signal } : undefined)
-          .then(res => {
+          .then((res) => {
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             return res.json();
           })
-          .then(json => {
+          .then((json) => {
             if (cancelled) return;
             const rawList = Array.isArray(json.contributions) ? json.contributions : [];
-            if (!rawList.length) throw new Error("Empty contribution dataset");
+            if (!rawList.length) throw new Error("Empty dataset");
 
             const today = new Date().toISOString().split('T')[0];
             const sorted = rawList.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
-            const filtered = sorted.filter(c => c.date <= today);
+            const filtered = sorted.filter((c) => c.date <= today);
             const sourceDays = filtered.length > 0 ? filtered : sorted;
-            const lastYear = sourceDays.slice(-364);
-
-            const firstDay = new Date(lastYear[0].date);
-            const firstDayOfWeek = firstDay.getDay();
-            const offset = (firstDayOfWeek + 6) % 7;
-
-            const contributions = [
-              ...Array(offset).fill(null),
-              ...lastYear
-            ];
+            const last30 = sourceDays.slice(-30);
+            const last30Total = last30.reduce((sum, d) => sum + (Number(d.count) || 0), 0);
+            const yearTotal =
+              (json.total && (json.total.lastYear || json.total[new Date().getFullYear()])) ||
+              sourceDays.reduce((sum, d) => sum + (Number(d.count) || 0), 0);
 
             send({
               type: "FETCH_SUCCESS",
-              data: {
-                total: (json.total && (json.total.lastYear || json.total[new Date().getFullYear()])) || 'Many',
-                contributions
-              }
+              data: { last30, last30Total, yearTotal }
             });
           })
-          .catch(err => {
+          .catch((err) => {
             if (cancelled) return;
-            console.error('Error fetching github data:', err);
             send({ type: "FETCH_ERROR", error: err.message });
           })
-          .finally(() => {
-            clearTimeout(timeoutId);
-          });
+          .finally(() => clearTimeout(timeoutId));
 
         return () => {
           cancelled = true;
@@ -1681,339 +1147,266 @@
         };
       }, [telemetry.value, send]);
 
-      const weeks = useMemo(() => {
-        if (!data) {
-          return Array.from({ length: 52 }, () => Array.from({ length: 7 }, () => null));
-        }
-        const result = [];
-        for (let i = 0; i < data.contributions.length; i += 7) {
-          result.push(data.contributions.slice(i, i + 7));
-        }
-        return result;
+      const bars = useMemo(() => {
+        if (data && data.last30) return data.last30;
+        return Array.from({ length: 30 }, (_, i) => ({ date: `placeholder-${i}`, count: 0, level: 0, placeholder: true }));
       }, [data]);
 
-      const levelColors = [
-        '#F3F4F6',
-        '#D1E0FF',
-        '#80AAFF',
-        '#3377FF',
-        '#0055FF'
-      ];
-
-      const getCalculatedLevel = (count) => {
-        if (count === 0) return 0;
-        if (count <= 3) return 1;
-        if (count <= 6) return 2;
-        if (count <= 9) return 3;
-        return 4;
+      const getLevelVar = (day) => {
+        if (day.placeholder) return "var(--contrib-0)";
+        let lvl = day.level || 0;
+        if (lvl === 0 && day.count > 0) {
+          lvl = day.count <= 2 ? 1 : day.count <= 5 ? 2 : day.count <= 8 ? 3 : 4;
+        }
+        return `var(--contrib-${Math.min(4, Math.max(0, lvl))})`;
       };
 
-      const handleCellKeyDown = (e, day) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          send({ type: "TOGGLE_PIN_DAY", day });
-          return;
+      const formatShortDate = (iso) => {
+        try {
+          return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(new Date(iso + "T00:00:00"));
+        } catch (e) {
+          return iso;
         }
-        if (e.key === "Escape") {
+      };
+
+      const handleKeyDown = (e, idx, day) => {
+        if (e.key === "ArrowRight") {
+          e.preventDefault();
+          const next = Math.min(bars.length - 1, idx + 1);
+          setRovingIdx(next);
+          if (barRefs.current[next]) barRefs.current[next].focus();
+        } else if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          const prev = Math.max(0, idx - 1);
+          setRovingIdx(prev);
+          if (barRefs.current[prev]) barRefs.current[prev].focus();
+        } else if (e.key === "Escape") {
           e.preventDefault();
           send("ESCAPE");
-          return;
+        } else if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          send({ type: "TOGGLE_PIN_DAY", day });
         }
-        if (!["ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp"].includes(e.key) || !gridRef.current) return;
-        e.preventDefault();
-        const cells = Array.from(gridRef.current.querySelectorAll('[data-day-date]'));
-        const currentIdx = cells.findIndex((el) => el.getAttribute("data-day-date") === day.date);
-        if (currentIdx === -1) return;
-        const delta = e.key === "ArrowRight" ? 7 : e.key === "ArrowLeft" ? -7 : e.key === "ArrowDown" ? 1 : -1;
-        const nextCell = cells[currentIdx + delta];
-        if (nextCell) nextCell.focus();
       };
 
       return (
-        <section
+        <motion.section
           id="github"
+          variants={enterItem}
           data-machine="githubTelemetry"
           data-state={telemetry.value}
-          data-total-commits={data ? data.total : undefined}
+          data-total-commits={data ? data.yearTotal : undefined}
           data-inspected-date={activeDay ? activeDay.date : undefined}
           data-pinned-date={pinnedDay ? pinnedDay.date : undefined}
-          className="px-6 md:px-12 lg:px-20 py-16 bg-offwhite border-b border-dark/10"
+          aria-label="GitHub contribution activity"
         >
-          <div className="max-w-[1360px] mx-auto">
-            <div className="bg-white rounded-3xl border border-dark/10 p-6 sm:p-8 md:p-10 shadow-[0_4px_20px_rgba(17,24,39,0.02)]">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 mb-6 border-b border-dark/10">
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-electric/10 text-electric flex items-center justify-center">
-                    <GithubIcon />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2.5">
-                      <h3 className="font-serif text-2xl text-dark font-semibold">Code <em className="text-electric italic font-normal">Pulse</em></h3>
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-electric/10 text-electric font-mono text-[11px] font-semibold">
-                        <span className="w-1.5 h-1.5 rounded-full bg-electric animate-pulse"></span>
-                        {isLoading ? "Syncing..." : isError ? "Offline" : `${data.total} commits (12m)`}
-                      </span>
-                    </div>
-                    <p className="text-xs font-mono text-dark/50 mt-0.5" aria-live="polite">
-                      {activeDay
-                        ? `${activeDay.count} contribution${activeDay.count === 1 ? '' : 's'} on ${activeDay.date}${isPinned && pinnedDay && pinnedDay.date === activeDay.date ? ' (Pinned)' : ''}`
-                        : isError
-                        ? "Telemetry temporarily unavailable — view directly on GitHub"
-                        : "Rolling 52-week open-source & engineering activity"}
-                    </p>
-                  </div>
-                </div>
+          <div
+            role="group"
+            aria-label="Last 30 days of GitHub contributions"
+            className="grid grid-cols-[repeat(30,minmax(0,1fr))] gap-[3px] sm:gap-[5px] items-end h-7 mb-4"
+          >
+            {bars.map((day, idx) => {
+              const isDayPinned = Boolean(pinnedDay && pinnedDay.date === day.date);
+              if (day.placeholder) {
+                return (
+                  <span
+                    key={day.date}
+                    aria-hidden="true"
+                    className={`block w-full h-6 rounded-full ${isLoading ? "motion-safe:animate-pulse" : "opacity-50"}`}
+                    style={{ backgroundColor: "var(--contrib-0)" }}
+                  />
+                );
+              }
+              return (
+                <motion.button
+                  key={day.date}
+                  ref={(el) => { barRefs.current[idx] = el; }}
+                  type="button"
+                  tabIndex={rovingIdx === idx ? 0 : -1}
+                  aria-pressed={isDayPinned}
+                  aria-label={`${day.count} ${day.count === 1 ? "contribution" : "contributions"} on ${formatShortDate(day.date)}`}
+                  initial={reduce ? { opacity: 1 } : { scaleY: 0.25, opacity: 0 }}
+                  animate={{ scaleY: 1, opacity: 1 }}
+                  transition={{ duration: 0.26, delay: reduce ? 0 : idx * 0.012, ease: "easeOut" }}
+                  onMouseEnter={() => send({ type: "INSPECT_DAY", day })}
+                  onMouseLeave={() => send("CLEAR_INSPECT")}
+                  onFocus={() => {
+                    setRovingIdx(idx);
+                    send({ type: "INSPECT_DAY", day });
+                  }}
+                  onBlur={() => send("CLEAR_INSPECT")}
+                  onClick={() => {
+                    setRovingIdx(idx);
+                    send({ type: "TOGGLE_PIN_DAY", day });
+                  }}
+                  onKeyDown={(e) => handleKeyDown(e, idx, day)}
+                  className={`contrib-pill origin-bottom w-full h-6 p-0 border-0 rounded-full cursor-pointer transition-transform duration-150 ease-out ${
+                    isDayPinned ? "ring-2 ring-ink ring-offset-1 ring-offset-canvas scale-y-[1.15]" : ""
+                  }`}
+                  style={{ backgroundColor: getLevelVar(day) }}
+                  title={`${day.count} ${day.count === 1 ? "contribution" : "contributions"} on ${formatShortDate(day.date)}`}
+                />
+              );
+            })}
+          </div>
 
-                <div className="flex items-center gap-2 self-start md:self-auto">
-                  {isPinned && (
-                    <button
-                      type="button"
-                      onClick={() => send("UNPIN_DAY")}
-                      className="px-3 py-1.5 rounded-full bg-electric/10 hover:bg-electric text-electric hover:text-white text-xs font-mono font-medium transition-colors"
-                    >
-                      Clear Pin
-                    </button>
-                  )}
-                  {isError && (
-                    <button
-                      type="button"
-                      onClick={() => send("RETRY")}
-                      className="px-3.5 py-2 rounded-full bg-electric/10 hover:bg-electric text-electric hover:text-white text-xs font-mono font-medium transition-colors"
-                    >
-                      Retry
-                    </button>
-                  )}
-                  <a
-                    href="https://github.com/JPacoch"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2 rounded-full bg-offwhite hover:bg-electric hover:text-white border border-dark/10 hover:border-electric text-xs font-mono font-medium text-dark transition-all flex items-center gap-2"
+          {/* Two clean hairline metric rows (Charles Shin layout) */}
+          <div className="divide-y divide-hairline border-t border-hairline text-sm">
+            <div className="py-2.5 flex items-center justify-between gap-4">
+              <span className="text-ink-muted" role="status" aria-live="polite">
+                {activeDay
+                  ? `${formatShortDate(activeDay.date)}${isPinned && pinnedDay && pinnedDay.date === activeDay.date ? " (pinned)" : ""}`
+                  : "Last 30 days"}
+              </span>
+              <div className="flex items-center gap-2.5">
+                {isPinned && (
+                  <button
+                    type="button"
+                    onClick={() => send("UNPIN_DAY")}
+                    className="text-xs font-mono text-ink-muted hover-ink underline"
                   >
-                    <span>github.com/JPacoch</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
-                </div>
-              </div>
-
-              <div className="overflow-x-auto pb-2 custom-scrollbar-minimal">
-                <div
-                  ref={gridRef}
-                  role="grid"
-                  aria-label="52-week GitHub contribution matrix"
-                  className="flex gap-[3.5px] min-w-max"
-                >
-                  {weeks.map((week, i) => (
-                    <div key={i} role="row" className="flex flex-col gap-[3.5px]">
-                      {week.map((day, j) => {
-                        if (isLoading || isError) {
-                          return (
-                            <div
-                              key={`skeleton-${i}-${j}`}
-                              role="gridcell"
-                              aria-disabled="true"
-                              className={`w-3.5 h-3.5 rounded-[3px] bg-offwhite ${isLoading ? "animate-pulse" : "opacity-50"}`}
-                            />
-                          );
-                        }
-
-                        if (!day) return <div key={`empty-${i}-${j}`} role="gridcell" aria-hidden="true" className="w-3.5 h-3.5" />;
-
-                        const activeLevel = (day.level === 0 && day.count > 0)
-                          ? getCalculatedLevel(day.count)
-                          : day.level;
-                        const isDayPinned = Boolean(pinnedDay && pinnedDay.date === day.date);
-
-                        return (
-                          <div
-                            key={day.date}
-                            data-day-date={day.date}
-                            tabIndex={0}
-                            role="gridcell"
-                            aria-selected={isDayPinned}
-                            aria-label={`${day.count} contributions on ${day.date}`}
-                            onMouseEnter={() => send({ type: "INSPECT_DAY", day })}
-                            onMouseLeave={() => send("CLEAR_INSPECT")}
-                            onFocus={() => send({ type: "INSPECT_DAY", day })}
-                            onBlur={() => send("CLEAR_INSPECT")}
-                            onClick={() => send({ type: "TOGGLE_PIN_DAY", day })}
-                            onKeyDown={(e) => handleCellKeyDown(e, day)}
-                            className={`w-3.5 h-3.5 rounded-[3px] transition-transform duration-150 hover:scale-125 focus:scale-125 focus:outline-none focus:ring-1 focus:ring-electric cursor-pointer ${
-                              isDayPinned ? "ring-2 ring-dark scale-125 z-10" : ""
-                            }`}
-                            style={{ backgroundColor: levelColors[activeLevel] }}
-                            title={`${day.count} contributions on ${day.date}`}
-                          />
-                        );
-                      })}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-4 pt-4 border-t border-dark/5 flex flex-wrap items-center justify-between gap-4 text-[11px] font-mono text-dark/45">
-                <span>Hover, focus, or click any cell to inspect daily commit telemetry</span>
-                <div className="flex items-center gap-2">
-                  <span>Less</span>
-                  <div className="flex gap-1">
-                    {levelColors.map(c => (
-                      <div key={c} className="w-2.5 h-2.5 rounded-[2px]" style={{ backgroundColor: c }} />
-                    ))}
-                  </div>
-                  <span>More</span>
-                </div>
+                    Clear
+                  </button>
+                )}
+                {isError ? (
+                  <button
+                    type="button"
+                    onClick={() => send("RETRY")}
+                    className="text-xs font-mono text-ink underline"
+                  >
+                    Retry
+                  </button>
+                ) : (
+                  <span className="font-mono text-xs sm:text-[0.8125rem] text-ink-secondary tabular-nums">
+                    {isLoading
+                      ? "Syncing…"
+                      : activeDay
+                      ? `${activeDay.count} ${activeDay.count === 1 ? "contribution" : "contributions"}`
+                      : `${data.last30Total} contributions`}
+                  </span>
+                )}
               </div>
             </div>
+
+            <div className="py-2.5 flex items-center justify-between gap-4">
+              <span className="text-ink-muted">Last 12 months</span>
+              <a
+                href="https://github.com/JPacoch"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-xs sm:text-[0.8125rem] text-ink-secondary hover-ink tabular-nums inline-flex items-center gap-1 transition-colors duration-150 ease-out"
+              >
+                <span>{isLoading ? "—" : isError ? "github.com/JPacoch" : `${data.yearTotal} contributions`}</span>
+                <ArrowUpRightIcon className="w-3 h-3 text-ink-muted" />
+              </a>
+            </div>
           </div>
-        </section>
+        </motion.section>
       );
     };
 
-    // --- SELECTED PROJECTS SECTION (Explicit Category Filter + Layout Sync + Keyboard Tablist State Machine) ---
+    // --- PROJECTS SECTION (Charles Shin + Ashish Kashyap minimal icon rows & subtle inline filter) ---
     const PROJECTS_DATA = [
       {
         id: "01",
+        icon: "cabinet",
         title: "From the Cabinet",
-        subtitle: "Philosophical & Theological Publication",
-        desc: "An independent digital publication and essay archive exploring phenomenology, epistemology, existentialism, and systematic theology.",
+        desc: "Philosophical & theological essay archive",
+        type: "Publication",
         url: "https://fromthecabinet.com/",
-        domain: "fromthecabinet.com",
-        category: "Thought & Publishing",
-        tags: ["Editorial", "Philosophy", "Web Platform"],
-        featured: true,
-        metric: "8.5k+ Words Published"
+        category: "Publishing"
       },
       {
         id: "02",
+        icon: "wideawake",
         title: "WideAwake",
-        subtitle: "Windows System & Kernel Utility",
-        desc: "Lightweight native Windows desktop utility that prevents system sleep and maintains active presence using low-level kernel ping intervals.",
+        desc: "Zero-dependency Windows keep-awake utility",
+        type: "C# / .NET",
         url: "https://wideawake.jakubpacocha.com/",
-        domain: "wideawake.jakubpacocha.com",
-        category: "Engineering",
-        tags: ["C#", ".NET", "Windows API", "System Utility"],
-        featured: true,
-        metric: "Zero-dependency native binary"
+        category: "Engineering"
       },
       {
         id: "03",
+        icon: "ostrzolka",
         title: "Ostrzółka",
-        subtitle: "Historical Archive & NGO Database",
-        desc: "Civic heritage database built in collaboration with local NGOs to preserve, index, and make searchable historical records of Bydgoszcz.",
+        desc: "Municipal heritage database for NGOs",
+        type: "Civic data",
         url: "https://ostrzolka.vercel.app/",
-        domain: "ostrzolka.vercel.app",
-        category: "Civic & Data",
-        tags: ["Database", "Civic Tech", "NGO", "Bydgoszcz"],
-        featured: false,
-        metric: "Municipal Heritage Archive"
+        category: "Civic"
       },
       {
         id: "04",
+        icon: "owewho",
         title: "OweWho",
-        subtitle: "Group Expense & Settlement Engine",
-        desc: "Streamlined financial web application designed for travelers and groups to track multi-person expenses and compute minimal settlement transfers.",
+        desc: "Group expense & travel debt settlement",
+        type: "Web app",
         url: "https://owewho.jakubpacocha.com/",
-        domain: "owewho.jakubpacocha.com",
-        category: "Engineering",
-        tags: ["Web App", "Algorithms", "FinTech Utility"],
-        featured: false,
-        metric: "Real-time debt graph simplification"
+        category: "Engineering"
       },
       {
         id: "05",
+        icon: "quotes",
         title: "Cabinet Quotes",
-        subtitle: "Contemplative Commonplace Book",
-        desc: "A distraction-free dark-mode reader curating philosophical aphorisms, theological excerpts, and literary passages for daily reflection.",
+        desc: "Distraction-free literary commonplace book",
+        type: "Reader",
         url: "https://quotes.fromthecabinet.com/",
-        domain: "quotes.fromthecabinet.com",
-        category: "Thought & Publishing",
-        tags: ["React", "Digital Garden", "Minimal UI"],
-        featured: false,
-        metric: "Curated literary archive"
+        category: "Publishing"
       },
       {
         id: "06",
+        icon: "gallery",
         title: "Gallery",
-        subtitle: "Minimalist Visual Exhibition",
-        desc: "A curated digital photography space presenting architectural geometry, quiet landscapes, and observational street frames.",
+        desc: "Gallery of private photographs ",
+        type: "Photography",
         url: "https://gallery.jakubpacocha.com/",
-        domain: "gallery.jakubpacocha.com",
-        category: "Civic & Data",
-        tags: ["Photography", "Visual Arts", "Exhibition"],
-        featured: false,
-        metric: "High-resolution visual archive"
+        category: "Civic"
       }
     ];
 
-    const PROJECT_CATEGORIES = ["All", "Engineering", "Thought & Publishing", "Civic & Data"];
+    const PROJECT_CATEGORIES = ["All", "Engineering", "Publishing", "Civic"];
 
     const PROJECT_FILTER_MACHINE = {
       id: "projectFilter",
       initial: "idle",
-      context: () => ({
-        category: "All",
-        hoveredProjectId: null
-      }),
+      context: () => ({ category: "All", hoveredProjectId: null }),
       on: {
         SELECT_CATEGORY: (ctx, event) => {
           const nextCat = PROJECT_CATEGORIES.includes(event.category) ? event.category : "All";
           if (nextCat === ctx.category) return null;
-          return {
-            target: "transitioning",
-            context: { ...ctx, category: nextCat }
-          };
+          return { target: "transitioning", context: { ...ctx, category: nextCat } };
         },
         RESET_FILTER: (ctx) => {
           if (ctx.category === "All") return null;
-          return {
-            target: "transitioning",
-            context: { ...ctx, category: "All" }
-          };
+          return { target: "transitioning", context: { ...ctx, category: "All" } };
         },
-        INSPECT_PROJECT: (ctx, event) => ({
-          context: { ...ctx, hoveredProjectId: event.id || null }
-        }),
-        LEAVE_PROJECT: (ctx) => ({
-          context: { ...ctx, hoveredProjectId: null }
-        })
+        INSPECT_PROJECT: (ctx, event) => ({ context: { ...ctx, hoveredProjectId: event.id || null } }),
+        LEAVE_PROJECT: (ctx) => ({ context: { ...ctx, hoveredProjectId: null } })
       },
       states: {
         idle: {},
-        transitioning: {
-          on: {
-            TRANSITION_COMPLETE: "idle"
-          }
-        }
+        transitioning: { on: { TRANSITION_COMPLETE: "idle" } }
       }
     };
 
-    const Projects = () => {
+    const Projects = ({ enterItem }) => {
       const [filterState, send] = useMachine(PROJECT_FILTER_MACHINE);
+      const reduce = useReducedMotionSafe();
       const { category: activeCategory, hoveredProjectId } = filterState.context;
       const tabRefs = useRef([]);
 
       const filteredProjects = useMemo(() => {
         if (activeCategory === "All") return PROJECTS_DATA;
-        return PROJECTS_DATA.filter(p => p.category === activeCategory);
+        return PROJECTS_DATA.filter((p) => p.category === activeCategory);
       }, [activeCategory]);
-
-      const categoryCounts = useMemo(() => {
-        const counts = { All: PROJECTS_DATA.length };
-        for (const cat of PROJECT_CATEGORIES.slice(1)) {
-          counts[cat] = PROJECTS_DATA.filter(p => p.category === cat).length;
-        }
-        return counts;
-      }, []);
 
       const completeTransition = useCallback(() => {
         send("TRANSITION_COMPLETE");
-        if (window.ScrollTrigger) {
-          window.ScrollTrigger.refresh();
-        }
+        if (window.ScrollTrigger) window.ScrollTrigger.refresh();
       }, [send]);
 
       useEffect(() => {
         if (filterState.value !== "transitioning") return;
-        const timer = setTimeout(completeTransition, 280);
+        const timer = setTimeout(completeTransition, 240);
         return () => clearTimeout(timer);
       }, [filterState.value, activeCategory, completeTransition]);
 
@@ -2025,190 +1418,158 @@
         else if (e.key === "End") nextIdx = PROJECT_CATEGORIES.length - 1;
         if (nextIdx === null) return;
         e.preventDefault();
-        const nextCat = PROJECT_CATEGORIES[nextIdx];
-        send({ type: "SELECT_CATEGORY", category: nextCat });
+        send({ type: "SELECT_CATEGORY", category: PROJECT_CATEGORIES[nextIdx] });
         if (tabRefs.current[nextIdx]) tabRefs.current[nextIdx].focus();
       };
 
       return (
-        <section
+        <motion.section
           id="projects"
+          variants={enterItem}
           data-machine="projectFilter"
           data-state={filterState.value}
           data-category={activeCategory}
           data-visible-count={filteredProjects.length}
           data-hovered-project={hoveredProjectId || undefined}
-          className="px-6 md:px-12 lg:px-20 py-28 bg-white border-b border-dark/10"
+          aria-labelledby="projects-heading"
         >
-          <div className="max-w-[1360px] mx-auto">
-            <SectionHeader
-              index="02"
-              label="Side Projects"
-              title="Engineered tools &"
-              italicTitle="digital artifacts."
-              rightElement={
-                <div
-                  role="tablist"
-                  aria-label="Filter projects by category"
-                  className="flex flex-wrap gap-1.5 bg-offwhite p-1.5 rounded-2xl border border-dark/10"
-                >
-                  {PROJECT_CATEGORIES.map((cat, idx) => {
-                    const isSelected = activeCategory === cat;
-                    return (
-                      <button
-                        key={cat}
-                        ref={(el) => { tabRefs.current[idx] = el; }}
-                        type="button"
-                        role="tab"
-                        aria-selected={isSelected}
-                        aria-controls="projects-tabpanel"
-                        tabIndex={isSelected ? 0 : -1}
-                        data-category={cat}
-                        onClick={() => send({ type: "SELECT_CATEGORY", category: cat })}
-                        onKeyDown={(e) => handleTabKeyDown(e, idx)}
-                        className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all flex items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-electric/50 ${
-                          isSelected
-                            ? "bg-electric text-white shadow-sm"
-                            : "text-dark/60 hover:text-dark"
-                        }`}
-                      >
-                        <span>{cat}</span>
-                        <span className={`font-mono text-[10px] ${isSelected ? "text-white/80" : "text-dark/35"}`}>
-                          {categoryCounts[cat]}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              }
-            />
-
-            <motion.div
-              id="projects-tabpanel"
-              role="tabpanel"
-              aria-label={`${activeCategory} projects`}
-              layout
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          {/* Minimal Section Header + Inline Underline Filter */}
+          <div className="flex flex-wrap items-baseline justify-between gap-3 pb-3 mb-3 border-b border-hairline">
+            <h2
+              id="projects-heading"
+              className="text-sm font-medium text-ink tracking-[-0.01em]"
             >
-              <AnimatePresence mode="popLayout" onExitComplete={completeTransition}>
-                {filteredProjects.map((proj) => (
-                  <motion.a
-                    layout
-                    key={proj.id}
-                    href={proj.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onMouseEnter={() => send({ type: "INSPECT_PROJECT", id: proj.id })}
-                    onMouseLeave={() => send("LEAVE_PROJECT")}
-                    onFocus={() => send({ type: "INSPECT_PROJECT", id: proj.id })}
-                    onBlur={() => send("LEAVE_PROJECT")}
-                    initial={{ opacity: 0, scale: 0.96 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.96 }}
-                    transition={{ duration: 0.25 }}
-                    className={`group relative rounded-3xl p-7 md:p-8 bg-offwhite/60 hover:bg-white border border-dark/10 hover:border-electric transition-all duration-300 flex flex-col justify-between hover:shadow-[0_20px_50px_rgba(0,85,255,0.08)] ${
-                      proj.featured && activeCategory === "All" ? "md:col-span-1 lg:col-span-1" : ""
+              Projects
+            </h2>
+
+            <div
+              role="tablist"
+              aria-label="Filter projects by category"
+              className="flex flex-wrap items-center gap-3.5"
+            >
+              {PROJECT_CATEGORIES.map((cat, idx) => {
+                const isSelected = activeCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    ref={(el) => { tabRefs.current[idx] = el; }}
+                    type="button"
+                    role="tab"
+                    aria-selected={isSelected}
+                    aria-controls="projects-tabpanel"
+                    tabIndex={isSelected ? 0 : -1}
+                    onClick={() => send({ type: "SELECT_CATEGORY", category: cat })}
+                    onKeyDown={(e) => handleTabKeyDown(e, idx)}
+                    className={`relative py-1 text-xs font-medium transition-colors duration-150 ease-out ${
+                      isSelected ? "text-ink" : "text-ink-muted hover-ink"
                     }`}
                   >
-                    {/* Top Metadata Bar */}
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-6">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs font-semibold text-electric bg-electric/10 px-2.5 py-1 rounded-md">
-                            {proj.id}
-                          </span>
-                          <span className="font-mono text-[11px] text-dark/45 truncate max-w-[180px]">
-                            {proj.domain}
-                          </span>
-                        </div>
-                        <div className="w-9 h-9 rounded-full bg-white border border-dark/10 group-hover:bg-electric group-hover:border-electric group-hover:text-white text-dark/60 flex items-center justify-center transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-                          <ArrowUpRight className="w-4 h-4" />
-                        </div>
-                      </div>
-
-                      <div className="font-mono text-[11px] uppercase tracking-wider text-electric font-medium mb-1.5">
-                        {proj.subtitle}
-                      </div>
-                      <h3 className="font-serif text-3xl text-dark font-semibold mb-3 group-hover:text-electric transition-colors">
-                        {proj.title}
-                      </h3>
-                      <p className="text-sm text-dark/65 leading-relaxed mb-8">
-                        {proj.desc}
-                      </p>
-                    </div>
-
-                    {/* Footer of Card */}
-                    <div className="pt-5 border-t border-dark/8">
-                      <div className="flex items-center justify-between text-xs font-mono text-dark/50 mb-3">
-                        <span>HIGHLIGHT</span>
-                        <span className="text-dark/80 font-medium">{proj.metric}</span>
-                      </div>
-                      <div className="flex flex-wrap gap-1.5">
-                        {proj.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-2.5 py-1 rounded-md bg-white border border-dark/10 text-dark/70 font-mono text-[11px]"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </motion.a>
-                ))}
-              </AnimatePresence>
-            </motion.div>
+                    {cat}
+                    {isSelected && (
+                      <motion.span
+                        layoutId="projectFilterLine"
+                        transition={reduce ? { duration: 0.1 } : { type: "spring", duration: 0.3, bounce: 0 }}
+                        className="absolute inset-x-0 -bottom-px h-[1.5px] bg-ink rounded-full"
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </section>
+
+          {/* Minimal Focus-Dimming Row List */}
+          <motion.div
+            id="projects-tabpanel"
+            role="tabpanel"
+            aria-label={`${activeCategory} projects`}
+            layout={!reduce}
+            className="focus-list -mx-3 flex flex-col"
+          >
+            <AnimatePresence initial={false} mode="popLayout" onExitComplete={completeTransition}>
+              {filteredProjects.map((proj) => (
+                <motion.a
+                  layout={!reduce}
+                  key={proj.id}
+                  href={proj.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onMouseEnter={() => send({ type: "INSPECT_PROJECT", id: proj.id })}
+                  onMouseLeave={() => send("LEAVE_PROJECT")}
+                  onFocus={() => send({ type: "INSPECT_PROJECT", id: proj.id })}
+                  onBlur={() => send("LEAVE_PROJECT")}
+                  initial={reduce ? { opacity: 0 } : { opacity: 0, y: 8, filter: "blur(4px)" }}
+                  animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={reduce
+                    ? { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } }
+                    : { opacity: 0, y: -8, filter: "blur(4px)", transition: { duration: 0.15, ease: "easeOut" } }}
+                  transition={{ duration: 0.24, ease: "easeOut" }}
+                  className="focus-list-item tap-press flex items-center justify-between gap-3.5 px-3 py-3 rounded-xl transition-[opacity,background-color,transform] duration-150 ease-out min-w-0"
+                >
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <span className="icon-tile shrink-0 w-[38px] h-[38px] rounded-[10px] inline-flex items-center justify-center">
+                      <ProjectIcon type={proj.icon} />
+                    </span>
+                    <div className="min-w-0">
+                      <div className="text-[0.9375rem] font-medium text-ink leading-[1.35] tracking-[-0.01em] truncate">
+                        {proj.title}
+                      </div>
+                      <div className="text-[0.84375rem] text-ink-muted leading-[1.4] truncate">
+                        {proj.desc}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="hidden sm:inline font-mono text-xs text-ink-muted">
+                      {proj.type}
+                    </span>
+                    <ArrowUpRightIcon className="row-arrow w-3.5 h-3.5 text-ink-muted opacity-60 sm:opacity-0 transition-[opacity,transform] duration-150 ease-out" />
+                  </div>
+                </motion.a>
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        </motion.section>
       );
     };
 
-    // --- WRITING / ESSAYS SECTION (Explicit Editorial Spotlight & Archive Inspection State Machine) ---
+    // --- WRITING / NOTES SECTION (Chloé Maillot-inspired rows with NEW pill + mini paper sheet) ---
     const ESSAYS_DATA = [
       {
         id: "01",
         title: "Timon, on authenticity",
         category: "Dialogue",
-        desc: "What if you could take the journey of your dreams, see everything you ever wanted to see, and experience it all exactly as you wished but no one could ever know you had been there? Would the journey still be worth the same?",
         date: "Sep 2026",
-        read: "5 min read",
-        link: "https://fromthecabinet.com/text.html?slug=dialogue1-on-socmed",
-        featured: true
+        isNew: true,
+        link: "https://fromthecabinet.com/text.html?slug=dialogue1-on-socmed"
       },
       {
         id: "02",
         title: "The Phenomenology and Certainty",
         category: "Epistemology",
-        desc: "Science produces precise but constrained abstractions of experience, while metaphysics investigates the conditions that make experience possible; both contribute to understanding, but only within a cycle that returns them to the Life-World.",
         date: "Apr 2026",
-        read: "5 min read",
         link: "https://fromthecabinet.com/texts/phenomenology-certainty.html"
       },
       {
         id: "03",
         title: "The Wall and Nausea",
         category: "Existentialism",
-        desc: "Being truly conscious means existing in a painful superposition between a social system and the honest, dull silence of the 'In-Itself' and reality.",
         date: "Apr 2026",
-        read: "3 min read",
         link: "https://fromthecabinet.com/text.html?slug=the-wall-and-nausea"
       },
       {
         id: "04",
         title: "The Sartrean Trap",
         category: "Metaphysics",
-        desc: "When the method becomes a prison — on how Sartre misused phenomenology. 'And if phenomenology refuses to step outside of itself, then isn't it becoming the very thing it was meant to battle?'",
         date: "Feb 2026",
-        read: "10 min read",
         link: "https://fromthecabinet.com/text.html?slug=sartrean-trap"
       },
       {
         id: "05",
         title: "Christocentric Determinism",
         category: "Theology",
-        desc: "On bridging the theological tension between Arminianism and Calvinism. Creating a doctrine that might be both true to the gospel and intellectually satisfying.",
         date: "Jan 2026",
-        read: "9 min read",
         link: "https://fromthecabinet.com/text.html?slug=christocentric-determinism"
       }
     ];
@@ -2216,198 +1577,124 @@
     const WRITING_CATALOG_MACHINE = {
       id: "writingCatalog",
       initial: "defaultSpotlight",
-      context: () => ({
-        spotlightId: "01",
-        hoveredEssayId: null
-      }),
+      context: () => ({ spotlightId: "01", hoveredEssayId: null }),
       on: {
-        SPOTLIGHT_ESSAY: (ctx, event) => {
-          const nextId = ESSAYS_DATA.some(e => e.id === event.id) ? event.id : "01";
-          return {
-            target: nextId === "01" ? "defaultSpotlight" : "customSpotlight",
-            context: { ...ctx, spotlightId: nextId }
-          };
-        },
-        HOVER_ESSAY: (ctx, event) => ({
-          context: { ...ctx, hoveredEssayId: event.id || null }
-        }),
-        LEAVE_ESSAY: (ctx) => ({
-          context: { ...ctx, hoveredEssayId: null }
-        }),
-        RESET_SPOTLIGHT: (ctx) => ({
-          target: "defaultSpotlight",
-          context: { ...ctx, spotlightId: "01" }
-        })
+        HOVER_ESSAY: (ctx, event) => ({ context: { ...ctx, hoveredEssayId: event.id || null } }),
+        LEAVE_ESSAY: (ctx) => ({ context: { ...ctx, hoveredEssayId: null } })
       },
-      states: {
-        defaultSpotlight: {},
-        customSpotlight: {}
-      }
+      states: { defaultSpotlight: {} }
     };
 
-    const Writing = () => {
+    const Writing = ({ enterItem }) => {
       const [writingState, sendWriting] = useMachine(WRITING_CATALOG_MACHINE);
-      const { spotlightId, hoveredEssayId } = writingState.context;
-
-      const featuredEssay = useMemo(
-        () => ESSAYS_DATA.find(e => e.id === spotlightId) || ESSAYS_DATA[0],
-        [spotlightId]
-      );
-      const archiveEssays = useMemo(() => ESSAYS_DATA.slice(1), []);
+      const { hoveredEssayId } = writingState.context;
 
       return (
-        <section
+        <motion.section
           id="writing"
+          variants={enterItem}
           data-machine="writingCatalog"
           data-state={writingState.value}
-          data-spotlight-id={spotlightId}
           data-hovered-essay={hoveredEssayId || undefined}
-          className="px-6 md:px-12 lg:px-20 py-28 bg-offwhite border-b border-dark/10"
+          aria-labelledby="writing-heading"
         >
-          <div className="max-w-[1360px] mx-auto">
-            <SectionHeader
-              index="03"
-              label="From The Cabinet"
-              title="Philosophical"
-              italicTitle="essays & dialogues."
-              rightElement={
-                <div className="flex items-center gap-2.5">
-                  {writingState.value === "customSpotlight" && (
-                    <button
-                      type="button"
-                      onClick={() => sendWriting("RESET_SPOTLIGHT")}
-                      className="px-4 py-2.5 rounded-full bg-electric/10 hover:bg-electric text-electric hover:text-white text-xs font-mono font-medium transition-colors"
-                    >
-                      Reset Spotlight
-                    </button>
-                  )}
-                  <a
-                    href="https://fromthecabinet.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white hover:bg-electric hover:text-white text-dark border border-dark/10 hover:border-electric text-xs font-mono font-medium transition-all"
-                  >
-                    <span>Visit Publication</span>
-                    <ArrowUpRight className="w-4 h-4" />
-                  </a>
-                </div>
-              }
-            />
+          <div className="flex items-baseline justify-between gap-4 pb-3 mb-3 border-b border-hairline">
+            <h2
+              id="writing-heading"
+              className="text-sm font-medium text-ink tracking-[-0.01em]"
+            >
+              Writing
+            </h2>
+            <a
+              href="https://fromthecabinet.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="muted-link text-xs font-medium"
+            >
+              View all
+            </a>
+          </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-              {/* Featured Latest / Spotlight Essay Card */}
+          <div className="focus-list -mx-3 flex flex-col">
+            {ESSAYS_DATA.map((essay, idx) => (
               <a
-                href={featuredEssay.link}
+                key={essay.id}
+                href={essay.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="lg:col-span-5 group rounded-3xl bg-dark text-white p-8 md:p-10 flex flex-col justify-between relative overflow-hidden shadow-[0_16px_40px_rgba(17,24,39,0.12)]"
+                onMouseEnter={() => sendWriting({ type: "HOVER_ESSAY", id: essay.id })}
+                onMouseLeave={() => sendWriting("LEAVE_ESSAY")}
+                onFocus={() => sendWriting({ type: "HOVER_ESSAY", id: essay.id })}
+                onBlur={() => sendWriting("LEAVE_ESSAY")}
+                className="focus-list-item tap-press flex items-center justify-between gap-4 px-3 py-3 rounded-xl transition-[opacity,background-color,transform] duration-150 ease-out min-w-0"
               >
-                <div
-                  className="pointer-events-none absolute -bottom-24 -right-24 w-72 h-72 rounded-full opacity-35 blur-2xl group-hover:opacity-60 transition-opacity duration-500"
-                  style={{ background: "radial-gradient(circle, #0055FF 0%, transparent 70%)" }}
-                />
-
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-8">
-                    <span className="px-3 py-1 rounded-full bg-electric text-white font-mono text-[11px] font-semibold uppercase tracking-wider">
-                      {featuredEssay.id === "01" ? "Latest Essay" : `Essay #${featuredEssay.id}`} • {featuredEssay.category}
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[0.9375rem] font-medium text-ink leading-[1.35] tracking-[-0.01em]">
+                      {essay.title}
                     </span>
-                    <span className="font-mono text-xs text-white/50">
-                      {featuredEssay.date}
-                    </span>
+                    {essay.isNew && (
+                      <span className="px-1.5 py-0.5 rounded-full bg-badge-bg text-badge-text font-mono text-[0.6875rem] leading-none font-medium tracking-[0.04em] uppercase">
+                        New
+                      </span>
+                    )}
                   </div>
-
-                  <h3 className="font-serif text-3xl md:text-4xl text-white leading-tight mb-5 group-hover:text-electric transition-colors">
-                    {featuredEssay.title}
-                  </h3>
-
-                  <p className="text-white/75 text-base leading-relaxed mb-8">
-                    “{featuredEssay.desc}”
-                  </p>
+                  <div className="mt-0.5 text-xs text-ink-muted font-mono">
+                    {essay.category}
+                  </div>
                 </div>
 
-                <div className="pt-6 border-t border-white/15 flex items-center justify-between">
-                  <span className="font-mono text-xs text-white/60">{featuredEssay.read}</span>
-                  <span className="inline-flex items-center gap-2 text-sm font-medium text-white group-hover:text-electric transition-colors">
-                    <span>{featuredEssay.id === "01" ? "Read full dialogue" : "Read full essay"}</span>
-                    <ArrowUpRight className="w-4 h-4" />
+                <div className="flex items-center gap-3.5 shrink-0">
+                  <span className="font-mono text-xs text-ink-muted tabular-nums">
+                    {essay.date}
                   </span>
+                  <PaperThumbnail variant={idx} />
                 </div>
               </a>
-
-              {/* Editorial Index List */}
-              <div className="lg:col-span-7 bg-white rounded-3xl border border-dark/10 divide-y divide-dark/10 overflow-hidden flex flex-col justify-between">
-                {archiveEssays.map((essay) => {
-                  const isSpotlighted = spotlightId === essay.id;
-                  return (
-                    <a
-                      key={essay.id}
-                      href={essay.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onMouseEnter={() => sendWriting({ type: "HOVER_ESSAY", id: essay.id })}
-                      onMouseLeave={() => sendWriting("LEAVE_ESSAY")}
-                      onFocus={() => sendWriting({ type: "HOVER_ESSAY", id: essay.id })}
-                      onBlur={() => sendWriting("LEAVE_ESSAY")}
-                      className={`group p-6 md:p-7 hover:bg-offwhite/70 transition-all duration-300 flex flex-col sm:flex-row sm:items-center justify-between gap-4 relative ${
-                        isSpotlighted ? "bg-offwhite/60" : ""
-                      }`}
-                    >
-                      <div className={`absolute left-0 top-0 bottom-0 w-1 bg-electric transition-transform origin-center duration-300 ${
-                        isSpotlighted ? "scale-y-100" : "scale-y-0 group-hover:scale-y-100"
-                      }`} />
-                      <div className="space-y-2 max-w-xl pl-1">
-                        <div className="flex items-center gap-3 text-xs font-mono">
-                          <span className="text-electric font-semibold">{essay.id}</span>
-                          <span className="uppercase tracking-wider text-dark/50 font-medium">{essay.category}</span>
-                          <span className="text-dark/25">•</span>
-                          <span className="text-dark/45">{essay.date}</span>
-                        </div>
-                        <h4 className="font-serif text-2xl text-dark font-semibold group-hover:text-electric transition-colors">
-                          {essay.title}
-                        </h4>
-                        <p className="text-sm text-dark/60 line-clamp-2 leading-relaxed">
-                          {essay.desc}
-                        </p>
-                      </div>
-
-                      <div className="flex sm:flex-col items-center sm:items-end justify-between shrink-0 gap-3">
-                        <div className="flex items-center gap-1.5">
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              sendWriting({ type: "SPOTLIGHT_ESSAY", id: isSpotlighted ? "01" : essay.id });
-                            }}
-                            aria-pressed={isSpotlighted}
-                            className={`font-mono text-[10px] px-2 py-1 rounded-md border transition-colors ${
-                              isSpotlighted
-                                ? "bg-electric text-white border-electric"
-                                : "bg-white hover:bg-electric/10 border-dark/10 text-dark/60 hover:text-electric"
-                            }`}
-                          >
-                            {isSpotlighted ? "Spotlighted" : "Spotlight"}
-                          </button>
-                          <span className="font-mono text-[11px] px-2.5 py-1 rounded-md bg-offwhite border border-dark/8 text-dark/60">
-                            {essay.read}
-                          </span>
-                        </div>
-                        <div className="w-9 h-9 rounded-full border border-dark/10 group-hover:bg-electric group-hover:border-electric group-hover:text-white text-dark/50 flex items-center justify-center transition-all">
-                          <ArrowUpRight className="w-4 h-4" />
-                        </div>
-                      </div>
-                    </a>
-                  );
-                })}
-              </div>
-            </div>
+            ))}
           </div>
-        </section>
+        </motion.section>
       );
     };
 
-    // --- SMOOTH SCROLL & VIEWPORT LIFECYCLE ENGINE MACHINE ---
+    const FOCUS_ITEMS = [
+      { id: "01", area: "Generative AI & RAG", stack: "RAG / LLMOps / Vector Stores / Agents" },
+      { id: "02", area: "Full-Stack AI Infra", stack: "Docker / K8s / FastAPI / React" },
+      { id: "03", area: "Programming", stack: "Python / SQL / TS / R" },
+      { id: "04", area: "Cloud & DevOps", stack: "AWS / Azure / CI/CD" },
+      { id: "05", area: "Spatial & Civic Data", stack: "GIS / Computer Vision" }
+    ];
+
+    const FocusIndex = ({ enterItem }) => (
+      <motion.section id="about" variants={enterItem} aria-labelledby="focus-heading">
+        <div className="flex items-baseline justify-between gap-4 pb-3 mb-1 border-b border-hairline">
+          <h2 id="focus-heading" className="text-sm font-medium text-ink tracking-[-0.01em]">
+            Focus
+          </h2>
+          <a href="cv.html" className="muted-link text-xs font-medium">
+            Full CV
+          </a>
+        </div>
+
+        <dl className="divide-y divide-hairline">
+          {FOCUS_ITEMS.map((item) => (
+            <div
+              key={item.id}
+              className="py-3 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4"
+            >
+              <dt className="text-[0.9375rem] font-medium text-ink tracking-[-0.01em]">
+                {item.area}
+              </dt>
+              <dd className="font-mono text-xs text-ink-muted">
+                {item.stack}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </motion.section>
+    );
+
+    // --- SCROLL ENGINE & FOOTER CURTAIN MACHINES ---
     const SCROLL_ENGINE_MACHINE = {
       id: "scrollEngine",
       initial: () =>
@@ -2415,80 +1702,32 @@
         window.matchMedia &&
         window.matchMedia("(prefers-reduced-motion: reduce)").matches
           ? "reducedMotion"
-          : "initializing",
-      context: () => ({
-        direction: "down",
-        lockReason: null,
-        targetSection: null
-      }),
+          : "idle",
+      context: () => ({ direction: "down" }),
       on: {
-        LOCK: (ctx, event) => ({
-          target: "locked",
-          context: { ...ctx, lockReason: event.reason || "modal" }
-        }),
-        UNLOCK: (ctx) => ({
-          target: "idle",
-          context: { ...ctx, lockReason: null }
-        }),
         VISIBILITY_HIDDEN: "suspended",
-        VISIBILITY_VISIBLE: (ctx) => ({
-          target: ctx.lockReason ? "locked" : "idle",
-          context: ctx
-        }),
-        REDUCED_MOTION: "reducedMotion",
-        MOTION_ALLOWED: "idle"
+        VISIBILITY_VISIBLE: "idle"
       },
       states: {
-        initializing: {
-          on: {
-            READY: "idle"
-          }
-        },
         idle: {
           on: {
-            SCROLL_ACTIVE: (ctx, event) => ({
-              target: "scrolling",
-              context: { ...ctx, direction: event.direction || ctx.direction }
-            }),
-            PROGRAMMATIC_START: (ctx, event) => ({
-              target: "programmatic",
-              context: { ...ctx, targetSection: event.target || null }
-            })
+            SCROLL_ACTIVE: (ctx, event) => ({ target: "scrolling", context: { ...ctx, direction: event.direction || ctx.direction } })
           }
         },
         scrolling: {
           on: {
             SCROLL_ACTIVE: (ctx, event) => {
-              const nextDir = event.direction || ctx.direction;
-              if (nextDir === ctx.direction) return null;
-              return { target: "scrolling", context: { ...ctx, direction: nextDir } };
+              if (event.direction === ctx.direction) return null;
+              return { target: "scrolling", context: { ...ctx, direction: event.direction } };
             },
-            SCROLL_IDLE: "idle",
-            PROGRAMMATIC_START: (ctx, event) => ({
-              target: "programmatic",
-              context: { ...ctx, targetSection: event.target || null }
-            })
+            SCROLL_IDLE: "idle"
           }
         },
-        programmatic: {
-          on: {
-            PROGRAMMATIC_END: (ctx) => ({
-              target: "idle",
-              context: { ...ctx, targetSection: null }
-            }),
-            SCROLL_IDLE: (ctx) => ({
-              target: "idle",
-              context: { ...ctx, targetSection: null }
-            })
-          }
-        },
-        locked: {},
         suspended: {},
         reducedMotion: {}
       }
     };
 
-    // --- FOOTER REVEAL CURTAIN MACHINE ---
     const FOOTER_CURTAIN_MACHINE = {
       id: "footerCurtain",
       initial: "hidden",
@@ -2496,431 +1735,289 @@
       on: {
         SCRUB_PROGRESS: (ctx, event, currentState) => {
           const p = Math.max(0, Math.min(1, Number(event.progress) || 0));
-          const nextState = p <= 0.01 ? "hidden" : p >= 0.98 ? "revealed" : "revealing";
-          if (nextState === currentState && Math.abs(ctx.progress - p) < 0.02) {
-            return null;
-          }
-          return {
-            target: nextState,
-            context: { ...ctx, progress: Number(p.toFixed(3)) }
-          };
+          const nextState = p <= 0.02 ? "hidden" : p >= 0.95 ? "revealed" : "revealing";
+          if (nextState === currentState && Math.abs(ctx.progress - p) < 0.02) return null;
+          return { target: nextState, context: { ...ctx, progress: Number(p.toFixed(3)) } };
         },
-        REVEAL: (ctx) => ({
-          target: "revealed",
-          context: { ...ctx, progress: 1 }
-        }),
-        HIDE: (ctx) => ({
-          target: "hidden",
-          context: { ...ctx, progress: 0 }
-        }),
-        FOCUS_CHANNEL: (ctx, event) => ({
-          context: { ...ctx, activeChannel: event.channel || null }
-        }),
-        BLUR_CHANNEL: (ctx) => ({
-          context: { ...ctx, activeChannel: null }
-        })
+        REVEAL: (ctx) => ({ target: "revealed", context: { ...ctx, progress: 1 } }),
+        FOCUS_CHANNEL: (ctx, event) => ({ context: { ...ctx, activeChannel: event.channel || null } }),
+        BLUR_CHANNEL: (ctx) => ({ context: { ...ctx, activeChannel: null } })
       },
-      states: {
-        hidden: {},
-        revealing: {},
-        revealed: {}
-      }
+      states: { hidden: {}, revealing: {}, revealed: {} }
     };
 
-    // --- DEV / AGENT STATE MACHINE TELEMETRY HUD (Toggle with Alt+M or ?debug=machines) ---
-    const MACHINE_INSPECTOR_CONFIG = {
-      id: "machineInspector",
-      initial: () => {
-        if (typeof window !== "undefined") {
-          const params = new URLSearchParams(window.location.search);
-          if (params.get("debug") === "machines" || params.get("inspector") === "1") {
-            return "open";
-          }
+    const EmergingFooter = ({ curtainState, sendCurtain, reduce }) => {
+      const handleFooterLinkFocus = (channel) => {
+        sendCurtain({ type: "FOCUS_CHANNEL", channel });
+        if (!reduce && curtainState.value !== "revealed") {
+          window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: "smooth"
+          });
         }
-        return "closed";
-      },
-      context: () => ({
-        selectedMachineId: "navigation"
-      }),
-      on: {
-        SELECT_MACHINE: (ctx, event) => ({
-          context: { ...ctx, selectedMachineId: event.id }
-        })
-      },
-      states: {
-        closed: {
-          on: {
-            TOGGLE: "open",
-            OPEN: "open"
-          }
-        },
-        open: {
-          on: {
-            TOGGLE: "closed",
-            CLOSE: "closed",
-            ESCAPE: "closed"
-          }
-        }
-      }
-    };
+      };
 
-    const MachineInspectorHUD = () => {
-      const [inspector, send] = useMachine(MACHINE_INSPECTOR_CONFIG);
-      const [, setTick] = useState(0);
-      const isOpen = inspector.value === "open";
-      const { selectedMachineId } = inspector.context;
-
-      useEffect(() => {
-        const onKeyDown = (e) => {
-          if ((e.altKey && e.key.toLowerCase() === "m") || (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "m")) {
-            e.preventDefault();
-            send("TOGGLE");
-          } else if (e.key === "Escape" && isOpen) {
-            send("ESCAPE");
-          }
-        };
-        window.addEventListener("keydown", onKeyDown);
-        return () => window.removeEventListener("keydown", onKeyDown);
-      }, [isOpen, send]);
-
-      useEffect(() => {
-        if (!isOpen) return;
-        return MACHINE_REGISTRY.subscribe(() => {
-          setTick((t) => t + 1);
-        });
-      }, [isOpen]);
-
-      if (!isOpen) return null;
-
-      const snapshots = MACHINE_REGISTRY.getAllSnapshots();
-      const machineIds = Object.keys(snapshots).filter((id) => id !== "machineInspector");
-      const activeSnap = snapshots[selectedMachineId] || snapshots[machineIds[0]];
-      const recentHistory = MACHINE_REGISTRY.getHistory(8).slice().reverse();
+      const channels = [
+        { id: "email", label: "Email", href: "mailto:pacochp@gmail.com", icon: <MailIcon />, external: false },
+        { id: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/in/jakubpacocha/", icon: <LinkedinIcon />, external: true },
+        { id: "twitter", label: "X / Twitter", href: "https://x.com/JakubPacocha", icon: <TwitterIcon />, external: true },
+        { id: "github", label: "GitHub", href: "https://github.com/JPacoch", icon: <GithubIcon />, external: true }
+      ];
 
       return (
-        <aside
-          data-machine="machineInspector"
-          data-state={inspector.value}
-          aria-label="State Machine Telemetry Inspector"
-          className="fixed bottom-4 right-4 z-[9999] w-[380px] max-w-[calc(100vw-2rem)] bg-dark/95 backdrop-blur-xl text-white rounded-2xl border border-white/15 shadow-2xl p-4 font-mono text-xs"
+        <footer
+          id="footer-container"
+          data-machine="footerCurtain"
+          data-state={curtainState.value}
+          data-progress={curtainState.context.progress}
+          data-active-channel={curtainState.context.activeChannel || undefined}
+          className={`${
+            reduce
+              ? "relative z-10 w-full bg-footer-bg text-footer-ink"
+              : "fixed bottom-0 inset-x-0 z-0 h-[74dvh] min-h-[480px] sm:h-[64dvh] sm:min-h-[500px] w-full bg-footer-bg text-footer-ink overflow-hidden"
+          } flex flex-col justify-between`}
         >
-          <div className="flex items-center justify-between pb-3 mb-3 border-b border-white/10">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-electric animate-pulse" />
-              <span className="font-semibold tracking-wider uppercase text-[11px]">FSM Telemetry HUD</span>
-              <span className="text-[10px] text-white/40">({machineIds.length} active)</span>
-            </div>
-            <button
-              type="button"
-              onClick={() => send("CLOSE")}
-              className="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-white/70 hover:text-white text-[10px]"
-            >
-              Esc / Alt+M
-            </button>
-          </div>
+          <div
+            id="footer-container-inner"
+            className="w-full h-full max-w-[600px] mx-auto px-5 sm:px-6 pt-14 sm:pt-20 safe-bottom flex flex-col justify-between text-start"
+          >
+            <div className="my-auto">
+              <p
+                id="contact"
+                className="font-medium text-xs uppercase tracking-[0.08em] text-footer-muted mb-4"
+              >
+                Contact
+              </p>
 
-          <div className="flex flex-wrap gap-1 mb-3">
-            {machineIds.map((id) => {
-              const snap = snapshots[id];
-              const isSelected = activeSnap && activeSnap.id === id;
-              return (
-                <button
-                  key={id}
-                  type="button"
-                  onClick={() => send({ type: "SELECT_MACHINE", id })}
-                  className={`px-2 py-1 rounded-md text-[10px] transition-colors flex items-center gap-1.5 ${
-                    isSelected ? "bg-electric text-white" : "bg-white/5 hover:bg-white/10 text-white/70"
-                  }`}
-                >
-                  <span>{id}</span>
-                  <span className="px-1 rounded bg-black/30 text-[9px] text-white/90">{snap.state}</span>
-                </button>
-              );
-            })}
-          </div>
+              <h2 className="text-3xl sm:text-5xl font-medium leading-[1.08] tracking-[-0.035em] text-footer-ink text-balance mb-4">
+                Let’s build something{" "}
+                <span className="text-footer-muted font-normal">together.</span>
+              </h2>
 
-          {activeSnap && (
-            <div className="space-y-2.5 bg-black/30 rounded-xl p-3 border border-white/10 mb-3">
-              <div className="flex items-center justify-between">
-                <span className="text-white/50">State:</span>
-                <span className="px-2 py-0.5 rounded bg-electric/20 text-electric font-semibold">
-                  {activeSnap.state}
-                </span>
-              </div>
-              <div>
-                <div className="text-white/50 mb-1">Available Events:</div>
-                <div className="flex flex-wrap gap-1">
-                  {activeSnap.availableEvents.map((evt) => (
-                    <button
-                      key={evt}
-                      type="button"
-                      onClick={() => MACHINE_REGISTRY.send(activeSnap.id, evt)}
-                      className="px-1.5 py-0.5 rounded bg-white/10 hover:bg-electric text-white text-[10px] transition-colors"
-                    >
-                      {evt}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <div className="text-white/50 mb-1">Context:</div>
-                <pre className="text-[10px] text-white/80 overflow-x-auto max-h-24 custom-scrollbar-minimal">
-                  {JSON.stringify(activeSnap.context, null, 2)}
-                </pre>
+              <p className="text-[0.9375rem] sm:text-base text-footer-secondary leading-[1.6] text-pretty max-w-[42ch] mb-8">
+                Open to conversations about AI systems, spatial engineering, civic tech and philosophy.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2.5">
+                {channels.map((ch) => (
+                  <a
+                    key={ch.id}
+                    href={ch.href}
+                    target={ch.external ? "_blank" : undefined}
+                    rel={ch.external ? "noopener noreferrer" : undefined}
+                    onFocus={() => handleFooterLinkFocus(ch.id)}
+                    onBlur={() => sendCurtain("BLUR_CHANNEL")}
+                    onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: ch.id })}
+                    onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
+                    className="focus-ring-light tap-press hover-light-pill min-h-[42px] ps-3.5 pe-4 py-2 rounded-full bg-white/10 border border-white/15 text-footer-ink text-sm font-medium inline-flex items-center gap-2"
+                  >
+                    {ch.icon}
+                    <span>{ch.label}</span>
+                  </a>
+                ))}
               </div>
             </div>
-          )}
 
-          <div>
-            <div className="text-white/45 text-[10px] uppercase tracking-wider mb-1">Recent Transitions</div>
-            <div className="space-y-1 max-h-24 overflow-y-auto custom-scrollbar-minimal">
-              {recentHistory.length === 0 ? (
-                <div className="text-white/35 text-[10px]">Interact with the page to log transitions</div>
-              ) : (
-                recentHistory.map((h) => (
-                  <div key={h.seq} className="text-[10px] text-white/70 flex items-center justify-between gap-2">
-                    <span className="truncate">
-                      <strong className="text-white">{h.id}</strong>: {h.from} → <span className="text-electric">{h.to}</span>
-                    </span>
-                    <span className="text-white/40 shrink-0">{h.event}</span>
-                  </div>
-                ))
-              )}
+            <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-xs font-medium text-footer-muted">
+              <span>© 2026 <span style={{ fontWeight: 'bold', color: 'white' }}>Jakub Pacocha</span>. All rights reserved.</span>
+              <span>Bydgoszcz, Poland</span>
             </div>
           </div>
-        </aside>
+        </footer>
       );
     };
 
+    // --- ROOT APPLICATION ---
     const App = () => {
       const [scrollEngine, sendScrollEngine] = useMachine(SCROLL_ENGINE_MACHINE);
       const [curtainState, sendCurtain] = useMachine(FOOTER_CURTAIN_MACHINE);
-      const isFooterHidden = curtainState.value === "hidden";
+      const reduce = useReducedMotionSafe();
+      const mainRef = useRef(null);
+
+      const [theme, setTheme] = useState(() =>
+        typeof document !== "undefined" && document.documentElement.getAttribute("data-theme") === "dark"
+          ? "dark"
+          : "light"
+      );
+
+      const handleToggleTheme = useCallback(() => {
+        setTheme((prev) => {
+          const next = prev === "dark" ? "light" : "dark";
+          applyThemeWithoutSmear(next);
+          return next;
+        });
+      }, []);
 
       useEffect(() => {
-        const lenis = window.__LENIS__;
-        if (!lenis) return;
-        if (scrollEngine.value === "locked") {
-          lenis.stop();
-        } else if (scrollEngine.value !== "suspended") {
-          lenis.start();
-        }
-      }, [scrollEngine.value]);
+        let lastY = window.scrollY;
+        let idleTimer = null;
 
-      useLayoutEffect(() => {
-        const prefersReduced =
-          window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-        const lenis = new Lenis({
-          duration: prefersReduced ? 0 : 1.15,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
-        });
-        window.__LENIS__ = lenis;
-
-        gsap.registerPlugin(ScrollTrigger);
-
-        let scrollIdleTimer = null;
-        lenis.on("scroll", ({ velocity, direction }) => {
-          ScrollTrigger.update();
-          const currentEngineState = MACHINE_REGISTRY.scrollEngine && MACHINE_REGISTRY.scrollEngine.state;
-          if (currentEngineState === "programmatic" || currentEngineState === "locked") return;
-
-          if (Math.abs(velocity) > 0.08) {
-            sendScrollEngine({
-              type: "SCROLL_ACTIVE",
-              direction: direction >= 0 ? "down" : "up"
-            });
-            clearTimeout(scrollIdleTimer);
-            scrollIdleTimer = setTimeout(() => {
-              sendScrollEngine("SCROLL_IDLE");
-            }, 160);
-          }
-        });
-
-        let rafId = null;
-        let isTabVisible = document.visibilityState !== "hidden";
-
-        function raf(time) {
-          if (isTabVisible) {
-            lenis.raf(time);
-            rafId = requestAnimationFrame(raf);
-          } else {
-            rafId = null;
-          }
-        }
-        rafId = requestAnimationFrame(raf);
+        const onScroll = () => {
+          const currentY = window.scrollY;
+          const direction = currentY >= lastY ? "down" : "up";
+          lastY = currentY;
+          sendScrollEngine({ type: "SCROLL_ACTIVE", direction });
+          clearTimeout(idleTimer);
+          idleTimer = setTimeout(() => sendScrollEngine("SCROLL_IDLE"), 160);
+        };
 
         const onVisChange = () => {
-          isTabVisible = document.visibilityState !== "hidden";
-          if (isTabVisible) {
-            sendScrollEngine("VISIBILITY_VISIBLE");
-            if (rafId === null) rafId = requestAnimationFrame(raf);
-          } else {
-            sendScrollEngine("VISIBILITY_HIDDEN");
-            if (rafId !== null) {
-              cancelAnimationFrame(rafId);
-              rafId = null;
-            }
-          }
+          sendScrollEngine(document.visibilityState === "visible" ? "VISIBILITY_VISIBLE" : "VISIBILITY_HIDDEN");
         };
-        document.addEventListener("visibilitychange", onVisChange);
 
-        const initScrollTrigger = () => {
-          ScrollTrigger.create({
-            trigger: "#footer-spacer",
+        window.addEventListener("scroll", onScroll, { passive: true });
+        document.addEventListener("visibilitychange", onVisChange);
+        return () => {
+          clearTimeout(idleTimer);
+          window.removeEventListener("scroll", onScroll);
+          document.removeEventListener("visibilitychange", onVisChange);
+        };
+      }, [sendScrollEngine]);
+
+      useLayoutEffect(() => {
+        if (reduce || !window.gsap || !window.ScrollTrigger) {
+          sendCurtain("REVEAL");
+          return;
+        }
+
+        const { gsap, ScrollTrigger } = window;
+        gsap.registerPlugin(ScrollTrigger);
+
+        let st = null;
+        let tl = null;
+        let resizeObserver = null;
+
+        const initCurtain = () => {
+          const spacer = document.getElementById("footer-spacer");
+          const mainEl = document.getElementById("main-content");
+          const footerBackdrop = document.getElementById("footer-backdrop");
+          const footerInner = document.getElementById("footer-container-inner");
+          if (!spacer || !mainEl || !footerInner) return;
+
+          const getCornerRadius = () => (window.innerWidth < 640 ? "26px" : "36px");
+
+          tl = gsap.timeline()
+            .to(footerBackdrop, { opacity: 1, duration: 0.06, ease: "none" }, 0)
+            .to(
+              mainEl,
+              {
+                scale: 0.96,
+                borderBottomLeftRadius: getCornerRadius,
+                borderBottomRightRadius: getCornerRadius,
+                ease: "none"
+              },
+              0
+            )
+            .fromTo(
+              footerInner,
+              { y: "14%", opacity: 0.25 },
+              { y: "0%", opacity: 1, ease: "none" },
+              0
+            );
+
+          st = ScrollTrigger.create({
+            trigger: spacer,
             start: "top bottom",
             end: "bottom bottom",
             scrub: true,
+            invalidateOnRefresh: true,
             onUpdate: (self) => {
               sendCurtain({ type: "SCRUB_PROGRESS", progress: self.progress });
             },
-            animation: gsap.timeline()
-              .to(["#footer-container", "#blue-bg"], { autoAlpha: 1, duration: 0.05, ease: "none" }, 0)
-              .to("#main-content", {
-                scale: 0.96,
-                borderBottomLeftRadius: "48px",
-                borderBottomRightRadius: "48px",
-                ease: "none"
-              }, 0)
-              .fromTo("#footer-container-inner", { y: "15%" }, { y: "0%", ease: "none" }, 0)
+            animation: tl
           });
-          sendScrollEngine("READY");
+
+          ScrollTrigger.refresh();
         };
 
-        const initTimer = setTimeout(() => {
-          initScrollTrigger();
-          ScrollTrigger.refresh();
-        }, 100);
+        const initTimer = window.setTimeout(initCurtain, 60);
 
-        const resizeObserver = new ResizeObserver(() => ScrollTrigger.refresh());
-        resizeObserver.observe(document.body);
+        if (typeof ResizeObserver !== "undefined" && mainRef.current) {
+          resizeObserver = new ResizeObserver(() => ScrollTrigger.refresh());
+          resizeObserver.observe(mainRef.current);
+        }
 
         return () => {
-          clearTimeout(initTimer);
-          clearTimeout(scrollIdleTimer);
-          document.removeEventListener("visibilitychange", onVisChange);
-          if (rafId !== null) cancelAnimationFrame(rafId);
-          delete window.__LENIS__;
-          lenis.destroy();
-          ScrollTrigger.getAll().forEach(t => t.kill());
-          resizeObserver.disconnect();
+          window.clearTimeout(initTimer);
+          if (resizeObserver) resizeObserver.disconnect();
+          if (st) st.kill();
+          if (tl) tl.kill();
+          gsap.set(["#main-content", "#footer-backdrop", "#footer-container-inner"], { clearProps: "all" });
         };
-      }, [sendCurtain, sendScrollEngine]);
+      }, [reduce, sendCurtain]);
 
-      const handleFooterLinkFocus = (channel) => {
-        sendCurtain({ type: "FOCUS_CHANNEL", channel });
-        if (curtainState.value !== "revealed" && window.__LENIS__) {
-          window.__LENIS__.scrollTo(document.body.scrollHeight);
+      const enterItem = {
+        hidden: reduce ? { opacity: 0 } : { opacity: 0, y: 10, filter: "blur(4px)" },
+        visible: {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          transition: { duration: 0.3, ease: "easeOut" }
         }
       };
 
       return (
-        <div
-          id="app-shell"
-          data-machine="scrollEngine"
-          data-state={scrollEngine.value}
-          data-scroll-direction={scrollEngine.context.direction}
-          className="bg-white min-h-screen font-sans text-dark selection:bg-electric selection:text-white"
-        >
-          <div id="blue-bg" className="fixed inset-0 bg-electric z-0 opacity-0 invisible pointer-events-none"></div>
-          <Nav />
-
-          <main
-            id="main-content"
-            className="bg-white w-full relative z-10 shadow-[0_20px_60px_rgba(0,0,0,0.1)] origin-[50%_100%] overflow-hidden"
-            style={{ willChange: "transform, border-radius" }}
+        <MotionConfig reducedMotion="user">
+          <div
+            id="app-shell"
+            data-machine="scrollEngine"
+            data-state={scrollEngine.value}
+            data-scroll-direction={scrollEngine.context.direction}
+            className="bg-canvas min-h-[100dvh] font-sans text-ink selection:bg-ink selection:text-canvas"
           >
-            <Hero />
-            <AboutAndCapabilities />
-            <GithubActivity />
-            <Projects />
-            <Writing />
-          </main>
+            <a
+              href="#main-content"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-[200] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-ink focus:text-canvas focus:text-sm focus:font-medium"
+            >
+              Skip to content
+            </a>
 
-          <div id="footer-spacer" className="min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] w-full pointer-events-none"></div>
+            {!reduce && (
+              <div
+                id="footer-backdrop"
+                aria-hidden="true"
+                className="fixed inset-0 z-0 bg-footer-bg opacity-0 pointer-events-none"
+              />
+            )}
 
-          <footer
-            id="footer-container"
-            data-machine="footerCurtain"
-            data-state={curtainState.value}
-            data-progress={curtainState.context.progress}
-            data-active-channel={curtainState.context.activeChannel || undefined}
-            aria-hidden={isFooterHidden}
-            className="fixed bottom-0 left-0 w-full min-h-[700px] h-[85vh] md:min-h-0 md:h-[70vh] z-0 flex flex-col justify-end bg-electric text-white overflow-hidden opacity-0 invisible"
-          >
-            <div id="footer-container-inner" className="w-full h-full px-6 md:px-12 lg:px-24 py-16 flex flex-col justify-between">
-              <div className="max-w-[1400px] w-full mx-auto flex flex-col h-full justify-between">
-                <div className="pt-8">
-                  <div id="contact" className="text-white/60 font-semibold uppercase tracking-widest text-sm mb-4">Contact</div>
-                  <h2 className="font-serif text-5xl md:text-7xl leading-tight mb-8">
-                    Let's do <br /> something <em className="italic font-light">together</em>
-                  </h2>
-                  <p className="text-xl text-white/80 mb-12">Want to say hello? Hit me up:</p>
+            <main
+              id="main-content"
+              ref={mainRef}
+              className="relative z-10 main-curtain-surface w-full origin-[50%_100%]"
+            >
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={{ visible: { transition: { staggerChildren: reduce ? 0 : 0.08 } } }}
+                className="max-w-[600px] mx-auto px-5 sm:px-6 safe-top pb-24 sm:pb-28 space-y-14 sm:space-y-16"
+              >
+                <IdentityAndBio
+                  theme={theme}
+                  onToggleTheme={handleToggleTheme}
+                  enterItem={enterItem}
+                />
+                <ActivityStrip enterItem={enterItem} />
+                <Projects enterItem={enterItem} />
+                <Writing enterItem={enterItem} />
+                <FocusIndex enterItem={enterItem} />
+              </motion.div>
+            </main>
 
-                  <div className="flex flex-wrap gap-4">
-                    <a
-                      href="mailto:pacochp@gmail.com"
-                      tabIndex={isFooterHidden ? -1 : 0}
-                      onFocus={() => handleFooterLinkFocus("email")}
-                      onBlur={() => sendCurtain("BLUR_CHANNEL")}
-                      onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: "email" })}
-                      onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
-                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
-                    >
-                      <MailIcon /> Email
-                    </a>
-                    <a
-                      href="https://www.linkedin.com/in/jakubpacocha/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      tabIndex={isFooterHidden ? -1 : 0}
-                      onFocus={() => handleFooterLinkFocus("linkedin")}
-                      onBlur={() => sendCurtain("BLUR_CHANNEL")}
-                      onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: "linkedin" })}
-                      onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
-                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
-                    >
-                      <LinkedinIcon /> LinkedIn
-                    </a>
-                    <a
-                      href="https://x.com/JakubPacocha"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      tabIndex={isFooterHidden ? -1 : 0}
-                      onFocus={() => handleFooterLinkFocus("twitter")}
-                      onBlur={() => sendCurtain("BLUR_CHANNEL")}
-                      onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: "twitter" })}
-                      onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
-                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
-                    >
-                      <TwitterIcon /> Twitter / X
-                    </a>
-                    <a
-                      href="https://github.com/JPacoch"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      tabIndex={isFooterHidden ? -1 : 0}
-                      onFocus={() => handleFooterLinkFocus("github")}
-                      onBlur={() => sendCurtain("BLUR_CHANNEL")}
-                      onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: "github" })}
-                      onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
-                      className="px-6 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full flex items-center gap-3 transition-colors font-medium"
-                    >
-                      <GithubIcon /> GitHub
-                    </a>
-                  </div>
-                </div>
+            {!reduce && (
+              <div
+                id="footer-spacer"
+                aria-hidden="true"
+                className="h-[74dvh] min-h-[480px] sm:h-[64dvh] sm:min-h-[500px] w-full pointer-events-none"
+              />
+            )}
 
-                <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10 text-white/50 text-sm mt-12">
-                  <div>© 2026 <span className="font-semibold text-white">Jakub Pacocha</span> All rights reserved.</div>
-                  <div>Bydgoszcz, Poland</div>
-                </div>
-              </div>
-            </div>
-          </footer>
-
-          <MachineInspectorHUD />
-        </div>
+            <EmergingFooter
+              curtainState={curtainState}
+              sendCurtain={sendCurtain}
+              reduce={reduce}
+            />
+          </div>
+        </MotionConfig>
       );
     };
 
