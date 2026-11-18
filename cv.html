@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
 
@@ -49,7 +49,6 @@
           },
           fontFamily: {
             sans: ['Geist', 'Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
-            mono: ['"Geist Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
           },
         },
       },
@@ -73,7 +72,7 @@
       --color-ink-secondary: #4a4a52;
       --color-ink-muted: #63636d;
       --color-hairline: rgba(17, 17, 19, 0.08);
-      --color-underline: rgba(17, 17, 19, 0.24);
+      --color-underline: rgba(17, 17, 19, 0.38);
       --color-underline-hover: #111113;
 
       --color-badge-bg: #dcfce7;
@@ -85,32 +84,38 @@
       --color-footer-secondary: #d4d4d8;
       --color-footer-muted: #a1a1aa;
 
+      --shadow-tile:
+        0px 0px 0px 1px oklch(0 0 0 / 0.06),
+        0px 1px 2px 0px oklch(0 0 0 / 0.035);
+      --shadow-chip: 0px 0px 0px 1px oklch(0 0 0 / 0.07);
       --shadow-main-curtain: 0px 24px 64px rgba(10, 10, 12, 0.22);
       --main-edge-ring: transparent;
     }
 
     html[data-theme="dark"] {
-      /* Dark Mode Palette — Verified WCAG AA */
-      --color-canvas: #0c0c0e;
-      --color-surface: #16161a;
-      --color-surface-hover: #1e1e24;
-      --color-ink: #fafafa;
-      --color-ink-secondary: #b4b4be;
-      --color-ink-muted: #9494a0;
-      --color-hairline: rgba(250, 250, 250, 0.09);
-      --color-underline: rgba(250, 250, 250, 0.28);
-      --color-underline-hover: #fafafa;
+      /* Dark Mode Off-Black Palette (#2C2C2C) — Verified WCAG AA */
+      --color-canvas: #2c2c2c;
+      --color-surface: #353538;
+      --color-surface-hover: #3e3e42;
+      --color-ink: #f5f5f5;
+      --color-ink-secondary: #d4d4d8;
+      --color-ink-muted: #b4b4bc;
+      --color-hairline: rgba(255, 255, 255, 0.1);
+      --color-underline: rgba(255, 255, 255, 0.42);
+      --color-underline-hover: #f5f5f5;
 
-      --color-badge-bg: #14532d;
+      --color-badge-bg: #1a4d2e;
       --color-badge-text: #bbf7d0;
 
-      /* Emerging Curtain Footer */
-      --color-footer-bg: #141418;
-      --color-footer-ink: #fafafa;
+      /* Emerging Curtain Footer (Deeper Charcoal under #2C2C2C) */
+      --color-footer-bg: #1e1e20;
+      --color-footer-ink: #f5f5f5;
       --color-footer-secondary: #d4d4d8;
-      --color-footer-muted: #a1a1aa;
+      --color-footer-muted: #a8a8b2;
 
-      --shadow-main-curtain: 0px 24px 64px rgba(0, 0, 0, 0.6);
+      --shadow-tile: 0px 0px 0px 1px oklch(1 0 0 / 0.1);
+      --shadow-chip: 0px 0px 0px 1px oklch(1 0 0 / 0.11);
+      --shadow-main-curtain: 0px 24px 64px rgba(0, 0, 0, 0.45);
       --main-edge-ring: rgba(255, 255, 255, 0.08);
     }
 
@@ -145,12 +150,14 @@
       text-wrap: pretty;
     }
 
+    /* Crisp Apple-style dotted underlines */
     .inline-link {
       color: var(--color-ink);
       font-weight: 500;
-      text-decoration: underline;
-      text-underline-position: from-font;
-      text-decoration-thickness: from-font;
+      text-decoration-line: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
       text-decoration-color: var(--color-underline);
       transition-property: color, text-decoration-color;
       transition-duration: 150ms;
@@ -159,9 +166,10 @@
 
     .muted-link {
       color: var(--color-ink-muted);
-      text-decoration: underline;
-      text-underline-position: from-font;
-      text-decoration-thickness: from-font;
+      text-decoration-line: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
       text-decoration-color: var(--color-underline);
       transition-property: color, text-decoration-color;
       transition-duration: 150ms;
@@ -611,6 +619,40 @@
       </svg>
     );
 
+    const ChevronDownIcon = ({ className = "w-4 h-4" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path vectorEffect="non-scaling-stroke" d="m6 9 6 6 6-6" />
+      </svg>
+    );
+
+    // --- SMOOTH COLLAPSIBLE PANEL PRIMITIVE ---
+    const CollapsiblePanel = ({ id, isOpen, children }) => {
+      const reduce = useReducedMotionSafe();
+      const refreshCurtain = useCallback(() => {
+        if (window.ScrollTrigger) {
+          window.ScrollTrigger.refresh();
+        }
+      }, []);
+
+      return (
+        <AnimatePresence initial={false}>
+          {isOpen && (
+            <motion.div
+              id={id}
+              initial={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
+              animate={reduce ? { opacity: 1 } : { height: "auto", opacity: 1 }}
+              exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }}
+              transition={{ duration: reduce ? 0.12 : 0.24, ease: [0.2, 0, 0, 1] }}
+              onAnimationComplete={refreshCurtain}
+              style={{ overflow: "hidden" }}
+            >
+              {children}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      );
+    };
+
     // --- CONTEXTUAL ICON CROSS-FADE (exact values: scale 0.25->1, opacity 0->1, blur 4px->0, spring 0.3 bounce 0) ---
     const IconSwap = ({ activeKey, children }) => {
       const reduce = useReducedMotionSafe();
@@ -635,13 +677,22 @@
       );
     };
 
-    // --- CV CREDENTIAL & TAG EXPLORER MACHINE ---
+    // --- CV CREDENTIAL, COLLAPSE & TAG EXPLORER MACHINE ---
+    const DEFAULT_COLLAPSED_IDS = {
+      "exp-iqor": true,
+      "exp-oi": true,
+      "exp-heksagon": true,
+      "edu-beng": true,
+      "edu-elte": true
+    };
+
     const CV_EXPLORER_MACHINE = {
       id: "cvExplorer",
       initial: "overview",
       context: () => ({
         selectedTag: null,
-        hoveredRole: null
+        hoveredRole: null,
+        collapsedIds: { ...DEFAULT_COLLAPSED_IDS }
       }),
       on: {
         TOGGLE_TAG: (ctx, event) => {
@@ -654,6 +705,23 @@
         CLEAR_TAG: (ctx) => ({
           target: "overview",
           context: { ...ctx, selectedTag: null }
+        }),
+        TOGGLE_ITEM: (ctx, event) => {
+          const next = { ...ctx.collapsedIds };
+          if (next[event.id]) delete next[event.id];
+          else next[event.id] = true;
+          return { context: { ...ctx, collapsedIds: next } };
+        },
+        SET_GROUP_COLLAPSED: (ctx, event) => {
+          const next = { ...ctx.collapsedIds };
+          (event.ids || []).forEach((id) => {
+            if (event.collapsed) next[id] = true;
+            else delete next[id];
+          });
+          return { context: { ...ctx, collapsedIds: next } };
+        },
+        EXPAND_ALL: (ctx) => ({
+          context: { ...ctx, collapsedIds: {} }
         }),
         HOVER_ROLE: (ctx, event) => ({
           context: { ...ctx, hoveredRole: event.company || null }
@@ -677,6 +745,7 @@
 
     const EXPERIENCE_DATA = [
       {
+        id: "exp-here",
         period: "Nov 2026 – Present",
         role: "Lead AI Engineer",
         company: "HERE Technologies",
@@ -689,6 +758,7 @@
         current: true
       },
       {
+        id: "exp-iqor",
         period: "Mar 2023 – Oct 2026",
         role: "AI Engineer / Data Scientist",
         company: "iQor",
@@ -703,6 +773,7 @@
         tags: ["Python", "AWS", "LLMOps", "RAG", "Vector Databases", "FastAPI"]
       },
       {
+        id: "exp-oi",
         period: "Jul 2021 – Feb 2023",
         role: "Data Scientist",
         company: "O-I",
@@ -714,6 +785,7 @@
         tags: ["Python", "Azure", "MLOps", "SQL"]
       },
       {
+        id: "exp-heksagon",
         period: "Apr 2021 – Jan 2022",
         role: "Spatial Data Analyst",
         company: "Heksagon Research",
@@ -727,18 +799,26 @@
 
     const SKILL_MATRIX = [
       {
+        id: "skill-ai",
+        icon: "ai",
         category: "AI & Machine Learning",
         items: ["LLM Orchestration & RAG", "Vector Stores & Embeddings", "Agentic Workflows", "Prompt Engineering", "Computer Vision (CNNs)", "Classical ML"]
       },
       {
+        id: "skill-backend",
+        icon: "backend",
         category: "Backend & Infrastructure",
         items: ["Python (FastAPI, Flask)", "Docker & Containerization", "REST API", "SQL & relational databases", "C# / .NET utilities", "React & modern web"]
       },
       {
+        id: "skill-cloud",
+        icon: "cloud",
         category: "Cloud & DevOps",
-        items: ["Amazon Web Services (AWS)", "Microsoft Azure", "Linux Administration", "MLOps & telemetry"]
+        items: ["Amazon Web Services (AWS)", "Microsoft Azure", "Linux administration", "MLOps & telemetry"]
       },
       {
+        id: "skill-spatial",
+        icon: "spatial",
         category: "Spatial & Civic Systems",
         items: ["GIS & Geocomputation", "Network Analysis", "Municipal Data Systems", "Geomorphological Vision Models"]
       }
@@ -746,6 +826,7 @@
 
     const EDUCATION_DATA = [
       {
+        id: "edu-msc",
         year: "2022 – 2023",
         degree: "Master of Science in Geoinformatics",
         institution: "Adam Mickiewicz University in Poznań",
@@ -753,6 +834,7 @@
         tags: ["Computer Vision", "CNN", "Python", "GIS"]
       },
       {
+        id: "edu-beng",
         year: "2018 – 2022",
         degree: "Bachelor of Engineering in Geoinformation",
         institution: "Adam Mickiewicz University in Poznań",
@@ -760,6 +842,7 @@
         tags: ["Python", "GIS", "Network Analysis"]
       },
       {
+        id: "edu-elte",
         year: "2019 – 2020",
         degree: "Engineering in Geoinformation (Erasmus+ Exchange)",
         institution: "Eötvös Loránd University (ELTE), Budapest",
@@ -772,8 +855,14 @@
     const CVDocument = ({ theme, onToggleTheme, enterItem }) => {
       const [explorerState, sendExplorer] = useMachine(CV_EXPLORER_MACHINE);
       const reduce = useReducedMotionSafe();
-      const { selectedTag, hoveredRole } = explorerState.context;
+      const { selectedTag, hoveredRole, collapsedIds } = explorerState.context;
       const [copied, setCopied] = useState(false);
+
+      useEffect(() => {
+        const onBeforePrint = () => sendExplorer("EXPAND_ALL");
+        window.addEventListener("beforeprint", onBeforePrint);
+        return () => window.removeEventListener("beforeprint", onBeforePrint);
+      }, [sendExplorer]);
 
       useEffect(() => {
         if (!selectedTag) return;
@@ -792,6 +881,11 @@
         window.setTimeout(() => setCopied(false), 1800);
       };
 
+      const isOpen = (id) => !collapsedIds[id];
+      const allExpOpen = EXPERIENCE_DATA.every((e) => !collapsedIds[e.id]);
+      const allSkillsOpen = SKILL_MATRIX.every((s) => !collapsedIds[s.id]);
+      const allEduOpen = EDUCATION_DATA.every((ed) => !collapsedIds[ed.id]);
+
       return (
         <motion.div
           initial="hidden"
@@ -801,7 +895,7 @@
           data-state={explorerState.value}
           data-selected-tag={selectedTag || undefined}
           data-hovered-role={hoveredRole || undefined}
-          className="max-w-[600px] mx-auto px-5 sm:px-6 safe-top pb-24 sm:pb-28 space-y-14 sm:space-y-16"
+          className="max-w-[768px] mx-auto px-5 sm:px-8 safe-top pb-24 sm:pb-28 space-y-16 sm:space-y-20"
         >
           {/* CV Header */}
           <motion.div variants={enterItem}>
@@ -812,7 +906,7 @@
             >
               <a
                 href="index.html"
-                className="back-link tap-press hover-surface -ms-2 px-2.5 min-h-[38px] rounded-lg inline-flex items-center gap-1.5 text-xs font-mono font-medium text-ink-muted"
+                className="back-link tap-press hover-surface -ms-2.5 px-2.5 min-h-[40px] rounded-lg inline-flex items-center gap-1.5 text-[0.875rem] font-medium text-ink-muted"
               >
                 <ArrowLeftIcon className="back-arrow w-3.5 h-3.5 transition-transform duration-150 ease-out" />
                 <span>Portfolio</span>
@@ -821,19 +915,19 @@
               <div className="flex items-center gap-1 -me-1.5">
                 <a
                   href="#experience"
-                  className="hidden sm:inline-flex tap-press hover-surface px-2 min-h-[36px] rounded-lg items-center text-xs font-mono text-ink-muted"
+                  className="hidden sm:inline-flex tap-press hover-surface px-2.5 min-h-[38px] rounded-lg items-center text-[0.875rem] text-ink-muted"
                 >
                   Experience
                 </a>
                 <a
                   href="#skills"
-                  className="hidden sm:inline-flex tap-press hover-surface px-2 min-h-[36px] rounded-lg items-center text-xs font-mono text-ink-muted"
+                  className="hidden sm:inline-flex tap-press hover-surface px-2.5 min-h-[38px] rounded-lg items-center text-[0.875rem] text-ink-muted"
                 >
                   Stack
                 </a>
                 <a
                   href="#education"
-                  className="hidden sm:inline-flex tap-press hover-surface px-2 min-h-[36px] rounded-lg items-center text-xs font-mono text-ink-muted"
+                  className="hidden sm:inline-flex tap-press hover-surface px-2.5 min-h-[38px] rounded-lg items-center text-[0.875rem] text-ink-muted"
                 >
                   Education
                 </a>
@@ -843,7 +937,7 @@
                 <a
                   href="assets/resume.pdf"
                   download
-                  className="tap-press hover-surface px-2.5 min-h-[38px] rounded-lg inline-flex items-center gap-1.5 text-xs font-mono font-medium text-ink"
+                  className="tap-press hover-surface px-2.5 min-h-[40px] rounded-lg inline-flex items-center gap-1.5 text-[0.875rem] font-medium text-ink"
                 >
                   <DownloadIcon className="w-3.5 h-3.5" />
                   <span>PDF</span>
@@ -854,7 +948,7 @@
                   onClick={onToggleTheme}
                   aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
                   aria-pressed={theme === "dark"}
-                  className="tap-press hover-surface w-[38px] h-[38px] rounded-lg inline-flex items-center justify-center text-ink-muted"
+                  className="tap-press hover-surface w-[40px] h-[40px] rounded-lg inline-flex items-center justify-center text-ink-muted"
                 >
                   <IconSwap activeKey={theme}>
                     {theme === "dark" ? <SunIcon /> : <MoonIcon />}
@@ -866,15 +960,15 @@
             {/* Identity & Summary */}
             <header className="space-y-4">
               <div>
-                <h1 className="text-[1.25rem] sm:text-[1.375rem] font-medium text-ink tracking-[-0.02em] leading-[1.3]">
+                <h1 className="text-xl sm:text-2xl font-medium text-ink tracking-[-0.02em] leading-[1.3]">
                   Jakub Pacocha
                 </h1>
-                <p className="text-[0.9375rem] text-ink-muted leading-[1.45]">
+                <p className="text-base text-ink-muted leading-[1.45]">
                   Curriculum Vitae / Bydgoszcz, Poland
                 </p>
               </div>
 
-              <p className="text-[0.96875rem] sm:text-base text-ink-secondary leading-[1.68] text-pretty">
+              <p className="text-base sm:text-[1.0625rem] text-ink-secondary leading-[1.7] text-pretty max-w-[58ch]">
                 Full-stack AI engineer with 6+ years of experience building production data systems, RAG architectures, and containerized ML infrastructure. Author of philosophical blog at{" "}
                 <a
                   href="https://fromthecabinet.com/"
@@ -887,10 +981,21 @@
                 .
               </p>
 
-              <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-ink-secondary">
-                <a href="mailto:pacochp@gmail.com" className="inline-link">
-                  pacochp@gmail.com
-                </a>
+              {/* Unified Email + Copy Icon Single Clickable Element */}
+              <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[0.9375rem] text-ink-secondary">
+                <button
+                  type="button"
+                  onClick={handleCopyEmail}
+                  aria-label={copied ? "Email copied to clipboard" : "Copy pacochp@gmail.com to clipboard"}
+                  className="tap-press hover-surface inline-flex items-center gap-1.5 px-1.5 -ms-1.5 py-0.5 rounded-md cursor-pointer bg-transparent border-0 text-inherit"
+                >
+                  <span className="inline-link">pacochp@gmail.com</span>
+                  <span className="no-print inline-flex items-center text-ink-muted">
+                    <IconSwap activeKey={copied ? "check" : "copy"}>
+                      {copied ? <CheckIcon className="w-3.5 h-3.5 text-ink" /> : <CopyIcon />}
+                    </IconSwap>
+                  </span>
+                </button>
 
                 <span aria-hidden="true" className="text-ink-muted">/</span>
                 <a
@@ -917,192 +1022,307 @@
             </header>
           </motion.div>
 
-          {/* Experience Section */}
+          {/* Experience Section (Most recent open by default; rest click-to-open) */}
           <motion.section id="experience" variants={enterItem} aria-labelledby="experience-heading">
-            <div className="flex flex-wrap items-baseline justify-between gap-3 pb-3 mb-2 border-b border-hairline">
-              <h2 id="experience-heading" className="text-sm font-medium text-ink tracking-[-0.01em]">
+            <div className="flex flex-wrap items-baseline justify-between gap-3 pb-3.5 mb-1 border-b border-hairline">
+              <h2 id="experience-heading" className="text-[0.9375rem] font-medium text-ink tracking-[-0.01em]">
                 Experience
               </h2>
 
-              <div role="status" aria-live="polite">
-                <AnimatePresence initial={false}>
-                  {selectedTag && (
-                    <motion.button
-                      type="button"
-                      initial={reduce ? { opacity: 0 } : { opacity: 0, y: 4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4 }}
-                      transition={{ duration: 0.15, ease: "easeOut" }}
-                      onClick={() => sendExplorer("CLEAR_TAG")}
-                      className="tap-press px-2.5 py-1 rounded-md bg-ink text-canvas font-mono text-xs font-medium"
-                    >
-                      {selectedTag} ×
-                    </motion.button>
-                  )}
-                </AnimatePresence>
+              <div className="flex items-center gap-3">
+                <div role="status" aria-live="polite">
+                  <AnimatePresence initial={false}>
+                    {selectedTag && (
+                      <motion.button
+                        type="button"
+                        initial={reduce ? { opacity: 0 } : { opacity: 0, y: 4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={reduce ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                        transition={{ duration: 0.15, ease: "easeOut" }}
+                        onClick={() => sendExplorer("CLEAR_TAG")}
+                        className="tap-press px-2.5 py-0.5 rounded-md bg-ink text-canvas text-[0.8125rem] font-medium"
+                      >
+                        {selectedTag} ×
+                      </motion.button>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    sendExplorer({
+                      type: "SET_GROUP_COLLAPSED",
+                      ids: EXPERIENCE_DATA.map((e) => e.id),
+                      collapsed: allExpOpen
+                    })
+                  }
+                  className="no-print text-[0.875rem] text-ink-muted hover-ink transition-colors duration-150 ease-out"
+                >
+                  {allExpOpen ? "Collapse all" : "Expand all"}
+                </button>
               </div>
             </div>
 
             <div className="divide-y divide-hairline">
               {EXPERIENCE_DATA.map((exp) => {
                 const matchesTag = !selectedTag || exp.tags.includes(selectedTag);
+                const open = isOpen(exp.id);
+                const panelId = `${exp.id}-panel`;
                 return (
                   <article
-                    key={`${exp.company}-${exp.period}`}
+                    key={exp.id}
                     onMouseEnter={() => sendExplorer({ type: "HOVER_ROLE", company: exp.company })}
                     onMouseLeave={() => sendExplorer("LEAVE_ROLE")}
-                    className={`py-6 transition-opacity duration-150 ease-out ${
+                    className={`py-4 transition-opacity duration-150 ease-out ${
                       selectedTag && !matchesTag ? "opacity-35" : ""
                     }`}
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="text-[0.96875rem] font-medium text-ink tracking-[-0.01em]">
-                          {exp.role}
-                        </h3>
-                        {exp.current && (
-                          <span className="px-1.5 py-0.5 rounded-full bg-badge-bg text-badge-text font-mono text-[0.6875rem] leading-none font-medium tracking-[0.03em] uppercase">
-                            Current
-                          </span>
-                        )}
+                    <button
+                      type="button"
+                      aria-expanded={open}
+                      aria-controls={panelId}
+                      onClick={() => sendExplorer({ type: "TOGGLE_ITEM", id: exp.id })}
+                      className="tap-press hover-surface w-full text-start -mx-3 px-3 py-2.5 rounded-xl flex items-start justify-between gap-3 cursor-pointer bg-transparent border-0"
+                    >
+                      <div className="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4">
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <h3 className="text-base sm:text-[1.0625rem] font-medium text-ink tracking-[-0.015em] leading-[1.35]">
+                              {exp.role}
+                            </h3>
+                            {exp.current && (
+                              <span className="px-2 py-0.5 rounded-full bg-badge-bg text-badge-text text-[0.6875rem] leading-none font-medium tracking-[0.05em] uppercase">
+                                Current
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-0.5 text-[0.9375rem] text-ink-muted">
+                            <span className="text-ink-secondary font-medium">{exp.company}</span>
+                            {" / "}
+                            <span>{exp.domain}</span>
+                          </p>
+                        </div>
+
+                        <span className="text-[0.875rem] text-ink-muted tabular-nums shrink-0">
+                          {exp.period}
+                        </span>
                       </div>
-                      <span className="font-mono text-xs text-ink-muted tabular-nums shrink-0">
-                        {exp.period}
-                      </span>
-                    </div>
 
-                    <p className="text-sm text-ink-muted mb-3">
-                      <span className="text-ink-secondary font-medium">{exp.company}</span>
-                      {" / "}
-                      <span>{exp.domain}</span>
-                    </p>
+                      <ChevronDownIcon
+                        className={`no-print w-4 h-4 text-ink-muted shrink-0 mt-1 transition-transform duration-200 ease-[cubic-bezier(0.2,0,0,1)] ${
+                          open ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
 
-                    <ul className="space-y-2 mb-4 text-[0.9375rem] text-ink-secondary leading-[1.6] text-pretty list-none p-0">
-                      {exp.bullets.map((b, idx) => (
-                        <li key={idx} className="flex items-start gap-2.5">
-                          <span aria-hidden="true" className="text-ink-muted select-none mt-px">–</span>
-                          <span>{b}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <CollapsiblePanel id={panelId} isOpen={open}>
+                      <div className="pt-3 pb-1.5">
+                        <ul className="space-y-2.5 mb-5 text-[0.96875rem] sm:text-base text-ink-secondary leading-[1.65] text-pretty list-none p-0 max-w-[58ch]">
+                          {exp.bullets.map((b, idx) => (
+                            <li key={idx} className="flex items-start gap-2.5">
+                              <span aria-hidden="true" className="text-ink-muted select-none mt-px">–</span>
+                              <span>{b}</span>
+                            </li>
+                          ))}
+                        </ul>
 
-                    <div className="flex flex-wrap gap-1.5">
-                      {exp.tags.map((tag) => {
-                        const isTagSelected = selectedTag === tag;
-                        return (
-                          <button
-                            key={tag}
-                            type="button"
-                            aria-pressed={isTagSelected}
-                            onClick={() => sendExplorer({ type: "TOGGLE_TAG", tag })}
-                            className={`tap-press px-2.5 py-1 min-h-[28px] rounded-md font-mono text-xs transition-colors duration-150 ease-out ${
-                              isTagSelected
-                                ? "bg-ink text-canvas font-medium"
-                                : "bg-surface text-ink-muted hover-ink"
-                            }`}
-                          >
-                            {tag}
-                          </button>
-                        );
-                      })}
-                    </div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {exp.tags.map((tag) => {
+                            const isTagSelected = selectedTag === tag;
+                            return (
+                              <button
+                                key={tag}
+                                type="button"
+                                aria-pressed={isTagSelected}
+                                onClick={() => sendExplorer({ type: "TOGGLE_TAG", tag })}
+                                className={`tap-press px-2.5 py-1 min-h-[30px] rounded-md text-[0.8125rem] font-medium transition-colors duration-150 ease-out ${
+                                  isTagSelected
+                                    ? "bg-ink text-canvas"
+                                    : "bg-surface text-ink-secondary hover-ink"
+                                }`}
+                              >
+                                {tag}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </CollapsiblePanel>
                   </article>
                 );
               })}
             </div>
           </motion.section>
 
-          {/* Technical Capabilities Section */}
+          {/* Technical Capabilities Section (Pure Editorial Text-Based, Togglable Hairline Rows) */}
           <motion.section id="skills" variants={enterItem} aria-labelledby="skills-heading">
-            <div className="pb-3 mb-5 border-b border-hairline">
-              <h2 id="skills-heading" className="text-sm font-medium text-ink tracking-[-0.01em]">
+            <div className="flex flex-wrap items-baseline justify-between gap-3 pb-3.5 mb-1 border-b border-hairline">
+              <h2 id="skills-heading" className="text-[0.9375rem] font-medium text-ink tracking-[-0.01em]">
                 Technical Capabilities
               </h2>
+              <button
+                type="button"
+                onClick={() =>
+                  sendExplorer({
+                    type: "SET_GROUP_COLLAPSED",
+                    ids: SKILL_MATRIX.map((s) => s.id),
+                    collapsed: allSkillsOpen
+                  })
+                }
+                className="no-print text-[0.875rem] text-ink-muted hover-ink transition-colors duration-150 ease-out"
+              >
+                {allSkillsOpen ? "Collapse all" : "Expand all"}
+              </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-7">
-              {SKILL_MATRIX.map((group) => (
-                <div key={group.category} className="min-w-0">
-                  <h3 className="font-mono text-xs uppercase tracking-[0.06em] text-ink-muted font-medium mb-3">
-                    {group.category}
-                  </h3>
-                  <ul className="space-y-1.5 list-none p-0">
-                    {group.items.map((item) => {
-                      const isMatched = Boolean(
-                        selectedTag && item.toLowerCase().includes(selectedTag.toLowerCase())
-                      );
-                      return (
-                        <li
-                          key={item}
-                          className={`text-sm leading-[1.5] transition-colors duration-150 ease-out ${
-                            isMatched ? "text-ink font-medium" : "text-ink-secondary"
+            <div className="divide-y divide-hairline">
+              {SKILL_MATRIX.map((group) => {
+                const open = isOpen(group.id);
+                const panelId = `${group.id}-panel`;
+                return (
+                  <div key={group.id} className="py-3.5">
+                    <button
+                      type="button"
+                      aria-expanded={open}
+                      aria-controls={panelId}
+                      onClick={() => sendExplorer({ type: "TOGGLE_ITEM", id: group.id })}
+                      className="tap-press hover-surface w-full text-start -mx-3 px-3 py-2 rounded-xl flex items-baseline justify-between gap-4 cursor-pointer bg-transparent border-0"
+                    >
+                      <h3 className="text-base sm:text-[1.0625rem] font-medium text-ink tracking-[-0.015em]">
+                        {group.category}
+                      </h3>
+
+                      <div className="flex items-center gap-2.5 shrink-0">
+                        <span className="text-[0.875rem] text-ink-muted tabular-nums">
+                          {group.items.length}
+                        </span>
+                        <ChevronDownIcon
+                          className={`no-print w-4 h-4 text-ink-muted transition-transform duration-200 ease-[cubic-bezier(0.2,0,0,1)] ${
+                            open ? "rotate-180" : ""
                           }`}
-                        >
-                          {item}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              ))}
+                        />
+                      </div>
+                    </button>
+
+                    <CollapsiblePanel id={panelId} isOpen={open}>
+                      <ul className="pt-2.5 pb-1 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 list-none p-0 m-0">
+                        {group.items.map((item) => {
+                          const isMatched = Boolean(
+                            selectedTag && item.toLowerCase().includes(selectedTag.toLowerCase())
+                          );
+                          return (
+                            <li
+                              key={item}
+                              className={`flex items-baseline gap-2.5 text-[0.96875rem] sm:text-base leading-[1.55] transition-colors duration-150 ease-out ${
+                                isMatched
+                                  ? "text-ink font-medium underline decoration-dotted underline-offset-[3px]"
+                                  : "text-ink-secondary"
+                              }`}
+                            >
+                              <span aria-hidden="true" className="text-ink-muted select-none">–</span>
+                              <span>{item}</span>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </CollapsiblePanel>
+                  </div>
+                );
+              })}
             </div>
           </motion.section>
 
-          {/* Education Section */}
+          {/* Education Section (Most recent open by default; rest click-to-open) */}
           <motion.section id="education" variants={enterItem} aria-labelledby="education-heading">
-            <div className="pb-3 mb-2 border-b border-hairline">
-              <h2 id="education-heading" className="text-sm font-medium text-ink tracking-[-0.01em]">
+            <div className="flex flex-wrap items-baseline justify-between gap-3 pb-3.5 mb-1 border-b border-hairline">
+              <h2 id="education-heading" className="text-[0.9375rem] font-medium text-ink tracking-[-0.01em]">
                 Education
               </h2>
+              <button
+                type="button"
+                onClick={() =>
+                  sendExplorer({
+                    type: "SET_GROUP_COLLAPSED",
+                    ids: EDUCATION_DATA.map((ed) => ed.id),
+                    collapsed: allEduOpen
+                  })
+                }
+                className="no-print text-[0.875rem] text-ink-muted hover-ink transition-colors duration-150 ease-out"
+              >
+                {allEduOpen ? "Collapse all" : "Expand all"}
+              </button>
             </div>
 
             <div className="divide-y divide-hairline">
               {EDUCATION_DATA.map((edu) => {
                 const matchesTag = !selectedTag || edu.tags.includes(selectedTag);
+                const open = isOpen(edu.id);
+                const panelId = `${edu.id}-panel`;
                 return (
                   <article
-                    key={`${edu.degree}-${edu.year}`}
-                    className={`py-5 transition-opacity duration-150 ease-out ${
+                    key={edu.id}
+                    className={`py-4 transition-opacity duration-150 ease-out ${
                       selectedTag && !matchesTag ? "opacity-35" : ""
                     }`}
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
-                      <h3 className="text-[0.96875rem] font-medium text-ink tracking-[-0.01em]">
-                        {edu.degree}
-                      </h3>
-                      <span className="font-mono text-xs text-ink-muted tabular-nums shrink-0">
-                        {edu.year}
-                      </span>
-                    </div>
+                    <button
+                      type="button"
+                      aria-expanded={open}
+                      aria-controls={panelId}
+                      onClick={() => sendExplorer({ type: "TOGGLE_ITEM", id: edu.id })}
+                      className="tap-press hover-surface w-full text-start -mx-3 px-3 py-2.5 rounded-xl flex items-start justify-between gap-3 cursor-pointer bg-transparent border-0"
+                    >
+                      <div className="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4">
+                        <div className="min-w-0">
+                          <h3 className="text-base sm:text-[1.0625rem] font-medium text-ink tracking-[-0.015em] leading-[1.35]">
+                            {edu.degree}
+                          </h3>
+                          <p className="mt-0.5 text-[0.9375rem] text-ink-muted">
+                            {edu.institution}
+                          </p>
+                        </div>
 
-                    <p className="text-sm text-ink-muted mb-2.5">
-                      {edu.institution}
-                    </p>
+                        <span className="text-[0.875rem] text-ink-muted tabular-nums shrink-0">
+                          {edu.year}
+                        </span>
+                      </div>
 
-                    <p className="text-sm text-ink-secondary leading-[1.6] text-pretty mb-3.5">
-                      {edu.thesis}
-                    </p>
+                      <ChevronDownIcon
+                        className={`no-print w-4 h-4 text-ink-muted shrink-0 mt-1 transition-transform duration-200 ease-[cubic-bezier(0.2,0,0,1)] ${
+                          open ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
 
-                    <div className="flex flex-wrap gap-1.5">
-                      {edu.tags.map((tag) => {
-                        const isTagSelected = selectedTag === tag;
-                        return (
-                          <button
-                            key={tag}
-                            type="button"
-                            aria-pressed={isTagSelected}
-                            onClick={() => sendExplorer({ type: "TOGGLE_TAG", tag })}
-                            className={`tap-press px-2.5 py-1 min-h-[28px] rounded-md font-mono text-xs transition-colors duration-150 ease-out ${
-                              isTagSelected
-                                ? "bg-ink text-canvas font-medium"
-                                : "bg-surface text-ink-muted hover-ink"
-                            }`}
-                          >
-                            {tag}
-                          </button>
-                        );
-                      })}
-                    </div>
+                    <CollapsiblePanel id={panelId} isOpen={open}>
+                      <div className="pt-2.5 pb-1.5">
+                        <p className="text-[0.96875rem] sm:text-base text-ink-secondary leading-[1.65] text-pretty mb-4 max-w-[58ch]">
+                          {edu.thesis}
+                        </p>
+
+                        <div className="flex flex-wrap gap-1.5">
+                          {edu.tags.map((tag) => {
+                            const isTagSelected = selectedTag === tag;
+                            return (
+                              <button
+                                key={tag}
+                                type="button"
+                                aria-pressed={isTagSelected}
+                                onClick={() => sendExplorer({ type: "TOGGLE_TAG", tag })}
+                                className={`tap-press px-2.5 py-1 min-h-[30px] rounded-md text-[0.8125rem] font-medium transition-colors duration-150 ease-out ${
+                                  isTagSelected
+                                    ? "bg-ink text-canvas"
+                                    : "bg-surface text-ink-secondary hover-ink"
+                                }`}
+                              >
+                                {tag}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </CollapsiblePanel>
                   </article>
                 );
               })}
@@ -1198,12 +1418,12 @@
         >
           <div
             id="footer-container-inner"
-            className="w-full h-full max-w-[600px] mx-auto px-5 sm:px-6 pt-14 sm:pt-20 safe-bottom flex flex-col justify-between text-start"
+            className="w-full h-full max-w-[768px] mx-auto px-5 sm:px-8 pt-14 sm:pt-20 safe-bottom flex flex-col justify-between text-start"
           >
             <div className="my-auto">
               <p
                 id="contact"
-                className="font-mono text-xs uppercase tracking-[0.08em] text-footer-muted mb-4"
+                className="font-medium text-xs uppercase tracking-[0.08em] text-footer-muted mb-4"
               >
                 Contact
               </p>
@@ -1237,8 +1457,8 @@
               </div>
             </div>
 
-            <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-xs font-medium text-footer-muted">
-              <span>© 2026 <span style={{ fontWeight: 'bold', color: 'white' }}>Jakub Pacocha</span>. All rights reserved.</span>
+            <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-[0.8125rem] text-footer-muted">
+              <span>© 2026 <span className="font-semibold text-footer-ink">Jakub Pacocha</span>. All rights reserved.</span>
               <span>Bydgoszcz, Poland</span>
             </div>
           </div>

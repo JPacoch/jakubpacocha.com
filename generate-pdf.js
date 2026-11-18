@@ -66,6 +66,9 @@ function createPdfPipelineMachine() {
       if (window.__APP_MACHINES__ && typeof window.__APP_MACHINES__.resetAll === 'function') {
         window.__APP_MACHINES__.resetAll();
       }
+      if (window.__APP_MACHINES__ && window.__APP_MACHINES__.cvExplorer) {
+        window.__APP_MACHINES__.cvExplorer.send('EXPAND_ALL');
+      }
 
       const sheet = document.querySelector('#experience').parentElement;
       document.body.innerHTML = '';

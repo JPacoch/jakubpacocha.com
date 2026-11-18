@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
 
@@ -50,7 +50,6 @@
           },
           fontFamily: {
             sans: ['Geist', 'Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
-            mono: ['"Geist Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
           },
         },
       },
@@ -74,7 +73,7 @@
       --color-ink-secondary: #4a4a52;
       --color-ink-muted: #63636d;
       --color-hairline: rgba(17, 17, 19, 0.08);
-      --color-underline: rgba(17, 17, 19, 0.24);
+      --color-underline: rgba(17, 17, 19, 0.38);
       --color-underline-hover: #111113;
 
       --color-badge-bg: #fce7f3;
@@ -105,36 +104,36 @@
     }
 
     html[data-theme="dark"] {
-      /* Dark Mode Palette — Verified WCAG AA */
-      --color-canvas: #0c0c0e;
-      --color-surface: #16161a;
-      --color-surface-hover: #1e1e24;
-      --color-ink: #fafafa;
-      --color-ink-secondary: #b4b4be;
-      --color-ink-muted: #9494a0;
-      --color-hairline: rgba(250, 250, 250, 0.09);
-      --color-underline: rgba(250, 250, 250, 0.28);
-      --color-underline-hover: #fafafa;
+      /* Dark Mode Off-Black Palette (#2C2C2C) — Verified WCAG AA */
+      --color-canvas: #2c2c2c;
+      --color-surface: #353538;
+      --color-surface-hover: #3e3e42;
+      --color-ink: #f5f5f5;
+      --color-ink-secondary: #d4d4d8;
+      --color-ink-muted: #b4b4bc;
+      --color-hairline: rgba(255, 255, 255, 0.1);
+      --color-underline: rgba(255, 255, 255, 0.42);
+      --color-underline-hover: #f5f5f5;
 
-      --color-badge-bg: #3b1226;
-      --color-badge-text: #f9a8d4;
+      --color-badge-bg: #501b36;
+      --color-badge-text: #fbcfe8;
 
-      /* Emerging Curtain Footer (Elevated Charcoal in Dark Mode) */
-      --color-footer-bg: #141418;
-      --color-footer-ink: #fafafa;
+      /* Emerging Curtain Footer (Deeper Charcoal under #2C2C2C) */
+      --color-footer-bg: #1e1e20;
+      --color-footer-ink: #f5f5f5;
       --color-footer-secondary: #d4d4d8;
-      --color-footer-muted: #a1a1aa;
+      --color-footer-muted: #a8a8b2;
 
-      /* Contribution Scale (Dark) */
-      --contrib-0: #222228;
-      --contrib-1: #14532d;
-      --contrib-2: #166534;
-      --contrib-3: #16a34a;
-      --contrib-4: #22c55e;
+      /* Contribution Scale (Off-Black Dark) */
+      --contrib-0: #3a3a3e;
+      --contrib-1: #1f5e3b;
+      --contrib-2: #22804b;
+      --contrib-3: #22a858;
+      --contrib-4: #4ade80;
 
-      --shadow-tile: 0px 0px 0px 1px oklch(1 0 0 / 0.09);
-      --shadow-paper: 0px 0px 0px 1px oklch(1 0 0 / 0.11);
-      --shadow-main-curtain: 0px 24px 64px rgba(0, 0, 0, 0.6);
+      --shadow-tile: 0px 0px 0px 1px oklch(1 0 0 / 0.1);
+      --shadow-paper: 0px 0px 0px 1px oklch(1 0 0 / 0.12);
+      --shadow-main-curtain: 0px 24px 64px rgba(0, 0, 0, 0.45);
       --main-edge-ring: rgba(255, 255, 255, 0.08);
     }
 
@@ -169,13 +168,14 @@
       text-wrap: pretty;
     }
 
-    /* Crisp inline editorial links */
+    /* Crisp Apple-style dotted underlines */
     .inline-link {
       color: var(--color-ink);
       font-weight: 500;
-      text-decoration: underline;
-      text-underline-position: from-font;
-      text-decoration-thickness: from-font;
+      text-decoration-line: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
       text-decoration-color: var(--color-underline);
       transition-property: color, text-decoration-color;
       transition-duration: 150ms;
@@ -184,9 +184,10 @@
 
     .muted-link {
       color: var(--color-ink-muted);
-      text-decoration: underline;
-      text-underline-position: from-font;
-      text-decoration-thickness: from-font;
+      text-decoration-line: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
       text-decoration-color: var(--color-underline);
       transition-property: color, text-decoration-color;
       transition-duration: 150ms;
@@ -900,18 +901,18 @@
             <div className="min-w-0">
               <h1
                 id="identity-name"
-                className="text-[1.05rem] font-medium text-ink tracking-[-0.015em] leading-[1.35]"
+                className="text-xl sm:text-[1.375rem] font-medium text-ink tracking-[-0.02em] leading-[1.3]"
               >
                 Jakub Pacocha
               </h1>
-              <p className="text-[0.9375rem] text-ink-muted leading-[1.4]">
+              <p className="text-base text-ink-muted leading-[1.45]">
                 AI &amp; Software Engineer
               </p>
               <p
                 data-machine="telemetryClock"
                 data-state={clockState.value}
                 data-timezone={clockState.context.timezone}
-                className="mt-2 font-mono text-xs text-ink-muted tabular-nums"
+                className="mt-2 text-[0.8125rem] text-ink-muted tabular-nums"
               >
                 Bydgoszcz / {clockState.context.formatted} {clockState.context.timezone}
               </p>
@@ -921,10 +922,10 @@
             <div className="flex items-center gap-1 shrink-0 -me-1.5">
               <a
                 href="cv.html"
-                className="tap-press hover-surface px-2.5 min-h-[38px] rounded-lg inline-flex items-center gap-1 text-xs font-mono font-medium text-ink-muted"
+                className="tap-press hover-surface px-2.5 min-h-[40px] rounded-lg inline-flex items-center gap-1 text-[0.875rem] font-medium text-ink-muted"
               >
                 <span>CV</span>
-                <ArrowUpRightIcon className="w-3 h-3" />
+                <ArrowUpRightIcon className="w-3.5 h-3.5" />
               </a>
 
               <a
@@ -932,7 +933,7 @@
                 download
                 aria-label="Download CV as PDF"
                 title="Download CV (PDF)"
-                className="tap-press hover-surface w-[38px] h-[38px] rounded-lg inline-flex items-center justify-center text-ink-muted"
+                className="tap-press hover-surface w-[40px] h-[40px] rounded-lg inline-flex items-center justify-center text-ink-muted"
               >
                 <FileTextIcon className="w-4 h-4" />
               </a>
@@ -944,7 +945,7 @@
                 onClick={onToggleTheme}
                 aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
                 aria-pressed={theme === "dark"}
-                className="tap-press hover-surface w-[38px] h-[38px] rounded-lg inline-flex items-center justify-center text-ink-muted"
+                className="tap-press hover-surface w-[40px] h-[40px] rounded-lg inline-flex items-center justify-center text-ink-muted"
               >
                 <IconSwap activeKey={theme}>
                   {theme === "dark" ? <SunIcon /> : <MoonIcon />}
@@ -953,10 +954,10 @@
             </div>
           </motion.header>
 
-          {/* Direct, Human, Minimal Bio Prose */}
+          {/* Direct, Human, Minimal Bio Prose (58ch optimal reading measure) */}
           <motion.div
             variants={enterItem}
-            className="space-y-4 text-[0.96875rem] sm:text-base text-ink-secondary leading-[1.68] text-pretty"
+            className="space-y-4 text-base sm:text-[1.0625rem] text-ink-secondary leading-[1.7] text-pretty max-w-[58ch]"
           >
             <p>
               Currently an AI &amp; Software Engineer at{" "}
@@ -987,19 +988,18 @@
 
             <p className="pt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1">
               <span>Reach me at</span>
-              <a href="mailto:pacochp@gmail.com" className="inline-link">
-                pacochp@gmail.com
-              </a>
               <button
                 type="button"
                 onClick={handleCopyEmail}
-                aria-label={copied ? "Email copied" : "Copy email address"}
-                title={copied ? "Copied" : "Copy email"}
-                className="tap-press hover-surface relative inline-flex items-center justify-center w-7 h-7 -my-1 rounded-md text-ink-muted after:content-[''] after:absolute after:-inset-2"
+                aria-label={copied ? "Email copied to clipboard" : "Copy pacochp@gmail.com to clipboard"}
+                className="tap-press hover-surface inline-flex items-center gap-1.5 px-1.5 -mx-1.5 py-0.5 rounded-md cursor-pointer bg-transparent border-0 text-inherit"
               >
-                <IconSwap activeKey={copied ? "check" : "copy"}>
-                  {copied ? <CheckIcon className="w-3.5 h-3.5 text-ink" /> : <CopyIcon />}
-                </IconSwap>
+                <span className="inline-link">pacochp@gmail.com</span>
+                <span className="inline-flex items-center text-ink-muted">
+                  <IconSwap activeKey={copied ? "check" : "copy"}>
+                    {copied ? <CheckIcon className="w-3.5 h-3.5 text-ink" /> : <CopyIcon />}
+                  </IconSwap>
+                </span>
               </button>
               <span>or on</span>
               <a
@@ -1203,7 +1203,7 @@
           <div
             role="group"
             aria-label="Last 30 days of GitHub contributions"
-            className="grid grid-cols-[repeat(30,minmax(0,1fr))] gap-[3px] sm:gap-[5px] items-end h-7 mb-4"
+            className="grid grid-cols-[repeat(30,minmax(0,1fr))] gap-[3px] sm:gap-[6px] items-end h-7 mb-4"
           >
             {bars.map((day, idx) => {
               const isDayPinned = Boolean(pinnedDay && pinnedDay.date === day.date);
@@ -1212,7 +1212,7 @@
                   <span
                     key={day.date}
                     aria-hidden="true"
-                    className={`block w-full h-6 rounded-full ${isLoading ? "motion-safe:animate-pulse" : "opacity-50"}`}
+                    className={`block w-full max-w-[10px] mx-auto h-6 rounded-full ${isLoading ? "motion-safe:animate-pulse" : "opacity-50"}`}
                     style={{ backgroundColor: "var(--contrib-0)" }}
                   />
                 );
@@ -1240,7 +1240,7 @@
                     send({ type: "TOGGLE_PIN_DAY", day });
                   }}
                   onKeyDown={(e) => handleKeyDown(e, idx, day)}
-                  className={`contrib-pill origin-bottom w-full h-6 p-0 border-0 rounded-full cursor-pointer transition-transform duration-150 ease-out ${
+                  className={`contrib-pill origin-bottom w-full max-w-[10px] mx-auto h-6 p-0 border-0 rounded-full cursor-pointer transition-transform duration-150 ease-out ${
                     isDayPinned ? "ring-2 ring-ink ring-offset-1 ring-offset-canvas scale-y-[1.15]" : ""
                   }`}
                   style={{ backgroundColor: getLevelVar(day) }}
@@ -1251,8 +1251,8 @@
           </div>
 
           {/* Two clean hairline metric rows (Charles Shin layout) */}
-          <div className="divide-y divide-hairline border-t border-hairline text-sm">
-            <div className="py-2.5 flex items-center justify-between gap-4">
+          <div className="divide-y divide-hairline border-t border-hairline text-[0.9375rem]">
+            <div className="py-3 flex items-center justify-between gap-4">
               <span className="text-ink-muted" role="status" aria-live="polite">
                 {activeDay
                   ? `${formatShortDate(activeDay.date)}${isPinned && pinnedDay && pinnedDay.date === activeDay.date ? " (pinned)" : ""}`
@@ -1263,7 +1263,7 @@
                   <button
                     type="button"
                     onClick={() => send("UNPIN_DAY")}
-                    className="text-xs font-mono text-ink-muted hover-ink underline"
+                    className="muted-link text-[0.875rem] bg-transparent border-0 p-0 cursor-pointer"
                   >
                     Clear
                   </button>
@@ -1272,12 +1272,12 @@
                   <button
                     type="button"
                     onClick={() => send("RETRY")}
-                    className="text-xs font-mono text-ink underline"
+                    className="inline-link text-[0.875rem] bg-transparent border-0 p-0 cursor-pointer"
                   >
                     Retry
                   </button>
                 ) : (
-                  <span className="font-mono text-xs sm:text-[0.8125rem] text-ink-secondary tabular-nums">
+                  <span className="text-[0.875rem] text-ink-secondary tabular-nums">
                     {isLoading
                       ? "Syncing…"
                       : activeDay
@@ -1288,16 +1288,16 @@
               </div>
             </div>
 
-            <div className="py-2.5 flex items-center justify-between gap-4">
+            <div className="py-3 flex items-center justify-between gap-4">
               <span className="text-ink-muted">Last 12 months</span>
               <a
                 href="https://github.com/JPacoch"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-mono text-xs sm:text-[0.8125rem] text-ink-secondary hover-ink tabular-nums inline-flex items-center gap-1 transition-colors duration-150 ease-out"
+                className="text-[0.875rem] text-ink-secondary hover-ink tabular-nums inline-flex items-center gap-1 transition-colors duration-150 ease-out"
               >
                 <span>{isLoading ? "—" : isError ? "github.com/JPacoch" : `${data.yearTotal} contributions`}</span>
-                <ArrowUpRightIcon className="w-3 h-3 text-ink-muted" />
+                <ArrowUpRightIcon className="w-3.5 h-3.5 text-ink-muted" />
               </a>
             </div>
           </div>
@@ -1434,10 +1434,10 @@
           aria-labelledby="projects-heading"
         >
           {/* Minimal Section Header + Inline Underline Filter */}
-          <div className="flex flex-wrap items-baseline justify-between gap-3 pb-3 mb-3 border-b border-hairline">
+          <div className="flex flex-wrap items-baseline justify-between gap-3 pb-3.5 mb-3 border-b border-hairline">
             <h2
               id="projects-heading"
-              className="text-sm font-medium text-ink tracking-[-0.01em]"
+              className="text-[0.9375rem] font-medium text-ink tracking-[-0.01em]"
             >
               Projects
             </h2>
@@ -1445,7 +1445,7 @@
             <div
               role="tablist"
               aria-label="Filter projects by category"
-              className="flex flex-wrap items-center gap-3.5"
+              className="flex flex-wrap items-center gap-4"
             >
               {PROJECT_CATEGORIES.map((cat, idx) => {
                 const isSelected = activeCategory === cat;
@@ -1460,7 +1460,7 @@
                     tabIndex={isSelected ? 0 : -1}
                     onClick={() => send({ type: "SELECT_CATEGORY", category: cat })}
                     onKeyDown={(e) => handleTabKeyDown(e, idx)}
-                    className={`relative py-1 text-xs font-medium transition-colors duration-150 ease-out ${
+                    className={`relative py-1 text-[0.8125rem] font-medium transition-colors duration-150 ease-out ${
                       isSelected ? "text-ink" : "text-ink-muted hover-ink"
                     }`}
                   >
@@ -1478,58 +1478,69 @@
             </div>
           </div>
 
-          {/* Minimal Focus-Dimming Row List */}
-          <motion.div
+          {/* Smooth Cross-Fading & Micro-Staggered Project List (Zero layout/CSS transform collision) */}
+          <div
             id="projects-tabpanel"
             role="tabpanel"
             aria-label={`${activeCategory} projects`}
-            layout={!reduce}
-            className="focus-list -mx-3 flex flex-col"
+            className="-mx-3"
           >
-            <AnimatePresence initial={false} mode="popLayout" onExitComplete={completeTransition}>
-              {filteredProjects.map((proj) => (
-                <motion.a
-                  layout={!reduce}
-                  key={proj.id}
-                  href={proj.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onMouseEnter={() => send({ type: "INSPECT_PROJECT", id: proj.id })}
-                  onMouseLeave={() => send("LEAVE_PROJECT")}
-                  onFocus={() => send({ type: "INSPECT_PROJECT", id: proj.id })}
-                  onBlur={() => send("LEAVE_PROJECT")}
-                  initial={reduce ? { opacity: 0 } : { opacity: 0, y: 8, filter: "blur(4px)" }}
-                  animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={reduce
-                    ? { opacity: 0, transition: { duration: 0.15, ease: "easeOut" } }
-                    : { opacity: 0, y: -8, filter: "blur(4px)", transition: { duration: 0.15, ease: "easeOut" } }}
-                  transition={{ duration: 0.24, ease: "easeOut" }}
-                  className="focus-list-item tap-press flex items-center justify-between gap-3.5 px-3 py-3 rounded-xl transition-[opacity,background-color,transform] duration-150 ease-out min-w-0"
-                >
-                  <div className="flex items-center gap-3.5 min-w-0">
-                    <span className="icon-tile shrink-0 w-[38px] h-[38px] rounded-[10px] inline-flex items-center justify-center">
-                      <ProjectIcon type={proj.icon} />
-                    </span>
-                    <div className="min-w-0">
-                      <div className="text-[0.9375rem] font-medium text-ink leading-[1.35] tracking-[-0.01em] truncate">
-                        {proj.title}
+            <AnimatePresence initial={false} mode="wait" onExitComplete={completeTransition}>
+              <motion.div
+                key={activeCategory}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0.12, ease: "easeOut" } }}
+                transition={{ duration: 0.16, ease: "easeOut" }}
+                className="focus-list flex flex-col"
+              >
+                {filteredProjects.map((proj, idx) => (
+                  <motion.div
+                    key={proj.id}
+                    initial={reduce ? { opacity: 0 } : { opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.22,
+                      delay: reduce ? 0 : idx * 0.03,
+                      ease: [0.2, 0, 0, 1]
+                    }}
+                  >
+                    <a
+                      href={proj.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onMouseEnter={() => send({ type: "INSPECT_PROJECT", id: proj.id })}
+                      onMouseLeave={() => send("LEAVE_PROJECT")}
+                      onFocus={() => send({ type: "INSPECT_PROJECT", id: proj.id })}
+                      onBlur={() => send("LEAVE_PROJECT")}
+                      className="focus-list-item tap-press flex items-center justify-between gap-4 px-3 py-3.5 rounded-xl transition-[opacity,background-color,transform] duration-150 ease-out min-w-0"
+                    >
+                      <div className="flex items-center gap-4 min-w-0">
+                        <span className="icon-tile shrink-0 w-10 h-10 rounded-[10px] inline-flex items-center justify-center">
+                          <ProjectIcon type={proj.icon} />
+                        </span>
+                        <div className="min-w-0">
+                          <div className="text-base font-medium text-ink leading-[1.35] tracking-[-0.015em] truncate">
+                            {proj.title}
+                          </div>
+                          <div className="text-[0.9375rem] text-ink-muted leading-[1.45] truncate">
+                            {proj.desc}
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-[0.84375rem] text-ink-muted leading-[1.4] truncate">
-                        {proj.desc}
-                      </div>
-                    </div>
-                  </div>
 
-                  <div className="flex items-center gap-2 shrink-0">
-                    <span className="hidden sm:inline font-mono text-xs text-ink-muted">
-                      {proj.type}
-                    </span>
-                    <ArrowUpRightIcon className="row-arrow w-3.5 h-3.5 text-ink-muted opacity-60 sm:opacity-0 transition-[opacity,transform] duration-150 ease-out" />
-                  </div>
-                </motion.a>
-              ))}
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className="hidden sm:inline text-[0.875rem] text-ink-muted">
+                          {proj.type}
+                        </span>
+                        <ArrowUpRightIcon className="row-arrow w-4 h-4 text-ink-muted opacity-60 sm:opacity-0 transition-[opacity,transform] duration-150 ease-out" />
+                      </div>
+                    </a>
+                  </motion.div>
+                ))}
+              </motion.div>
             </AnimatePresence>
-          </motion.div>
+          </div>
         </motion.section>
       );
     };
@@ -1598,10 +1609,10 @@
           data-hovered-essay={hoveredEssayId || undefined}
           aria-labelledby="writing-heading"
         >
-          <div className="flex items-baseline justify-between gap-4 pb-3 mb-3 border-b border-hairline">
+          <div className="flex items-baseline justify-between gap-4 pb-3.5 mb-3 border-b border-hairline">
             <h2
               id="writing-heading"
-              className="text-sm font-medium text-ink tracking-[-0.01em]"
+              className="text-[0.9375rem] font-medium text-ink tracking-[-0.01em]"
             >
               Writing
             </h2>
@@ -1609,7 +1620,7 @@
               href="https://fromthecabinet.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="muted-link text-xs font-medium"
+              className="muted-link text-[0.8125rem] font-medium"
             >
               View all
             </a>
@@ -1626,26 +1637,26 @@
                 onMouseLeave={() => sendWriting("LEAVE_ESSAY")}
                 onFocus={() => sendWriting({ type: "HOVER_ESSAY", id: essay.id })}
                 onBlur={() => sendWriting("LEAVE_ESSAY")}
-                className="focus-list-item tap-press flex items-center justify-between gap-4 px-3 py-3 rounded-xl transition-[opacity,background-color,transform] duration-150 ease-out min-w-0"
+                className="focus-list-item tap-press flex items-center justify-between gap-4 px-3 py-3.5 rounded-xl transition-[opacity,background-color,transform] duration-150 ease-out min-w-0"
               >
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-[0.9375rem] font-medium text-ink leading-[1.35] tracking-[-0.01em]">
+                    <span className="text-base font-medium text-ink leading-[1.35] tracking-[-0.015em]">
                       {essay.title}
                     </span>
                     {essay.isNew && (
-                      <span className="px-1.5 py-0.5 rounded-full bg-badge-bg text-badge-text font-mono text-[0.6875rem] leading-none font-medium tracking-[0.04em] uppercase">
+                      <span className="px-2 py-0.5 rounded-full bg-badge-bg text-badge-text text-[0.6875rem] leading-none font-medium tracking-[0.05em] uppercase">
                         New
                       </span>
                     )}
                   </div>
-                  <div className="mt-0.5 text-xs text-ink-muted font-mono">
+                  <div className="mt-0.5 text-[0.875rem] text-ink-muted">
                     {essay.category}
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3.5 shrink-0">
-                  <span className="font-mono text-xs text-ink-muted tabular-nums">
+                <div className="flex items-center gap-4 shrink-0">
+                  <span className="text-[0.875rem] text-ink-muted tabular-nums">
                     {essay.date}
                   </span>
                   <PaperThumbnail variant={idx} />
@@ -1667,11 +1678,11 @@
 
     const FocusIndex = ({ enterItem }) => (
       <motion.section id="about" variants={enterItem} aria-labelledby="focus-heading">
-        <div className="flex items-baseline justify-between gap-4 pb-3 mb-1 border-b border-hairline">
-          <h2 id="focus-heading" className="text-sm font-medium text-ink tracking-[-0.01em]">
+        <div className="flex items-baseline justify-between gap-4 pb-3.5 mb-1 border-b border-hairline">
+          <h2 id="focus-heading" className="text-[0.9375rem] font-medium text-ink tracking-[-0.01em]">
             Focus
           </h2>
-          <a href="cv.html" className="muted-link text-xs font-medium">
+          <a href="cv.html" className="muted-link text-[0.875rem] font-medium">
             Full CV
           </a>
         </div>
@@ -1680,12 +1691,12 @@
           {FOCUS_ITEMS.map((item) => (
             <div
               key={item.id}
-              className="py-3 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4"
+              className="py-3.5 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4"
             >
-              <dt className="text-[0.9375rem] font-medium text-ink tracking-[-0.01em]">
+              <dt className="text-base font-medium text-ink tracking-[-0.015em]">
                 {item.area}
               </dt>
-              <dd className="font-mono text-xs text-ink-muted">
+              <dd className="text-[0.875rem] text-ink-muted">
                 {item.stack}
               </dd>
             </div>
@@ -1779,7 +1790,7 @@
         >
           <div
             id="footer-container-inner"
-            className="w-full h-full max-w-[600px] mx-auto px-5 sm:px-6 pt-14 sm:pt-20 safe-bottom flex flex-col justify-between text-start"
+            className="w-full h-full max-w-[768px] mx-auto px-5 sm:px-8 pt-14 sm:pt-20 safe-bottom flex flex-col justify-between text-start"
           >
             <div className="my-auto">
               <p
@@ -1818,8 +1829,8 @@
               </div>
             </div>
 
-            <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-xs font-medium text-footer-muted">
-              <span>© 2026 <span style={{ fontWeight: 'bold', color: 'white' }}>Jakub Pacocha</span>. All rights reserved.</span>
+            <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-[0.8125rem] text-footer-muted">
+              <span>© 2026 <span className="font-semibold text-footer-ink">Jakub Pacocha</span>. All rights reserved.</span>
               <span>Bydgoszcz, Poland</span>
             </div>
           </div>
@@ -1989,7 +2000,7 @@
                 initial="hidden"
                 animate="visible"
                 variants={{ visible: { transition: { staggerChildren: reduce ? 0 : 0.08 } } }}
-                className="max-w-[600px] mx-auto px-5 sm:px-6 safe-top pb-24 sm:pb-28 space-y-14 sm:space-y-16"
+                className="max-w-[768px] mx-auto px-5 sm:px-8 safe-top pb-24 sm:pb-28 space-y-16 sm:space-y-20"
               >
                 <IdentityAndBio
                   theme={theme}
