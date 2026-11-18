@@ -1,0 +1,15 @@
+/* TEAM */
+Author: Jakub Pacocha
+Role: AI & Software Engineer, Writer
+Site: https://jakubpacocha.com
+Email: pacochp@gmail.com
+GitHub: https://github.com/JPacoch
+LinkedIn: https://www.linkedin.com/in/jakubpacocha/
+X: https://x.com/JakubPacocha
+Location: Bydgoszcz, Poland
+
+/* SITE */
+Language: English
+Standards: HTML5, CSS3, ES2022, WCAG 2.2 AA
+Typography: Open Runde
+Updated: 2026-11-18

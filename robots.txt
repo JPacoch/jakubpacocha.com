@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Disallow internal tooling and build helper files if served
+Disallow: /babel-local.js
+Disallow: /generate-pdf.js
+Disallow: /test-babel2.js
+Disallow: /package.json
+Disallow: /bun.lock
+Disallow: /skills-lock.json
+
+Sitemap: https://jakubpacocha.com/sitemap.xml

@@ -1,0 +1,25 @@
+# Jakub Pacocha
+
+> AI & Software Engineer at HERE Technologies and writer at From the Cabinet, based in Bydgoszcz, Poland. Building production RAG architectures, containerized ML infrastructure, and spatial intelligence systems.
+
+## Primary Pages
+
+- [Portfolio](https://jakubpacocha.com/): Overview, live GitHub activity, selected projects, writing, and core focus areas.
+- [Curriculum Vitae](https://jakubpacocha.com/cv.html): Full work experience, technical capabilities, and academic background.
+- [Resume (PDF)](https://jakubpacocha.com/assets/resume.pdf): Downloadable 2-page A4 resume.
+
+## Selected Projects
+
+- [From the Cabinet](https://fromthecabinet.com/): Philosophical & theological essay archive.
+- [WideAwake](https://wideawake.jakubpacocha.com/): Zero-dependency Windows keep-awake utility (C# / .NET).
+- [Ostrzółka](https://ostrzolka.vercel.app/): Municipal heritage database for NGOs.
+- [OweWho](https://owewho.jakubpacocha.com/): Group expense & travel debt settlement web app.
+- [Cabinet Quotes](https://quotes.fromthecabinet.com/): Distraction-free literary commonplace book.
+- [Gallery](https://gallery.jakubpacocha.com/): Private photography archive.
+
+## Contact & Profiles
+
+- Email: pacochp@gmail.com
+- GitHub: https://github.com/JPacoch
+- LinkedIn: https://www.linkedin.com/in/jakubpacocha/
+- X: https://x.com/JakubPacocha
