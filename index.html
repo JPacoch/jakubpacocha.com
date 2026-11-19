@@ -583,12 +583,24 @@
       }
     }
 
+    .commit-scrub-zone {
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+
     .safe-top {
-      padding-block-start: max(3.5rem, calc(env(safe-area-inset-top) + 2.5rem));
+      padding-block-start: max(1.25rem, calc(env(safe-area-inset-top) + 0.75rem));
+    }
+
+    @media (min-width: 640px) {
+      .safe-top {
+        padding-block-start: max(3.5rem, calc(env(safe-area-inset-top) + 2.5rem));
+      }
     }
 
     .safe-bottom {
-      padding-block-end: max(2rem, env(safe-area-inset-bottom));
+      padding-block-end: max(1.75rem, calc(env(safe-area-inset-bottom) + 0.75rem));
     }
   </style>
 </head>
@@ -1466,81 +1478,93 @@
 
       return (
         <section id="hero" aria-labelledby="identity-name">
-          {/* Quiet Identity Header Row */}
+          {/* Intentional Mobile Top-Bar + Identity Composition; 2-Column Header on Desktop */}
           <motion.header
             variants={enterItem}
-            className="flex items-start justify-between gap-4 mb-10 sm:mb-12"
+            className="flex flex-col-reverse sm:flex-row sm:items-start sm:justify-between gap-7 sm:gap-4 mb-9 sm:mb-12"
           >
             <div className="min-w-0">
               <h1
                 id="identity-name"
-                className="text-[1.375rem] sm:text-[1.5rem] font-semibold text-ink tracking-[-0.02em] leading-[1.3]"
+                className="text-[1.625rem] sm:text-[1.5rem] font-semibold text-ink tracking-[-0.025em] sm:tracking-[-0.02em] leading-[1.2] sm:leading-[1.3]"
               >
                 Jakub Pacocha
               </h1>
-              <p className="mt-0.5 text-[1.0625rem] sm:text-[1.125rem] font-medium text-ink-subtitle leading-[1.45]">
+              <p className="mt-1 sm:mt-0.5 text-[1.0625rem] sm:text-[1.125rem] font-medium text-ink-subtitle leading-[1.4]">
                 AI &amp; Software Engineer
               </p>
               <p
                 data-machine="telemetryClock"
                 data-state={clockState.value}
                 data-timezone={clockState.context.timezone}
-                className="mt-2 text-[0.9375rem] text-ink-muted tabular-nums"
+                className="mt-3 sm:mt-2 inline-flex items-center gap-1.5 text-[0.875rem] sm:text-[0.9375rem] text-ink-muted tabular-nums"
               >
-                Bydgoszcz / <AnimatedClockDigits value={clockState.context.formatted} /> {clockState.context.timezone}
+                <span>Bydgoszcz</span>
+                <span aria-hidden="true" className="opacity-50">/</span>
+                <span>
+                  <AnimatedClockDigits value={clockState.context.formatted} /> {clockState.context.timezone}
+                </span>
               </p>
             </div>
 
-            {/* Compact Right Utility Bar (CV + Sound/Haptics Mute + Theme Toggle) */}
-            <div className="flex items-center gap-1 shrink-0 -me-1.5">
-              <a
-                href="cv.html"
-                className="tap-press hover-surface px-2.5 min-h-[40px] rounded-lg inline-flex items-center gap-1 text-[0.9375rem] font-medium text-ink-muted"
-              >
-                <span>CV</span>
-                <ArrowUpRightIcon className="w-3.5 h-3.5" />
-              </a>
+            {/* Utility Bar: Full-width split chrome on mobile; compact right cluster on desktop */}
+            <nav
+              aria-label="Site utilities"
+              className="flex items-center justify-between sm:justify-end gap-2 sm:gap-1 pb-3.5 sm:pb-0 border-b border-hairline sm:border-0 shrink-0 sm:-me-1.5"
+            >
+              <div className="flex items-center gap-1 -ms-2.5 sm:ms-0">
+                <a
+                  href="cv.html"
+                  className="tap-press hover-surface px-2.5 min-h-[40px] rounded-lg inline-flex items-center gap-1 text-[0.9375rem] font-medium text-ink sm:text-ink-muted"
+                >
+                  <span>CV</span>
+                  <ArrowUpRightIcon className="w-3.5 h-3.5" />
+                </a>
 
-              <a
-                href="assets/resume.pdf"
-                download
-                aria-label="Download CV as PDF"
-                title="Download CV (PDF)"
-                className="tap-press hover-surface w-[40px] h-[40px] rounded-lg inline-flex items-center justify-center text-ink-muted"
-              >
-                <FileTextIcon className="w-4 h-4" />
-              </a>
+                <a
+                  href="assets/resume.pdf"
+                  download
+                  aria-label="Download CV as PDF"
+                  title="Download CV (PDF)"
+                  className="tap-press hover-surface px-2.5 sm:px-0 sm:w-[40px] min-h-[40px] rounded-lg inline-flex items-center justify-center gap-1.5 text-[0.9375rem] font-medium text-ink-muted"
+                >
+                  <FileTextIcon className="w-4 h-4" />
+                  <span className="sm:hidden">PDF</span>
+                </a>
+              </div>
 
-              <span aria-hidden="true" className="w-px h-4 bg-hairline mx-0.5" />
+              <span aria-hidden="true" className="hidden sm:inline-block w-px h-4 bg-hairline mx-0.5" />
 
-              <button
-                type="button"
-                onClick={onToggleHaptics}
-                aria-label={hapticsMuted ? "Unmute click feedback" : "Mute click feedback"}
-                aria-pressed={hapticsMuted}
-                title={hapticsMuted ? "Unmute feedback" : "Mute feedback"}
-                className={`tap-press hover-surface w-[40px] h-[40px] rounded-lg inline-flex items-center justify-center ${
-                  hapticsMuted ? "text-ink-muted opacity-55" : "text-ink-muted"
-                }`}
-              >
-                <IconSwap activeKey={hapticsMuted ? "muted" : "on"}>
-                  {hapticsMuted ? <SpeakerMutedIcon /> : <SpeakerIcon />}
-                </IconSwap>
-              </button>
+              <div className="flex items-center gap-0.5 sm:gap-1 -me-1.5 sm:me-0">
+                <button
+                  type="button"
+                  onClick={onToggleHaptics}
+                  aria-label={hapticsMuted ? "Unmute click feedback" : "Mute click feedback"}
+                  aria-pressed={hapticsMuted}
+                  title={hapticsMuted ? "Unmute feedback" : "Mute feedback"}
+                  className={`tap-press hover-surface w-[40px] h-[40px] rounded-lg inline-flex items-center justify-center ${
+                    hapticsMuted ? "text-ink-muted opacity-55" : "text-ink-muted"
+                  }`}
+                >
+                  <IconSwap activeKey={hapticsMuted ? "muted" : "on"}>
+                    {hapticsMuted ? <SpeakerMutedIcon /> : <SpeakerIcon />}
+                  </IconSwap>
+                </button>
 
-              <button
-                type="button"
-                onClick={onToggleTheme}
-                aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-                aria-pressed={theme === "dark"}
-                title={theme === "dark" ? "Light mode" : "Dark mode"}
-                className="tap-press hover-surface w-[40px] h-[40px] rounded-lg inline-flex items-center justify-center text-ink-muted"
-              >
-                <IconSwap activeKey={theme}>
-                  {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-                </IconSwap>
-              </button>
-            </div>
+                <button
+                  type="button"
+                  onClick={onToggleTheme}
+                  aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                  aria-pressed={theme === "dark"}
+                  title={theme === "dark" ? "Light mode" : "Dark mode"}
+                  className="tap-press hover-surface w-[40px] h-[40px] rounded-lg inline-flex items-center justify-center text-ink-muted"
+                >
+                  <IconSwap activeKey={theme}>
+                    {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+                  </IconSwap>
+                </button>
+              </div>
+            </nav>
           </motion.header>
 
           {/* Direct, Human, Minimal Bio Prose (58ch optimal reading measure) */}
@@ -1710,11 +1734,15 @@
     const CommitGraph = ({ days, hovered, onEnter, onLeave, onSelect, isLoading, isError }) => {
       const reduce = useReducedMotionSafe();
       const [mounted, setMounted] = useState(false);
+      const [isScrubbing, setIsScrubbing] = useState(false);
       const containerRef = useRef(null);
       const barRefs = useRef([]);
       const tooltipRefs = useRef([]);
       const [offsets, setOffsets] = useState([]);
       const [rovingIdx, setRovingIdx] = useState(29);
+      const gestureRef = useRef(null);
+      const holdTimerRef = useRef(null);
+      const lastTouchTimeRef = useRef(0);
 
       const max = useMemo(() => Math.max(...days.map((d) => d.count), 1), [days]);
 
@@ -1753,6 +1781,149 @@
         return () => window.removeEventListener("resize", compute);
       }, [mounted, days]);
 
+      // Dismiss pinned tooltip when tapping outside the graph on touch devices
+      useEffect(() => {
+        if (hovered === null) return;
+        const onDocPointerDown = (e) => {
+          if (e.pointerType === "mouse") return;
+          if (containerRef.current && !containerRef.current.contains(e.target)) {
+            onLeave(true);
+          }
+        };
+        document.addEventListener("pointerdown", onDocPointerDown, true);
+        return () => document.removeEventListener("pointerdown", onDocPointerDown, true);
+      }, [hovered, onLeave]);
+
+      useEffect(() => {
+        const el = containerRef.current;
+        if (!el) return;
+        const onTouchMove = (e) => {
+          if (gestureRef.current && gestureRef.current.scrubbing && e.cancelable) {
+            e.preventDefault();
+          }
+        };
+        el.addEventListener("touchmove", onTouchMove, { passive: false });
+        return () => {
+          el.removeEventListener("touchmove", onTouchMove);
+          if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+        };
+      }, []);
+
+      const getBarIndexFromClientX = useCallback(
+        (clientX) => {
+          const container = containerRef.current;
+          if (!container || !days.length) return 0;
+          const rect = container.getBoundingClientRect();
+          if (rect.width <= 0) return 0;
+          const ratio = (clientX - rect.left) / rect.width;
+          return Math.max(0, Math.min(days.length - 1, Math.floor(ratio * days.length)));
+        },
+        [days.length]
+      );
+
+      const triggerSubtleScrubHaptic = useCallback(() => {
+        if (!isHapticsMuted() && typeof navigator !== "undefined" && typeof navigator.vibrate === "function") {
+          try {
+            navigator.vibrate(4);
+          } catch (e) {}
+        }
+      }, []);
+
+      const enterScrubMode = useCallback(
+        (idx, pointerId) => {
+          const g = gestureRef.current;
+          if (!g || g.scrubbing) return;
+          g.scrubbing = true;
+          g.lastIdx = idx;
+          setIsScrubbing(true);
+          if (containerRef.current && typeof containerRef.current.setPointerCapture === "function") {
+            try {
+              containerRef.current.setPointerCapture(pointerId);
+            } catch (e) {}
+          }
+          setRovingIdx(idx);
+          onEnter(idx, true);
+          triggerSubtleScrubHaptic();
+        },
+        [onEnter, triggerSubtleScrubHaptic]
+      );
+
+      const handleContainerPointerDown = (e) => {
+        if (isLoading || isError || e.pointerType === "mouse") return;
+        const idx = getBarIndexFromClientX(e.clientX);
+        if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+        gestureRef.current = {
+          pointerId: e.pointerId,
+          startX: e.clientX,
+          startY: e.clientY,
+          startIdx: idx,
+          lastIdx: idx,
+          wasSameDay: hovered === idx,
+          scrubbing: false,
+          scrolled: false
+        };
+        holdTimerRef.current = setTimeout(() => {
+          if (gestureRef.current && !gestureRef.current.scrolled) {
+            enterScrubMode(gestureRef.current.startIdx, gestureRef.current.pointerId);
+          }
+        }, 130);
+      };
+
+      const handleContainerPointerMove = (e) => {
+        const g = gestureRef.current;
+        if (!g || g.pointerId !== e.pointerId || e.pointerType === "mouse") return;
+        const dx = Math.abs(e.clientX - g.startX);
+        const dy = Math.abs(e.clientY - g.startY);
+
+        if (!g.scrubbing) {
+          if (dy > 8 && dy > dx) {
+            g.scrolled = true;
+            if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+            return;
+          }
+          if (dx > 6 && dx >= dy) {
+            if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+            const nextIdx = getBarIndexFromClientX(e.clientX);
+            enterScrubMode(nextIdx, e.pointerId);
+            return;
+          }
+          return;
+        }
+
+        if (e.cancelable) e.preventDefault();
+        const nextIdx = getBarIndexFromClientX(e.clientX);
+        if (nextIdx !== g.lastIdx) {
+          g.lastIdx = nextIdx;
+          setRovingIdx(nextIdx);
+          onEnter(nextIdx, true);
+          triggerSubtleScrubHaptic();
+        }
+      };
+
+      const finishTouchGesture = (e, cancelled = false) => {
+        const g = gestureRef.current;
+        if (!g || g.pointerId !== e.pointerId || e.pointerType === "mouse") return;
+        if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+        if (g.scrubbing && containerRef.current && typeof containerRef.current.releasePointerCapture === "function") {
+          try {
+            containerRef.current.releasePointerCapture(e.pointerId);
+          } catch (err) {}
+        }
+        lastTouchTimeRef.current = performance.now();
+        setIsScrubbing(false);
+
+        if (!cancelled && !g.scrolled && !g.scrubbing) {
+          if (g.wasSameDay) {
+            onLeave(true);
+          } else {
+            setRovingIdx(g.startIdx);
+            onEnter(g.startIdx, true);
+            triggerSubtleScrubHaptic();
+          }
+        }
+        gestureRef.current = null;
+      };
+
       const handleKeyDown = (e, i) => {
         if (e.key === "ArrowRight") {
           e.preventDefault();
@@ -1775,7 +1946,16 @@
           ref={containerRef}
           role="group"
           aria-label="Last 30 days of GitHub contributions"
-          className="relative flex gap-[3px] min-[500px]:gap-[6px] sm:gap-[9px]"
+          data-scrubbing={isScrubbing ? "true" : undefined}
+          onPointerDown={handleContainerPointerDown}
+          onPointerMove={handleContainerPointerMove}
+          onPointerUp={(e) => finishTouchGesture(e, false)}
+          onPointerCancel={(e) => finishTouchGesture(e, true)}
+          onContextMenu={(e) => {
+            if (isScrubbing) e.preventDefault();
+          }}
+          style={{ touchAction: isScrubbing ? "none" : "pan-y" }}
+          className="commit-scrub-zone relative flex gap-[3px] min-[500px]:gap-[6px] sm:gap-[9px] py-3 -my-3"
         >
           {days.map((day, i) => {
             if (isLoading || isError) {
@@ -1799,8 +1979,12 @@
               <div
                 key={day.date}
                 className="relative flex-1 h-[22px] min-[500px]:h-[28px] sm:h-[34px] flex items-center"
-                onMouseEnter={() => onEnter(i)}
-                onMouseLeave={() => onLeave(false)}
+                onPointerEnter={(e) => {
+                  if (e.pointerType === "mouse") onEnter(i, true);
+                }}
+                onPointerLeave={(e) => {
+                  if (e.pointerType === "mouse") onLeave(false);
+                }}
               >
                 <button
                   ref={(el) => { barRefs.current[i] = el; }}
@@ -1808,11 +1992,16 @@
                   tabIndex={rovingIdx === i ? 0 : -1}
                   aria-label={`${formatCommitDate(day.date)}: ${day.count > 0 ? `${day.count} contribution${day.count !== 1 ? "s" : ""}` : "No contributions"}`}
                   onFocus={() => {
+                    if (performance.now() - lastTouchTimeRef.current < 450) return;
                     setRovingIdx(i);
                     onEnter(i, false);
                   }}
-                  onBlur={() => onLeave(true)}
+                  onBlur={() => {
+                    if (performance.now() - lastTouchTimeRef.current < 450) return;
+                    onLeave(true);
+                  }}
                   onClick={() => {
+                    if (performance.now() - lastTouchTimeRef.current < 450) return;
                     setRovingIdx(i);
                     onSelect(i);
                   }}
@@ -1838,7 +2027,7 @@
                   ref={(el) => { tooltipRefs.current[i] = el; }}
                   role="tooltip"
                   aria-hidden={!isHovered}
-                  className="absolute bottom-full left-1/2 mb-2 z-50 pointer-events-none"
+                  className="absolute bottom-full left-1/2 mb-3 sm:mb-2 z-50 pointer-events-none"
                   style={{
                     transform: `translateX(calc(-50% + ${offset}px)) translateY(${isHovered || reduce ? "0px" : "4px"})`,
                     opacity: isHovered ? 1 : 0,
@@ -2553,26 +2742,24 @@
           className={`${
             reduce
               ? "relative z-10 w-full bg-footer-bg text-footer-ink"
-              : "fixed bottom-0 inset-x-0 z-0 h-[74dvh] min-h-[480px] sm:h-[64dvh] sm:min-h-[500px] w-full bg-footer-bg text-footer-ink overflow-hidden"
+              : "fixed bottom-0 inset-x-0 z-0 h-[76dvh] min-h-[500px] sm:h-[64dvh] sm:min-h-[500px] w-full bg-footer-bg text-footer-ink overflow-hidden"
           } font-sans flex flex-col justify-between`}
         >
           <div
             id="footer-container-inner"
-            className="w-full h-full max-w-[768px] mx-auto px-5 sm:px-8 pt-14 sm:pt-20 safe-bottom flex flex-col justify-between text-start"
+            className="w-full h-full max-w-[768px] mx-auto px-5 sm:px-8 pt-10 sm:pt-20 safe-bottom flex flex-col justify-between text-start"
           >
             <div className="my-auto">
-
-
-              <h2 className="text-4xl sm:text-7xl font-semibold leading-[1.08] tracking-[-0.03em] text-footer-ink text-balance mb-4">
+              <h2 className="text-4xl sm:text-7xl font-semibold leading-[1.08] tracking-[-0.03em] text-footer-ink text-balance mb-3.5 sm:mb-4">
                 Let’s build something{" "}
                 <span className="text-footer-muted font-medium italic">together.</span>
               </h2>
 
-              <p className="text-base sm:text-[1.0625rem] text-footer-secondary leading-[1.6] text-pretty max-w-[42ch] mb-8">
+              <p className="text-base sm:text-[1.0625rem] text-footer-secondary leading-[1.6] text-pretty max-w-[42ch] mb-6 sm:mb-8">
                 Open to conversations about AI systems, spatial engineering, civic tech and philosophy.
               </p>
 
-              <div className="flex flex-wrap items-center gap-2.5">
+              <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2.5">
                 {channels.map((ch) => (
                   <a
                     key={ch.id}
@@ -2583,7 +2770,7 @@
                     onBlur={() => sendCurtain("BLUR_CHANNEL")}
                     onMouseEnter={() => sendCurtain({ type: "FOCUS_CHANNEL", channel: ch.id })}
                     onMouseLeave={() => sendCurtain("BLUR_CHANNEL")}
-                    className="focus-ring-light tap-press hover-light-pill min-h-[42px] ps-3.5 pe-4 py-2 rounded-full bg-white/10 border border-white/15 text-footer-ink text-[0.9375rem] font-medium inline-flex items-center gap-2"
+                    className="focus-ring-light tap-press hover-light-pill w-full sm:w-auto justify-center sm:justify-start min-h-[46px] sm:min-h-[42px] px-4 sm:ps-3.5 sm:pe-4 py-2.5 sm:py-2 rounded-full bg-white/10 border border-white/15 text-footer-ink text-[0.9375rem] font-medium inline-flex items-center gap-2"
                   >
                     {ch.icon}
                     <span>{ch.label}</span>
@@ -2592,9 +2779,12 @@
               </div>
             </div>
 
-            <div className="pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-base text-footer-muted">
-              <span>© 2026 <span className="font-semibold text-footer-ink">Jakub Pacocha</span>. All rights reserved.</span>
-              <span>Bydgoszcz, Poland</span>
+            <div className="pt-5 sm:pt-6 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-4 text-[0.875rem] sm:text-base text-footer-muted leading-snug">
+              <p className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5 m-0">
+                <span className="whitespace-nowrap">© 2026 <span className="font-semibold text-footer-ink">Jakub Pacocha</span>.</span>
+                <span className="whitespace-nowrap">All rights reserved.</span>
+              </p>
+              <span className="text-[0.8125rem] sm:text-base text-footer-muted/80 sm:text-footer-muted">Bydgoszcz, Poland</span>
             </div>
           </div>
         </footer>
@@ -2799,7 +2989,7 @@
               <div
                 id="footer-spacer"
                 aria-hidden="true"
-                className="h-[74dvh] min-h-[480px] sm:h-[64dvh] sm:min-h-[500px] w-full pointer-events-none"
+                className="h-[76dvh] min-h-[500px] sm:h-[64dvh] sm:min-h-[500px] w-full pointer-events-none"
               />
             )}
 
