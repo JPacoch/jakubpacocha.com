@@ -6,10 +6,10 @@ Live site: [jakubpacocha.com](https://jakubpacocha.com)
 
 ## Overview
 
-A zero-build static personal portfolio and curriculum vitae featuring self-hosted Geist typography, canvas click-spark & tactile audio/haptic feedback, a live GitHub contribution calendar, collapsible CV exploration, and headless Chrome PDF export.
+A zero-build static personal portfolio and curriculum vitae featuring self-hosted Geist typography, canvas click-spark & tactile audio/haptic feedback, a live GitHub contribution calendar, collapsible CV exploration and headless Chrome PDF export.
 
-- **Portfolio (`index.html`)**: Identity header with live animated clock, audio/theme toggles, real-time GitHub contribution strip, filterable project gallery, writing index, focus summary, and GSAP curtain-reveal footer.
-- **Curriculum Vitae (`cv.html`)**: Collapsible work history, technical capabilities, and education entries with live tag filtering and print-ready layout.
+- **Portfolio (`index.html`)**: Identity header with live animated clock, audio/theme toggles, real-time GitHub contribution strip, filterable project gallery, writing index, focus summary and GSAP curtain-reveal footer.
+- **Curriculum Vitae (`cv.html`)**: Collapsible work history, technical capabilities and education entries with live tag filtering and print-ready layout.
 - **Resume Export (`assets/resume.pdf`)**: A4 PDF rendered directly from `cv.html`.
 
 ## Tech Stack

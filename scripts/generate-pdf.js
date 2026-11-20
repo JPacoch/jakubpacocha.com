@@ -78,7 +78,7 @@ function createPdfPipelineMachine() {
         mainEl.style.transform = 'none';
       }
 
-      // Remove fixed curtain spacers, backdrop, footer, and UI-only chrome
+      // Remove fixed curtain spacers, backdrop, footer and UI-only chrome
       ['#footer-spacer', '#footer-container', '#footer-backdrop'].forEach((sel) => {
         const el = document.querySelector(sel);
         if (el) el.remove();
