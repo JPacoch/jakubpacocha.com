@@ -10,7 +10,7 @@ A zero-build static personal portfolio and curriculum vitae featuring self-hoste
 
 - **Portfolio (`index.html`)**: Identity header with live animated clock, audio/theme toggles, real-time GitHub contribution strip, filterable project gallery, writing index, focus summary and GSAP curtain-reveal footer.
 - **Curriculum Vitae (`cv.html`)**: Collapsible work history, technical capabilities and education entries with live tag filtering and print-ready layout.
-- **Resume Export (`assets/resume.pdf`)**: A4 PDF rendered directly from `cv.html`.
+- **Resume Export (`assets/resume.pdf`)**: Purpose-designed, ATS-friendly A4 PDF generated directly from the structured data in `cv.html`.
 
 ## Tech Stack
 
@@ -36,7 +36,10 @@ A zero-build static personal portfolio and curriculum vitae featuring self-hoste
 │   └── fonts/
 │       └── Geist-Variable.woff2
 ├── scripts/
-│   └── generate-pdf.js         # Puppeteer script compiling cv.html -> assets/resume.pdf
+│   ├── generate-pdf.js         # CLI orchestrator compiling cv.html -> assets/resume.pdf
+│   ├── extract-cv.js           # Extracts & validates structured CV data from cv.html
+│   ├── resume-template.js      # Dedicated ATS-friendly A4 HTML/CSS resume template
+│   └── pdf-metadata.js         # Appends standard PDF /Info metadata (Title, Author, etc.)
 ├── robots.txt                  # Crawler directives
 ├── sitemap.xml                 # XML sitemap
 ├── site.webmanifest            # Web app manifest
@@ -49,12 +52,25 @@ A zero-build static personal portfolio and curriculum vitae featuring self-hoste
 
 ## PDF Generation
 
-To recompile `assets/resume.pdf` from `cv.html`:
+`assets/resume.pdf` is generated from `cv.html` as the single source of truth using a dedicated, ATS-friendly A4 resume template (completely separate from the website's visual UI and rendered offline using the bundled `Geist` font).
+
+### Workflow
+
+1. Edit your content in `cv.html` (`EXPERIENCE_DATA`, `EDUCATION_DATA`, `SKILL_MATRIX`, header summary/contact links, or JSON-LD metadata).
+2. Regenerate the PDF:
 
 ```bash
 bun install
 bun run generate-pdf
 ```
+
+*(Works with `npm run generate-pdf` as well; requires Node.js and Puppeteer's bundled Chromium, or set `PUPPETEER_EXECUTABLE_PATH` to a local Chrome/Chromium binary.)*
+
+### Optional CLI Flags
+
+- Inspect the extracted JSON data without rendering a PDF: `node scripts/generate-pdf.js --dump-json`
+- Write to a custom output path: `node scripts/generate-pdf.js --out /path/to/resume.pdf`
+- Save the intermediate resume HTML for inspection: `node scripts/generate-pdf.js --debug-html /tmp/resume.html`
 
 ## License
 
