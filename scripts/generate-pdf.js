@@ -1,139 +1,200 @@
+'use strict';
+
+const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const puppeteer = require('puppeteer');
+const { extractCvData } = require('./extract-cv');
+const { renderResumeHtml } = require('./resume-template');
+const { applyPdfMetadata } = require('./pdf-metadata');
 
-function createPdfPipelineMachine() {
-  const transitions = {
-    idle: { START: 'launchingBrowser' },
-    launchingBrowser: { BROWSER_READY: 'loadingDocument', FAIL: 'failed' },
-    loadingDocument: { DOCUMENT_LOADED: 'awaitingHydration', FAIL: 'failed' },
-    awaitingHydration: { HYDRATED: 'applyingPrintLayout', FAIL: 'failed' },
-    applyingPrintLayout: { LAYOUT_APPLIED: 'renderingPdf', FAIL: 'failed' },
-    renderingPdf: { PDF_WRITTEN: 'closingBrowser', FAIL: 'failed' },
-    closingBrowser: { CLOSED: 'completed' },
-    completed: {},
-    failed: {}
+const REPO_ROOT = path.resolve(__dirname, '..');
+const DEFAULT_SOURCE = path.join(REPO_ROOT, 'cv.html');
+const DEFAULT_OUTPUT = path.join(REPO_ROOT, 'assets', 'resume.pdf');
+
+function parseArgs(argv) {
+  const opts = {
+    source: DEFAULT_SOURCE,
+    output: DEFAULT_OUTPUT,
+    debugHtml: null,
+    dumpJson: false
   };
 
-  let state = 'idle';
-  const history = [];
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg === '--source' && argv[i + 1]) opts.source = path.resolve(argv[++i]);
+    else if (arg === '--out' && argv[i + 1]) opts.output = path.resolve(argv[++i]);
+    else if (arg === '--debug-html' && argv[i + 1]) opts.debugHtml = path.resolve(argv[++i]);
+    else if (arg === '--dump-json') opts.dumpJson = true;
+  }
+
+  return opts;
+}
+
+function resolveChromeExecutable() {
+  if (process.env.PUPPETEER_EXECUTABLE_PATH && fs.existsSync(process.env.PUPPETEER_EXECUTABLE_PATH)) {
+    return process.env.PUPPETEER_EXECUTABLE_PATH;
+  }
+
+  try {
+    const bundled = puppeteer.executablePath();
+    if (bundled && fs.existsSync(bundled)) return bundled;
+  } catch (_) {}
+
+  const fallbacks = [
+    '/home/pacocha/.cache/puppeteer/chrome/linux-156.0.8078.47/chrome-linux64/chrome',
+    '/usr/bin/chromium',
+    '/usr/bin/chromium-browser',
+    '/usr/bin/google-chrome'
+  ];
+  for (const candidate of fallbacks) {
+    if (fs.existsSync(candidate)) return candidate;
+  }
+  return undefined;
+}
+
+function resolveFontConfiguration() {
+  // Prefer local bundled Geist variable font; fall back cleanly to system static TrueType fonts
+  const geistWoff2 = path.join(REPO_ROOT, 'assets', 'fonts', 'Geist-Variable.woff2');
+  const dejavuRegular = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf';
+  const dejavuBold = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf';
+
+  const files = [];
+  if (fs.existsSync(geistWoff2)) {
+    files.push({ family: 'Geist', path: geistWoff2, format: 'woff2', weight: '100 900', style: 'normal' });
+  }
+  if (fs.existsSync(dejavuRegular)) {
+    files.push({ family: 'DejaVu Sans', path: dejavuRegular, format: 'truetype', weight: '400', style: 'normal' });
+  }
+  if (fs.existsSync(dejavuBold)) {
+    files.push({ family: 'DejaVu Sans', path: dejavuBold, format: 'truetype', weight: '700', style: 'normal' });
+  }
 
   return {
-    get state() {
-      return state;
-    },
-    get history() {
-      return history.slice();
-    },
-    send(event, meta = {}) {
-      const next = transitions[state] && transitions[state][event];
-      if (!next) return state;
-      const prev = state;
-      state = next;
-      history.push({ from: prev, event, to: next, timestamp: new Date().toISOString(), ...meta });
-      return state;
-    }
+    fontFamily: "'Geist', 'DejaVu Sans', 'Helvetica Neue', Arial, sans-serif",
+    fontConfig: { files }
   };
 }
 
-(async () => {
-  const pipeline = createPdfPipelineMachine();
-  const executablePath =
-    process.env.PUPPETEER_EXECUTABLE_PATH ||
-    '/home/pacocha/.cache/puppeteer/chrome/linux-156.0.8078.47/chrome-linux64/chrome';
+async function generateResumePdf(options = {}) {
+  const sourcePath = options.source || DEFAULT_SOURCE;
+  const outputPath = options.output || DEFAULT_OUTPUT;
+
+  const cvData = extractCvData(sourcePath);
+
+  if (options.dumpJson) {
+    console.log(JSON.stringify(cvData, null, 2));
+    return { cvData };
+  }
+
+  const fontSetup = resolveFontConfiguration();
+  const html = renderResumeHtml(cvData, fontSetup);
+
+  if (options.debugHtml) {
+    fs.mkdirSync(path.dirname(options.debugHtml), { recursive: true });
+    fs.writeFileSync(options.debugHtml, html, 'utf8');
+  }
+
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'resume-pdf-'));
+  const chromeConfigDir = path.join(tmpDir, 'config');
+  const chromeCacheDir = path.join(tmpDir, 'cache');
+  const chromeProfileDir = path.join(tmpDir, 'profile');
+  fs.mkdirSync(chromeConfigDir, { recursive: true });
+  fs.mkdirSync(chromeCacheDir, { recursive: true });
 
   let browser = null;
-
   try {
-    pipeline.send('START');
+    const executablePath = resolveChromeExecutable();
     browser = await puppeteer.launch({
       executablePath,
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--ignore-certificate-errors']
+      userDataDir: chromeProfileDir,
+      env: {
+        ...process.env,
+        XDG_CONFIG_HOME: chromeConfigDir,
+        XDG_CACHE_HOME: chromeCacheDir
+      },
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-gpu',
+        '--disable-crash-reporter',
+        '--disable-dev-shm-usage',
+        '--font-render-hinting=none'
+      ]
     });
-    pipeline.send('BROWSER_READY');
 
     const page = await browser.newPage();
-    await page.setViewport({ width: 1200, height: 1600 });
 
-    const cvPath = path.resolve(__dirname, '../cv.html');
-    await page.goto(`file://${cvPath}`, { waitUntil: 'networkidle0' });
-    pipeline.send('DOCUMENT_LOADED');
-
-    await page.waitForSelector('#experience', { timeout: 10000 });
-    pipeline.send('HYDRATED');
-
-    await page.evaluate(() => {
-      // Force light print appearance and expand all CV sections
-      document.documentElement.removeAttribute('data-theme');
-      if (window.__APP_MACHINES__ && typeof window.__APP_MACHINES__.resetAll === 'function') {
-        window.__APP_MACHINES__.resetAll();
+    // Enforce 100% deterministic offline rendering - block any external network requests
+    await page.setRequestInterception(true);
+    page.on('request', (req) => {
+      const url = req.url();
+      if (url.startsWith('data:') || url.startsWith('about:') || url.startsWith('file:')) {
+        req.continue();
+      } else {
+        req.abort('blockedbyclient');
       }
-      if (window.__APP_MACHINES__ && window.__APP_MACHINES__.cvExplorer) {
-        window.__APP_MACHINES__.cvExplorer.send('EXPAND_ALL');
-      }
-
-      const mainEl = document.getElementById('main-content');
-      if (mainEl) {
-        mainEl.style.boxShadow = 'none';
-        mainEl.style.borderRadius = '0';
-        mainEl.style.transform = 'none';
-      }
-
-      // Remove fixed curtain spacers, backdrop, footer and UI-only chrome
-      ['#footer-spacer', '#footer-container', '#footer-backdrop'].forEach((sel) => {
-        const el = document.querySelector(sel);
-        if (el) el.remove();
-      });
-      document.querySelectorAll('.no-print').forEach((el) => el.remove());
-
-      const style = document.createElement('style');
-      style.textContent = `
-        @page {
-          size: A4 portrait;
-          margin: 10mm 12mm;
-        }
-        * {
-          -webkit-print-color-adjust: exact !important;
-          print-color-adjust: exact !important;
-          animation: none !important;
-          transition: none !important;
-        }
-        body {
-          background: #ffffff !important;
-          color: #26262a !important;
-          zoom: 0.86;
-        }
-        [data-machine="cvExplorer"] {
-          max-width: 100% !important;
-          padding: 0 !important;
-        }
-        article, #skills > div > div {
-          break-inside: avoid;
-        }
-      `;
-      document.head.appendChild(style);
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 350));
-    pipeline.send('LAYOUT_APPLIED');
+    await page.setContent(html, { waitUntil: 'load' });
+    await page.evaluate(async () => {
+      if (document.fonts && document.fonts.ready) {
+        await document.fonts.ready;
+      }
+    });
 
-    const outputPath = path.resolve(__dirname, '../assets/resume.pdf');
-    await page.pdf({
-      path: outputPath,
+    const rawPdf = await page.pdf({
       format: 'A4',
       printBackground: true,
-      margin: { top: '10mm', right: '12mm', bottom: '10mm', left: '12mm' }
+      preferCSSPageSize: true,
+      tagged: true,
+      outline: true
     });
-    pipeline.send('PDF_WRITTEN', { outputPath });
 
-    console.log(`Successfully generated PDF at: ${outputPath} (pipeline state: ${pipeline.state})`);
-  } catch (err) {
-    pipeline.send('FAIL', { error: err.message });
-    console.error(`[PDF Pipeline Failed in state=${pipeline.state}]:`, err);
-    process.exitCode = 1;
+    const finalPdf = applyPdfMetadata(Buffer.from(rawPdf), {
+      title: `${cvData.name} - ${cvData.headline || 'Curriculum Vitae'}`,
+      author: cvData.name,
+      subject: cvData.meta.description || `${cvData.headline} Resume`,
+      keywords: cvData.meta.keywords,
+      creator: 'jakubpacocha.com resume generator (scripts/generate-pdf.js)',
+      producer: 'Headless Chrome / Skia PDF'
+    });
+
+    fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+    fs.writeFileSync(outputPath, finalPdf);
+
+    return {
+      cvData,
+      outputPath,
+      bytes: finalPdf.length
+    };
   } finally {
     if (browser) {
       await browser.close();
-      pipeline.send('CLOSED');
     }
+    try {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    } catch (_) {}
   }
-})();
+}
+
+if (require.main === module) {
+  const opts = parseArgs(process.argv.slice(2));
+  generateResumePdf(opts)
+    .then((res) => {
+      if (opts.dumpJson) return;
+      const kb = (res.bytes / 1024).toFixed(1);
+      console.log(
+        `Generated ${path.relative(REPO_ROOT, res.outputPath)} (${kb} KB) from ${path.relative(
+          REPO_ROOT,
+          opts.source
+        )} - ${res.cvData.experience.length} roles, ${res.cvData.education.length} education entries, ${res.cvData.skills.length} skill groups.`
+      );
+    })
+    .catch((err) => {
+      console.error('[resume-pdf] Generation failed:', err);
+      process.exitCode = 1;
+    });
+}
+
+module.exports = { generateResumePdf };
