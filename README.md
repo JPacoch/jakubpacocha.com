@@ -21,23 +21,34 @@ A zero-build static personal portfolio and curriculum vitae featuring self-hoste
 | **Typography** | Self-hosted `Geist` variable font (`assets/fonts/Geist-Variable.woff2`) |
 | **Tooling** | Bun / Node, Puppeteer (`scripts/generate-pdf.js`) |
 
-*No build step is required - serve the repository statically (e.g. `bunx serve .` or `python3 -m http.server`) or open `index.html` / `cv.html` directly.*
+*No build step is required - serve the repository statically (e.g. `bunx serve .` or `python3 -m http.server`).*
 
 ## Project Structure
 
 ```
 .
-├── index.html                  # Main portfolio
-├── cv.html                     # Curriculum vitae
+├── index.html                  # Main portfolio shell
+├── cv.html                     # Curriculum vitae shell
 ├── assets/
 │   ├── favicon.png             # Site & manifest icon
 │   ├── og-image.jpg            # Open Graph / Twitter preview card
 │   ├── resume.pdf              # Generated A4 resume
-│   └── fonts/
-│       └── Geist-Variable.woff2
+│   ├── css/
+│   │   ├── shared.css          # Shared palette tokens, Geist font-face, grain & UI primitives
+│   │   ├── index.css           # Portfolio-specific styles (contribution strip, list hover)
+│   │   └── cv.css              # CV-specific animations & print media rules
+│   ├── fonts/
+│   │   └── Geist-Variable.woff2
+│   └── js/
+│       ├── theme-init.js       # Pre-paint light/dark theme initializer
+│       ├── tailwind-config.js  # Shared Tailwind CDN theme extensions
+│       ├── shared-core.js      # Audio/haptics engine, theme switcher & FSM registry
+│       ├── shared-ui.js        # Shared React icons, ClickSpark, footer & PortfolioShell
+│       ├── index.js            # Portfolio components, data & telemetry widgets
+│       └── cv.js               # CV data (PDF source of truth), explorer & CVDocument
 ├── scripts/
 │   ├── generate-pdf.js         # CLI orchestrator compiling cv.html -> assets/resume.pdf
-│   ├── extract-cv.js           # Extracts & validates structured CV data from cv.html
+│   ├── extract-cv.js           # Extracts & validates structured CV data from cv.html / cv.js
 │   ├── resume-template.js      # Dedicated ATS-friendly A4 HTML/CSS resume template
 │   └── pdf-metadata.js         # Appends standard PDF /Info metadata (Title, Author, etc.)
 ├── robots.txt                  # Crawler directives
@@ -52,11 +63,11 @@ A zero-build static personal portfolio and curriculum vitae featuring self-hoste
 
 ## PDF Generation
 
-`assets/resume.pdf` is generated from `cv.html` as the single source of truth using a dedicated, ATS-friendly A4 resume template (completely separate from the website's visual UI and rendered offline using the bundled `Geist` font).
+`assets/resume.pdf` is generated from `cv.html` (and its linked `assets/js/cv.js` data) as the single source of truth using a dedicated, ATS-friendly A4 resume template (completely separate from the website's visual UI and rendered offline using the bundled `Geist` font).
 
 ### Workflow
 
-1. Edit your content in `cv.html` (`EXPERIENCE_DATA`, `EDUCATION_DATA`, `SKILL_MATRIX`, header summary/contact links, or JSON-LD metadata).
+1. Edit your content in `assets/js/cv.js` (`EXPERIENCE_DATA`, `EDUCATION_DATA`, `SKILL_MATRIX`, header summary/contact links) and `cv.html` JSON-LD metadata if applicable.
 2. Regenerate the PDF:
 
 ```bash

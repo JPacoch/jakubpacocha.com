@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
 const vm = require('vm');
 
 /**
@@ -185,22 +186,55 @@ function extractHeaderDetails(babelScript) {
     if (tail) summarySegments.push({ type: 'text', text: tail });
   }
 
+  // Strip non-engineering blog reference from the resume summary while preserving cv.html as-is
+  const rawSummaryHrefs = new Set(summarySegments.filter((s) => s.type === 'link').map((s) => s.href));
+  const filteredSummary = filterSummaryForResume(summarySegments);
+
   // Extract email from header button/text if present
   const emailMatch = header.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
   const email = emailMatch ? emailMatch[0] : null;
 
   // Extract profile anchors inside header (excluding summary blog link)
-  const summaryHrefs = new Set(summarySegments.filter((s) => s.type === 'link').map((s) => s.href));
   const headerLinks = [];
   const allAnchors = [...header.matchAll(/<a\b[^>]*href="(https?:\/\/[^"]+)"[^>]*>/g)];
   for (const a of allAnchors) {
     const href = a[1].trim();
-    if (!summaryHrefs.has(href) && !headerLinks.includes(href)) {
+    if (!rawSummaryHrefs.has(href) && !headerLinks.includes(href)) {
       headerLinks.push(href);
     }
   }
 
-  return { name, location, email, summarySegments, headerLinks };
+  return { name, location, email, summarySegments: filteredSummary, rawSummaryHrefs: Array.from(rawSummaryHrefs), headerLinks };
+}
+
+/**
+ * Removes any sentence/segment mentioning the philosophical blog or From the Cabinet
+ * when generating the formal resume PDF.
+ */
+function filterSummaryForResume(segments) {
+  const withoutBlogLinks = [];
+  for (let i = 0; i < segments.length; i++) {
+    const seg = segments[i];
+    if (seg.type === 'link' && (/fromthecabinet\.com/i.test(seg.href) || /from the cabinet/i.test(seg.text))) {
+      // Also drop trailing punctuation-only segment right after the removed link (e.g. ".")
+      if (i + 1 < segments.length && segments[i + 1].type === 'text' && /^[.,;:!?]+$/.test(segments[i + 1].text.trim())) {
+        i++;
+      }
+      continue;
+    }
+    withoutBlogLinks.push(seg);
+  }
+
+  return withoutBlogLinks
+    .map((seg) => {
+      if (seg.type !== 'text') return seg;
+      const cleaned = seg.text
+        .replace(/(?:^|\s+)Author of [^.]*(?:blog|essays)[^.]*\.?/gi, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+      return cleaned ? { ...seg, text: cleaned } : null;
+    })
+    .filter(Boolean);
 }
 
 function formatDisplayUrl(url) {
@@ -211,16 +245,43 @@ function formatDisplayUrl(url) {
 }
 
 /**
- * Extracts all structured CV data directly from `cv.html` (single source of truth).
+ * Collects the CV script source referenced by `cv.html` (supporting both external `<script type="text/babel" src="...">`
+ * and inline `<script type="text/babel">...</script>` blocks).
+ */
+function loadCvScriptSource(html, cvHtmlPath) {
+  const baseDir = path.dirname(path.resolve(cvHtmlPath));
+  const scriptTagRe = /<script\b([^>]*\btype\s*=\s*["']text\/babel["'][^>]*)>([\s\S]*?)<\/script>/gi;
+  const chunks = [];
+  let match;
+
+  while ((match = scriptTagRe.exec(html)) !== null) {
+    const attrs = match[1];
+    const inlineBody = match[2];
+    const srcMatch = attrs.match(/\bsrc\s*=\s*["']([^"']+)["']/i);
+    if (srcMatch) {
+      const resolved = path.resolve(baseDir, srcMatch[1]);
+      if (fs.existsSync(resolved)) {
+        chunks.push(fs.readFileSync(resolved, 'utf8'));
+      }
+    }
+    if (inlineBody && inlineBody.trim()) {
+      chunks.push(inlineBody);
+    }
+  }
+
+  if (!chunks.length) {
+    throw new Error(`Could not find <script type="text/babel"> source in ${cvHtmlPath}`);
+  }
+
+  return chunks.join('\n');
+}
+
+/**
+ * Extracts all structured CV data directly from `cv.html` and its linked CV script (single source of truth).
  */
 function extractCvData(cvHtmlPath) {
   const html = fs.readFileSync(cvHtmlPath, 'utf8');
-
-  const babelMatch = html.match(/<script\s+type="text\/babel"[^>]*>([\s\S]*?)<\/script>/i);
-  if (!babelMatch) {
-    throw new Error(`Could not find <script type="text/babel"> in ${cvHtmlPath}`);
-  }
-  const babelScript = babelMatch[1];
+  const babelScript = loadCvScriptSource(html, cvHtmlPath);
 
   const person = extractJsonLdPerson(html);
   const header = extractHeaderDetails(babelScript);
@@ -252,7 +313,7 @@ function extractCvData(cvHtmlPath) {
 
   const seenUrls = new Set(website ? [formatDisplayUrl(website).toLowerCase()] : []);
   const summaryHrefs = new Set(
-    header.summarySegments.filter((s) => s.type === 'link').map((s) => formatDisplayUrl(s.href).toLowerCase())
+    (header.rawSummaryHrefs || []).map((href) => formatDisplayUrl(href).toLowerCase())
   );
 
   const candidateUrls = [
@@ -263,7 +324,7 @@ function extractCvData(cvHtmlPath) {
   for (const href of candidateUrls) {
     const normalized = formatDisplayUrl(href);
     const key = normalized.toLowerCase();
-    if (/^(?:x\.com|twitter\.com)(?:\/|$)/.test(key)) continue;
+    if (/^(?:x\.com|twitter\.com|fromthecabinet\.com)(?:\/|$)/.test(key)) continue;
     if (seenUrls.has(key) || summaryHrefs.has(key)) continue;
     seenUrls.add(key);
     contacts.push({ id: key, label: normalized, href });
