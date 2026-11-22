@@ -1,0 +1,46 @@
+@keyframes tag-pill-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.tag-pill-in {
+  animation: tag-pill-in 150ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tag-pill-in {
+    animation: none;
+  }
+}
+
+@media (hover: hover) {
+  .back-link:hover .back-arrow {
+    transform: translateX(-2px);
+  }
+}
+
+@media print {
+  html,
+  body {
+    background: #ffffff !important;
+    color: #26262a !important;
+  }
+  #footer-spacer,
+  #footer-container,
+  #footer-backdrop,
+  .no-print,
+  html[data-theme="dark"] body::after {
+    display: none !important;
+  }
+  #main-content {
+    box-shadow: none !important;
+    transform: none !important;
+    border-radius: 0 !important;
+  }
+}
