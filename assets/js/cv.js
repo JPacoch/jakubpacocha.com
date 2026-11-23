@@ -302,7 +302,7 @@
             className="no-print flex items-center justify-between gap-3 pb-3.5 sm:pb-0 border-b border-hairline sm:border-0 mb-7 sm:mb-12"
           >
             <a
-              href="index.html"
+              href="/"
               className="back-link tap-press hover-surface -ms-2.5 px-2.5 min-h-[40px] rounded-lg inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-ink-muted"
             >
               <ArrowLeftIcon className="back-arrow w-3.5 h-3.5 transition-transform duration-150 ease-out" />
