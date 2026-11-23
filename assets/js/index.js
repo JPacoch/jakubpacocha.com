@@ -305,7 +305,7 @@
           >
             <div className="flex items-center gap-1 -ms-2.5 sm:ms-0">
               <a
-                href="cv.html"
+                href="/cv"
                 className="tap-press hover-surface px-2.5 min-h-[40px] rounded-lg inline-flex items-center gap-1 text-[0.9375rem] font-medium text-ink sm:text-ink-muted"
               >
                 <span>CV</span>
@@ -1428,7 +1428,7 @@
         <h2 id="focus-heading" className="text-base sm:text-[1.0625rem] font-semibold text-ink tracking-normal">
           Focus
         </h2>
-        <a href="cv.html" className="muted-link text-[0.9375rem] font-medium tracking-normal">
+        <a href="/cv" className="muted-link text-[0.9375rem] font-medium tracking-normal">
           Full CV
         </a>
       </div>

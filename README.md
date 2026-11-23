@@ -21,7 +21,7 @@ A zero-build static personal portfolio and curriculum vitae featuring self-hoste
 | **Typography** | Self-hosted `Geist` variable font (`assets/fonts/Geist-Variable.woff2`) |
 | **Tooling** | Bun / Node, Puppeteer (`scripts/generate-pdf.js`) |
 
-*No build step is required - serve the repository statically (e.g. `bunx serve .` or `python3 -m http.server`).*
+*No build step is required - serve the repository with clean URLs (e.g. `bunx serve .` or `npx vercel dev`).*
 
 ## Project Structure
 
@@ -57,6 +57,7 @@ A zero-build static personal portfolio and curriculum vitae featuring self-hoste
 ├── humans.txt                  # Author & stack metadata
 ├── llms.txt                    # Structured summary for AI crawlers
 ├── _headers                    # Static hosting security & cache headers
+├── vercel.json                 # Vercel clean URLs & trailing-slash config
 ├── package.json                # PDF export script dependencies
 └── .gitignore
 ```

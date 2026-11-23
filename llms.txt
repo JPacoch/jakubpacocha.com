@@ -5,7 +5,7 @@
 ## Primary Pages
 
 - [Portfolio](https://jakubpacocha.com/): Overview, live GitHub activity, selected projects, writing and core focus areas.
-- [Curriculum Vitae](https://jakubpacocha.com/cv.html): Full work experience, technical capabilities and academic background.
+- [Curriculum Vitae](https://jakubpacocha.com/cv): Full work experience, technical capabilities and academic background.
 - [Resume (PDF)](https://jakubpacocha.com/assets/resume.pdf): Downloadable A4 resume.
 
 ## Selected Projects
